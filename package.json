@@ -4,8 +4,8 @@
   "description": "Front end for fundraising bonding curve.",
   "dependencies": {
     "bignumber.js": "8.1.1",
-    "ganache-core": "2.2.1",
-    "lodash": "4.17.11",
+    "ganache-core": "^2.7.0",
+    "lodash": "^4.17.15",
     "moment": "2.24.0",
     "react": "16.8.4",
     "react-dom": "16.8.4",
