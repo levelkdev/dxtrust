@@ -2,7 +2,36 @@
   "name": "bonding-curve-front-end",
   "version": "1.0.0",
   "description": "Front end for fundraising bonding curve.",
-  "main": "index.js",
+  "dependencies": {
+    "bignumber.js": "8.1.1",
+    "ganache-core": "2.2.1",
+    "lodash": "4.17.11",
+    "moment": "2.24.0",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-redux": "6.0.1",
+    "react-router-dom": "4.3.1",
+    "react-spring": "8.0.15",
+    "redux": "4.0.1",
+    "redux-form": "8.1.0",
+    "redux-thunk": "2.3.0",
+    "rxjs-compat": "6.4.0",
+    "styled-components": "4.1.3",
+    "web3-utils": "1.0.0-beta.50"
+  },
+  "devDependencies": {
+    "@babel/core": "7.3.4",
+    "@babel/plugin-proposal-class-properties": "7.3.4",
+    "@babel/polyfill": "7.2.5",
+    "@babel/preset-env": "7.3.4",
+    "@babel/register": "7.0.0",
+    "async": "2.6.2",
+    "babel-plugin-styled-components": "1.10.0",
+    "execa": "1.0.0",
+    "http-server": "0.11.1",
+    "parcel-bundler": "1.12.2",
+    "mocha": "6.1.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +40,6 @@
     "url": "git+https://github.com/levelkdev/bonding-curve-front-end.git"
   },
   "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/levelkdev/bonding-curve-front-end/issues"
   },
