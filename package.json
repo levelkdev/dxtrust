@@ -1,0 +1,19 @@
+{
+  "name": "bonding-curve-front-end",
+  "version": "1.0.0",
+  "description": "Front end for fundraising bonding curve.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levelkdev/bonding-curve-front-end.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/levelkdev/bonding-curve-front-end/issues"
+  },
+  "homepage": "https://github.com/levelkdev/bonding-curve-front-end#readme"
+}
