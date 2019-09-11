@@ -1,6 +1,6 @@
 # BC-DAPP
 
-Bonding Curve Dapp
+Bonding Curve Dapp (see [propsal doc](https://github.com/levelkdev/BC-DAPP/blob/master/docs/dxdao-proposal.md))
 
 ## Setup
 
