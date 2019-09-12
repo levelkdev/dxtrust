@@ -1,5 +1,5 @@
 {
-  "name": "bonding-curve-front-end",
+  "name": "BC-DAPP",
   "version": "1.0.0",
   "description": "Front end for fundraising bonding curve.",
   "dependencies": {
@@ -16,7 +16,6 @@
     "redux": "4.0.1",
     "redux-form": "8.1.0",
     "redux-thunk": "2.3.0",
-    "rxjs-compat": "6.4.0",
     "styled-components": "4.1.3",
     "truffle": "^5.0.34",
     "web3-utils": "1.2.1"
@@ -27,9 +26,7 @@
     "@babel/polyfill": "7.2.5",
     "@babel/preset-env": "7.3.4",
     "@babel/register": "7.0.0",
-    "async": "2.6.2",
     "babel-plugin-styled-components": "1.10.0",
-    "execa": "1.0.0",
     "http-server": "0.11.1",
     "parcel-bundler": "1.12.2",
     "mocha": "6.1.4"
@@ -40,23 +37,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/levelkdev/bonding-curve-front-end.git"
+    "url": "git+https://github.com/levelkdev/BC-DAPP.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://github.com/levelkdev/bonding-curve-front-end/issues"
+    "url": "https://github.com/levelkdev/BC-DAPP/issues"
   },
-  "homepage": "https://github.com/levelkdev/bonding-curve-front-end#readme",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "homepage": "https://github.com/levelkdev/BC-DAPP#readme"
 }
