@@ -4,6 +4,8 @@
   "description": "Front end for fundraising bonding curve.",
   "dependencies": {
     "bignumber.js": "8.1.1",
+    "chart.js": "^2.8.0",
+    "react-chartjs-2": "2.7.4",
     "ganache-core": "^2.7.0",
     "lodash": "^4.17.15",
     "moment": "2.24.0",
@@ -43,5 +45,17 @@
   "bugs": {
     "url": "https://github.com/levelkdev/BC-DAPP/issues"
   },
-  "homepage": "https://github.com/levelkdev/BC-DAPP#readme"
+  "homepage": "https://github.com/levelkdev/BC-DAPP#readme",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
