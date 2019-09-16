@@ -3,7 +3,32 @@ import styled from 'styled-components'
 import { Line } from 'react-chartjs-2'
 
 const ChartWrapper = styled.div`
-  width: 500px;
+  width: 65%;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid var(--medium-gray);
+  border-radius: 4px;
+`
+
+const ChartHeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`
+
+const ChartHeaderFullElement = styled.div`
+  padding: 10px;
+`
+
+const ChartHeaderTopElement = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark-gray);
+`
+
+const ChartHeaderBottomElement = styled.div`
+  font-size: 17px;
+  margin-top: 10px;
 `
 
 const BondingCurveChart = ({}) => {
@@ -76,11 +101,25 @@ const BondingCurveChart = ({}) => {
  
   return (
     <ChartWrapper>
+      <ChartHeaderWrapper>
+        <ChartHeaderFullElement>
+          <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
+          <ChartHeaderBottomElement>1.25 DXD/DAI</ChartHeaderBottomElement>
+        </ChartHeaderFullElement>
+        <ChartHeaderFullElement>
+          <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
+          <ChartHeaderBottomElement className="green-text">+10.51%</ChartHeaderBottomElement>
+        </ChartHeaderFullElement>
+        <ChartHeaderFullElement>
+          <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
+          <ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
+        </ChartHeaderFullElement>
+      </ChartHeaderWrapper>
       <Line
         data={data}
         options={options}
         // width={1000}
-        height={400} />
+        height={200} />
     </ChartWrapper>
   )
 }

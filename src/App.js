@@ -1,10 +1,11 @@
 import React from 'react'
-import TradeContainer from './containers/TradeContainer'
+import './App.css'
+import ChartContainer from './containers/ChartContainer'
 
 export default class App extends React.Component {
   render () {
     return (
-      <TradeContainer />
+      <ChartContainer />
     )
   }
 }

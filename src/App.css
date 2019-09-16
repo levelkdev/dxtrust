@@ -1,0 +1,25 @@
+:root {
+  --orange: #F9AA33;
+  --dark-gray: #333333ba;/*For text*/
+  --medium-gray: #33333361;/*For border*/
+  --light-gray: #F4F6FC;/*Site background*/
+  
+  --rubik: 'Rubik', sans-serif;
+  --open-sans: 'Open Sans', sans-serif;
+  --pt-serif: 'PT Serif', serif;
+}
+
+body {
+  font-family: var(--open-sans);
+  background-color: var(--light-gray);
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+h1 {
+  font-family: var(--pt-serif);
+}
+
+.green-text {
+  color: green;
+}
