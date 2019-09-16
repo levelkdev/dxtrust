@@ -23,12 +23,13 @@ const ChartHeaderFullElement = styled.div`
 const ChartHeaderTopElement = styled.div`
   font-size: 14px;
   font-weight: 600;
-  color: var(--dark-gray);
+  color: var(--medium-gray);
 `
 
 const ChartHeaderBottomElement = styled.div`
   font-size: 17px;
   margin-top: 10px;
+  color: var(--dark-gray);
 `
 
 const BondingCurveChart = ({}) => {
