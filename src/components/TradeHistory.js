@@ -28,6 +28,7 @@ const TableHeadersWrapper = styled.div`
 `
 
 const TableHeader = styled.div`
+  width: 20%;
 `
 
 const TableRow = styled.div`
@@ -41,7 +42,14 @@ const TableRow = styled.div`
 `
 
 const TableCell = styled.div`
+  width: 20%;
   font-weight: 500;
+  display: flex;
+  align-self: flex-start;
+`
+
+const TableCellContent = styled.div`
+
 `
 
 const TradingHistory = ({}) => {
@@ -49,14 +57,28 @@ const TradingHistory = ({}) => {
     <TradingHistoryWrapper>
       <TradeHistoryTitle>Trade History</TradeHistoryTitle>
       <TableHeadersWrapper>
-        <TableHeader>Type</TableHeader>
-        <TableHeader>Price ETH</TableHeader>
-        <TableHeader>Amount DXD</TableHeader>
-        <TableHeader>Total ETH</TableHeader>
-        <TableHeader>Status/Time</TableHeader>
+        <TableHeader><TableCellContent>Type</TableCellContent></TableHeader>
+        <TableHeader><TableCellContent>Price ETH</TableCellContent></TableHeader>
+        <TableHeader><TableCellContent>Amount</TableCellContent>DXD</TableHeader>
+        <TableHeader><TableCellContent>Total ETH</TableCellContent></TableHeader>
+        <TableHeader><TableCellContent>Status/Time</TableCellContent></TableHeader>
       </TableHeadersWrapper>
       <TableRow>
         <TableCell className="blue-text">Buy</TableCell>
+        <TableCell>154.202</TableCell>
+        <TableCell>14.202</TableCell>
+        <TableCell>14.202</TableCell>
+        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell className="red-text">Sell</TableCell>
+        <TableCell>154.202</TableCell>
+        <TableCell>14.202</TableCell>
+        <TableCell>14.202</TableCell>
+        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell className="red-text">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
