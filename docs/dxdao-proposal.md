@@ -30,7 +30,7 @@ Here is a high-level overview of the project's requirements:
 
   - 20% of total to [LevelK](https://www.levelk.io) (18,800 Rep)
 
-    0xC703839c822844B2b1e0CDcB7d5cB738068651B9
+    0x583aCC79585D3cB195EA8125F6F80aD459B46313
 
   - 20% of total to Corkus (18,800 Rep)
 
