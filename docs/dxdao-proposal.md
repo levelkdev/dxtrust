@@ -23,17 +23,18 @@ Here is a high-level overview of the project's requirements:
 - 70,000 GEN
 - 50 ETH, payable in DAODebt.
 - 94,000 of dxDAO REP (approx. 10% of existing REP)
-    - 60% of total to [dOrg](https://dorg.tech/#/) (56,400 Rep)
 
-        0xbe1a98d3452f6da6e0984589e545d4fc25af7526
+  - 60% of total to [dOrg](https://dorg.tech/#/) (56,400 Rep)
 
-    - 20% of total to [LevelK](https://www.levelk.io) (18,800 Rep)
+    0xbe1a98d3452f6da6e0984589e545d4fc25af7526
 
-        0xC703839c822844B2b1e0CDcB7d5cB738068651B9
+  - 20% of total to [LevelK](https://www.levelk.io) (18,800 Rep)
 
-    - 20% of total to Corkus (18,800 Rep)
+    0xC703839c822844B2b1e0CDcB7d5cB738068651B9
 
-        0x730fd267ef60b27615324b94bf0bc7ed15d52718
+  - 20% of total to Corkus (18,800 Rep)
+
+    0x730fd267ef60b27615324b94bf0bc7ed15d52718
 
 - 2 months
 
@@ -74,12 +75,12 @@ The BC-DAPP team will build the front-end dApp in-house, with [dOrg](https://dor
 
 At each milestone, GEN and ETH will be distributed between dOrg and the BC-DAPP team (LevelK + Corkus) according to the **Payment Split** column below. REP will be distributed as a % of the total as described in the **Budget** section.
 
-| Deliverable            | Components                                                                                  | Payment                                            | Payment Split        | Estimated Delivery |
-| ---------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------- | ------------------ |
-| Full Spec / UI Mockups | * Full Spec of components * UI Mockups / User Flow * Research & overview of curve economics | 14,000 GEN, 10 ETH in DAODebt, 20% of REP          | 20% dOrg 80% BC-DAPP | Week 2             |
-| Trade Interface        | * Full trade UI, * Subgraph                                                                 | 28,000 GEN, 20 ETH in DAOdebt, 40% of REP          | 30% dOrg 70% BC-DAPP | Week 6             |
-| Dividend Interface     | * Full Dividend Interface * Custom Curve Logic for DXD pre-mint                             | 28,000 GEN, 20 ETH in DAOdebt, 40% of REP          | 50% dOrg 50% BC-DAPP | Week 6             |
-| Completed Deployment   | * Deploy bonding curve                                                                      | DXD Tokens Distributed according to pre-mint logic | According to REP     | Week 8             |
+| Deliverable                | Components                                                                                            | Payment                                                                               | Payment Split                                                                                                 | Estimated Delivery |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------ |
+| **Full Spec / UI Mockups** | - Full Spec of components <br> - UI Mockups / User Flow <br> - Research & overview of curve economics | - 14,000 GEN <br> - 10 ETH in DAODebt <br> - 20% of dOrg REP <br>- 100% of Corkus REP | **dOrg**: 2800 GEN, 2 ETH in DAODebt, 11280 REP <br><br> **Corkus**: 11200 GEN, 8 ETH in DAODebt, 18800 REP   | Week 2             |
+| **Trade Interface**        | - Full trade UI <br> - Subgraph                                                                       | - 28,000 GEN <br> - 20 ETH in DAOdebt <br> - 40% of dOrg REP <br> - 50% of LevelK REP | **dOrg**: 8400 GEN, 6 ETH in DAODebt, 22560 REP <br><br> **LevelK**: 19600 GEN, 14 ETH in DAODebt, 9400 REP   | Week 6             |
+| **Dividend Interface**     | - Full Dividend Interface <br> - Custom Curve Logic for DXD pre-mint                                  | - 28,000 GEN <br> - 20 ETH in DAOdebt <br> - 40% of dOrg REP <br> - 50% of LevelK REP | **dOrg**: 14000 GEN, 10 ETH in DAODebt, 22560 REP <br><br> **LevelK**: 14000 GEN, 10 ETH in DAODebt, 9400 REP | Week 6             |
+| **Completed Deployment**   | - Deploy bonding curve                                                                                | DXD Tokens Distributed according to pre-mint logic                                    | According to REP                                                                                              | Week 8             |
 
 ### DXD Bonding Curve Pre-Mint
 
