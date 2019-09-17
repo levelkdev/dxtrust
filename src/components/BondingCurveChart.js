@@ -2,11 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { Line } from 'react-chartjs-2'
 
-const ChartWrapper = styled.div`
+const ChartPanelWrapper = styled.div`
   width: 65%;
-  padding: 20px;
   background-color: white;
-  border: 2px solid var(--medium-gray);
+  border: 1px solid var(--medium-gray);
   border-radius: 4px;
 `
 
@@ -14,22 +13,29 @@ const ChartHeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  padding: 15px;
+  border-bottom: 1px solid var(--medium-gray);
 `
 
 const ChartHeaderFullElement = styled.div`
+  color: var(--dark-text-gray);
   padding: 10px;
 `
 
 const ChartHeaderTopElement = styled.div`
   font-size: 14px;
-  font-weight: 600;
-  color: var(--medium-gray);
+  font-weight: 500;
+  color: var(--light-text-gray);
 `
 
 const ChartHeaderBottomElement = styled.div`
   font-size: 17px;
   margin-top: 10px;
-  color: var(--dark-gray);
+`
+
+const ChartWrapper = styled.div`
+  height: 250px;
+  padding: 20px 20px 0px 20px;
 `
 
 const BondingCurveChart = ({}) => {
@@ -101,7 +107,7 @@ const BondingCurveChart = ({}) => {
   }
  
   return (
-    <ChartWrapper>
+    <ChartPanelWrapper>
       <ChartHeaderWrapper>
         <ChartHeaderFullElement>
           <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
@@ -116,12 +122,15 @@ const BondingCurveChart = ({}) => {
           <ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
         </ChartHeaderFullElement>
       </ChartHeaderWrapper>
-      <Line
-        data={data}
-        options={options}
-        // width={1000}
-        height={200} />
-    </ChartWrapper>
+      <ChartWrapper>
+        <Line
+          data={data}
+          options={options}
+          // width={1000}
+          // height={250} 
+        />
+      </ChartWrapper>
+    </ChartPanelWrapper>
   )
 }
 
