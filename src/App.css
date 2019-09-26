@@ -1,7 +1,8 @@
 :root {
   --orange: #F9AA33;
-  --dark-gray: #333333ba;/*For text*/
-  --medium-gray: #33333361;/*For border*/
+  --light-text-gray: #BDBDBD;
+  --dark-text-gray: #616161;
+  --medium-gray: rgba(207, 216, 220, 0.9);/*For border*/
   --light-gray: #F4F6FC;/*Site background*/
   
   --rubik: 'Rubik', sans-serif;
@@ -21,7 +22,7 @@ h1 {
 }
 
 .green-text {
-  color: green;
+  color: #54AE6F;
 }
 
 .blue-text {
@@ -34,4 +35,8 @@ h1 {
 
 .turquois-text {
   color: deepskyblue;
+}
+
+.form-vivid-blue {
+  color: rgba(48, 79, 254, 0.6);
 }

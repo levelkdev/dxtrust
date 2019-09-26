@@ -5,7 +5,7 @@ const TradingHistoryWrapper = styled.div`
   width: 100%;
   background: white;
   padding-bottom: 15px;
-  border: 2px solid var(--medium-gray);
+  border: 1px solid var(--medium-gray);
   margin-top: 20px;
   border-radius: 4px;
 `
