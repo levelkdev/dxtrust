@@ -3,7 +3,7 @@
   --light-text-gray: #BDBDBD;
   --dark-text-gray: #616161;
   --medium-gray: rgba(207, 216, 220, 0.9);/*For border*/
-  --light-gray: #F4F6FC;/*Site background*/
+  --light-gray: rgba(245, 246, 246, 0.5);/*Site background*/
   
   --rubik: 'Rubik', sans-serif;
   --open-sans: 'Open Sans', sans-serif;
@@ -26,15 +26,15 @@ h1 {
 }
 
 .blue-text {
-  color: blue;
+  color: #536DFE;
 }
 
 .red-text {
-  color: red;
+  color: #FF4081;
 }
 
 .turquois-text {
-  color: deepskyblue;
+  color: #2D9CDB;
 }
 
 .form-vivid-blue {
