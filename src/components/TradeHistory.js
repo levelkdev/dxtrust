@@ -12,7 +12,7 @@ const TradingHistoryWrapper = styled.div`
 
 const TradeHistoryTitle = styled.div`
   padding: 17px 15px;
-  color: var(--dark-gray);
+  color: var(--dark-text-gray);
   border-bottom: 1px solid var(--light-gray);
   font-weight: 600; 
 `
@@ -38,7 +38,7 @@ const TableRow = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid var(--light-gray);
   padding: 10px 15px;
-  color: var(--dark-gray);
+  color: var(--dark-text-gray);
 `
 
 const TableCell = styled.div`

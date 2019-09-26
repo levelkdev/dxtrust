@@ -133,7 +133,7 @@ const BuySell = ({}) => {
           <InfoRow>
             <LogoAndText>
               <LogoWrapper>
-                <ETHLogo src="ETH-logo.png"></ETHLogo>
+                <ETHLogo src="ETH-logo.svg"></ETHLogo>
               </LogoWrapper>
               <LogoText>Ether</LogoText>
             </LogoAndText>
@@ -142,7 +142,7 @@ const BuySell = ({}) => {
           <InfoRow>
             <LogoAndText>
               <LogoWrapper>
-                <DXDLogo src="DXD-logo.png"></DXDLogo>
+                <DXDLogo src="DXD-logo.svg"></DXDLogo>
               </LogoWrapper>
               <LogoText>Dxdao</LogoText>
             </LogoAndText>
