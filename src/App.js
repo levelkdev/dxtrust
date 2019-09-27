@@ -4,6 +4,7 @@ import ChartContainer from './containers/ChartContainer'
 import TradeHistoryContainer from './containers/TradeHistoryContainer'
 import BuySellContainer from './containers/BuySellContainer'
 import NavBarContainer from './containers/NavBarContainer'
+import FooterContainer from './containers/FooterContainer'
 import styled from 'styled-components'
 
 const PanelWrapper = styled.div`
@@ -21,6 +22,7 @@ export default class App extends React.Component {
         <ChartContainer />
         <BuySellContainer />
         <TradeHistoryContainer />
+        <FooterContainer />
       </PanelWrapper>
     )
   }
