@@ -4,8 +4,14 @@ import styled from 'styled-components'
 const NavWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   padding: 50px 0px 40px 0px;
+`
+
+const LeftNav = styled.div`
+  display: flex;
+  flex-direction: row;
 `
 
 const MenuItem = styled.div`
@@ -47,19 +53,43 @@ const DXDLogo = styled.img`
 `
 
 const Web3Connect = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  height: 28px;
+  line-height: 28px;
+  padding: 0px 15px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background: white;
+  color: #546E7A;
+`
+
+const Avatar = styled.div`
+  height: 17px;
+  width: 17px;
+  border-radius: 8px;
+  background: #05575D;
+  margin: 5px 10px 0px 10px;
 `
 
 const NavBar = ({}) => {
   return (
     <NavWrapper>
-      <LogoAndText>
-        <LogoWrapper>
-          <DXDLogo src="DXD-logo.svg"></DXDLogo>
-        </LogoWrapper>
-        <LogoText>Dxdao</LogoText>
-      </LogoAndText>
-      <SelectedMenuItem>Exchange</SelectedMenuItem>
-      <MenuItem>Rewards</MenuItem>
+      <LeftNav>  
+        <LogoAndText>
+          <LogoWrapper>
+            <DXDLogo src="DXD-logo.svg"></DXDLogo>
+          </LogoWrapper>
+          <LogoText>Dxdao</LogoText>
+        </LogoAndText>
+        <SelectedMenuItem>Exchange</SelectedMenuItem>
+        <MenuItem>Rewards</MenuItem>
+      </LeftNav>
+      <Web3Connect>
+        <Avatar></Avatar>
+        <div>0x232b...8482</div>
+      </Web3Connect>
     </NavWrapper>
   )
 }
