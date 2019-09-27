@@ -46,7 +46,7 @@ const CryptoInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  border-bottom: 1px solid var(--medium-gray);
+  border-bottom: 1px solid var(--line-gray);
 `
 
 const InfoRow = styled.div`

@@ -14,7 +14,7 @@ const ChartHeaderWrapper = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   padding: 15px;
-  border-bottom: 1px solid var(--medium-gray);
+  border-bottom: 1px solid var(--line-gray);
 `
 
 const ChartHeaderFullElement = styled.div`
@@ -59,12 +59,16 @@ const BondingCurveChart = ({}) => {
         ticks: {
           major: {
             fontStyle: 'bold',
-            fontColor: '#FF0000'
+            fontColor: '#BDBDBD'
           }
         }
       }],
       yAxes: [{
         display: true,
+        gridLines: {
+          display: true,
+          color: '#E1E3E7',
+        },
         position: 'right',
         ticks: {
           callback: function(value, index, values) {
