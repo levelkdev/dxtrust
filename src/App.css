@@ -2,8 +2,11 @@
   --orange: #F9AA33;
   --light-text-gray: #BDBDBD;
   --dark-text-gray: #616161;
+  --nav-text-light: rgba(55, 71, 79, 0.4);
+  --nav-text-dark: rgba(55, 71, 79, 1);
   --medium-gray: rgba(207, 216, 220, 0.9);/*For border*/
   --light-gray: rgba(245, 246, 246, 0.5);/*Site background*/
+  --line-gray: rgba(225, 227, 231, 0.4);
   
   --rubik: 'Rubik', sans-serif;
   --open-sans: 'Open Sans', sans-serif;
