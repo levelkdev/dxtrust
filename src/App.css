@@ -9,6 +9,9 @@
   --light-gray: rgba(245, 246, 246, 0.5);/*Site background*/
   --line-gray: rgba(225, 227, 231, 0.4);
   
+  --rewards-text-green: #54AE6F;
+  --rewards-background-green: rgba(84, 174, 111, 0.1);
+  
   --rubik: 'Rubik', sans-serif;
   --open-sans: 'Open Sans', sans-serif;
   --pt-serif: 'PT Serif', serif;
