@@ -4,7 +4,8 @@ import styled from 'styled-components'
 const BuySellWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 31%;
+  width: 298px;
+  margin-left: 24px;
   border: 1px solid var(--medium-gray);
   border-radius: 4px;
   background-color: white;

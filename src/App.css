@@ -18,10 +18,15 @@
 }
 
 body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   font-family: var(--open-sans);
   background-color: var(--light-gray);
-  margin-left: 15%;
-  margin-right: 15%;
+}
+
+.app-shell {
+  width: 936px;
 }
 
 h1 {
