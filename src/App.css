@@ -53,3 +53,7 @@ h1 {
 .form-vivid-blue {
   color: rgba(48, 79, 254, 0.6);
 }
+
+.align-left {
+  text-align: left;
+}
