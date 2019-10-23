@@ -32,12 +32,13 @@ const TableHeader = styled.div`
 `
 
 const TableRow = styled.div`
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 18px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid var(--line-gray);
-  padding: 10px 15px;
+  padding: 11px 24px 10px;
   color: var(--dark-text-gray);
 `
 
