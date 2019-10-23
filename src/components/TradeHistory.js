@@ -47,6 +47,9 @@ const TableCell = styled.div`
   font-weight: 500;
   display: flex;
   align-self: flex-start;
+  a {
+    text-decoration: none;
+  }
 `
 
 const TableCellContent = styled.div`
@@ -69,28 +72,60 @@ const TradingHistory = ({}) => {
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell className="red-text">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell className="red-text">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell className="red-text">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
     </TradingHistoryWrapper>
   )
