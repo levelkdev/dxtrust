@@ -18,7 +18,7 @@ const TabWrapper = styled.div`
 `
 
 const ActiveTab = styled.div`
-  color: blue;
+  color: var(--blue-text);
   width: 50%;
   text-align: center;
   padding: 15px 0px;
