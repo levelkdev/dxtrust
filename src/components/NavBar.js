@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 const NavWrapper = styled.div`
@@ -18,12 +19,14 @@ const MenuItem = styled.div`
   color: var(--nav-text-light);
   line-height: 24px;
   padding: 0px 20px;
+  cursor: pointer;
 `
 
 const SelectedMenuItem = styled.div`
   color: var(--nav-text-dark);
   line-height: 24px;
   padding: 0px 10px;
+  cursor: pointer;
 `
 
 const LogoAndText = styled.div`
@@ -74,6 +77,38 @@ const Avatar = styled.div`
 `
 
 const NavBar = ({}) => {
+  const [selected, setSelected] = React.useState(0)
+
+  const NavItem = withRouter(
+    ({
+      option, route, history, location, children
+    }) => {
+      // Handle external route navigation
+      if (location.pathname === route) {
+        setSelected(option)
+      } else if (location.pathname === '/') {
+        setSelected(1)
+      }
+
+      if (option === selected) {
+        return (
+          <SelectedMenuItem>
+            {children}
+          </SelectedMenuItem>
+        )
+      }
+      return (
+        <MenuItem onClick={() => {
+          setSelected(option)
+          history.push(route)
+        }}
+        >
+          {children}
+        </MenuItem>
+      )
+    }
+  )
+
   return (
     <NavWrapper>
       <LeftNav>  
@@ -83,8 +118,12 @@ const NavBar = ({}) => {
           </LogoWrapper>
           <LogoText>Dxdao</LogoText>
         </LogoAndText>
-        <SelectedMenuItem>Exchange</SelectedMenuItem>
-        <MenuItem>Rewards</MenuItem>
+        <NavItem option={1} route="/exchange">
+          Exchange
+        </NavItem>
+        <NavItem option={2} route="/redeem">
+          Rewards
+        </NavItem>
       </LeftNav>
       <Web3Connect>
         <Avatar></Avatar>
