@@ -58,24 +58,10 @@ const InfoRow = styled.div`
   color: var(--dark-text-gray);
 `
 
-const LogoWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-  background: #667FE3;
-  position: relative;
-  border-radius: 12px;
+const DXDLogo = styled.img`
 `
 
 const ETHLogo = styled.img`
-  position: absolute;
-  right: 7px;
-  top: 4px;
-`
-
-const DXDLogo = styled.img`
-  position: absolute;
-  right: 1px;
-  top: 1px;
 `
 
 const LogoAndText = styled.div`
@@ -133,18 +119,14 @@ const BuySell = ({}) => {
         <CryptoInfoWrapper>
           <InfoRow>
             <LogoAndText>
-              <LogoWrapper>
-                <ETHLogo src="ETH-logo.svg"></ETHLogo>
-              </LogoWrapper>
+              <ETHLogo src="ether.svg"></ETHLogo>
               <LogoText>Ether</LogoText>
             </LogoAndText>
             <div>1000.000 ETH</div>
           </InfoRow>
           <InfoRow>
             <LogoAndText>
-              <LogoWrapper>
-                <DXDLogo src="DXD-logo.svg"></DXDLogo>
-              </LogoWrapper>
+              <DXDLogo src="dxdao-circle.svg"></DXDLogo>
               <LogoText>Dxdao</LogoText>
             </LogoAndText>
             <div>100.000 DXD</div>
