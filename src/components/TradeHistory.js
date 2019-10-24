@@ -22,9 +22,10 @@ const TableHeadersWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   color: var(--medium-gray);
-  padding: 15px 15px;
+  padding: 15px 24px;
   font-size: 14px;
   font-weight: 600;
+  text-align: right;
 `
 
 const TableHeader = styled.div`
@@ -32,20 +33,24 @@ const TableHeader = styled.div`
 `
 
 const TableRow = styled.div`
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 18px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid var(--line-gray);
-  padding: 10px 15px;
+  padding: 11px 24px 10px;
   color: var(--dark-text-gray);
+  text-align: right;
 `
 
 const TableCell = styled.div`
   width: 20%;
   font-weight: 500;
-  display: flex;
-  align-self: flex-start;
+  a {
+    text-decoration: none;
+    width: 100%;
+  }
 `
 
 const TableCellContent = styled.div`
@@ -57,39 +62,71 @@ const TradingHistory = ({}) => {
     <TradingHistoryWrapper>
       <TradeHistoryTitle>Trade History</TradeHistoryTitle>
       <TableHeadersWrapper>
-        <TableHeader><TableCellContent>Type</TableCellContent></TableHeader>
+        <TableHeader className="align-left"><TableCellContent>Type</TableCellContent></TableHeader>
         <TableHeader><TableCellContent>Price ETH</TableCellContent></TableHeader>
-        <TableHeader><TableCellContent>Amount</TableCellContent>DXD</TableHeader>
+        <TableHeader><TableCellContent>Amount DXD</TableCellContent></TableHeader>
         <TableHeader><TableCellContent>Total ETH</TableCellContent></TableHeader>
-        <TableHeader><TableCellContent>Status/Time</TableCellContent></TableHeader>
+        <TableHeader><TableCellContent className="align-right">Status/Time</TableCellContent></TableHeader>
       </TableHeadersWrapper>
       <TableRow>
-        <TableCell className="blue-text">Buy</TableCell>
+        <TableCell className="blue-text" className="align-left">Buy</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell className="red-text">Sell</TableCell>
+        <TableCell className="red-text" className="align-left">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell className="red-text">Sell</TableCell>
+        <TableCell className="red-text" className="align-left">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell className="red-text">Sell</TableCell>
+        <TableCell className="red-text" className="align-left">Sell</TableCell>
         <TableCell>154.202</TableCell>
         <TableCell>14.202</TableCell>
         <TableCell>14.202</TableCell>
-        <TableCell className="turquois-text">03-11 17:53:42</TableCell>
+        <TableCell>
+          <a
+            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+            target="#"
+            className="turquois-text"
+          >
+            03-11 17:53:42
+          </a>
+        </TableCell>
       </TableRow>
     </TradingHistoryWrapper>
   )

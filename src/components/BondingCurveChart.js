@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Line } from 'react-chartjs-2'
 
 const ChartPanelWrapper = styled.div`
-  width: 65%;
+  width: 610px;
   background-color: white;
   border: 1px solid var(--medium-gray);
   border-radius: 4px;
