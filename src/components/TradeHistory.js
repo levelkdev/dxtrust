@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const TradingHistoryWrapper = styled.div`
   width: 100%;
   background: white;
-  padding-bottom: 15px;
+  padding-bottom: 24px;
   border: 1px solid var(--medium-gray);
   margin-top: 20px;
   border-radius: 4px;
@@ -21,7 +21,7 @@ const TableHeadersWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  color: var(--medium-gray);
+  color: var(--light-text-gray);
   padding: 15px 24px;
   font-size: 14px;
   font-weight: 600;
@@ -29,6 +29,7 @@ const TableHeadersWrapper = styled.div`
 `
 
 const TableHeader = styled.div`
+
   width: 20%;
 `
 

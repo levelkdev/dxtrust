@@ -7,6 +7,7 @@ const FooterWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 50px 0px 50px 0px;
+  color: var(--footer-text-gray);
 `
 
 const LeftFooter = styled.div`
@@ -20,7 +21,10 @@ const RighFooter = styled.div`
 `
 
 const FooterItem = styled.div`
-  color: var(--footer-text-gray);
+  a {
+    text-decoration: none;
+    color: var(--footer-text-gray);
+  }
 `
 
 const FooterDivider = styled.div`
@@ -33,35 +37,48 @@ const FooterDivider = styled.div`
 `
 
 const LogoWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-  background: white;
-  position: relative;
-  border-radius: 12px;
-  padding-left: 4px;
+  width: 20px;
+  padding-left: 8px;
 `
 
 const Logo = styled.img`
-  position: absolute;
-  right: 1px;
-  top: 1px;
 `
 
 const Footer = ({}) => {
   return (
     <FooterWrapper>
       <LeftFooter>
-        <FooterItem>DXdao Version XXX.XXX - 09/27/19</FooterItem>
+        <FooterItem>
+          <a href="https://github.com/levelkdev/BC-DAPP/tree/3a96d989da119b5e610ae4f62d2f020b2acc8384" target="#">
+            DXdao Version 3a96d98 - 10/24/19
+          </a>
+        </FooterItem>
         <FooterDivider></FooterDivider>
-        <FooterItem>Forum</FooterItem>
+        <FooterItem>
+          <a href="https://daotalk.org/c/daos/dx-dao" target="#">Forum</a>
+        </FooterItem>
         <FooterDivider></FooterDivider>
-        <FooterItem>Alchemy</FooterItem>
+        <FooterItem>
+          <a href="https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a" target="#">Alchemy</a>
+        </FooterItem>
       </LeftFooter>
       <RighFooter>
-        <LogoWrapper><Logo src="Twitter-logo.svg"></Logo></LogoWrapper>
+        <LogoWrapper>
+          <a href="https://twitter.com/dxdao_" target="#">
+            <Logo src="twitter.svg"></Logo>
+          </a>
+        </LogoWrapper>
         { /* TODO get Reddit and Telegram logos for below */ }
-        <LogoWrapper><Logo src="Twitter-logo.svg"></Logo></LogoWrapper>
-        <LogoWrapper><Logo src="Twitter-logo.svg"></Logo></LogoWrapper>
+        <LogoWrapper>
+          <a href="https://www.reddit.com/r/dxdao/" target="#">
+            <Logo src="reddit.svg"></Logo>
+          </a>
+        </LogoWrapper>
+        <LogoWrapper>
+          <a href="https://t.me/dxDAO" target="#">
+            <Logo src="telegram.svg"></Logo>
+          </a>
+        </LogoWrapper>
       </RighFooter>
     </FooterWrapper>
   )
