@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import BuyForm from './BuySell/BuyForm'
+import SellForm from './BuySell/SellForm'
 
 const BuySellWrapper = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const ActiveTab = styled.div`
   color: var(--blue-text);
   width: 50%;
   text-align: center;
+  border-left: ${props => props.left ? "1px solid var(--medium-gray)" : "none"};
   padding: 15px 0px;
   cursor: pointer;
 `
@@ -31,7 +33,7 @@ const InactiveTab = styled.div`
   width: 50%;
   text-align: center;
   background-color: var(--light-gray);
-  border-left: 1px solid var(--medium-gray);
+  border-left: ${props => props.left ? "1px solid var(--medium-gray)" : "none"};
   border-bottom: 1px solid var(--medium-gray);
   border-radius: 0px 4px 0px 0px;
   padding: 15px 0px;
@@ -78,11 +80,29 @@ const LogoText = styled.div`
 `
 
 const BuySell = ({}) => {
+  const [currentTab, setCurrentTab] = React.useState(0)
+  
+  const TabButton = ({currentTab, tabType, left, children}) => {
+    if (currentTab === tabType) {
+      return (
+        <ActiveTab onClick={() => {setCurrentTab(tabType)}} left={left}>
+          {children}
+        </ActiveTab>
+      )
+    } else {
+      return (
+        <InactiveTab onClick={() => {setCurrentTab(tabType)}} left={left}>
+          {children}
+        </InactiveTab>
+      )
+    }
+  }
+
   return (
     <BuySellWrapper>
       <TabWrapper>
-        <ActiveTab>Buy</ActiveTab>
-        <InactiveTab>Sell</InactiveTab>
+        <TabButton currentTab={currentTab} tabType={0}>Buy</TabButton>
+        <TabButton currentTab={currentTab} tabType={1} left={true}>Sell</TabButton>
       </TabWrapper>
       <ContentWrapper>
         <CryptoInfoWrapper>
