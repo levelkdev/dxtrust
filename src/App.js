@@ -14,13 +14,6 @@ import ExchangeContainer from './containers/ExchangeContainer'
 import RedeemRewardsContainer from './containers/RedeemRewardsContainer'
 import styled from 'styled-components'
 
-const PanelWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`
-
 export default class App extends React.Component {
   render () {
     return (
