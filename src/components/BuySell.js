@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import BuyForm from './BuySell/BuyForm'
+import SellForm from './BuySell/SellForm'
 
 const BuySellWrapper = styled.div`
   display: flex;
@@ -21,7 +23,9 @@ const ActiveTab = styled.div`
   color: var(--blue-text);
   width: 50%;
   text-align: center;
+  border-left: ${props => props.left ? "1px solid var(--medium-gray)" : "none"};
   padding: 15px 0px;
+  cursor: pointer;
 `
 
 const InactiveTab = styled.div`
@@ -29,10 +33,11 @@ const InactiveTab = styled.div`
   width: 50%;
   text-align: center;
   background-color: var(--light-gray);
-  border-left: 1px solid var(--medium-gray);
+  border-left: ${props => props.left ? "1px solid var(--medium-gray)" : "none"};
   border-bottom: 1px solid var(--medium-gray);
   border-radius: 0px 4px 0px 0px;
   padding: 15px 0px;
+  cursor: pointer;
 `
 
 const ContentWrapper = styled.div`
@@ -74,46 +79,30 @@ const LogoText = styled.div`
   color: var(--light-text-gray);
 `
 
-const FormWrapper = styled.div`
-  height: 200px;
-  padding: 10px 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`
-
-const FormInfoText = styled.div`
-  color: var(--light-text-gray);
-`
-
-const BuyForm = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  color: rgba(48, 79, 254, 0.2);
-  border: 1px solid rgba(48, 79, 254, 0.2);
-  border-radius: 4px;
-  height: 34px;
-  line-height: 34px;
-`
-
-const BuyDXDButton = styled.div`
-  background-color: #536DFE;
-  border: 1px solid #304FFE;
-  border-radius: 4px;
-  color: white;
-  text-align: center;
-  height: 34px;
-  line-height: 34px;
-  text-transform: uppercase;
-`
-
 const BuySell = ({}) => {
+  const [currentTab, setCurrentTab] = React.useState(0)
+  
+  const TabButton = ({currentTab, tabType, left, children}) => {
+    if (currentTab === tabType) {
+      return (
+        <ActiveTab onClick={() => {setCurrentTab(tabType)}} left={left}>
+          {children}
+        </ActiveTab>
+      )
+    } else {
+      return (
+        <InactiveTab onClick={() => {setCurrentTab(tabType)}} left={left}>
+          {children}
+        </InactiveTab>
+      )
+    }
+  }
+
   return (
     <BuySellWrapper>
       <TabWrapper>
-        <ActiveTab>Buy</ActiveTab>
-        <InactiveTab>Sell</InactiveTab>
+        <TabButton currentTab={currentTab} tabType={0}>Buy</TabButton>
+        <TabButton currentTab={currentTab} tabType={1} left={true}>Sell</TabButton>
       </TabWrapper>
       <ContentWrapper>
         <CryptoInfoWrapper>
@@ -132,21 +121,7 @@ const BuySell = ({}) => {
             <div>100.000 DXD</div>
           </InfoRow>
         </CryptoInfoWrapper>
-        <FormWrapper>
-          <InfoRow>
-            <FormInfoText>Price</FormInfoText>
-            <div>1.502 DXD/ETH</div>
-          </InfoRow>
-          <InfoRow>
-            <FormInfoText>Pay Amount</FormInfoText>
-            <div>150.020 ETH</div>
-          </InfoRow>
-          <BuyForm>
-            <div className="form-vivid-blue">100</div>
-            <div>DXD</div>
-          </BuyForm>
-          <BuyDXDButton>Buy DXD</BuyDXDButton>
-        </FormWrapper>
+        <BuyForm />
       </ContentWrapper>
     </BuySellWrapper>
   )
