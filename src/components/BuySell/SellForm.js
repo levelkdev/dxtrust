@@ -3,33 +3,45 @@ import styled from 'styled-components'
 
 const FormWrapper = styled.div`
   height: 200px;
-  padding: 10px 0px;
+  padding: 6px 0px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-end;
 `
 
-const InfoRow = styled.div`
+const CircleContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  line-height: 24px;
-  color: var(--dark-text-gray);
+  justify-content: center;
 `
 
-const FormInfoText = styled.div`
-  color: var(--light-text-gray);
-`
-
-const FormContent = styled.div`
+const CheckboxContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  color: rgba(48, 79, 254, 0.2);
-  border: 1px solid rgba(48, 79, 254, 0.2);
-  border-radius: 4px;
-  height: 34px;
-  line-height: 34px;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: 48px;
+  border-radius: 24px;
+  border: 1px solid var(--panel-icon);
+  margin-bottom: 16px;
+`
+
+const Checkbox = styled.img`
+  height: 13px;
+  width: 18px;
+`
+
+const Info = styled.div`
+  //font-family: SF Pro Text;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.4px;
+  color: var(--panel-text);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 40px;
 `
 
 const BuyDXDButton = styled.div`
@@ -46,6 +58,14 @@ const BuyDXDButton = styled.div`
 const SellForm = ({}) => {
   return (
     <FormWrapper>
+      <CircleContainer>
+        <CheckboxContainer>
+          <Checkbox src="checkbox.svg" />
+        </CheckboxContainer>
+      </CircleContainer>
+      <Info>
+        Enable DXD for trading
+      </Info>
       <BuyDXDButton>Enable DXD</BuyDXDButton>
     </FormWrapper>
   )

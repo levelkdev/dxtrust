@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const FormWrapper = styled.div`
   height: 200px;
-  padding: 10px 0px;
+  padding: 6px 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

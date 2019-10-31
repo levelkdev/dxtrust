@@ -98,6 +98,18 @@ const BuySell = ({}) => {
     }
   }
 
+  const CurrentForm = ({currentTab}) => {
+    if (currentTab === 0) {
+      return (
+        <BuyForm />
+      )
+    } else {
+      return (
+        <SellForm />
+      )
+    }
+  }
+
   return (
     <BuySellWrapper>
       <TabWrapper>
@@ -121,7 +133,7 @@ const BuySell = ({}) => {
             <div>100.000 DXD</div>
           </InfoRow>
         </CryptoInfoWrapper>
-        <BuyForm />
+        <CurrentForm currentTab={currentTab} />
       </ContentWrapper>
     </BuySellWrapper>
   )
