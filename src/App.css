@@ -6,8 +6,11 @@
   --nav-text-light: rgba(55, 71, 79, 0.4);
   --nav-text-dark: rgba(55, 71, 79, 1);
   --panel-text: rgba(83, 109, 254, 0.8);
+  --pending-panel-text: rgba(83, 109, 254, 0.6);
   --panel-icon: rgba(83, 109, 254, 0.2);
   --footer-text-gray: #C2C2C2;
+  --pending-text-gray: #D4DCDF;
+  --pending-ellipses-purple: #DDE2FF;
   --medium-gray: rgba(207, 216, 220, 0.9);/*For border*/
   --light-gray: rgba(245, 246, 246, 0.5);/*Site background*/
   --line-gray: rgba(225, 227, 231, 0.4);

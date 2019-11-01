@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const FormWrapper = styled.div`
+const ContentWrapper = styled.div`
   height: 200px;
   padding: 6px 0px;
   display: flex;
@@ -44,7 +44,7 @@ const Info = styled.div`
   margin-bottom: 40px;
 `
 
-const BuyDXDButton = styled.div`
+const EnableDXDButton = styled.div`
   background-color: #536DFE;
   border: 1px solid #304FFE;
   border-radius: 4px;
@@ -55,9 +55,9 @@ const BuyDXDButton = styled.div`
   text-transform: uppercase;
 `
 
-const SellForm = ({}) => {
+const SellEnable = ({}) => {
   return (
-    <FormWrapper>
+    <ContentWrapper>
       <CircleContainer>
         <CheckboxContainer>
           <Checkbox src="checkbox.svg" />
@@ -66,9 +66,9 @@ const SellForm = ({}) => {
       <Info>
         Enable DXD for trading
       </Info>
-      <BuyDXDButton>Enable DXD</BuyDXDButton>
-    </FormWrapper>
+      <EnableDXDButton>Enable DXD</EnableDXDButton>
+    </ContentWrapper>
   )
 }
 
-export default SellForm
+export default SellEnable
