@@ -6,7 +6,7 @@ const FormWrapper = styled.div`
   padding: 6px 0px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-end;
 `
 
 const InfoRow = styled.div`
@@ -15,6 +15,7 @@ const InfoRow = styled.div`
   justify-content: space-between;
   line-height: 24px;
   color: var(--dark-text-gray);
+  margin-bottom: 12px;
 `
 
 const FormInfoText = styled.div`
@@ -30,6 +31,8 @@ const FormContent = styled.div`
   border-radius: 4px;
   height: 34px;
   line-height: 34px;
+  margin-top: 12px;
+  margin-bottom: 33px;
 `
 
 const BuyDXDButton = styled.div`
