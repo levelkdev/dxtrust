@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import BuyForm from './BuySell/BuyForm'
-import SellEnable from './BuySell/SellEnable'
-import SellEnablePending from './BuySell/SellEnablePending'
-import SellContinue from './BuySell/SellContinue'
+import BuyForm from './buysell/BuyForm'
+import SellForm from './buysell/SellForm'
+import SellEnable from './buysell/SellEnable'
+import SellEnablePending from './buysell/SellEnablePending'
+import SellContinue from './buysell/SellContinue'
 
 const BuySellWrapper = styled.div`
   display: flex;
@@ -107,7 +108,7 @@ const BuySell = ({}) => {
       )
     } else {
       return (
-        <SellContinue />
+        <SellForm />
       )
     }
   }
