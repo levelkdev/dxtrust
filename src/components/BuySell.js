@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import BuyForm from './buysell/BuyForm'
-import SellForm from './buysell/SellForm'
-import SellEnable from './buysell/SellEnable'
-import SellEnablePending from './buysell/SellEnablePending'
-import SellContinue from './buysell/SellContinue'
+import BuyForm from './BuySell/BuyForm'
+import SellForm from './BuySell/SellForm'
+import SellEnable from './BuySell/SellEnable'
+import SellEnablePending from './BuySell/SellEnablePending'
+import SellContinue from './BuySell/SellContinue'
 
 const BuySellWrapper = styled.div`
   display: flex;
