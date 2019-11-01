@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Form from '../common/Form'
 
-const BuyForm = ({}) => {
+const SellForm = ({}) => {
   return (
-    <Form buttontext="Buy DXD" />
+    <Form buttontext="Sell DXD" />
   )
 }
 
-export default BuyForm
+export default SellForm
