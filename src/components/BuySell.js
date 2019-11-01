@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import BuyForm from './BuySell/BuyForm'
 import SellEnable from './BuySell/SellEnable'
 import SellEnablePending from './BuySell/SellEnablePending'
+import SellContinue from './BuySell/SellContinue'
 
 const BuySellWrapper = styled.div`
   display: flex;
@@ -106,7 +107,7 @@ const BuySell = ({}) => {
       )
     } else {
       return (
-        <SellEnablePending />
+        <SellContinue />
       )
     }
   }

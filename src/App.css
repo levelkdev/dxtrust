@@ -8,12 +8,14 @@
   --panel-text: rgba(83, 109, 254, 0.8);
   --pending-panel-text: rgba(83, 109, 254, 0.6);
   --panel-icon: rgba(83, 109, 254, 0.2);
+  --panel-icon-2: #758AFE;
   --footer-text-gray: #C2C2C2;
   --pending-text-gray: #D4DCDF;
   --pending-ellipses-purple: #DDE2FF;
   --medium-gray: rgba(207, 216, 220, 0.9);/*For border*/
   --light-gray: rgba(245, 246, 246, 0.5);/*Site background*/
   --line-gray: rgba(225, 227, 231, 0.4);
+  --turquois-text: #2D9CDB;
   
   --rewards-text-green: #54AE6F;
   --rewards-background-green: rgba(84, 174, 111, 0.1);
@@ -52,7 +54,7 @@ h1 {
 }
 
 .turquois-text {
-  color: #2D9CDB;
+  color: var(--turquois-text);
 }
 
 .form-vivid-blue {
