@@ -84,6 +84,7 @@ const LogoText = styled.div`
 
 const BuySell = ({}) => {
   const [currentTab, setCurrentTab] = React.useState(0)
+  const [increment, setIncrement] = React.useState(0)
   
   const TabButton = ({currentTab, tabType, left, children}) => {
     if (currentTab === tabType) {
@@ -101,15 +102,30 @@ const BuySell = ({}) => {
     }
   }
 
-  const CurrentForm = ({currentTab}) => {
+  const CurrentForm = ({currentTab, increment}) => {
     if (currentTab === 0) {
       return (
         <BuyForm />
       )
     } else {
-      return (
-        <SellForm />
-      )
+      if (increment === 0) {
+        return (
+          // TODO why doesn't this setIncrement work?
+          <SellEnable onClick={() => {setIncrement(increment+1)}} />
+        )
+      } else if (increment === 1) {
+        return (
+          <SellEnablePending />
+        )
+      } else if (increment === 2) {
+        return (
+          <SellContinue  />
+        )
+      } else {
+        return (
+          <SellForm />
+        )
+      }
     }
   }
 
@@ -119,7 +135,7 @@ const BuySell = ({}) => {
         <TabButton currentTab={currentTab} tabType={0}>Buy</TabButton>
         <TabButton currentTab={currentTab} tabType={1} left={true}>Sell</TabButton>
       </TabWrapper>
-      <ContentWrapper>
+      <ContentWrapper onClick={() => {setIncrement(increment+1)}}>
         <CryptoInfoWrapper>
           <InfoRow>
             <LogoAndText>
@@ -136,7 +152,7 @@ const BuySell = ({}) => {
             <div>100.000 DXD</div>
           </InfoRow>
         </CryptoInfoWrapper>
-        <CurrentForm currentTab={currentTab} />
+        <CurrentForm currentTab={currentTab} increment={increment} />
       </ContentWrapper>
     </BuySellWrapper>
   )
