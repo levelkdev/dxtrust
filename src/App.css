@@ -1,4 +1,5 @@
 :root {
+  --active-button-border: #304FFE;
   --orange: #F9AA33;
   --blue-text: #536DFE;
   --light-text-gray: #BDBDBD;
@@ -46,7 +47,7 @@ h1 {
 }
 
 .blue-text {
-  color: #536DFE;
+  color: var(--blue-text);
 }
 
 .red-text {

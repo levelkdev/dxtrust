@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import ActiveButton from './ActiveButton'
+import InactiveButton from './InactiveButton'
 
 const FormWrapper = styled.div`
   height: 200px;
@@ -35,18 +37,22 @@ const FormContent = styled.div`
   margin-bottom: 33px;
 `
 
-const DXDButton = styled.div`
-  background-color: #536DFE;
-  border: 1px solid #304FFE;
-  border-radius: 4px;
-  color: white;
-  text-align: center;
-  height: 34px;
-  line-height: 34px;
-  text-transform: uppercase;
-`
 
 const Form = ({buttontext}) => {
+  
+
+  const Button = ({active, children}) => {
+    if (active === true) {
+      return (
+        <ActiveButton>{children}</ActiveButton>
+      ) 
+    } else {
+      return (
+        <InactiveButton>{children}</InactiveButton>
+      )
+    }
+  }
+
   return (
     <FormWrapper>
       <InfoRow>
@@ -61,7 +67,7 @@ const Form = ({buttontext}) => {
         <div className="form-vivid-blue">100</div>
         <div>DXD</div>
       </FormContent>
-      <DXDButton>{buttontext}</DXDButton>
+      <Button active={false}>{buttontext}</Button>
     </FormWrapper>
   )
 }
