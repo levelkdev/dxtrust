@@ -85,6 +85,7 @@ const LogoText = styled.div`
 const BuySell = ({}) => {
   const [currentTab, setCurrentTab] = React.useState(0)
   const [increment, setIncrement] = React.useState(0)
+  const [count, setCount] = React.useState(0)
   
   const TabButton = ({currentTab, tabType, left, children}) => {
     if (currentTab === tabType) {
@@ -123,7 +124,7 @@ const BuySell = ({}) => {
         )
       } else {
         return (
-          <SellForm />
+          <SellForm count={count} setCount={setCount} />
         )
       }
     }

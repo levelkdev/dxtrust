@@ -106,7 +106,7 @@ const ContentStates = {
   CONFIRMED: 'confirmed',
 }
 
-const Form = ({buttontext, infotext}) => {
+const Form = ({buttontext, infotext, count, setCount}) => {
 
   const Button = ({active, children}) => {
     if (active === true) {
@@ -120,7 +120,18 @@ const Form = ({buttontext, infotext}) => {
     }
   }
 
-  const Content = ({contentState}) => {
+  const Content = ({contentCount}) => {
+    let contentState
+    if (contentCount === 0) {
+      contentState = ContentStates.SELL_FORM
+    } else if (contentCount === 1) {
+      contentState = ContentStates.SIGN_TRANSACTION
+    } else if (contentCount ===2) {
+      contentState = ContentStates.UNCONFIRMED
+    } else {
+      contentState = ContentStates.CONFIRMED
+    }
+    
     if (contentState === ContentStates.SELL_FORM) {
       return(
         <FormContent>
@@ -173,7 +184,7 @@ const Form = ({buttontext, infotext}) => {
   }
 
   return (
-    <FormWrapper>
+    <FormWrapper onClick={() => {setCount(count + 1)}}>
       <InfoRow>
         <FormInfoText>Price</FormInfoText>
         <div>1.502 DXD/ETH</div>
@@ -182,7 +193,7 @@ const Form = ({buttontext, infotext}) => {
         <FormInfoText>{infotext}</FormInfoText>
         <div>150.020 ETH</div>
       </InfoRow>
-      <Content contentState={ContentStates.CONFIRMED} />
+      <Content contentCount={count} />
       <Button active={false}>{buttontext}</Button>
     </FormWrapper>
   )
