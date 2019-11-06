@@ -4,7 +4,7 @@ import Form from '../common/Form'
 
 const BuyForm = ({}) => {
   return (
-    <Form buttontext="Buy DXD" />
+    <Form buttontext="Buy DXD" infotext="Pay Amount" />
   )
 }
 
