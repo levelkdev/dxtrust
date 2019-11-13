@@ -13,6 +13,7 @@
     "fortmatic": "^1.0.0",
     "ganache-core": "^2.7.0",
     "lodash": "^4.17.15",
+    "mobx": "^5.15.0",
     "moment": "2.24.0",
     "react": "16.8.4",
     "react-chartjs-2": "2.7.4",
