@@ -3,8 +3,8 @@ import ProviderStore from "./Provider"
 import TradingStore from "./Trading"
 
 class Rootstore {
-	public providerStore: ProviderStore
-	public tradingStore: TradingStore
+	providerStore: ProviderStore
+	tradingStore: TradingStore
 
 	constructor() {
 		this.providerStore = new ProviderStore()

@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx'
+import { observable } from 'mobx'
 import Web3 from 'web3';
 
 class ProviderStore {

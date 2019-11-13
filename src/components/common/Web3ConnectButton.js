@@ -8,6 +8,7 @@ import Squarelink from "squarelink";
 import Torus from "@toruslabs/torus-embed";
 import Arkane from "@arkane-network/web3-arkane-provider";
 import Authereum from "authereum";
+import store from '../../stores/Root'
 
 interface IAppState {
   fetching: boolean;
