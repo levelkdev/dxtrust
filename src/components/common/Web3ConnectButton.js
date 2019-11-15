@@ -1,4 +1,5 @@
 import React from 'react'
+import { observer, inject } from 'mobx-react'
 import Web3 from 'web3'
 import Web3Connect from "web3connect";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -10,56 +11,30 @@ import Arkane from "@arkane-network/web3-arkane-provider";
 import Authereum from "authereum";
 import store from '../../stores/Root'
 
-interface IAppState {
-  fetching: boolean;
-  address: string;
-  web3: any;
-  connected: boolean;
-  chainId: number;
-  networkId: number;
-  assets: IAssetData[];
-  showModal: boolean;
-  pendingRequest: boolean;
-  result: any | null;
-}
+// Keeping
+// interface IAppState {
+//   fetching: boolean;
+//   address: string;
+//   web3: any;
+//   connected: boolean;
+//   chainId: number;
+//   networkId: number;
+//   assets: IAssetData[];
+//   showModal: boolean;
+//   pendingRequest: boolean;
+//   result: any | null;
+// }
 
-const INITIAL_STATE: IAppState = {
-  fetching: false,
-  address: "",
-  web3: null,
-  connected: false,
-  chainId: 1,
-  networkId: 1,
-  assets: [],
-  showModal: false,
-  pendingRequest: false,
-  result: null
-}
-
+@observer
 class Web3ConnectButton extends React.Component { 
-  state = {
-    ...INITIAL_STATE
-  }
-
   render() {
-    const {
-      assets,
-      address,
-      connected,
-      chainId,
-      fetching,
-      showModal,
-      pendingRequest,
-      result
-    } = this.state; 
-
     return (
       <div>
-        {connected ? 
+        {store.providerStore.isConnected ? 
           <div>
-            <div>Address: {address}</div>
-            <div>Connected: {connected ? "true" : "false"}</div>
-            <div>Chain ID: {chainId}</div>
+            <div>Address: {store.providerStore.address}</div>
+            <div>Connected: {store.providerStore.isConnected ? "true" : "false"}</div>
+            <div>Chain ID: {store.providerStore.chainId}</div>
           </div>
           :
           (<Web3Connect.Button
@@ -112,16 +87,11 @@ class Web3ConnectButton extends React.Component {
               }
             }}
             onConnect={ async (provider: any) => {
-              console.log("hello in onConnect");
-
               const web3 = new Web3(provider);
 
               const accounts = await web3.eth.getAccounts();
-
               const address = accounts[0];
-
               const networkId = await web3.eth.net.getId();
-
               web3.eth.extend({
                 methods: [
                   {
@@ -131,17 +101,11 @@ class Web3ConnectButton extends React.Component {
                   }
                 ]
               });
-
               const chainId = await web3.eth.chainId();
 
-              await this.setState({
-                web3,
-                connected: true,
-                address,
-                chainId,
-                networkId
-              });
-              // await this.getAccountAssets();
+              store.providerStore.isConnected = true
+              store.providerStore.address = address
+              store.providerStore.chainId = chainId
             }}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
