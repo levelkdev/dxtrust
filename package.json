@@ -4,17 +4,23 @@
   "description": "Front end for fundraising bonding curve.",
   "dependencies": {
     "@arkane-network/web3-arkane-provider": "^0.2.5",
+    "@babel/plugin-proposal-decorators": "^7.7.0",
     "@portis/web3": "^2.0.0-beta.53",
     "@toruslabs/torus-embed": "^0.2.6",
     "@walletconnect/web3-provider": "^1.0.0-beta.38",
     "authereum": "0.0.4-beta.33",
     "bignumber.js": "8.1.1",
     "chart.js": "^2.8.0",
+    "customize-cra": "^0.8.0",
     "fortmatic": "^1.0.0",
     "ganache-core": "^2.7.0",
     "lodash": "^4.17.15",
+    "mobx": "^5.15.0",
+    "mobx-react": "^6.1.4",
     "moment": "2.24.0",
     "react": "16.8.4",
+    "react-app-rewire-mobx": "^1.0.9",
+    "react-app-rewired": "^2.1.5",
     "react-chartjs-2": "2.7.4",
     "react-dom": "16.8.4",
     "react-redux": "6.0.1",
@@ -44,7 +50,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "react-scripts start"
+    "start": "react-app-rewired start"
   },
   "repository": {
     "type": "git",
