@@ -103,9 +103,10 @@ class Web3ConnectButton extends React.Component {
               });
               const chainId = await web3.eth.chainId();
 
-              store.providerStore.isConnected = true
               store.providerStore.address = address
               store.providerStore.chainId = chainId
+              store.providerStore.web3 = web3
+              store.providerStore.isConnected = true
             }}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
