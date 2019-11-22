@@ -25,7 +25,8 @@ class ProviderStore {
 
     loadObject = (type, address, label?) => {
     	// TODO what to do about web3
-        const object = new this.web3.eth.Contract(schema[type].abi, address, { from: this.getDefaultAccount() });
+    	// TODO what function to use for the from field below?
+        const object = new this.web3.eth.Contract(schema[type].abi, address, { from: this.getSelectedAddress() });
         if (label) {
             objects[label] = object;
         }

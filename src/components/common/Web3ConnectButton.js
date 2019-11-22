@@ -35,6 +35,7 @@ class Web3ConnectButton extends React.Component {
             <div>Address: {store.providerStore.address}</div>
             <div>Connected: {store.providerStore.isConnected ? "true" : "false"}</div>
             <div>Chain ID: {store.providerStore.chainId}</div>
+            <div>ReserveBalance: {store.tradingStore.reserveBalance}</div>
           </div>
           :
           (<Web3Connect.Button
@@ -107,6 +108,9 @@ class Web3ConnectButton extends React.Component {
               store.providerStore.chainId = chainId
               store.providerStore.web3 = web3
               store.providerStore.isConnected = true
+              await store.tradingStore.getReserveBalance()
+              await store.tradingStore.getPriceToBuy(2000000)
+              await store.tradingStore.getRewardForSell(200000000)
             }}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed

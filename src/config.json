@@ -1,0 +1,8 @@
+{
+    "deployed": {
+        "BondedToken": "0xDf8D69FcE1994E1892A2565F846C9259F19B2bA3",
+        "BondingCurve": "0xBCAcBEdC082B787a31790BEaf179a6282F0D98AE",
+        "RewardsDistributor": "0x20496CC9fF2Ed8da63799393dfcc5cE8124a850a"
+    },
+    "activeNetworkId": 4
+}
