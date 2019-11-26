@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import BuyForm from './BuySell/BuyForm'
+import BuyEnable from './BuySell/BuyEnable'
+import BuyEnablePending from './BuySell/BuyEnablePending'
+import BuyContinue from './BuySell/BuyContinue'
 import SellForm from './BuySell/SellForm'
 import SellEnable from './BuySell/SellEnable'
 import SellEnablePending from './BuySell/SellEnablePending'
@@ -104,10 +107,25 @@ const BuySell = ({}) => {
   }
 
   const CurrentForm = ({currentTab, increment}) => {
+    console.log("in current form")
     if (currentTab === 0) {
-      return (
-        <BuyForm />
-      )
+      if (increment === 0) {
+        return (
+          <BuyEnable />
+        )
+      } else if (increment === 1) {
+        return (
+          <BuyEnablePending />
+        )
+      } else if (increment === 2) {
+        return (
+          <BuyContinue />
+        )
+      } else {
+        return (
+          <BuyForm count={count} setCount={setCount} />
+        )
+      }
     } else {
       if (increment === 0) {
         return (
