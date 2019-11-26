@@ -69,7 +69,7 @@
     text-transform: uppercase;
   `
 
-const EnablePending = ({}) => {
+const EnablePending = ({subtitleText}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -78,7 +78,7 @@ const EnablePending = ({}) => {
         </EllipsesContainer>
       </CircleContainer>
       <Title>Enable DXD for trading</Title>
-      <SubTitle>Sign Transaction...</SubTitle>
+      <SubTitle>{subtitleText}</SubTitle>
       <EnableDXDPendingButton>Enable DXD</EnableDXDPendingButton>
     </ContentWrapper>
   )
