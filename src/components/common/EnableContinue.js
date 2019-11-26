@@ -23,7 +23,7 @@ const CheckboxContainer = styled.div`
   height: 48px;
   width: 48px;
   border-radius: 24px;
-  border: 1px solid var(--panel-icon);
+  border: 1px solid var(--panel-icon-2);
   margin-bottom: 16px;
 `
 
@@ -41,7 +41,19 @@ const Info = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 8px;
+`
+
+const Status = styled.div`
+  // font-family: SF Pro Text;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.4px;
+  color: var(--turquois-text);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 27px;
 `
 
 const EnableDXDButton = styled.div`
@@ -55,20 +67,19 @@ const EnableDXDButton = styled.div`
   text-transform: uppercase;
 `
 
-const SellEnable = ({}) => {
+const EnableContinue = ({}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
         <CheckboxContainer>
-          <Checkbox src="checkbox.svg" />
+          <Checkbox src="checkbox_758AFE.svg" />
         </CheckboxContainer>
       </CircleContainer>
-      <Info>
-        Enable DXD for trading
-      </Info>
-      <EnableDXDButton>Enable DXD</EnableDXDButton>
+      <Info>Enable DXD for trading</Info>
+      <Status>Confirmed</Status>
+      <EnableDXDButton>Continue</EnableDXDButton>
     </ContentWrapper>
   )
 }
 
-export default SellEnable
+export default EnableContinue

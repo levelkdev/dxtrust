@@ -55,7 +55,7 @@ const EnableDXDButton = styled.div`
   text-transform: uppercase;
 `
 
-const BuyEnable = ({}) => {
+const Enable = ({}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -71,4 +71,4 @@ const BuyEnable = ({}) => {
   )
 }
 
-export default BuyEnable
+export default Enable

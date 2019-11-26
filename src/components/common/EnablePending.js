@@ -69,7 +69,7 @@
     text-transform: uppercase;
   `
 
-const SellEnablePending = ({}) => {
+const EnablePending = ({}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -84,4 +84,4 @@ const SellEnablePending = ({}) => {
   )
 }
 
-export default SellEnablePending
+export default EnablePending

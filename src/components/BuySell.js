@@ -1,13 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import BuyForm from './BuySell/BuyForm'
-import BuyEnable from './BuySell/BuyEnable'
-import BuyEnablePending from './BuySell/BuyEnablePending'
-import BuyContinue from './BuySell/BuyContinue'
+import EnableContinue from './common/EnableContinue'
+import Enable from './common/Enable'
+import EnablePending from './common/EnablePending'
 import SellForm from './BuySell/SellForm'
-import SellEnable from './BuySell/SellEnable'
-import SellEnablePending from './BuySell/SellEnablePending'
-import SellContinue from './BuySell/SellContinue'
 
 const BuySellWrapper = styled.div`
   display: flex;
@@ -111,15 +108,15 @@ const BuySell = ({}) => {
     if (currentTab === 0) {
       if (increment === 0) {
         return (
-          <BuyEnable />
+          <Enable />
         )
       } else if (increment === 1) {
         return (
-          <BuyEnablePending />
+          <EnablePending />
         )
       } else if (increment === 2) {
         return (
-          <BuyContinue />
+          <EnableContinue />
         )
       } else {
         return (
@@ -129,16 +126,15 @@ const BuySell = ({}) => {
     } else {
       if (increment === 0) {
         return (
-          // TODO why doesn't this setIncrement work?
-          <SellEnable onClick={() => {setIncrement(increment+1)}} />
+          <Enable />
         )
       } else if (increment === 1) {
         return (
-          <SellEnablePending />
+          <EnablePending />
         )
       } else if (increment === 2) {
         return (
-          <SellContinue  />
+          <EnableContinue  />
         )
       } else {
         return (
