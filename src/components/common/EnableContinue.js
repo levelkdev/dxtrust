@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import store from '../../stores/Root'
 
 const ContentWrapper = styled.div`
   height: 200px;
@@ -65,6 +66,7 @@ const EnableDXDButton = styled.div`
   height: 34px;
   line-height: 34px;
   text-transform: uppercase;
+  cursor: pointer;
 `
 
 const EnableContinue = ({}) => {
@@ -77,7 +79,7 @@ const EnableContinue = ({}) => {
       </CircleContainer>
       <Info>Enable DXD for trading</Info>
       <Status>Confirmed</Status>
-      <EnableDXDButton>Continue</EnableDXDButton>
+      <EnableDXDButton onClick={() => {store.tradingStore.enableState=4}}>Continue</EnableDXDButton>
     </ContentWrapper>
   )
 }
