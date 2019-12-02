@@ -69,7 +69,7 @@
     text-transform: uppercase;
   `
 
-const SellEnablePending = ({}) => {
+const EnablePending = ({subtitleText}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -78,10 +78,10 @@ const SellEnablePending = ({}) => {
         </EllipsesContainer>
       </CircleContainer>
       <Title>Enable DXD for trading</Title>
-      <SubTitle>Sign Transaction...</SubTitle>
+      <SubTitle>{subtitleText}</SubTitle>
       <EnableDXDPendingButton>Enable DXD</EnableDXDPendingButton>
     </ContentWrapper>
   )
 }
 
-export default SellEnablePending
+export default EnablePending

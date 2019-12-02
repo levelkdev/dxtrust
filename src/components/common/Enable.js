@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import store from '../../stores/Root'
 
 const ContentWrapper = styled.div`
   height: 200px;
@@ -53,9 +54,10 @@ const EnableDXDButton = styled.div`
   height: 34px;
   line-height: 34px;
   text-transform: uppercase;
+  cursor: pointer;
 `
 
-const SellEnable = ({}) => {
+const Enable = ({}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -66,9 +68,9 @@ const SellEnable = ({}) => {
       <Info>
         Enable DXD for trading
       </Info>
-      <EnableDXDButton>Enable DXD</EnableDXDButton>
+      <EnableDXDButton onClick={() => {store.tradingStore.enableCollateral()}}>Enable DXD</EnableDXDButton>
     </ContentWrapper>
   )
 }
 
-export default SellEnable
+export default Enable

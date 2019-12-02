@@ -10,6 +10,7 @@ const Button = styled.div`
   line-height: 34px;
   text-align: center;
   text-transform: uppercase;
+  cursor: pointer;
 `
 const ActiveButton = ({children}) => {
   return (

@@ -1,10 +1,12 @@
 import React from 'react'
+import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
 import BuyForm from './BuySell/BuyForm'
+import EnableContinue from './common/EnableContinue'
+import Enable from './common/Enable'
+import EnablePending from './common/EnablePending'
 import SellForm from './BuySell/SellForm'
-import SellEnable from './BuySell/SellEnable'
-import SellEnablePending from './BuySell/SellEnablePending'
-import SellContinue from './BuySell/SellContinue'
+import store from '../stores/Root'
 
 const BuySellWrapper = styled.div`
   display: flex;
@@ -82,81 +84,114 @@ const LogoText = styled.div`
   color: var(--light-text-gray);
 `
 
-const BuySell = ({}) => {
-  const [currentTab, setCurrentTab] = React.useState(0)
-  const [increment, setIncrement] = React.useState(0)
-  const [count, setCount] = React.useState(0)
+@observer
+class BuySell extends React.Component  {
   
-  const TabButton = ({currentTab, tabType, left, children}) => {
-    if (currentTab === tabType) {
-      return (
-        <ActiveTab onClick={() => {setCurrentTab(tabType)}} left={left}>
-          {children}
-        </ActiveTab>
-      )
-    } else {
-      return (
-        <InactiveTab onClick={() => {setCurrentTab(tabType)}} left={left}>
-          {children}
-        </InactiveTab>
-      )
-    }
+  state = {
+    currentTab: 0,
+    count: 0
   }
 
-  const CurrentForm = ({currentTab, increment}) => {
-    if (currentTab === 0) {
-      return (
-        <BuyForm />
-      )
-    } else {
-      if (increment === 0) {
+  setCurrentTab (tabType) {
+    this.setState({currentTab: tabType});
+  }
+
+  setCount = (newCount) => {
+    this.setState({count: newCount})
+  }
+
+  render() {
+    const { currentTab, count } = this.state
+    const increment = store.tradingStore.enableState
+    
+    const TabButton = ({currentTab, tabType, left, children}) => {
+      if (currentTab === tabType) {
         return (
-          // TODO why doesn't this setIncrement work?
-          <SellEnable onClick={() => {setIncrement(increment+1)}} />
-        )
-      } else if (increment === 1) {
-        return (
-          <SellEnablePending />
-        )
-      } else if (increment === 2) {
-        return (
-          <SellContinue  />
+          <ActiveTab onClick={() => {this.setCurrentTab(tabType)}} left={left}>
+            {children}
+          </ActiveTab>
         )
       } else {
         return (
-          <SellForm count={count} setCount={setCount} />
+          <InactiveTab onClick={() => {this.setCurrentTab(tabType)}} left={left}>
+            {children}
+          </InactiveTab>
         )
       }
     }
-  }
 
-  return (
-    <BuySellWrapper>
-      <TabWrapper>
-        <TabButton currentTab={currentTab} tabType={0}>Buy</TabButton>
-        <TabButton currentTab={currentTab} tabType={1} left={true}>Sell</TabButton>
-      </TabWrapper>
-      <ContentWrapper onClick={() => {setIncrement(increment+1)}}>
-        <CryptoInfoWrapper>
-          <InfoRow>
-            <LogoAndText>
-              <ETHLogo src="ether.svg"></ETHLogo>
-              <LogoText>Ether</LogoText>
-            </LogoAndText>
-            <div>1000.000 ETH</div>
-          </InfoRow>
-          <InfoRow>
-            <LogoAndText>
-              <DXDLogo src="dxdao-circle.svg"></DXDLogo>
-              <LogoText>Dxdao</LogoText>
-            </LogoAndText>
-            <div>100.000 DXD</div>
-          </InfoRow>
-        </CryptoInfoWrapper>
-        <CurrentForm currentTab={currentTab} increment={increment} />
-      </ContentWrapper>
-    </BuySellWrapper>
-  )
+    const CurrentForm = ({currentTab, increment}) => {
+      if (currentTab === 0) {
+        if (increment === 0) {
+          return (
+            <Enable />
+          )
+        } else if (increment === 1) {
+          return (
+            <EnablePending subtitleText="Sign Transaction..." />
+          )
+        } else if (increment === 2) {
+          return (
+            <EnablePending subtitleText="Awaiting Confirmation ..." />
+          )
+        } else if (increment === 3) {
+          return (
+            <EnableContinue />
+          )
+        } else {
+          return (
+            <BuyForm count={count} setCount={this.setCount} />
+          )
+        }
+      } else {
+        if (increment === 0) {
+          return (
+            <Enable />
+          )
+        } else if (increment === 1) {
+          return (
+            <EnablePending />
+          )
+        } else if (increment === 2) {
+          return (
+            <EnableContinue  />
+          )
+        } else {
+          return (
+            <SellForm count={count} setCount={this.setCount} />
+          )
+        }
+      }
+    }
+
+    return (
+      <BuySellWrapper>
+        <TabWrapper>
+          <TabButton currentTab={currentTab} tabType={0}>Buy</TabButton>
+          <TabButton currentTab={currentTab} tabType={1} left={true}>Sell</TabButton>
+        </TabWrapper>
+        <ContentWrapper>
+          <CryptoInfoWrapper>
+            <InfoRow>
+              <LogoAndText>
+                <ETHLogo src="ether.svg"></ETHLogo>
+                <LogoText>Ether</LogoText>
+              </LogoAndText>
+              <div>1000.000 ETH</div>
+            </InfoRow>
+            <InfoRow>
+              <LogoAndText>
+                <DXDLogo src="dxdao-circle.svg"></DXDLogo>
+                <LogoText>Dxdao</LogoText>
+              </LogoAndText>
+              <div>100.000 DXD</div>
+            </InfoRow>
+          </CryptoInfoWrapper>
+          <CurrentForm currentTab={currentTab} increment={increment} />
+        </ContentWrapper>
+      </BuySellWrapper>
+    )
+  }
 }
 
 export default BuySell
