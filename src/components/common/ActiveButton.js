@@ -12,9 +12,9 @@ const Button = styled.div`
   text-transform: uppercase;
   cursor: pointer;
 `
-const ActiveButton = ({children}) => {
+const ActiveButton = ({children, onClick}) => {
   return (
-    <Button>
+    <Button onClick={onClick}>
       {children}
     </Button>
   )

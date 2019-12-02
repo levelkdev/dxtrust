@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import ActiveButton from './ActiveButton'
 import InactiveButton from './InactiveButton'
+import store from '../../stores/Root'
 
 const FormWrapper = styled.div`
   height: 200px;
@@ -108,14 +109,14 @@ const ContentStates = {
 
 const Form = ({buttontext, infotext, count, setCount}) => {
 
-  const Button = ({active, children}) => {
+  const Button = ({active, children, onClick}) => {
     if (active === true) {
       return (
-        <ActiveButton>{children}</ActiveButton>
+        <ActiveButton onClick={onClick}>{children}</ActiveButton>
       ) 
     } else {
       return (
-        <InactiveButton>{children}</InactiveButton> 
+        <InactiveButton onClick={onClick}>{children}</InactiveButton> 
       )
     }
   }
@@ -194,7 +195,7 @@ const Form = ({buttontext, infotext, count, setCount}) => {
         <div>150.020 ETH</div>
       </InfoRow>
       <Content contentCount={count} />
-      <Button active={false}>{buttontext}</Button>
+      <Button active={false} onClick={() => {store.tradingStore.buy(400000000, 1000)}}>{buttontext}</Button>
     </FormWrapper>
   )
 }
