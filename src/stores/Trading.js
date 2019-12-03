@@ -6,7 +6,11 @@ class TradingStore {
 	@observable reserveBalance = ''
 	@observable priceToBuy = ''
 	@observable rewardForSell = ''
+
 	@observable enableState = 0
+	@observable buyingState = 0
+	@observable buyAmount = 0
+
 
 	// priceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
@@ -22,10 +26,16 @@ class TradingStore {
 		this.rewardForSell = rewardForSell
 	}
 
+	// getReserveBalance()
 	async getReserveBalance() {
 		const contract = this.loadBondingCurveContract()
 		const reserveBalance = await contract.methods.reserveBalance().call()
 		this.reserveBalance = reserveBalance
+	}
+
+	// setBuyAmount()
+	setBuyAmount(buyAmount) {
+		this.buyAmount = buyAmount
 	}
 
 	// TODO Separate ERC20 version from ETH version
@@ -54,13 +64,15 @@ class TradingStore {
 	// @action enable = async 
 
 	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
-	@action buy = async (numTokens, maxPrice) => {
+	@action buy = async () => {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
+		// TODO figure out how to set maxPrice
+		const maxPrice = 1000
 
 		try {
-			await contract.methods.buy(numTokens, maxPrice, recipient).send()
-			console.log('buy executed for ' + numTokens)
+			await contract.methods.buy(this.buyAmount, maxPrice, recipient).send()
+			console.log('buy executed for ' + this.buyAmount)
 			this.getReserveBalance()
 		} catch (e) {
 			// TODO set up logging
