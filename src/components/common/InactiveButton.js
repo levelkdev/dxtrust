@@ -11,9 +11,9 @@ const Button = styled.div`
   text-align: center;
   text-transform: uppercase;
 `
-const InactiveButton = ({children, onClick}) => {
+const InactiveButton = ({children}) => {
   return (
-    <Button onClick={onClick}>
+    <Button>
       {children}
     </Button>
   )

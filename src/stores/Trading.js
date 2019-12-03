@@ -38,6 +38,16 @@ class TradingStore {
 		this.buyAmount = buyAmount
 	}
 
+	// TODO look into how to pass this as a callback??
+	// setEnableStateConfirmed()
+	setStateConfirmed(check) {
+		if (check) {
+			return this.enableState = 3
+		} else {
+			return this.buyingState = 3
+		}
+	}
+
 	// TODO Separate ERC20 version from ETH version
 	// Enable Collateral Token (ERC20 Version)
 	@action enableCollateral = async () => {
@@ -49,7 +59,7 @@ class TradingStore {
 			// TODO figure out how to set amount to approve
 			await contract.methods.approve(spender, 40000).send()
 			.on('transactionHash', function(hash){
-				store.providerStore.checkConfirmation(hash)
+				store.providerStore.checkConfirmation(hash, true)
 			})
 			const x = await contract.methods.allowance(store.providerStore.address, spender).call()
 			console.log("approve initiated; allowance is " + x.toString() + ' enable state: ' + this.enableState)
@@ -72,8 +82,12 @@ class TradingStore {
 
 		try {
 			await contract.methods.buy(this.buyAmount, maxPrice, recipient).send()
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, false)
+			})
 			console.log('buy executed for ' + this.buyAmount)
 			this.getReserveBalance()
+			this.buyingState = 2
 		} catch (e) {
 			// TODO set up logging
 			console.log(e)
