@@ -4,7 +4,7 @@ import Form from '../common/Form'
 
 const BuyForm = ({count, setCount}) => {
   return (
-    <Form buttontext="Buy DXD" infotext="Pay Amount" count={count} setCount={setCount} />
+    <Form buttontext="Buy DXD" infotext="Pay Amount" />
   )
 }
 

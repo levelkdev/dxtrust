@@ -97,6 +97,7 @@ const ContentStates = {
 }
 
 // const Form = ({buttontext, infotext, count, setCount}) => {
+@observer
 class Form extends React.Component {
 
   constructor(props) {
@@ -104,7 +105,21 @@ class Form extends React.Component {
   }
 
   render() {
-    const { buttontext, infotext, count, setCount } = this.props
+    const { buttontext, infotext } = this.props
+
+    const count = store.tradingStore.buyingState
+
+    const Button = ({active, children, onClick}) => {
+      if (active === true) {
+        return (
+          <ActiveButton onClick={onClick}>{children}</ActiveButton>
+        ) 
+      } else {
+        return (
+          <InactiveButton>{children}</InactiveButton> 
+        )
+      }
+    }
 
     const Content = ({contentCount}) => {
       let contentState
@@ -133,6 +148,7 @@ class Form extends React.Component {
               Sign Transaction...
               <PendingCircle />
             </SignTransaction>
+            <Button active={false}>Buy DXD</Button>
           </div>
         )
       } else if (contentState === ContentStates.UNCONFIRMED) {
@@ -146,6 +162,7 @@ class Form extends React.Component {
               Unconfirmed...
               <PendingCircle />
             </Unconfirmed>
+            <Button active={false}>Buy DXD</Button>
           </div>
         )
       } else if (contentState === ContentStates.CONFIRMED) {
@@ -161,6 +178,7 @@ class Form extends React.Component {
                 <Checkbox src="checkbox_758AFE.svg" />
               </CheckboxContainer>
             </Confirmed>
+            <Button active={true} onClick={() => {store.tradingStore.buyingState = 0; store.tradingStore.buyAmount = 0}}>Buy Again</Button>
           </div>
         )
       }

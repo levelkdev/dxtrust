@@ -49,7 +49,7 @@ class BuyInput extends React.Component {
           <input className="form-vivid-blue" type="text" placeholder="0" defaultValue={store.tradingStore.buyAmount} onChange={e => store.tradingStore.setBuyAmount(e.target.value)} />
           <div>DXD</div>
         </FormContent>
-        <Button active={this.checkActive()} onClick={() => {store.tradingStore.buy()}}>Buy DXD</Button>
+        <Button active={this.checkActive()} onClick={() => {store.tradingStore.buy(); store.tradingStore.buyingState = 1}}>Buy DXD</Button>
 	  	</div>
 	  )
 	}
