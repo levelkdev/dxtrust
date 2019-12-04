@@ -1,4 +1,5 @@
 import React from 'react'
+import Web3 from 'web3';
 import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
 import BuyForm from './BuySell/BuyForm'
@@ -103,6 +104,7 @@ class BuySell extends React.Component  {
   render() {
     const { currentTab, count } = this.state
     const increment = store.tradingStore.enableState
+    const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance.toString()) : "0"
     
     const TabButton = ({currentTab, tabType, left, children}) => {
       if (currentTab === tabType) {
@@ -177,7 +179,7 @@ class BuySell extends React.Component  {
                 <ETHLogo src="ether.svg"></ETHLogo>
                 <LogoText>Ether</LogoText>
               </LogoAndText>
-              <div>1000.000 ETH</div>
+              <div>{ETHBalance} ETH</div>
             </InfoRow>
             <InfoRow>
               <LogoAndText>

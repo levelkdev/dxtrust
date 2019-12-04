@@ -24,6 +24,8 @@ class ProviderStore {
 	@observable isConnected: false
 	@observable chainId: ''
 
+    @observable ETHBalance: 0
+
 
     loadObject = (type, address, label?) => {
     	// TODO what to do about web3
@@ -38,6 +40,15 @@ class ProviderStore {
     getSelectedAddress = () => {
         // return this.web3.eth.defaultAccount as string;
         return this.web3.eth.accounts.givenProvider.selectedAddress;
+    }
+
+    // Get ETH balance for account
+    setETHBalance = async () => {
+        const balance = await this.web3.eth.getBalance(this.address)
+        console.log("fetched ETH Balance:" + balance)
+        console.log("stored address: " + this.address)
+        this.ETHBalance = balance
+        console.log("stored balance in setETHBalance: " + this.ETHBalance)
     }
 
     // Check for confirmation
