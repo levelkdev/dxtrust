@@ -108,9 +108,6 @@ class Form extends React.Component {
     const { buttontext, infotext } = this.props
 
     const count = store.tradingStore.buyingState
-    const price = store.tradingStore.price
-    console.log("trading store price: " + store.tradingStore.price)
-    console.log("trading store priceToBuy: " + store.tradingStore.priceToBuy)
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -138,11 +135,19 @@ class Form extends React.Component {
       
       if (contentState === ContentStates.SELL_FORM) {
         return(
-          <BuyInput />
+          <BuyInput infotext={infotext} />
         )
       } else if (contentState === ContentStates.SIGN_TRANSACTION) {
         return(
-          <div>
+          <FormWrapper>
+            <InfoRow>
+              <FormInfoText>Price</FormInfoText>
+              <div>TBD TKN</div>
+            </InfoRow>
+            <InfoRow>
+              <FormInfoText>{infotext}</FormInfoText>
+              <div>TBD TKN</div>
+            </InfoRow>
             <InfoRow>
               <FormInfoText>Pay Amount</FormInfoText>
               <div>100.000 DXD</div>
@@ -152,11 +157,19 @@ class Form extends React.Component {
               <PendingCircle />
             </SignTransaction>
             <Button active={false}>Buy DXD</Button>
-          </div>
+          </FormWrapper>
         )
       } else if (contentState === ContentStates.UNCONFIRMED) {
         return(
-          <div>
+          <FormWrapper>
+            <InfoRow>
+              <FormInfoText>Price</FormInfoText>
+              <div>TBD TKN</div>
+            </InfoRow>
+            <InfoRow>
+              <FormInfoText>{infotext}</FormInfoText>
+              <div>TBD TKN</div>
+            </InfoRow>
             <InfoRow>
               <FormInfoText>Pay Amount</FormInfoText>
               <div>100.000 DXD</div>
@@ -166,11 +179,19 @@ class Form extends React.Component {
               <PendingCircle />
             </Unconfirmed>
             <Button active={false}>Buy DXD</Button>
-          </div>
+          </FormWrapper>
         )
       } else if (contentState === ContentStates.CONFIRMED) {
         return(
-          <div>
+          <FormWrapper>
+            <InfoRow>
+              <FormInfoText>Price</FormInfoText>
+              <div>TBD TKN</div>
+            </InfoRow>
+            <InfoRow>
+              <FormInfoText>{infotext}</FormInfoText>
+              <div>TBD TKN</div>
+            </InfoRow>
             <InfoRow>
               <FormInfoText>Pay Amount</FormInfoText>
               <div>100.000 DXD</div>
@@ -182,23 +203,13 @@ class Form extends React.Component {
               </CheckboxContainer>
             </Confirmed>
             <Button active={true} onClick={() => {store.tradingStore.buyingState = 0; store.tradingStore.buyAmount = 0}}>Buy Again</Button>
-          </div>
+          </FormWrapper>
         )
       }
     }
 
     return (
-      <FormWrapper>
-        <InfoRow>
-          <FormInfoText>Price</FormInfoText>
-          <div>{price} TKN</div>
-        </InfoRow>
-        <InfoRow>
-          <FormInfoText>{infotext}</FormInfoText>
-          <div>150.020 ETH</div>
-        </InfoRow>
-        <Content contentCount={count} />
-      </FormWrapper>
+      <Content contentCount={count} />
     )
   }
 }

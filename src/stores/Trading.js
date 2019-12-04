@@ -4,7 +4,7 @@ import store from './Root'
 
 class TradingStore {
 	@observable reserveBalance = ''
-	@observable priceToBuy = ''
+	@observable priceToBuy = 0
 	@observable price = 0
 	@observable rewardForSell = ''
 
@@ -59,7 +59,9 @@ class TradingStore {
 
 	// setBuyAmount()
 	setBuyAmount(buyAmount) {
-		this.buyAmount = buyAmount
+		const precisionBuyAmount = buyAmount*1000000
+		this.setPriceToBuy(precisionBuyAmount)
+		this.buyAmount = precisionBuyAmount
 	}
 
 	// TODO look into how to pass this as a callback??
