@@ -11,6 +11,8 @@ class TradingStore {
 	@observable buyingState = 0
 	@observable buyAmount = 0
 
+	@observable bondedTokenBalance = 0
+
 
 	// priceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
@@ -31,6 +33,13 @@ class TradingStore {
 		const contract = this.loadBondingCurveContract()
 		const reserveBalance = await contract.methods.reserveBalance().call()
 		this.reserveBalance = reserveBalance
+	}
+
+	// setBondedTokenBalance()
+	async setBondedTokenBalance() {
+		const contract = this.loadBondedTokenContract()
+		const tokenBalance = await contract.methods.balanceOf(store.providerStore.address).call()
+		this.bondedTokenBalance = tokenBalance
 	}
 
 	// setBuyAmount()

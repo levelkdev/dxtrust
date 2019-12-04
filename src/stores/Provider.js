@@ -45,10 +45,7 @@ class ProviderStore {
     // Get ETH balance for account
     setETHBalance = async () => {
         const balance = await this.web3.eth.getBalance(this.address)
-        console.log("fetched ETH Balance:" + balance)
-        console.log("stored address: " + this.address)
         this.ETHBalance = balance
-        console.log("stored balance in setETHBalance: " + this.ETHBalance)
     }
 
     // Check for confirmation

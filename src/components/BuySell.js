@@ -105,7 +105,11 @@ class BuySell extends React.Component  {
     const { currentTab, count } = this.state
     const increment = store.tradingStore.enableState
     const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance.toString()) : "0"
+    // TODO figure out units for bonded token (dividing by a million?)
+    const BondedTokenBalance = store.tradingStore.bondedTokenBalance/1000000
     
+    console.log("bonded token balance: " + store.tradingStore)
+
     const TabButton = ({currentTab, tabType, left, children}) => {
       if (currentTab === tabType) {
         return (
@@ -186,7 +190,7 @@ class BuySell extends React.Component  {
                 <DXDLogo src="dxdao-circle.svg"></DXDLogo>
                 <LogoText>Dxdao</LogoText>
               </LogoAndText>
-              <div>100.000 DXD</div>
+              <div>{BondedTokenBalance} DXD</div>
             </InfoRow>
           </CryptoInfoWrapper>
           <CurrentForm currentTab={currentTab} increment={increment} />
