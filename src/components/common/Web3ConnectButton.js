@@ -108,10 +108,11 @@ class Web3ConnectButton extends React.Component {
               store.providerStore.chainId = chainId
               store.providerStore.web3 = web3
               store.providerStore.isConnected = true
+              await store.tradingStore.setPrice()
               await store.providerStore.setETHBalance()
               await store.tradingStore.setBondedTokenBalance()
               await store.tradingStore.getReserveBalance()
-              await store.tradingStore.getPriceToBuy(2000000)
+              await store.tradingStore.setPriceToBuy(2000000)
               await store.tradingStore.getRewardForSell(200000000)
             }}
             onClose={() => {

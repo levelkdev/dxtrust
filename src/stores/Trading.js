@@ -5,6 +5,7 @@ import store from './Root'
 class TradingStore {
 	@observable reserveBalance = ''
 	@observable priceToBuy = ''
+	@observable price = 0
 	@observable rewardForSell = ''
 
 	@observable enableState = 0
@@ -12,13 +13,27 @@ class TradingStore {
 	@observable buyAmount = 0
 
 	@observable bondedTokenBalance = 0
-
+	@observable bondedTokenPrice = 0
 
 	// priceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
 		const contract = this.loadBondingCurveContract()
 		const priceToBuy = await contract.methods.priceToBuy(numTokens).call()
+		return priceToBuy
+	}
+
+	// priceToBuy(uint256 numTokens)
+	async setPriceToBuy(numTokens) {
+		const priceToBuy = await this.getPriceToBuy(numTokens)
 		this.priceToBuy = priceToBuy
+	}
+
+	// setPrice()
+	async setPrice() {
+		console.log('in setPrice')
+		const price = await this.getPriceToBuy(1000000)
+		this.price = price
+		console.log('price in setPrice: ' + price)
 	}
 
 	// rewardForSell(uint256 numTokens)

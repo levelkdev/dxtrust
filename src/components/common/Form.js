@@ -108,6 +108,9 @@ class Form extends React.Component {
     const { buttontext, infotext } = this.props
 
     const count = store.tradingStore.buyingState
+    const price = store.tradingStore.price
+    console.log("trading store price: " + store.tradingStore.price)
+    console.log("trading store priceToBuy: " + store.tradingStore.priceToBuy)
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -188,7 +191,7 @@ class Form extends React.Component {
       <FormWrapper>
         <InfoRow>
           <FormInfoText>Price</FormInfoText>
-          <div>1.502 DXD/ETH</div>
+          <div>{price} TKN</div>
         </InfoRow>
         <InfoRow>
           <FormInfoText>{infotext}</FormInfoText>

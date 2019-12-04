@@ -108,8 +108,6 @@ class BuySell extends React.Component  {
     // TODO figure out units for bonded token (dividing by a million?)
     const BondedTokenBalance = store.tradingStore.bondedTokenBalance/1000000
     
-    console.log("bonded token balance: " + store.tradingStore)
-
     const TabButton = ({currentTab, tabType, left, children}) => {
       if (currentTab === tabType) {
         return (
