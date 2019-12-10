@@ -26,38 +26,38 @@ const FormInfoText = styled.div`
   color: var(--light-text-gray);
 `
 
-const FormContent = styled.div`
+const Unconfirmed = styled.div`
+  // font-family: SF Pro Text;
+  font-size: 15px;
+  line-height: 18px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  color: rgba(48, 79, 254, 0.2);
-  border: 1px solid rgba(48, 79, 254, 0.2);
-  border-radius: 4px;
-  height: 34px;
-  line-height: 34px;
-  margin-top: 12px;
-  margin-bottom: 33px;
+  justify-content: space-between;
+  letter-spacing: 0.4px;
+  color: var(--turquois-text);
+  margin-top: 8px;
+  margin-bottom: 23px;
+`
+
+const PendingCircle = styled.div`
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-icon-2);
 `
 
 @observer
-class BuyInput extends React.Component {
+class BuyUnconfirmed extends React.Component {
 
   constructor(props) {
       super(props)
-  }
-
-  checkActive() {
-    if (store.tradingStore.buyAmount > 0) {
-      return true
-    } else {
-      return false
-    }
   }
 
 	render() {
 
     const { infotext } = this.props
     const price = store.tradingStore.price
+    const buyAmount = store.tradingStore.buyAmount/1000000
     const priceToBuy = store.tradingStore.priceToBuy
 
     const Button = ({active, children, onClick}) => {
@@ -82,14 +82,18 @@ class BuyInput extends React.Component {
           <FormInfoText>{infotext}</FormInfoText>
           <div>{priceToBuy} TKN</div>
         </InfoRow>
-        <FormContent>
-          <input className="form-vivid-blue" type="text" placeholder="0" defaultValue={store.tradingStore.buyAmount} onChange={e => store.tradingStore.setBuyAmount(e.target.value)} />
-          <div>TKN</div>
-        </FormContent>
-        <Button active={this.checkActive()} onClick={() => {store.tradingStore.buy(); store.tradingStore.buyingState = 1}}>Buy DXD</Button>
-	  	</FormWrapper>
+        <InfoRow>
+          <FormInfoText>Receive</FormInfoText>
+          <div>{buyAmount} DXD</div>
+        </InfoRow>
+        <Unconfirmed>
+          Unconfirmed...
+          <PendingCircle />
+        </Unconfirmed>
+        <Button active={false}>Buy DXD</Button>
+      </FormWrapper>
 	  )
 	}
 }
 
-export default BuyInput
+export default BuyUnconfirmed

@@ -58,7 +58,7 @@
     margin-bottom: 27px;
   `
   
-  const EnableDXDPendingButton = styled.div`
+  const EnableTKNPendingButton = styled.div`
     background-color: white;
     border: 1px solid var(--medium-gray);
     border-radius: 4px;
@@ -77,9 +77,9 @@ const EnablePending = ({subtitleText}) => {
           <Ellipses>...</Ellipses>
         </EllipsesContainer>
       </CircleContainer>
-      <Title>Enable DXD for trading</Title>
+      <Title>Enable TKN for trading</Title>
       <SubTitle>{subtitleText}</SubTitle>
-      <EnableDXDPendingButton>Enable DXD</EnableDXDPendingButton>
+      <EnableTKNPendingButton>Enable TKN</EnableTKNPendingButton>
     </ContentWrapper>
   )
 }

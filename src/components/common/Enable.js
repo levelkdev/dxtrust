@@ -45,7 +45,7 @@ const Info = styled.div`
   margin-bottom: 40px;
 `
 
-const EnableDXDButton = styled.div`
+const EnableTKNButton = styled.div`
   background-color: #536DFE;
   border: 1px solid #304FFE;
   border-radius: 4px;
@@ -66,9 +66,9 @@ const Enable = ({}) => {
         </CheckboxContainer>
       </CircleContainer>
       <Info>
-        Enable DXD for trading
+        Enable TKN for trading
       </Info>
-      <EnableDXDButton onClick={() => {store.tradingStore.enableCollateral()}}>Enable DXD</EnableDXDButton>
+      <EnableTKNButton onClick={() => {store.tradingStore.enableCollateral()}}>Enable TKN</EnableTKNButton>
     </ContentWrapper>
   )
 }

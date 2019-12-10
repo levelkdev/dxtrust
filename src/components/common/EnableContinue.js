@@ -57,7 +57,7 @@ const Status = styled.div`
   margin-bottom: 27px;
 `
 
-const EnableDXDButton = styled.div`
+const EnableTKNButton = styled.div`
   background-color: #536DFE;
   border: 1px solid #304FFE;
   border-radius: 4px;
@@ -77,9 +77,9 @@ const EnableContinue = ({}) => {
           <Checkbox src="checkbox_758AFE.svg" />
         </CheckboxContainer>
       </CircleContainer>
-      <Info>Enable DXD for trading</Info>
+      <Info>Enable TKN for trading</Info>
       <Status>Confirmed</Status>
-      <EnableDXDButton onClick={() => {store.tradingStore.enableState=4}}>Continue</EnableDXDButton>
+      <EnableTKNButton onClick={() => {store.tradingStore.enableState=4}}>Continue</EnableTKNButton>
     </ContentWrapper>
   )
 }
