@@ -2,6 +2,11 @@ import { observable, action } from 'mobx'
 import { deployed } from '../config.json'
 import store from './Root'
 
+const ConfirmationFlags = {
+  ENABLE_TKN: 'enable_TKN',
+  DEPOSIT_TKN: 'deposit_TKN'
+}
+
 class TradingStore {
 	@observable reserveBalance = ''
 	@observable priceToBuy = 0
@@ -66,10 +71,10 @@ class TradingStore {
 
 	// TODO look into how to pass this as a callback??
 	// setEnableStateConfirmed()
-	setStateConfirmed(check) {
-		if (check) {
+	setStateConfirmed(confirmationFlag) {
+		if (confirmationFlag === ConfirmationFlags.ENABLE_TKN) {
 			return this.enableState = 3
-		} else {
+		} else if (confirmationFlag === ConfirmationFlags.DEPOSIT_TKN) {
 			return this.buyingState = 3
 		}
 	}
@@ -85,7 +90,7 @@ class TradingStore {
 			// TODO figure out how to set amount to approve
 			await contract.methods.approve(spender, 40000).send()
 			.on('transactionHash', function(hash){
-				store.providerStore.checkConfirmation(hash, true)
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_TKN)
 			})
 			const x = await contract.methods.allowance(store.providerStore.address, spender).call()
 			console.log("approve initiated; allowance is " + x.toString() + ' enable state: ' + this.enableState)
@@ -109,7 +114,7 @@ class TradingStore {
 		try {
 			await contract.methods.buy(this.buyAmount, maxPrice, recipient).send()
 			.on('transactionHash', function(hash){
-				store.providerStore.checkConfirmation(hash, false)
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
 			})
 			console.log('buy executed for ' + this.buyAmount)
 			this.getReserveBalance()
