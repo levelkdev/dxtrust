@@ -2,11 +2,11 @@ import React from 'react'
 import Web3 from 'web3';
 import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
-import BuyForm from './BuySell/BuyForm'
+import BuyForm from './Buy/BuyForm'
 import EnableContinue from './common/EnableContinue'
 import Enable from './common/Enable'
 import EnablePending from './common/EnablePending'
-import SellForm from './BuySell/SellForm'
+import SellForm from './Sell/SellForm'
 import store from '../stores/Root'
 
 const BuySellWrapper = styled.div`

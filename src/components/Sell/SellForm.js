@@ -1,8 +1,8 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
-import ActiveButton from './ActiveButton'
-import InactiveButton from './InactiveButton'
+import ActiveButton from '../common/ActiveButton'
+import InactiveButton from '../common/InactiveButton'
 import BuyInput from '../Buy/BuyInput'
 import BuySign from '../Buy/BuySign'
 import BuyUnconfirmed from '../Buy/BuyUnconfirmed'
@@ -17,16 +17,11 @@ const ContentStates = {
 }
 
 @observer
-class Form extends React.Component {
-
-  constructor(props) {
-      super(props)
-  }
+class SellForm extends React.Component {
 
   render() {
-    const { buttontext, infotext } = this.props
-
-    const count = store.tradingStore.buyingState
+    const infotext = "Receive"
+    const count = store.tradingStore.sellingState
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -77,4 +72,4 @@ class Form extends React.Component {
   }
 }
 
-export default Form
+export default SellForm
