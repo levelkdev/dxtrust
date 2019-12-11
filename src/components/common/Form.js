@@ -16,7 +16,6 @@ const ContentStates = {
   CONFIRMED: 'confirmed',
 }
 
-// const Form = ({buttontext, infotext, count, setCount}) => {
 @observer
 class Form extends React.Component {
 

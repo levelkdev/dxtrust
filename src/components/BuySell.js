@@ -89,20 +89,15 @@ const LogoText = styled.div`
 class BuySell extends React.Component  {
   
   state = {
-    currentTab: 0,
-    count: 0
+    currentTab: 0
   }
 
   setCurrentTab (tabType) {
     this.setState({currentTab: tabType});
   }
 
-  setCount = (newCount) => {
-    this.setState({count: newCount})
-  }
-
   render() {
-    const { currentTab, count } = this.state
+    const { currentTab } = this.state
     const incrementTKN = store.tradingStore.enableTKNState
     const incrementDXD = store.tradingStore.enableDXDState
     const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance.toString()) : "0"
@@ -145,7 +140,7 @@ class BuySell extends React.Component  {
           )
         } else {
           return (
-            <BuyForm count={count} setCount={this.setCount} />
+            <BuyForm />
           )
         }
       } else {
@@ -163,7 +158,7 @@ class BuySell extends React.Component  {
           )
         } else {
           return (
-            <SellForm count={count} setCount={this.setCount} />
+            <SellForm />
           )
         }
       }
