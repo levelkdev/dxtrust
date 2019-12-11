@@ -7,6 +7,12 @@ import BuyInput from '../Buy/BuyInput'
 import BuySign from '../Buy/BuySign'
 import BuyUnconfirmed from '../Buy/BuyUnconfirmed'
 import BuyConfirmed from '../Buy/BuyConfirmed'
+
+import SellInput from '../Sell/SellInput'
+import SellSign from '../Sell/SellSign'
+import SellUnconfirmed from '../Sell/SellUnconfirmed'
+import SellConfirmed from '../Sell/SellConfirmed'
+
 import store from '../../stores/Root'
 
 const ContentStates = {
@@ -49,19 +55,19 @@ class SellForm extends React.Component {
       
       if (contentState === ContentStates.SELL_FORM) {
         return(
-          <BuyInput infotext={infotext} />
+          <SellInput />
         )
       } else if (contentState === ContentStates.SIGN_TRANSACTION) {
         return(
-          <BuySign infotext={infotext} />
+          <SellSign />
         )
       } else if (contentState === ContentStates.UNCONFIRMED) {
         return(
-          <BuyUnconfirmed infotext={infotext} />
+          <SellUnconfirmed />
         )
       } else if (contentState === ContentStates.CONFIRMED) {
         return(
-          <BuyConfirmed infotext={infotext} />
+          <SellConfirmed />
         )
       }
     }

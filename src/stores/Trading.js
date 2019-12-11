@@ -11,30 +11,45 @@ const ConfirmationFlags = {
 
 class TradingStore {
 	@observable reserveBalance = ''
-	@observable priceToBuy = 0
 	@observable price = 0
-	@observable rewardForSell = ''
 
 	@observable enableTKNState = 0
-	@observable enableDXDState = 0
-
 	@observable buyingState = 0
 	@observable buyAmount = 0
+	@observable priceToBuy = 0
+
+	@observable enableDXDState = 0
+	@observable sellingState = 0
+	@observable sellAmount = 0
+	@observable rewardForSell = 0
 
 	@observable bondedTokenBalance = 0
 	@observable bondedTokenPrice = 0
 
-	// priceToBuy(uint256 numTokens)
+	// getPriceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
 		const contract = this.loadBondingCurveContract()
 		const priceToBuy = await contract.methods.priceToBuy(numTokens).call()
 		return priceToBuy
 	}
 
-	// priceToBuy(uint256 numTokens)
+	// getRewardForSell(uint256 numTokens)
+	async getRewardForSell(numTokens) {
+		const contract = this.loadBondingCurveContract()
+		const rewardForSell = await contract.methods.rewardForSell(numTokens).call()
+		return rewardForSell
+	}
+
+	// setPriceToBuy(uint256 numTokens)
 	async setPriceToBuy(numTokens) {
 		const priceToBuy = await this.getPriceToBuy(numTokens)
 		this.priceToBuy = priceToBuy
+	}
+
+	// setRewardForSell(uint256 numTokens)
+	async setRewardForSell(numTokens) {
+		const rewardForSell = await this.getRewardForSell(numTokens)
+		this.rewardForSell = rewardForSell
 	}
 
 	// setPrice()
@@ -43,13 +58,6 @@ class TradingStore {
 		const price = await this.getPriceToBuy(1000000)
 		this.price = price
 		console.log('price in setPrice: ' + price)
-	}
-
-	// rewardForSell(uint256 numTokens)
-	async getRewardForSell(numTokens) {
-		const contract = this.loadBondingCurveContract()
-		const rewardForSell = await contract.methods.rewardForSell(numTokens).call()
-		this.rewardForSell = rewardForSell
 	}
 
 	// getReserveBalance()
@@ -73,6 +81,13 @@ class TradingStore {
 		this.buyAmount = precisionBuyAmount
 	}
 
+	// setSellAmount()
+	setSellAmount(sellAmount) {
+		const precisionSellAmount = sellAmount*1000000
+		this.setRewardForSell(precisionSellAmount)
+		this.sellAmount = precisionSellAmount
+	}
+
 	// TODO look into how to pass this as a callback??
 	// setEnableTKNStateConfirmed()
 	setStateConfirmed(confirmationFlag) {
@@ -80,6 +95,10 @@ class TradingStore {
 			return this.enableTKNState = 3
 		} else if (confirmationFlag === ConfirmationFlags.DEPOSIT_TKN) {
 			return this.buyingState = 3
+		} else if (confirmationFlag === ConfirmationFlags.ENABLE_DXD) {
+			return this.enableDXDState = 3
+		} else if (confirmationFlag === ConfirmationFlags.SELL_DXD) {
+			return this.sellingState = 3
 		}
 	}
 
@@ -159,6 +178,26 @@ class TradingStore {
 	}
 
 	// sell(uint256 numTokens, uint256 minPrice, address recipient)
+	@action sell = async () => {
+		const contract = this.loadBondingCurveContract()
+		const recipient = store.providerStore.address
+		// TODO figure out how to set minPrice
+		const minPrice = 0
+
+		try {
+			await contract.methods.sell(this.sellAmount, minPrice, recipient).send()
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
+			})
+			console.log('sell executed for ' + this.sellAmount)
+			// TODO figure out how to be polling for updates to displayed values
+			this.getReserveBalance()
+			this.sellingState = 2
+		} catch (e) {
+			// TODO set up logging
+			console.log(e)
+		}
+	}
 
     loadBondedTokenContract() {
         return store.providerStore.loadObject('BondedToken', deployed.BondedToken, 'BondedToken')

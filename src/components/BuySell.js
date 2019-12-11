@@ -132,7 +132,7 @@ class BuySell extends React.Component  {
           )
         } else if (incrementTKN === 2) {
           return (
-            <EnablePending tokenType="TKN" subtitleText="Awaiting Confirmation ..." />
+            <EnablePending tokenType="TKN" subtitleText="Awaiting Confirmation..." />
           )
         } else if (incrementTKN === 3) {
           return (
@@ -150,9 +150,13 @@ class BuySell extends React.Component  {
           )
         } else if (incrementDXD === 1) {
           return (
-            <EnablePending tokenType="DXD" />
+            <EnablePending tokenType="DXD" subtitleText="Sign Transaction..." />
           )
         } else if (incrementDXD === 2) {
+          return (
+            <EnablePending tokenType="DXD" subtitleText="Awaiting Confirmation..." />
+          )
+        } else if (incrementDXD === 3) {
           return (
             <EnableContinue tokenType="DXD" />
           )
