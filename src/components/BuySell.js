@@ -103,7 +103,8 @@ class BuySell extends React.Component  {
 
   render() {
     const { currentTab, count } = this.state
-    const increment = store.tradingStore.enableState
+    const incrementTKN = store.tradingStore.enableTKNState
+    const incrementDXD = store.tradingStore.enableDXDState
     const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance.toString()) : "0"
     // TODO figure out units for bonded token (dividing by a million?)
     const BondedTokenBalance = store.tradingStore.bondedTokenBalance/1000000
@@ -124,23 +125,23 @@ class BuySell extends React.Component  {
       }
     }
 
-    const CurrentForm = ({currentTab, increment}) => {
+    const CurrentForm = ({currentTab, incrementTKN, incrementDXD}) => {
       if (currentTab === 0) {
-        if (increment === 0) {
+        if (incrementTKN === 0) {
           return (
-            <Enable />
+            <Enable tokenType="TKN"/>
           )
-        } else if (increment === 1) {
+        } else if (incrementTKN === 1) {
           return (
-            <EnablePending subtitleText="Sign Transaction..." />
+            <EnablePending tokenType="TKN" subtitleText="Sign Transaction..." />
           )
-        } else if (increment === 2) {
+        } else if (incrementTKN === 2) {
           return (
-            <EnablePending subtitleText="Awaiting Confirmation ..." />
+            <EnablePending tokenType="TKN" subtitleText="Awaiting Confirmation ..." />
           )
-        } else if (increment === 3) {
+        } else if (incrementTKN === 3) {
           return (
-            <EnableContinue />
+            <EnableContinue tokenType="TKN" />
           )
         } else {
           return (
@@ -148,17 +149,17 @@ class BuySell extends React.Component  {
           )
         }
       } else {
-        if (increment === 0) {
+        if (incrementDXD === 0) {
           return (
-            <Enable />
+            <Enable tokenType="DXD" />
           )
-        } else if (increment === 1) {
+        } else if (incrementDXD === 1) {
           return (
-            <EnablePending />
+            <EnablePending tokenType="DXD" />
           )
-        } else if (increment === 2) {
+        } else if (incrementDXD === 2) {
           return (
-            <EnableContinue  />
+            <EnableContinue tokenType="DXD" />
           )
         } else {
           return (
@@ -191,7 +192,7 @@ class BuySell extends React.Component  {
               <div>{BondedTokenBalance} DXD</div>
             </InfoRow>
           </CryptoInfoWrapper>
-          <CurrentForm currentTab={currentTab} increment={increment} />
+          <CurrentForm currentTab={currentTab} incrementTKN={incrementTKN} incrementDXD={incrementDXD} />
         </ContentWrapper>
       </BuySellWrapper>
     )

@@ -57,7 +57,7 @@ const Status = styled.div`
   margin-bottom: 27px;
 `
 
-const EnableTKNButton = styled.div`
+const EnableButton = styled.div`
   background-color: #536DFE;
   border: 1px solid #304FFE;
   border-radius: 4px;
@@ -69,7 +69,20 @@ const EnableTKNButton = styled.div`
   cursor: pointer;
 `
 
-const EnableContinue = ({}) => {
+const EnableContinue = ({tokenType}) => {
+
+  const Button = ({tokenType}) => {
+    if (tokenType === "TKN") {
+      return (
+        <EnableButton onClick={() => {store.tradingStore.enableTKNState=4}}>Continue</EnableButton>
+      ) 
+    } else if (tokenType === "DXD"){
+      return (
+        <EnableButton onClick={() => {store.tradingStore.enableDXDState=4}}>Continue</EnableButton>
+      )
+    }
+  }
+
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -77,9 +90,9 @@ const EnableContinue = ({}) => {
           <Checkbox src="checkbox_758AFE.svg" />
         </CheckboxContainer>
       </CircleContainer>
-      <Info>Enable TKN for trading</Info>
+      <Info>Enable {tokenType} for trading</Info>
       <Status>Confirmed</Status>
-      <EnableTKNButton onClick={() => {store.tradingStore.enableState=4}}>Continue</EnableTKNButton>
+      <Button tokenType={tokenType}>Continue</Button>
     </ContentWrapper>
   )
 }

@@ -4,7 +4,9 @@ import store from './Root'
 
 const ConfirmationFlags = {
   ENABLE_TKN: 'enable_TKN',
-  DEPOSIT_TKN: 'deposit_TKN'
+  DEPOSIT_TKN: 'deposit_TKN',
+  ENABLE_DXD: 'enabled_DXD',
+  SELL_DXD: 'sell_dxd'
 }
 
 class TradingStore {
@@ -13,7 +15,9 @@ class TradingStore {
 	@observable price = 0
 	@observable rewardForSell = ''
 
-	@observable enableState = 0
+	@observable enableTKNState = 0
+	@observable enableDXDState = 0
+
 	@observable buyingState = 0
 	@observable buyAmount = 0
 
@@ -70,31 +74,42 @@ class TradingStore {
 	}
 
 	// TODO look into how to pass this as a callback??
-	// setEnableStateConfirmed()
+	// setEnableTKNStateConfirmed()
 	setStateConfirmed(confirmationFlag) {
 		if (confirmationFlag === ConfirmationFlags.ENABLE_TKN) {
-			return this.enableState = 3
+			return this.enableTKNState = 3
 		} else if (confirmationFlag === ConfirmationFlags.DEPOSIT_TKN) {
 			return this.buyingState = 3
+		}
+	}
+
+	enableToken(tokenType) {
+		if (tokenType === "TKN") {
+			this.enableCollateral()
+		} else if (tokenType === "DXD") {
+			this.enableDXD()
 		}
 	}
 
 	// TODO Separate ERC20 version from ETH version
 	// Enable Collateral Token (ERC20 Version)
 	@action enableCollateral = async () => {
-		this.enableState = 1
+		this.enableTKNState = 1
 		const contract = this.loadCollateralTokenContract()
 		const spender = deployed.BondingCurve
 
 		try {
-			// TODO figure out how to set amount to approve
+			// TODO set approve to a very large number
 			await contract.methods.approve(spender, 40000).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_TKN)
 			})
+
+			// Debugging; TODO remove debugging
 			const x = await contract.methods.allowance(store.providerStore.address, spender).call()
-			console.log("approve initiated; allowance is " + x.toString() + ' enable state: ' + this.enableState)
-			this.enableState = 2
+			console.log("approve initiated; allowance is " + x.toString() + ' enable state: ' + this.enableTKNState)
+
+			this.enableTKNState = 2
 		} catch (e) {
 			// TODO set up logging
 			console.log(e)
@@ -103,6 +118,24 @@ class TradingStore {
 
 	// Enable DXD
 	// @action enable = async 
+	@action enableDXD = async () => {
+		this.enableDXDState = 1
+		const contract = this.loadBondedTokenContract()
+		const spender = deployed.BondingCurve
+
+		try {
+			// TODO set approve to a very large number
+			await contract.methods.approve(spender, 4000).send()
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_DXD)
+			})
+
+			this.enableDXDState = 2
+		} catch (e) {
+			// TODO set up logging
+			console.log(e)
+		}
+	}
 
 	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
 	@action buy = async () => {
