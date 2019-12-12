@@ -58,7 +58,7 @@
     margin-bottom: 27px;
   `
   
-  const EnableTKNPendingButton = styled.div`
+  const EnablePendingButton = styled.div`
     background-color: white;
     border: 1px solid var(--medium-gray);
     border-radius: 4px;
@@ -69,7 +69,7 @@
     text-transform: uppercase;
   `
 
-const EnablePending = ({subtitleText}) => {
+const EnablePending = ({tokenType, subtitleText}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -77,9 +77,9 @@ const EnablePending = ({subtitleText}) => {
           <Ellipses>...</Ellipses>
         </EllipsesContainer>
       </CircleContainer>
-      <Title>Enable TKN for trading</Title>
+      <Title>Enable {tokenType} for trading</Title>
       <SubTitle>{subtitleText}</SubTitle>
-      <EnableTKNPendingButton>Enable TKN</EnableTKNPendingButton>
+      <EnablePendingButton>Enable {tokenType}</EnablePendingButton>
     </ContentWrapper>
   )
 }

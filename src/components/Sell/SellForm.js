@@ -1,12 +1,18 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
-import ActiveButton from './ActiveButton'
-import InactiveButton from './InactiveButton'
+import ActiveButton from '../common/ActiveButton'
+import InactiveButton from '../common/InactiveButton'
 import BuyInput from '../Buy/BuyInput'
 import BuySign from '../Buy/BuySign'
 import BuyUnconfirmed from '../Buy/BuyUnconfirmed'
 import BuyConfirmed from '../Buy/BuyConfirmed'
+
+import SellInput from '../Sell/SellInput'
+import SellSign from '../Sell/SellSign'
+import SellUnconfirmed from '../Sell/SellUnconfirmed'
+import SellConfirmed from '../Sell/SellConfirmed'
+
 import store from '../../stores/Root'
 
 const ContentStates = {
@@ -17,16 +23,11 @@ const ContentStates = {
 }
 
 @observer
-class Form extends React.Component {
-
-  constructor(props) {
-      super(props)
-  }
+class SellForm extends React.Component {
 
   render() {
-    const { buttontext, infotext } = this.props
-
-    const count = store.tradingStore.buyingState
+    const infotext = "Receive"
+    const count = store.tradingStore.sellingState
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -54,19 +55,19 @@ class Form extends React.Component {
       
       if (contentState === ContentStates.SELL_FORM) {
         return(
-          <BuyInput infotext={infotext} />
+          <SellInput />
         )
       } else if (contentState === ContentStates.SIGN_TRANSACTION) {
         return(
-          <BuySign infotext={infotext} />
+          <SellSign />
         )
       } else if (contentState === ContentStates.UNCONFIRMED) {
         return(
-          <BuyUnconfirmed infotext={infotext} />
+          <SellUnconfirmed />
         )
       } else if (contentState === ContentStates.CONFIRMED) {
         return(
-          <BuyConfirmed infotext={infotext} />
+          <SellConfirmed />
         )
       }
     }
@@ -77,4 +78,4 @@ class Form extends React.Component {
   }
 }
 
-export default Form
+export default SellForm

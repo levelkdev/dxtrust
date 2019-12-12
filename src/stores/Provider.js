@@ -49,7 +49,8 @@ class ProviderStore {
     }
 
     // Check for confirmation
-    checkConfirmation = (txHash, checkBool) => {
+    // confirmationFlag Indicates what the confirmation check is for
+    checkConfirmation = (txHash, confirmationFlag) => {
         console.log("checking whether transaction was confirmed with any confirmations")
         const self = this
         this.web3.eth.getTransaction(txHash).then(
@@ -59,10 +60,10 @@ class ProviderStore {
                     console.log("transaction not mined yet")
                     console.log("blockhash: " + result.blockHash)
                     console.log("tx hash: " + txHash)
-                    return setTimeout( self.checkConfirmation(txHash, checkBool), 0.1*1000)
+                    return setTimeout( self.checkConfirmation(txHash, confirmationFlag), 0.1*1000)
                 } else {
                     console.log("transaction confirmed!")
-                    return store.tradingStore.setStateConfirmed(checkBool)
+                    return store.tradingStore.setStateConfirmed(confirmationFlag)
                 }
             }
         )

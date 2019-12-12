@@ -2,11 +2,11 @@ import React from 'react'
 import Web3 from 'web3';
 import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
-import BuyForm from './BuySell/BuyForm'
+import BuyForm from './Buy/BuyForm'
 import EnableContinue from './common/EnableContinue'
 import Enable from './common/Enable'
 import EnablePending from './common/EnablePending'
-import SellForm from './BuySell/SellForm'
+import SellForm from './Sell/SellForm'
 import store from '../stores/Root'
 
 const BuySellWrapper = styled.div`
@@ -89,21 +89,17 @@ const LogoText = styled.div`
 class BuySell extends React.Component  {
   
   state = {
-    currentTab: 0,
-    count: 0
+    currentTab: 0
   }
 
   setCurrentTab (tabType) {
     this.setState({currentTab: tabType});
   }
 
-  setCount = (newCount) => {
-    this.setState({count: newCount})
-  }
-
   render() {
-    const { currentTab, count } = this.state
-    const increment = store.tradingStore.enableState
+    const { currentTab } = this.state
+    const incrementTKN = store.tradingStore.enableTKNState
+    const incrementDXD = store.tradingStore.enableDXDState
     const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance.toString()) : "0"
     // TODO figure out units for bonded token (dividing by a million?)
     const BondedTokenBalance = store.tradingStore.bondedTokenBalance/1000000
@@ -124,45 +120,49 @@ class BuySell extends React.Component  {
       }
     }
 
-    const CurrentForm = ({currentTab, increment}) => {
+    const CurrentForm = ({currentTab, incrementTKN, incrementDXD}) => {
       if (currentTab === 0) {
-        if (increment === 0) {
+        if (incrementTKN === 0) {
           return (
-            <Enable />
+            <Enable tokenType="TKN"/>
           )
-        } else if (increment === 1) {
+        } else if (incrementTKN === 1) {
           return (
-            <EnablePending subtitleText="Sign Transaction..." />
+            <EnablePending tokenType="TKN" subtitleText="Sign Transaction..." />
           )
-        } else if (increment === 2) {
+        } else if (incrementTKN === 2) {
           return (
-            <EnablePending subtitleText="Awaiting Confirmation ..." />
+            <EnablePending tokenType="TKN" subtitleText="Awaiting Confirmation..." />
           )
-        } else if (increment === 3) {
+        } else if (incrementTKN === 3) {
           return (
-            <EnableContinue />
+            <EnableContinue tokenType="TKN" />
           )
         } else {
           return (
-            <BuyForm count={count} setCount={this.setCount} />
+            <BuyForm />
           )
         }
       } else {
-        if (increment === 0) {
+        if (incrementDXD === 0) {
           return (
-            <Enable />
+            <Enable tokenType="DXD" />
           )
-        } else if (increment === 1) {
+        } else if (incrementDXD === 1) {
           return (
-            <EnablePending />
+            <EnablePending tokenType="DXD" subtitleText="Sign Transaction..." />
           )
-        } else if (increment === 2) {
+        } else if (incrementDXD === 2) {
           return (
-            <EnableContinue  />
+            <EnablePending tokenType="DXD" subtitleText="Awaiting Confirmation..." />
+          )
+        } else if (incrementDXD === 3) {
+          return (
+            <EnableContinue tokenType="DXD" />
           )
         } else {
           return (
-            <SellForm count={count} setCount={this.setCount} />
+            <SellForm />
           )
         }
       }
@@ -191,7 +191,7 @@ class BuySell extends React.Component  {
               <div>{BondedTokenBalance} DXD</div>
             </InfoRow>
           </CryptoInfoWrapper>
-          <CurrentForm currentTab={currentTab} increment={increment} />
+          <CurrentForm currentTab={currentTab} incrementTKN={incrementTKN} incrementDXD={incrementDXD} />
         </ContentWrapper>
       </BuySellWrapper>
     )

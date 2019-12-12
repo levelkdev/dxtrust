@@ -45,7 +45,7 @@ const Info = styled.div`
   margin-bottom: 40px;
 `
 
-const EnableTKNButton = styled.div`
+const EnableButton = styled.div`
   background-color: #536DFE;
   border: 1px solid #304FFE;
   border-radius: 4px;
@@ -57,7 +57,7 @@ const EnableTKNButton = styled.div`
   cursor: pointer;
 `
 
-const Enable = ({}) => {
+const Enable = ({tokenType}) => {
   return (
     <ContentWrapper>
       <CircleContainer>
@@ -66,9 +66,9 @@ const Enable = ({}) => {
         </CheckboxContainer>
       </CircleContainer>
       <Info>
-        Enable TKN for trading
+        Enable {tokenType} for trading
       </Info>
-      <EnableTKNButton onClick={() => {store.tradingStore.enableCollateral()}}>Enable TKN</EnableTKNButton>
+      <EnableButton onClick={() => {store.tradingStore.enableToken(tokenType)}}>Enable {tokenType}</EnableButton>
     </ContentWrapper>
   )
 }
