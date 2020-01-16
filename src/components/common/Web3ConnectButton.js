@@ -10,6 +10,7 @@ import Torus from "@toruslabs/torus-embed";
 import Arkane from "@arkane-network/web3-arkane-provider";
 import Authereum from "authereum";
 import store from '../../stores/Root'
+import UserAddress from './UserAddress'
 
 // Keeping
 // interface IAppState {
@@ -31,12 +32,7 @@ class Web3ConnectButton extends React.Component {
     return (
       <div>
         {store.providerStore.isConnected ? 
-          <div>
-            <div>Address: {store.providerStore.address}</div>
-            <div>Connected: {store.providerStore.isConnected ? "true" : "false"}</div>
-            <div>Chain ID: {store.providerStore.chainId}</div>
-            <div>ReserveBalance: {store.tradingStore.reserveBalance}</div>
-          </div>
+            <UserAddress address={store.providerStore.address} />
           :
           (<Web3Connect.Button
             network="mainnet" // optional

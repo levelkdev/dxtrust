@@ -37,6 +37,11 @@ const FormContent = styled.div`
   line-height: 34px;
   margin-top: 12px;
   margin-bottom: 33px;
+  input, input:focus {
+    border: none;
+    font-size: inherit;
+    outline: none;
+  }
 `
 
 @observer
@@ -77,7 +82,7 @@ class SellInput extends React.Component {
           <div>{rewardForSell} TKN</div>
         </InfoRow>
         <FormContent>
-          <input className="form-vivid-blue" type="text" placeholder="0" defaultValue={store.tradingStore.sellAmount} onChange={e => store.tradingStore.setSellAmount(e.target.value)} />
+          <input className="form-vivid-blue" type="text" placeholder="0" onChange={e => store.tradingStore.setSellAmount(e.target.value)} />
           <div>DXD</div>
         </FormContent>
         <Button active={this.checkActive()} onClick={() => {store.tradingStore.sell(); store.tradingStore.sellingState = 1}}>Sell DXD</Button>
