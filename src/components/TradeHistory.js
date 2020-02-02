@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import store from '../stores/Root'
+import { observer, inject } from 'mobx-react'
 
 const TradingHistoryWrapper = styled.div`
   width: 100%;
@@ -29,7 +31,6 @@ const TableHeadersWrapper = styled.div`
 `
 
 const TableHeader = styled.div`
-
   width: 20%;
 `
 
@@ -55,82 +56,51 @@ const TableCell = styled.div`
 `
 
 const TableCellContent = styled.div`
-
 `
 
-const TradingHistory = ({}) => {
-  return (
-    <TradingHistoryWrapper>
-      <TradeHistoryTitle>Trade History</TradeHistoryTitle>
-      <TableHeadersWrapper>
-        <TableHeader className="align-left"><TableCellContent>Type</TableCellContent></TableHeader>
-        <TableHeader><TableCellContent>Price ETH</TableCellContent></TableHeader>
-        <TableHeader><TableCellContent>Amount DXD</TableCellContent></TableHeader>
-        <TableHeader><TableCellContent>Total ETH</TableCellContent></TableHeader>
-        <TableHeader><TableCellContent className="align-right">Status/Time</TableCellContent></TableHeader>
-      </TableHeadersWrapper>
-      <TableRow>
-        <TableCell className="blue-text" className="align-left">Buy</TableCell>
-        <TableCell>154.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>
-          <a
-            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
-            target="#"
-            className="turquois-text"
-          >
-            03-11 17:53:42
-          </a>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell className="red-text" className="align-left">Sell</TableCell>
-        <TableCell>154.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>
-          <a
-            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
-            target="#"
-            className="turquois-text"
-          >
-            03-11 17:53:42
-          </a>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell className="red-text" className="align-left">Sell</TableCell>
-        <TableCell>154.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>
-          <a
-            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
-            target="#"
-            className="turquois-text"
-          >
-            03-11 17:53:42
-          </a>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell className="red-text" className="align-left">Sell</TableCell>
-        <TableCell>154.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>14.202</TableCell>
-        <TableCell>
-          <a
-            href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
-            target="#"
-            className="turquois-text"
-          >
-            03-11 17:53:42
-          </a>
-        </TableCell>
-      </TableRow>
-    </TradingHistoryWrapper>
-  )
+@observer
+class TradingHistory extends React.Component {
+
+
+  render() {
+
+
+    let recentTrades = store.tradingStore.recentTrades
+    if(store.providerStore.web3 && !store.tradingStore.recentTradesSet) {
+      store.tradingStore.setRecentTrades()
+      console.log("getting recent trades" + recentTrades.length)
+    }
+
+    return (
+      <TradingHistoryWrapper>
+        <TradeHistoryTitle>Trade History</TradeHistoryTitle>
+        <TableHeadersWrapper>
+          <TableHeader className="align-left"><TableCellContent>Type</TableCellContent></TableHeader>
+          <TableHeader><TableCellContent>Price TKN</TableCellContent></TableHeader>
+          <TableHeader><TableCellContent>Amount DXD</TableCellContent></TableHeader>
+          <TableHeader><TableCellContent>Total TKN</TableCellContent></TableHeader>
+          <TableHeader><TableCellContent className="align-right">Status/Time</TableCellContent></TableHeader>
+        </TableHeadersWrapper>
+        {recentTrades.map(trade => (
+          <TableRow>
+            <TableCell className="blue-text" className="align-left">Buy</TableCell>
+            <TableCell>{trade.price}</TableCell>
+            <TableCell>{trade.amount}</TableCell>
+            <TableCell>{trade.totalPaid}</TableCell>
+            <TableCell>
+              <a
+                href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+                target="#"
+                className="turquois-text"
+              >
+                {trade.blockTime}
+              </a>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TradingHistoryWrapper>
+    )
+  }
 }
 
 export default TradingHistory

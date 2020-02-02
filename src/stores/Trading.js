@@ -26,6 +26,9 @@ class TradingStore {
 	@observable bondedTokenBalance = 0
 	@observable bondedTokenPrice = 0
 
+	@observable recentTrades = []
+	@observable recentTradesSet = false
+
 	// getPriceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
 		const contract = this.loadBondingCurveContract()
@@ -102,12 +105,70 @@ class TradingStore {
 		}
 	}
 
+	async setRecentTrades(numToGet) {
+		const trades = await this.getRecentTrades(numToGet)
+		this.recentTrades = trades
+		this.recentTradesSet = true
+	}
+
 	enableToken(tokenType) {
 		if (tokenType === "TKN") {
 			this.enableCollateral()
 		} else if (tokenType === "DXD") {
 			this.enableDXD()
 		}
+	}
+
+	// getSellEvents
+	async getSellEvents(numToGet) {
+		const contract = this.loadBondingCurveContract()
+		var sellEvents = await contract.getPastEvents('Sell', {fromBlock: 0, toBlock: 'latest'})
+		sellEvents = sellEvents.slice(0, numToGet)
+		const parsedSellEvents = Promise.all(sellEvents.map(sellEvent => this.formatSellEvent(sellEvent)))
+		return parsedSellEvents
+	}
+
+	// format sell event
+	async formatSellEvent(sellEvent) {
+		const container = {};
+		container.amount = sellEvent.returnValues.amount;
+		container.price = sellEvent.returnValues.price;
+		container.blockNumber = sellEvent.blockNumber;
+		container.blockTime = await store.providerStore.getBlockTime(sellEvent.blockNumber);
+		container.type = "Sell";
+		return container;		
+	}
+
+	// getBuyEvents
+	async getBuyEvents(numToGet) {
+		const contract = this.loadBondingCurveContract()
+		var buyEvents = await contract.getPastEvents('Buy', {fromBlock: 0, toBlock: 'latest'})
+		buyEvents = buyEvents.slice(0, numToGet)
+		return Promise.all(buyEvents.map(buyEvent => this.formatBuyEvent(buyEvent)))
+	}
+
+	// format buy event
+	async formatBuyEvent(buyEvent) {
+		const container = {};
+		const amount = buyEvent.returnValues.amount;
+		const price = buyEvent.returnValues.price;
+		container.amount = amount;
+		container.price = price;
+		container.totalPaid = price * amount;
+		container.blockNumber = buyEvent.blockNumber;
+		container.blockTime = await store.providerStore.getBlockTime(buyEvent.blockNumber);
+		container.type = "Buy";
+		return container;
+	}
+
+	// getRecentTrades(numberOfTrades)
+	async getRecentTrades(numberOfTrades) {
+		const buyEvents = await this.getBuyEvents(numberOfTrades)
+		const sellEvents = await this.getSellEvents(numberOfTrades)
+		var combinedTrades = buyEvents.concat(sellEvents)
+		combinedTrades = combinedTrades.sort(function(a,b){return b.blockNumber - a.blockNumber})
+		const sortedRecentTrades = combinedTrades.slice(0, numberOfTrades)
+		return sortedRecentTrades
 	}
 
 	// TODO Separate ERC20 version from ETH version

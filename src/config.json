@@ -1,9 +1,9 @@
 {
     "deployed": {
-        "BondedToken": "0x8cD5C245059BC6F07Ef7722E091fC5D9bC48AD0b",
-        "BondingCurve": "0x31462FABE8Fe098c0b85Eb0c561a3d551B6F85b1",
-        "RewardsDistributor": "0xBb4BBFb6C4d263Ed6D182B8021f8A9cFe139d527",
-        "CollateralToken": "0x8D08f40dbAEdcf69A69d4A44753F0A4D98C0601b"
+        "BondedToken": "0xc28B1Cc119daf0ADC8B493d8DC2409fa640Ea4B7",
+        "BondingCurve": "0x999D2CB8b7d3cCbbfC4Ca0A0229E352c2417f8f0",
+        "RewardsDistributor": "0xCC006131c77E9d7Ff3cCE79c9cB506234521dFbE",
+        "CollateralToken": "0x19E82bFb56817bbBE1C321FBa651a4f5FeBE1984"
     },
     "activeNetworkId": 4
 }

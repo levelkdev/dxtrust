@@ -26,7 +26,6 @@ class ProviderStore {
 
     @observable ETHBalance: 0
 
-
     loadObject = (type, address, label?) => {
     	// TODO what to do about web3
     	// TODO what function to use for the from field below?
@@ -35,6 +34,19 @@ class ProviderStore {
             objects[label] = object;
         }
         return object;
+    }
+
+    // get blockTime from blockNumber
+    async getBlockTime(blockNumber) {
+        const blockData = await this.web3.eth.getBlock(blockNumber)
+        const date = new Date(blockData.timestamp*1000)
+        return date.toUTCString()
+    }
+
+    // get blockHash from blockNumber
+    async getBlockHash(blockNumber) {
+        const blockData = await this.web3.eth.getBlock(blockNumber)
+        return blockData.hash
     }
 
     getSelectedAddress = () => {
