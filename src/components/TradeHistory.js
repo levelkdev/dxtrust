@@ -83,13 +83,13 @@ class TradingHistory extends React.Component {
         </TableHeadersWrapper>
         {recentTrades.map(trade => (
           <TableRow>
-            <TableCell className="blue-text" className="align-left">Buy</TableCell>
+            <TableCell className="blue-text" className="align-left">{trade.type}</TableCell>
             <TableCell>{trade.price}</TableCell>
             <TableCell>{trade.amount}</TableCell>
-            <TableCell>{trade.totalPaid}</TableCell>
+            <TableCell>{trade.totalPaid ? trade.totalPaid : trade.totalReceived}</TableCell>
             <TableCell>
               <a
-                href="https://etherscan.io/tx/0x0a6508498110d277668c2775f2eae27595a87c6b9f6a6bcd817d63f3c0ce4e8a"
+                href={trade.hash}
                 target="#"
                 className="turquois-text"
               >
