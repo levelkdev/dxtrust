@@ -131,11 +131,16 @@ class TradingStore {
 	// format sell event
 	async formatSellEvent(sellEvent) {
 		const container = {};
+		const amount = sellEvent.returnValues.amount;
+		const totalReceived = sellEvent.returnValues.reward;
+		console.log("Burn reward: " + sellEvent.returnValues.reward);
 		container.amount = sellEvent.returnValues.amount;
-		container.price = sellEvent.returnValues.price;
+		container.price = totalReceived / amount;
+		container.totalReceived = totalReceived;
 		container.blockNumber = sellEvent.blockNumber;
 		container.blockTime = await store.providerStore.getBlockTime(sellEvent.blockNumber);
 		container.type = "Sell";
+		container.hash = "https://kovan.etherscan.io/tx/" + sellEvent.transactionHash;
 		return container;		
 	}
 
@@ -158,6 +163,7 @@ class TradingStore {
 		container.blockNumber = buyEvent.blockNumber;
 		container.blockTime = await store.providerStore.getBlockTime(buyEvent.blockNumber);
 		container.type = "Buy";
+		container.hash = "https://kovan.etherscan.io/tx/" + buyEvent.transactionHash;
 		return container;
 	}
 
