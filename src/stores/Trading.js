@@ -107,6 +107,14 @@ class TradingStore {
 		this.recentTradesSet = true
 	}
 
+	async setDappTradeData() {
+		await this.setPrice()
+		await store.providerStore.setETHBalance()
+		await this.setBondedTokenBalance()
+		await this.getReserveBalance()
+		this.setRecentTrades()
+	}
+
 	enableToken(tokenType) {
 		if (tokenType === "TKN") {
 			this.enableCollateral()
