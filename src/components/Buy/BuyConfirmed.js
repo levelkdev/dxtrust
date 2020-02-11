@@ -66,7 +66,7 @@ class BuyConfirmed extends React.Component {
 
     const { infotext } = this.props
     const price = store.tradingStore.price
-    const buyAmount = store.tradingStore.buyAmount/1000000
+    const buyAmount = store.tradingStore.buyAmount
     const priceToBuy = store.tradingStore.priceToBuy
 
     const Button = ({active, children, onClick}) => {
