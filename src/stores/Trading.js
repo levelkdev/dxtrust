@@ -58,7 +58,7 @@ class TradingStore {
 	// setPrice()
 	async setPrice() {
 		console.log('in setPrice')
-		const price = await this.getPriceToBuy(1000000)
+		const price = await this.getPriceToBuy(1)
 		this.price = price
 		console.log('price in setPrice: ' + price)
 	}
@@ -79,16 +79,14 @@ class TradingStore {
 
 	// setBuyAmount()
 	setBuyAmount(buyAmount) {
-		const precisionBuyAmount = buyAmount*1000000
-		this.setPriceToBuy(precisionBuyAmount)
-		this.buyAmount = precisionBuyAmount
+		this.setPriceToBuy(buyAmount)
+		this.buyAmount = buyAmount
 	}
 
 	// setSellAmount()
 	setSellAmount(sellAmount) {
-		const precisionSellAmount = sellAmount*1000000
-		this.setRewardForSell(precisionSellAmount)
-		this.sellAmount = precisionSellAmount
+		this.setRewardForSell(sellAmount)
+		this.sellAmount = sellAmount
 	}
 
 	// TODO look into how to pass this as a callback??

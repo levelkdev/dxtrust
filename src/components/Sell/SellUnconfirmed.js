@@ -51,7 +51,7 @@ class SellUnconfirmed extends React.Component {
 
 	render() {
     const price = store.tradingStore.price
-    const sellAmount = store.tradingStore.sellAmount/1000000
+    const sellAmount = store.tradingStore.sellAmount
     const rewardForSell = store.tradingStore.rewardForSell
 
     const Button = ({active, children, onClick}) => {
