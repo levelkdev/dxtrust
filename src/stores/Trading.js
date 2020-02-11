@@ -57,10 +57,8 @@ class TradingStore {
 
 	// setPrice()
 	async setPrice() {
-		console.log('in setPrice')
 		const price = await this.getPriceToBuy(1)
 		this.price = price
-		console.log('price in setPrice: ' + price)
 	}
 
 	// getReserveBalance()

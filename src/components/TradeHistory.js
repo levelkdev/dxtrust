@@ -55,31 +55,19 @@ const TableCell = styled.div`
   }
 `
 
-const TableCellContent = styled.div`
-`
-
 @observer
 class TradingHistory extends React.Component {
-
-
   render() {
-
-
-    let recentTrades = store.tradingStore.recentTrades
-    if(store.providerStore.web3 && !store.tradingStore.recentTradesSet) {
-      store.tradingStore.setRecentTrades()
-      console.log("getting recent trades" + recentTrades.length)
-    }
-
+    const recentTrades = store.tradingStore.recentTrades
     return (
       <TradingHistoryWrapper>
         <TradeHistoryTitle>Trade History</TradeHistoryTitle>
         <TableHeadersWrapper>
-          <TableHeader className="align-left"><TableCellContent>Type</TableCellContent></TableHeader>
-          <TableHeader><TableCellContent>Price TKN</TableCellContent></TableHeader>
-          <TableHeader><TableCellContent>Amount DXD</TableCellContent></TableHeader>
-          <TableHeader><TableCellContent>Total TKN</TableCellContent></TableHeader>
-          <TableHeader><TableCellContent className="align-right">Status/Time</TableCellContent></TableHeader>
+          <TableHeader className="align-left">Type</TableHeader>
+          <TableHeader>Price TKN</TableHeader>
+          <TableHeader>Amount DXD</TableHeader>
+          <TableHeader>Total TKN</TableHeader>
+          <TableHeader className="align-right">Status/Time</TableHeader>
         </TableHeadersWrapper>
         {recentTrades.map(trade => (
           <TableRow>
