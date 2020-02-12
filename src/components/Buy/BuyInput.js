@@ -44,12 +44,32 @@ const FormContent = styled.div`
   }
 `
 
+const InputColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+`
+
+const ErrorValidation = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  padding-top: 50px;
+  align-self: center;
+  color: red;
+`
+
 @observer
 class BuyInput extends React.Component {
 
   constructor(props) {
       super(props)
   }
+
+  state = {
+    hasError: false
+  };
 
   checkActive() {
     if (store.tradingStore.buyAmount > 0) {
@@ -59,11 +79,19 @@ class BuyInput extends React.Component {
     }
   }
 
+  validateNumber(value) {
+    if (value > 0) {
+      store.tradingStore.setBuyAmount(value)
+    }
+    this.setState({ hasError: !(value > 0)})
+  }
+
 	render() {
 
-    const { infotext } = this.props
-    const price = store.tradingStore.price
-    const priceToBuy = store.tradingStore.priceToBuy
+    const { infotext } = this.props;
+    const { price } = store.tradingStore;
+    const { priceToBuy } = store.tradingStore;
+    const { hasError } = this.state;
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -87,10 +115,21 @@ class BuyInput extends React.Component {
           <FormInfoText>{infotext}</FormInfoText>
           <div>{priceToBuy} TKN</div>
         </InfoRow>
-        <FormContent>
-          <input className="form-vivid-blue" type="text" placeholder="0" onChange={e => store.tradingStore.setBuyAmount(e.target.value)} />
-          <div>TKN</div>
-        </FormContent>
+        <InputColumn>
+          <FormContent>
+            <input className="form-vivid-blue" type="text" placeholder="0" onChange={e => this.validateNumber(e.target.value)} />
+            <div>TKN</div>
+          </FormContent>
+          {
+            hasError ?
+              <ErrorValidation>
+                <p>Must be a positive number</p>
+              </ErrorValidation>
+            : 
+            <>
+            </>
+          }
+        </InputColumn>
         <Button active={this.checkActive()} onClick={() => {store.tradingStore.buy(); store.tradingStore.buyingState = 1}}>Buy DXD</Button>
 	  	</FormWrapper>
 	  )
