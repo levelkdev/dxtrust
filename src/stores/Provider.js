@@ -13,23 +13,24 @@ const schema = {
 const objects = {}
 
 class ProviderStore {
-    @observable web3: Web3
-    @observable context: any
+    @observable web3 = new Web3('https://kovan.infura.io/v3/aab5c86e538b43509008efff47d61162')
+    @observable context;
     @observable defaultAccount = '';
     @observable isProviderSet = false;
     @observable isAccountSet = false;
     // @observable state: ProviderState = ProviderState.LOADING
 
 // TODO reconcile these provider values with those above
-	@observable address: ''
-	@observable isConnected: false
-	@observable chainId: ''
+	@observable address = '';
+	@observable isConnected = true;
+	@observable chainId = '';
 
-    @observable ETHBalance: 0
+    @observable ETHBalance = 0
 
-    loadObject = (type, address, label?) => {
+    loadObject = (type, address, label) => {
     	// TODO what to do about web3
-    	// TODO what function to use for the from field below?
+      // TODO what function to use for the from field below?
+        console.log(this.web3)
         const object = new this.web3.eth.Contract(schema[type].abi, address, { from: this.getSelectedAddress() });
         if (label) {
             objects[label] = object;
