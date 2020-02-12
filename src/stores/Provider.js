@@ -22,7 +22,7 @@ class ProviderStore {
 
 // TODO reconcile these provider values with those above
 	@observable address = '';
-	@observable isConnected = true;
+	@observable isConnected = false;
 	@observable chainId = '';
 
     @observable ETHBalance = 0
