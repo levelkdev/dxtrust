@@ -123,6 +123,26 @@ class TradingStore {
 		}
 	}
 
+	async checkCollateralAllowance() {
+		const contract = this.loadCollateralTokenContract()
+		const spender = deployed.BondingCurve
+		const allowance = await contract.methods.allowance(store.providerStore.address, spender).call()
+		// TODO Think about what threshold to check
+		if (allowance > 40000) {
+			this.enableTKNState = 4
+		}
+	}
+
+	async checkBondedTokenAllowance() {
+		const contract = this.loadBondedTokenContract()
+		const spender = deployed.BondingCurve
+		const allowance = await contract.methods.allowance(store.providerStore.address, spender).call()
+		// TODO Think about what threshold to check
+		if (allowance > 40000) {
+			this.enableDXDState = 4
+		}
+	}
+
 	// getSellEvents
 	async getSellEvents(numToGet) {
 		const contract = this.loadBondingCurveContract()
@@ -189,8 +209,8 @@ class TradingStore {
 		const spender = deployed.BondingCurve
 
 		try {
-			// TODO set approve to a very large number
-			await contract.methods.approve(spender, 40000).send()
+			// TODO Revisit what number to approve
+			await contract.methods.approve(spender, 4000000).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_TKN)
 			})
@@ -214,8 +234,8 @@ class TradingStore {
 		const spender = deployed.BondingCurve
 
 		try {
-			// TODO set approve to a very large number
-			await contract.methods.approve(spender, 4000).send()
+			// TODO Revisit what number to approve
+			await contract.methods.approve(spender, 4000000).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_DXD)
 			})
