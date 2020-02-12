@@ -123,6 +123,16 @@ class TradingStore {
 		}
 	}
 
+	async checkCollateralAllowance() {
+		const contract = this.loadCollateralTokenContract()
+		const spender = deployed.BondingCurve
+		const allowance = await contract.methods.allowance(store.providerStore.address, spender).call()
+		// TODO Think about what threshold to check
+		if (allowance > 40000) {
+			this.enableTKNState = 4
+		}
+	}
+
 	// getSellEvents
 	async getSellEvents(numToGet) {
 		const contract = this.loadBondingCurveContract()
