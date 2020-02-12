@@ -57,10 +57,8 @@ class TradingStore {
 
 	// setPrice()
 	async setPrice() {
-		console.log('in setPrice')
-		const price = await this.getPriceToBuy(1000000)
+		const price = await this.getPriceToBuy(1)
 		this.price = price
-		console.log('price in setPrice: ' + price)
 	}
 
 	// getReserveBalance()
@@ -79,16 +77,14 @@ class TradingStore {
 
 	// setBuyAmount()
 	setBuyAmount(buyAmount) {
-		const precisionBuyAmount = buyAmount*1000000
-		this.setPriceToBuy(precisionBuyAmount)
-		this.buyAmount = precisionBuyAmount
+		this.setPriceToBuy(buyAmount)
+		this.buyAmount = buyAmount
 	}
 
 	// setSellAmount()
 	setSellAmount(sellAmount) {
-		const precisionSellAmount = sellAmount*1000000
-		this.setRewardForSell(precisionSellAmount)
-		this.sellAmount = precisionSellAmount
+		this.setRewardForSell(sellAmount)
+		this.sellAmount = sellAmount
 	}
 
 	// TODO look into how to pass this as a callback??
@@ -109,6 +105,14 @@ class TradingStore {
 		const trades = await this.getRecentTrades(numToGet)
 		this.recentTrades = trades
 		this.recentTradesSet = true
+	}
+
+	async setDappTradeData() {
+		await this.setPrice()
+		await store.providerStore.setETHBalance()
+		await this.setBondedTokenBalance()
+		await this.getReserveBalance()
+		this.setRecentTrades()
 	}
 
 	enableToken(tokenType) {

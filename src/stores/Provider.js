@@ -76,6 +76,7 @@ class ProviderStore {
                     return setTimeout( self.checkConfirmation(txHash, confirmationFlag), 0.1*1000)
                 } else {
                     console.log("transaction confirmed!")
+                    store.tradingStore.setDappTradeData()
                     return store.tradingStore.setStateConfirmed(confirmationFlag)
                 }
             }
