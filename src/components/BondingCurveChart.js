@@ -137,7 +137,7 @@ class BondingCurveChart extends React.Component {
             fill: false,
             data: [
               {
-                x: buyAmount,https://raw.githubusercontent.com/levelkdev/BC-DAPP/master/package.json
+                x: buyAmount,
                 y: await buyCurve(buyAmount)
               }
             ],
