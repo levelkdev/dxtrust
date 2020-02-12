@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { Line } from "react-chartjs-2"
-import Draggable from "react-draggable"
 import { observer, inject } from "mobx-react"
 import store from "../stores/Root"
 import { buyCurve } from "../lib/bc.js"
