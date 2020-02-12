@@ -189,8 +189,8 @@ class TradingStore {
 		const spender = deployed.BondingCurve
 
 		try {
-			// TODO set approve to a very large number
-			await contract.methods.approve(spender, 40000).send()
+			// TODO Revisit what number to approve
+			await contract.methods.approve(spender, 4000000).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_TKN)
 			})
@@ -214,8 +214,8 @@ class TradingStore {
 		const spender = deployed.BondingCurve
 
 		try {
-			// TODO set approve to a very large number
-			await contract.methods.approve(spender, 4000).send()
+			// TODO Revisit what number to approve
+			await contract.methods.approve(spender, 4000000).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.ENABLE_DXD)
 			})
