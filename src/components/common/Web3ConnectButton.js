@@ -106,6 +106,7 @@ class Web3ConnectButton extends React.Component {
               store.providerStore.isConnected = true
               await store.tradingStore.setDappTradeData()
               await store.tradingStore.checkCollateralAllowance()
+              await store.tradingStore.checkBondedTokenAllowance()
             }}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
