@@ -44,8 +44,27 @@ const FormContent = styled.div`
   }
 `
 
+const InputColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+`
+
+const ErrorValidation = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  padding-top: 50px;
+  align-self: center;
+  color: red;
+`
+
 @observer
 class SellInput extends React.Component {
+  state = {
+    hasError: false
+  };
 
   checkActive() {
     if (store.tradingStore.sellAmount > 0) {
@@ -55,7 +74,15 @@ class SellInput extends React.Component {
     }
   }
 
+  validateNumber(value) {
+    if (value > 0) {
+      store.tradingStore.setSellAmount(value)
+    }
+    this.setState({ hasError: !(value > 0)})
+  }
+
 	render() {
+    const { hasError } = this.state
     const price = store.tradingStore.price
     const rewardForSell = store.tradingStore.rewardForSell
 
@@ -81,10 +108,21 @@ class SellInput extends React.Component {
           <FormInfoText>Receive</FormInfoText>
           <div>{rewardForSell} TKN</div>
         </InfoRow>
-        <FormContent>
-          <input className="form-vivid-blue" type="text" placeholder="0" onChange={e => store.tradingStore.setSellAmount(e.target.value)} />
-          <div>DXD</div>
-        </FormContent>
+        <InputColumn>
+          <FormContent>
+            <input className="form-vivid-blue" type="text" placeholder="0" onChange={e => this.validateNumber(e.target.value)} />
+            <div>DXD</div>
+          </FormContent>
+          {
+            hasError ?
+              <ErrorValidation>
+                <p>Must be a positive number</p>
+              </ErrorValidation>
+            : 
+            <>
+            </>
+          }
+        </InputColumn>
         <Button active={this.checkActive()} onClick={() => {store.tradingStore.sell(); store.tradingStore.sellingState = 1}}>Sell DXD</Button>
 	  	</FormWrapper>
 	  )
