@@ -3,7 +3,8 @@
         "BondedToken": "0xb5f3b8265a290c74f824cfb4528f0dd746f76e97",
         "BondingCurve": "0xa8def88d436e29c3a463d47539e035f619808160",
         "RewardsDistributor": "0xda4c28a61c0b525b59ba669c9b034c811ea0799f",
-        "CollateralToken": "0x7BFeE5A4Ce0fc3E21cA209067Ce68b3e82c70972"
+        "CollateralToken": "0x7BFeE5A4Ce0fc3E21cA209067Ce68b3e82c70972",
+        "StaticCurveLogic": "0x5952e79e71c079a12c98b437c6e9358e15b988f9"
     },
     "activeNetworkId": 4
 }

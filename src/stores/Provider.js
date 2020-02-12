@@ -6,7 +6,8 @@ const schema = {
     BondedToken: require('../abi/BondedToken'),
     BondingCurve: require('../abi/BondingCurve'),
     RewardsDistributor: require('../abi/RewardsDistributor'),
-    CollateralToken: require('../abi/ERC20')
+    CollateralToken: require('../abi/ERC20'),
+    StaticCurveLogic: require('../abi/StaticCurveLogic'),
 }
 
 const objects = {}

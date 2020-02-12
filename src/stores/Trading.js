@@ -141,7 +141,7 @@ class TradingStore {
 		container.blockTime = await store.providerStore.getBlockTime(sellEvent.blockNumber);
 		container.type = "Sell";
 		container.hash = "https://kovan.etherscan.io/tx/" + sellEvent.transactionHash;
-		return container;		
+		return container;
 	}
 
 	// getBuyEvents
@@ -203,7 +203,7 @@ class TradingStore {
 	}
 
 	// Enable DXD
-	// @action enable = async 
+	// @action enable = async
 	@action enableDXD = async () => {
 		this.enableDXDState = 1
 		const contract = this.loadBondedTokenContract()
@@ -281,6 +281,9 @@ class TradingStore {
     // loadCollateralTokenContract (ERC20 Version)
     loadCollateralTokenContract() {
     	return store.providerStore.loadObject('CollateralToken', deployed.CollateralToken, 'CollateralToken')
+    }
+    loadStaticCurveLogicContract() {
+      return store.providerStore.loadObject('StaticCurveLogic', deployed.StaticCurveLogic, 'StaticCurveLogic')
     }
 }
 
