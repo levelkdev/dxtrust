@@ -11,7 +11,7 @@ import Arkane from "@arkane-network/web3-arkane-provider";
 import Authereum from "authereum";
 import store from '../../stores/Root'
 import UserAddress from './UserAddress'
-
+import ErrorButton from './ErrorButton'
 // Keeping
 // interface IAppState {
 //   fetching: boolean;
@@ -28,10 +28,58 @@ import UserAddress from './UserAddress'
 
 @observer
 class Web3ConnectButton extends React.Component { 
+
+  state = {
+    wrongNetwork: false
+  }
+
+  connect = async (provider: any) => {
+      const web3 = new Web3(provider);
+
+      const accounts = await web3.eth.getAccounts();
+      const address = accounts[0];
+      const networkId = await web3.eth.net.getId();
+      // console.log(networkId)
+      if (networkId !== 42) {
+        this.setState({ wrongNetwork: true })
+        return;
+      } else {
+        web3.eth.extend({
+          methods: [
+            {
+              name: "chainId",
+              call: "eth_chainId",
+              outputFormatter: web3.utils.hexToNumber
+            }
+          ]
+        });
+        const chainId = await web3.eth.chainId();
+        
+        store.providerStore.address = address
+        store.providerStore.chainId = chainId
+        store.providerStore.web3 = web3
+        store.providerStore.isConnected = true
+        await store.tradingStore.setDappTradeData()
+        await store.tradingStore.checkCollateralAllowance()
+        await store.tradingStore.checkBondedTokenAllowance()
+    }
+  }
+
   render() {
+    const { wrongNetwork } = this.state
+
+    if (!store.tradingStore.recentTradeSet) {
+      store.tradingStore.setRecentTrades()
+    }
+
+
     return (
       <div>
-        {store.providerStore.isConnected ? 
+        {
+          wrongNetwork ?
+            <ErrorButton onClick={this.connect}/>
+          :
+          store.providerStore.isConnected ? 
             <UserAddress address={store.providerStore.address} />
           :
           (<Web3Connect.Button
@@ -85,31 +133,7 @@ class Web3ConnectButton extends React.Component {
               }
             }}
           */
-            onConnect={ async (provider: any) => {
-              const web3 = new Web3(provider);
-
-              const accounts = await web3.eth.getAccounts();
-              const address = accounts[0];
-              const networkId = await web3.eth.net.getId();
-              web3.eth.extend({
-                methods: [
-                  {
-                    name: "chainId",
-                    call: "eth_chainId",
-                    outputFormatter: web3.utils.hexToNumber
-                  }
-                ]
-              });
-              const chainId = await web3.eth.chainId();
-
-              store.providerStore.address = address
-              store.providerStore.chainId = chainId
-              store.providerStore.web3 = web3
-              store.providerStore.isConnected = true
-              await store.tradingStore.setDappTradeData()
-              await store.tradingStore.checkCollateralAllowance()
-              await store.tradingStore.checkBondedTokenAllowance()
-            }}
+            onConnect={this.connect}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
             }}
