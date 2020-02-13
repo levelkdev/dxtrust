@@ -67,6 +67,12 @@ class Web3ConnectButton extends React.Component {
 
   render() {
     const { wrongNetwork } = this.state
+
+    if (!store.tradingStore.recentTradeSet) {
+      store.tradingStore.setRecentTrades()
+    }
+
+
     return (
       <div>
         {
