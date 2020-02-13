@@ -1,9 +1,14 @@
 const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: "./public/index.html",
 });
+
+const copyPlugin = new CopyWebpackPlugin([
+  { from: './public', to: './' }
+]);
 
 module.exports = {
   entry: './src/index.js',
@@ -23,8 +28,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: [ "style-loader", "css-loader" ]
+      },
+      {  
+        test: /\.(png|jpe?g|svg|)$/, 
+        use: { loader: 'file-loader' }
       }
     ]
   },
-  plugins: [htmlPlugin]
+  plugins: [htmlPlugin, copyPlugin]
 }
