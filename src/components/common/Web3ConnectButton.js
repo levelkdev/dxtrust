@@ -36,6 +36,7 @@ class Web3ConnectButton extends React.Component {
           :
           (<Web3Connect.Button
             network="mainnet" // optional
+          /* 
             providerOptions={{
               walletconnect: {
                 package: WalletConnectProvider, // required
@@ -83,6 +84,7 @@ class Web3ConnectButton extends React.Component {
                 options: {}
               }
             }}
+          */
             onConnect={ async (provider: any) => {
               const web3 = new Web3(provider);
 
