@@ -137,7 +137,7 @@ class Web3ConnectButton extends React.Component {
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
             }}
-            onError={(error: Error) => {
+            onError={(error) => {
               console.error(error); // tslint:disable-line
             }}
           />)
