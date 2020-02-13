@@ -33,7 +33,7 @@ class Web3ConnectButton extends React.Component {
     wrongNetwork: false
   }
 
-  connect = async (provider: any) => {
+  connect = async provider => {
       const web3 = new Web3(provider);
 
       const accounts = await web3.eth.getAccounts();
