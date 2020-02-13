@@ -1,9 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { Line } from "react-chartjs-2"
-import { observer, inject } from "mobx-react"
-import store from "../stores/Root"
-import { buyCurve } from "../lib/bc.js"
 
 const ChartPanelWrapper = styled.div`
   width: 610px;
@@ -41,153 +38,105 @@ const ChartWrapper = styled.div`
   padding: 20px 20px 0px 20px;
 `
 
-@observer
-class BondingCurveChart extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { data: undefined, buyAmount: 0 }
-    this.options = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [
-          {
-            type: "linear",
-            display: true,
-            gridLines: {
-              display: false
-            },
-            scaleLabel: {
-              display: true,
-              labelString: ""
-            },
-            ticks: {
-              major: {
-                fontStyle: "bold",
-                fontColor: "#BDBDBD"
-              }
-            }
+const BondingCurveChart = ({}) => {
+  const options = {
+    maintainAspectRatio: false,
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        type: 'linear',
+        display: true,
+        gridLines: {
+          display: false,
+        },
+        scaleLabel: {
+          display: true,
+          labelString: ''
+        },
+        ticks: {
+          major: {
+            fontStyle: 'bold',
+            fontColor: '#BDBDBD'
           }
-        ],
-        yAxes: [
-          {
-            display: true,
-            gridLines: {
-              display: true,
-              color: "#E1E3E7"
-            },
-            position: "right",
-            ticks: {
-              callback: function(value, index, values) {
-                return value + " DAI"
-              }
-            },
-            scaleLabel: {
-              display: true,
-              labelString: ""
-            }
+        }
+      }],
+      yAxes: [{
+        display: true,
+        gridLines: {
+          display: true,
+          color: '#E1E3E7',
+        },
+        position: 'right',
+        ticks: {
+          callback: function(value, index, values) {
+            return value + " DAI";
           }
-        ]
-      }
+        },
+        scaleLabel: {
+          display: true,
+          labelString: ''
+        }
+      }]
     }
   }
 
-  async setData() {
-    if (
-      !this.state.data ||
-      this.state.buyAmount != store.tradingStore.buyAmount
-    ) {
-      const curveData = await buyCurve(0, 30, 1)
-      const buyAmount = store.tradingStore.buyAmount
-      const sellAmount = store.tradingStore.sellAmount
-      const data = {
-        datasets: [
-          // blue point
-          // {
-          //   label: 'Check out the data',
-          //   fill: false,
-          //   data: [ {x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 4}, {x: 4, y: 7}],
-          //   borderWidth: 2,
-          //   pointRadius: 0,
-          //   borderColor: "#5b76fa",
-          // },
-          // { // grey line
-          //  label: '',
-          //  fill: false,
-          //  data: [ {x: 4, y: 7}, {x: 5, y: 11}, {x: 6, y: 16}, {x: 7, y: 22} ],
-          //  borderWidth: 2,
-          //  pointRadius: 0,
-          //  borderColor: "gray"
-          // },
-          {
-            // grey line
-            label: "",
-            fill: false,
-            data: curveData,
-            borderWidth: 2,
-            pointRadius: 0,
-            borderColor: "gray"
-          },
-          {
-            // blue dot
-            label: "",
-            fill: false,
-            data: [
-              {
-                x: buyAmount,
-                y: await buyCurve(buyAmount)
-              }
-            ],
-            pointRadius: 7,
-            pointBackgroundColor: "#5b76fa",
-            borderWidth: 1,
-            pointBorderColor: "#5b76fa"
-          }
-        ]
-      }
-      console.log("setstate", data)
-      this.setState({ data, buyAmount })
+  const data = {
+    datasets: [{
+      label: 'Check out the data',
+      fill: false,
+      data: [ {x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 4}, {x: 4, y: 7}],
+      borderWidth: 2,
+      pointRadius: 0,
+      borderColor: "#5b76fa",
+    }, {
+     label: '',
+     fill: false,
+     data: [ {x: 4, y: 7}, {x: 5, y: 11}, {x: 6, y: 16}, {x: 7, y: 22} ],
+     borderWidth: 2,
+     pointRadius: 0,
+     borderColor: "gray"
+    }, {
+     label: '',
+     fill: false,
+     data: [ {x: 4, y: 7} ],
+     pointRadius: 7,
+     pointBackgroundColor: "#5b76fa",
+     borderWidth: 1,
+     pointBorderColor: "#5b76fa"
     }
+    ]
   }
 
-  render() {
-    if (store.providerStore.web3) {
-      this.setData()
-    }
-
-    return (
-      <ChartPanelWrapper>
-        <ChartHeaderWrapper>
-          <ChartHeaderFullElement>
-            <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
-            <ChartHeaderBottomElement>1.25 DXD/DAI</ChartHeaderBottomElement>
-          </ChartHeaderFullElement>
-          <ChartHeaderFullElement>
-            <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
-            <ChartHeaderBottomElement className="green-text">
-              +10.51%
-            </ChartHeaderBottomElement>
-          </ChartHeaderFullElement>
-          <ChartHeaderFullElement>
-            <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
-            <ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
-          </ChartHeaderFullElement>
-        </ChartHeaderWrapper>
-        <ChartWrapper>
-          {this.state.data && (
-            <Line
-              data={this.state.data}
-              options={this.options}
-              // width={1000}
-              // height={250}
-            />
-          )}
-        </ChartWrapper>
-      </ChartPanelWrapper>
-    )
-  }
+  return (
+    <ChartPanelWrapper>
+      <ChartHeaderWrapper>
+        <ChartHeaderFullElement>
+          <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
+          <ChartHeaderBottomElement>1.25 DXD/DAI</ChartHeaderBottomElement>
+        </ChartHeaderFullElement>
+        <ChartHeaderFullElement>
+          <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
+          <ChartHeaderBottomElement className="green-text">
+            +10.51%
+          </ChartHeaderBottomElement>
+        </ChartHeaderFullElement>
+        <ChartHeaderFullElement>
+          <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
+          <ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
+        </ChartHeaderFullElement>
+      </ChartHeaderWrapper>
+      <ChartWrapper>
+        <Line
+          data={data}
+          options={options}
+          // width={1000}
+          // height={250} 
+        />
+      </ChartWrapper>
+    </ChartPanelWrapper>
+  )
 }
 
 export default BondingCurveChart
