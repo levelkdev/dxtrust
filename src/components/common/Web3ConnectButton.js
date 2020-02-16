@@ -84,8 +84,8 @@ class Web3ConnectButton extends React.Component {
           :
           (<Web3Connect.Button
             network="mainnet" // optional
-          /* 
             providerOptions={{
+              /* 
               walletconnect: {
                 package: WalletConnectProvider, // required
                 options: {
@@ -131,8 +131,8 @@ class Web3ConnectButton extends React.Component {
                 package: Authereum, // required
                 options: {}
               }
+              */
             }}
-          */
             onConnect={this.connect}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
