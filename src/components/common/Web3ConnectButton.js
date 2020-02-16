@@ -33,7 +33,7 @@ class Web3ConnectButton extends React.Component {
     wrongNetwork: false
   }
 
-  connect = async (provider: any) => {
+  connect = async provider => {
       const web3 = new Web3(provider);
 
       const accounts = await web3.eth.getAccounts();
@@ -84,8 +84,8 @@ class Web3ConnectButton extends React.Component {
           :
           (<Web3Connect.Button
             network="mainnet" // optional
-          /* 
             providerOptions={{
+              /* 
               walletconnect: {
                 package: WalletConnectProvider, // required
                 options: {
@@ -131,13 +131,13 @@ class Web3ConnectButton extends React.Component {
                 package: Authereum, // required
                 options: {}
               }
+              */
             }}
-          */
             onConnect={this.connect}
             onClose={() => {
               console.log("Web3Connect Modal Closed"); // modal has closed
             }}
-            onError={(error: Error) => {
+            onError={(error) => {
               console.error(error); // tslint:disable-line
             }}
           />)
