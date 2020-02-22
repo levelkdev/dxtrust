@@ -119,7 +119,7 @@ class BuyInput extends React.Component {
         <InputColumn>
           <FormContent>
             <input className="form-vivid-blue" type="text" placeholder="0" onChange={e => this.validateNumber(e.target.value)} />
-            <div>{collateralType}</div>
+            <div>DXD</div>
           </FormContent>
           {
             hasError ?
