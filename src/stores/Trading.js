@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx'
-import { deployed } from '../config.json'
+import { deployed, collateralType, buyStartState } from '../config.json'
 import store from './Root'
 
 const ConfirmationFlags = {
@@ -13,7 +13,7 @@ class TradingStore {
 	@observable reserveBalance = ''
 	@observable price = 0
 
-	@observable enableTKNState = 0
+	@observable enableTKNState = buyStartState
 	@observable buyingState = 0
 	@observable buyAmount = 0
 	@observable priceToBuy = 0
@@ -247,8 +247,24 @@ class TradingStore {
 		}
 	}
 
+	@action buy = () => {
+		if (collateralType === "ETH") {
+			this.ETHBuy()
+		} else {
+			this.ERC20Buy()
+		}
+	}
+
+	@action sell = () => {
+		if (collateralType === "ETH") {
+			this.ETHSell()
+		} else {
+			this.ERC20Sell()
+		}
+	}
+
 	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
-	@action buy = async () => {
+	@action ERC20Buy = async () => {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
 		// TODO figure out how to set maxPrice
@@ -269,7 +285,7 @@ class TradingStore {
 	}
 
 	// sell(uint256 numTokens, uint256 minPrice, address recipient)
-	@action sell = async () => {
+	@action ERC20Sell = async () => {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
 		// TODO figure out how to set minPrice
@@ -283,6 +299,44 @@ class TradingStore {
 			console.log('sell executed for ' + this.sellAmount)
 			// TODO figure out how to be polling for updates to displayed values
 			this.getReserveBalance()
+			this.sellingState = 2
+		} catch (e) {
+			// TODO set up logging
+			console.log(e)
+		}
+	}
+
+	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
+	@action ETHBuy = async () => {
+		const contract = this.loadBondingCurveContract()
+		const recipient = store.providerStore.address
+		try {
+			await contract.methods.buy(this.buyAmount, this.priceToBuy, recipient).send()
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
+			})
+			console.log('buy executed for ' + this.buyAmount)
+			// TODO Don't think this reserve balance update is required?
+			// this.getReserveBalance()
+			this.buyingState = 2
+		} catch (e) {
+			// TODO set up logging
+			console.log(e)
+		}
+	}
+
+	// sell(uint256 numTokens, uint256 minReturn, address recipient)
+	@action ETHSell = async () => {
+		const contract = this.loadBondingCurveContract()
+		const recipient = store.providerStore.address
+		try {
+			await contract.methods.sell(this.sellAmount, this.rewardForSell, recipient).send()
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
+			})
+			console.log('sell executed for ' + this.sellAmount)
+			// TODO Don't think this reserve balance update is required?
+			// this.getReserveBalance()
 			this.sellingState = 2
 		} catch (e) {
 			// TODO set up logging

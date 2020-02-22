@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import store from '../stores/Root'
 import { observer, inject } from 'mobx-react'
+import { collateralType } from '../config.json'
 
 const TradingHistoryWrapper = styled.div`
   width: 100%;
@@ -64,9 +65,9 @@ class TradingHistory extends React.Component {
         <TradeHistoryTitle>Trade History</TradeHistoryTitle>
         <TableHeadersWrapper>
           <TableHeader className="align-left">Type</TableHeader>
-          <TableHeader>Price TKN</TableHeader>
+          <TableHeader>Price {collateralType}</TableHeader>
           <TableHeader>Amount DXD</TableHeader>
-          <TableHeader>Total TKN</TableHeader>
+          <TableHeader>Total {collateralType}</TableHeader>
           <TableHeader className="align-right">Status/Time</TableHeader>
         </TableHeadersWrapper>
         {recentTrades.map(trade => (
