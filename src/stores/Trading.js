@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx'
 import { deployed, collateralType, buyStartState } from '../config.json'
 import store from './Root'
+import Web3 from 'web3'
 
 const ConfirmationFlags = {
   ENABLE_TKN: 'enable_TKN',
@@ -32,14 +33,18 @@ class TradingStore {
 	// getPriceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
 		const contract = this.loadBondingCurveContract()
-		const priceToBuy = await contract.methods.priceToBuy(numTokens).call()
+		const weiInput = Web3.utils.toWei(numTokens)
+		const weiPriceToBuy = await contract.methods.priceToBuy(weiInput).call()
+		const priceToBuy = Web3.utils.fromWei(weiPriceToBuy)
 		return priceToBuy
 	}
 
 	// getRewardForSell(uint256 numTokens)
 	async getRewardForSell(numTokens) {
 		const contract = this.loadBondingCurveContract()
-		const rewardForSell = await contract.methods.rewardForSell(numTokens).call()
+		const weiInput = Web3.utils.toWei(numTokens)
+		const weiRewardForSell = await contract.methods.rewardForSell(weiInput).call()
+		const rewardForSell = Web3.utils.fromWei(weiRewardForSell)
 		return rewardForSell
 	}
 
@@ -57,7 +62,7 @@ class TradingStore {
 
 	// setPrice()
 	async setPrice() {
-		const price = await this.getPriceToBuy(1)
+		const price = await this.getPriceToBuy("1")
 		this.price = price
 	}
 
@@ -308,10 +313,14 @@ class TradingStore {
 
 	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
 	@action ETHBuy = async () => {
-		const contract = this.loadBondingCurveContract()
+		const contract = this.loadBondingCurveEtherContract()
 		const recipient = store.providerStore.address
 		try {
-			await contract.methods.buy(this.buyAmount, this.priceToBuy, recipient).send()
+			const weiPriceToBuy = Web3.utils.toWei(this.priceToBuy)
+			const weiBuyAmount = Web3.utils.toWei(this.buyAmount)
+			console.log("weiPriceToBuy is: " + weiPriceToBuy)
+			console.log("weiBuyAmount is: " + weiBuyAmount)
+			await contract.methods.buy(weiBuyAmount, weiPriceToBuy, recipient).send({from: recipient, value: weiPriceToBuy})
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
 			})
@@ -330,7 +339,9 @@ class TradingStore {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
 		try {
-			await contract.methods.sell(this.sellAmount, this.rewardForSell, recipient).send()
+			const weiRewardForSell = Web3.utils.toWei(this.rewardForSell)
+			const weiSellAmount = Web3.utils.toWei(this.sellAmount)
+			await contract.methods.sell(weiSellAmount, weiRewardForSell, recipient).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
 			})
@@ -350,6 +361,10 @@ class TradingStore {
 
     loadBondingCurveContract() {
         return store.providerStore.loadObject('BondingCurve', deployed.BondingCurve, 'BondingCurve')
+    }
+
+    loadBondingCurveEtherContract() {
+        return store.providerStore.loadObject('BondingCurveEther', deployed.BondingCurveEther, 'BondingCurveEther')
     }
 
     loadRewardsDistributorContract() {
