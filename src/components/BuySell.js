@@ -186,7 +186,7 @@ class BuySell extends React.Component  {
             <InfoRow>
               <LogoAndText>
                 <DXDLogo src="dxdao-circle.svg"></DXDLogo>
-                <LogoText>Dxdao</LogoText>
+                <LogoText>DXdao</LogoText>
               </LogoAndText>
               <div>{BondedTokenBalance} DXD</div>
             </InfoRow>
