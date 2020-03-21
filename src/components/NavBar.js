@@ -29,6 +29,8 @@ const MenuItem = styled.div`
 
 const SelectedMenuItem = styled(MenuItem)`
   color: var(--nav-text-dark);
+  font-weight: 500;
+  letter-spacing: 1px;
 `
 
 const DXDLogo = styled.img`

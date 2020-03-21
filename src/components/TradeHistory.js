@@ -8,15 +8,17 @@ const TradingHistoryWrapper = styled.div`
   background: white;
   padding-bottom: 24px;
   border: 1px solid var(--medium-gray);
-  margin-top: 20px;
+  margin-top: 24px;
   border-radius: 4px;
 `
 
 const TradeHistoryTitle = styled.div`
-  padding: 17px 15px;
+  padding: 20px 24px;
   color: var(--dark-text-gray);
   border-bottom: 1px solid var(--line-gray);
-  font-weight: 600; 
+  font-weight: 500; 
+  font-size: 18px;
+  letter-spacing: 1px;
 `
 
 const TableHeadersWrapper = styled.div`
@@ -24,9 +26,9 @@ const TableHeadersWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   color: var(--light-text-gray);
-  padding: 15px 24px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 20px 24px 8px;
+  font-size: 15px;
+  font-weight: 500;
   text-align: right;
 `
 
@@ -41,7 +43,7 @@ const TableRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid var(--line-gray);
-  padding: 11px 24px 10px;
+  padding: 16px 24px;
   color: var(--dark-text-gray);
   text-align: right;
 `
@@ -67,7 +69,7 @@ class TradingHistory extends React.Component {
           <TableHeader>Price TKN</TableHeader>
           <TableHeader>Amount DXD</TableHeader>
           <TableHeader>Total TKN</TableHeader>
-          <TableHeader className="align-right">Status/Time</TableHeader>
+          <TableHeader className="align-right">Time</TableHeader>
         </TableHeadersWrapper>
         {recentTrades.map(trade => (
           <TableRow>
