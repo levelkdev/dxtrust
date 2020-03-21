@@ -27,7 +27,7 @@ const MenuItem = styled.div`
 const SelectedMenuItem = styled.div`
   color: var(--nav-text-dark);
   line-height: 24px;
-  padding: 0px 10px;
+  padding: 0px 20px;
   cursor: pointer;
 `
 
