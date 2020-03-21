@@ -10,18 +10,19 @@ const ChartPanelWrapper = styled.div`
 `
 
 const ChartHeaderWrapper = styled.div`
+  display: flex;
   padding: 15px;
   border-bottom: 1px solid var(--line-gray);
 `
 
 const ChartBox = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: center;
+  width: calc(100% / 3);
 `
 
 const ChartHeaderFullElement = styled.div`
   color: var(--dark-text-gray);
-  flex-direction: column;
 `
 
 const ChartHeaderTopElement = styled.div`
