@@ -10,16 +10,18 @@ const ChartPanelWrapper = styled.div`
 `
 
 const ChartHeaderWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
   padding: 15px;
   border-bottom: 1px solid var(--line-gray);
 `
 
+const ChartBox = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const ChartHeaderFullElement = styled.div`
   color: var(--dark-text-gray);
-  padding: 10px;
+  flex-direction: column;
 `
 
 const ChartHeaderTopElement = styled.div`
@@ -112,20 +114,26 @@ const BondingCurveChart = ({}) => {
   return (
     <ChartPanelWrapper>
       <ChartHeaderWrapper>
-        <ChartHeaderFullElement>
-          <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
-          <ChartHeaderBottomElement>1.250 DXD/DAI</ChartHeaderBottomElement>
-        </ChartHeaderFullElement>
+        <ChartBox>
+          <ChartHeaderFullElement>
+            <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
+            <ChartHeaderBottomElement>1.250 DXD/DAI</ChartHeaderBottomElement>
+          </ChartHeaderFullElement>
+        </ChartBox>
+        <ChartBox>
         <ChartHeaderFullElement>
           <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
           <ChartHeaderBottomElement className="green-text">
             +10.51%
           </ChartHeaderBottomElement>
         </ChartHeaderFullElement>
+        </ChartBox>
+        <ChartBox>
         <ChartHeaderFullElement>
           <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
           <ChartHeaderBottomElement>41.020 DXD</ChartHeaderBottomElement>
         </ChartHeaderFullElement>
+        </ChartBox>
       </ChartHeaderWrapper>
       <ChartWrapper>
         <Line

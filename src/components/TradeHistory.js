@@ -27,17 +27,18 @@ const TableHeadersWrapper = styled.div`
   justify-content: space-between;
   color: var(--light-text-gray);
   padding: 20px 24px 8px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   text-align: right;
 `
 
 const TableHeader = styled.div`
-  width: 20%;
+  width: ${props => props.width || '23%'};
 `
 
 const TableRow = styled.div`
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 500;
   line-height: 18px;
   display: flex;
   flex-direction: row;
@@ -49,12 +50,13 @@ const TableRow = styled.div`
 `
 
 const TableCell = styled.div`
-  width: 20%;
   font-weight: 500;
   a {
     text-decoration: none;
     width: 100%;
   }
+  color: ${props => props.color};
+  width: ${props => props.width || '23%'};
 `
 
 @observer
@@ -65,16 +67,16 @@ class TradingHistory extends React.Component {
       <TradingHistoryWrapper>
         <TradeHistoryTitle>Trade History</TradeHistoryTitle>
         <TableHeadersWrapper>
-          <TableHeader className="align-left">Type</TableHeader>
-          <TableHeader>Price TKN</TableHeader>
+          <TableHeader width="15.5%" className="align-left">Type</TableHeader>
+          <TableHeader width="15.5%">Price TKN</TableHeader>
           <TableHeader>Amount DXD</TableHeader>
           <TableHeader>Total TKN</TableHeader>
           <TableHeader className="align-right">Time</TableHeader>
         </TableHeadersWrapper>
         {recentTrades.map(trade => (
           <TableRow>
-            <TableCell className="blue-text" className="align-left">{trade.type}</TableCell>
-            <TableCell>{trade.price}</TableCell>
+            <TableCell width="15.5%" color={trade.type == "Buy" ? "var(--blue-text)" : "var(--red-text)"} className="blue-text align-left">{trade.type}</TableCell>
+            <TableCell width="15.5%">{trade.price}</TableCell>
             <TableCell>{trade.amount}</TableCell>
             <TableCell>{trade.totalPaid ? trade.totalPaid : trade.totalReceived}</TableCell>
             <TableCell>
