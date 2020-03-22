@@ -100,9 +100,10 @@ class BuySell extends React.Component  {
     const { currentTab } = this.state
     const incrementTKN = store.tradingStore.enableTKNState
     const incrementDXD = store.tradingStore.enableDXDState
-    const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance.toString()) : "0"
+    // const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance) : "0.000"
+    const ETHBalance = store.providerStore.formatETHBalance()
     // TODO figure out units for bonded token (dividing by a million?)
-    const BondedTokenBalance = store.tradingStore.bondedTokenBalance
+    const BondedTokenBalance = store.tradingStore.formatBondedTokenBalance()
     
     const TabButton = ({currentTab, tabType, left, children}) => {
       if (currentTab === tabType) {

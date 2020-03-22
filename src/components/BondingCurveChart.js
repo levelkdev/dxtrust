@@ -114,7 +114,7 @@ const BondingCurveChart = ({}) => {
       <ChartHeaderWrapper>
         <ChartHeaderFullElement>
           <ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
-          <ChartHeaderBottomElement>1.25 DXD/DAI</ChartHeaderBottomElement>
+          <ChartHeaderBottomElement>1.250 DXD/DAI</ChartHeaderBottomElement>
         </ChartHeaderFullElement>
         <ChartHeaderFullElement>
           <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
@@ -124,7 +124,7 @@ const BondingCurveChart = ({}) => {
         </ChartHeaderFullElement>
         <ChartHeaderFullElement>
           <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
-          <ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
+          <ChartHeaderBottomElement>41.020 DXD</ChartHeaderBottomElement>
         </ChartHeaderFullElement>
       </ChartHeaderWrapper>
       <ChartWrapper>

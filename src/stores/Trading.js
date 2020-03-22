@@ -86,10 +86,34 @@ class TradingStore {
 		this.setRewardForSell(sellAmount)
 		this.sellAmount = sellAmount
 	}
-  
-  formatNumber(number) {
-    return Number(number).toPrecision(4);
-  }
+
+	formatNumber(number) {
+		return Number(number).toFixed(3);
+	}
+
+	formatBondedTokenBalance() {
+		return this.formatNumber(this.bondedTokenBalance);
+	}
+
+	formatPrice() {
+		return this.formatNumber(this.price);
+	}
+
+	formatPriceToBuy() {
+		return this.formatNumber(this.priceToBuy);
+	}
+
+	formatRewardForSell() {
+		return this.formatNumber(this.rewardForSell);
+	}
+
+	formatBuyAmount() {
+		return this.formatNumber(this.buyAmount);
+	}
+
+	formatSellAmount() {
+		return this.formatNumber(this.sellAmount);
+	}
 
 	// TODO look into how to pass this as a callback??
 	// setEnableTKNStateConfirmed()
