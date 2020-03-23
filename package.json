@@ -1,7 +1,7 @@
 {
   "name": "BC-DAPP",
-  "version": "1.0.0",
-  "description": "Front end for fundraising bonding curve.",
+  "version": "0.1.0",
+  "description": "Decentralized app for fundraising in DXdao.",
   "dependencies": {
     "@arkane-network/web3-arkane-provider": "^0.2.5",
     "@portis/web3": "^2.0.0-beta.53",
@@ -50,6 +50,7 @@
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
     "file-loader": "^5.0.2",
     "http-server": "0.11.1",
     "ipfs": "^0.40.0",
@@ -62,15 +63,16 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "react-app-rewired start",
-    "build": "webpack --mode production",
+    "start": "npx react-app-rewired start",
+    "linter": "npx eslint src",
+    "build": "npx webpack --mode production",
     "deploy-ipfs": "npm run build && ipfs add -r dist && ipfs-deploy dist -p infura"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/levelkdev/BC-DAPP.git"
   },
-  "author": "",
+  "authors": "John Kelleher <john.kelleher@levelk.io>, Augusto Lemble <me@augustol.com>",
   "bugs": {
     "url": "https://github.com/levelkdev/BC-DAPP/issues"
   },
