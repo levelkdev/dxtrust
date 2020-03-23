@@ -90,8 +90,8 @@ class BuyInput extends React.Component {
 	render() {
 
     const { infotext } = this.props;
-    const { price } = store.tradingStore;
-    const { priceToBuy } = store.tradingStore;
+    const price = store.tradingStore.formatPrice();
+    const priceToBuy = store.tradingStore.formatPriceToBuy();
     const { hasError } = this.state;
 
     const Button = ({active, children, onClick}) => {

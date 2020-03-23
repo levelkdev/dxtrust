@@ -2,6 +2,7 @@
   --active-button-border: #304FFE;
   --orange: #F9AA33;
   --blue-text: #536DFE;
+  --red-text: #FF4081;
   --light-text-gray: #BDBDBD;
   --dark-text-gray: #616161;
   --nav-text-light: rgba(55, 71, 79, 0.4);
@@ -22,25 +23,23 @@
   --rewards-text-green: #54AE6F;
   --rewards-background-green: rgba(84, 174, 111, 0.1);
   
-  --rubik: 'Rubik', sans-serif;
-  --open-sans: 'Open Sans', sans-serif;
-  --pt-serif: 'PT Serif', serif;
+  --roboto: 'Roboto', sans-serif;
 }
 
 body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  font-family: var(--open-sans);
+  font-family: var(--roboto);
   background-color: var(--light-gray);
+  src: url('/public/fonts/Roboto-Regular.ttf');
+  src: url('/public/fonts/Roboto-Medium.ttf');
+  src: url('/public/fonts/Roboto-Bold.ttf');
+  
 }
 
 .app-shell {
   width: 936px;
-}
-
-h1 {
-  font-family: var(--pt-serif);
 }
 
 .green-text {

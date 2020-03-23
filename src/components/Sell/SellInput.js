@@ -84,8 +84,8 @@ class SellInput extends React.Component {
 
 	render() {
     const { hasError } = this.state
-    const price = store.tradingStore.price
-    const rewardForSell = store.tradingStore.rewardForSell
+    const price = store.tradingStore.formatPrice()
+    const rewardForSell = store.tradingStore.formatRewardForSell()
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {

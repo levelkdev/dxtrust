@@ -18,21 +18,23 @@ const LeftNav = styled.div`
 `
 
 const MenuItem = styled.div`
+  display: flex;
+  align-items: center;
   color: var(--nav-text-light);
-  line-height: 24px;
-  padding: 0px 20px;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 0px 12px;
   cursor: pointer;
 `
 
-const SelectedMenuItem = styled.div`
+const SelectedMenuItem = styled(MenuItem)`
   color: var(--nav-text-dark);
-  line-height: 24px;
-  padding: 0px 10px;
-  cursor: pointer;
+  font-weight: 500;
+  letter-spacing: 1px;
 `
 
 const DXDLogo = styled.img`
-  margin-right: 37px;
+  margin-right: 18px;
 `
 
 const Web3Connect = styled.div`
@@ -92,7 +94,9 @@ const NavBar = ({}) => {
   return (
     <NavWrapper>
       <LeftNav>  
-        <DXDLogo src="DXdao.svg"></DXDLogo>
+        <NavItem route="/">
+          <DXDLogo src="DXdao.svg"></DXDLogo>
+        </NavItem>
         <NavItem option={1} route="/exchange">
           Exchange
         </NavItem>
