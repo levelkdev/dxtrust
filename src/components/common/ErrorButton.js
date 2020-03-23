@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Button = styled.div`
 	height: 40px;
@@ -30,7 +30,7 @@ const Button = styled.div`
   border-style: solid;
   border-color: rgb(255, 104, 113);
   border-image: initial;
-`
+`;
 
 const Text = styled.div`
   text-overflow: ellipsis;
@@ -40,14 +40,14 @@ const Text = styled.div`
   overflow: hidden;
   justify-content: center;
   margin-left: 30px;
-`
+`;
 
 export default function ErrorButton(props) {
-    return (
-      <Button>
-        <Text>
+	return (
+		<Button>
+			<Text>
           Wrong Network
-        </Text>
-      </Button>
-    )
+			</Text>
+		</Button>
+	);
 }

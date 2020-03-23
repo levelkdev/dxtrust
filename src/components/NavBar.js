@@ -1,7 +1,7 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
-import styled from 'styled-components'
-import Web3ConnectButton from './common/Web3ConnectButton'
+import React from "react";
+import { withRouter } from "react-router-dom";
+import styled from "styled-components";
+import Web3ConnectButton from "./common/Web3ConnectButton";
 
 const NavWrapper = styled.div`
   display: flex;
@@ -9,31 +9,31 @@ const NavWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 50px 0px 40px 0px;
-`
+`;
 
 const LeftNav = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 const MenuItem = styled.div`
   color: var(--nav-text-light);
   line-height: 24px;
   padding: 0px 20px;
   cursor: pointer;
-`
+`;
 
 const SelectedMenuItem = styled.div`
   color: var(--nav-text-dark);
   line-height: 24px;
   padding: 0px 10px;
   cursor: pointer;
-`
+`;
 
 const DXDLogo = styled.img`
   margin-right: 37px;
-`
+`;
 
 const Web3Connect = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const Web3Connect = styled.div`
   border-radius: 4px;
   background: white;
   color: #546E7A;
-`
+`;
 
 const Avatar = styled.div`
   height: 17px;
@@ -54,58 +54,58 @@ const Avatar = styled.div`
   border-radius: 8px;
   background: #05575D;
   margin: 5px 10px 0px 10px;
-`
+`;
 
 const NavBar = ({}) => {
-  const [selected, setSelected] = React.useState(0)
+	const [selected, setSelected] = React.useState(0);
 
-  const NavItem = withRouter(
-    ({
-      option, route, history, location, children
-    }) => {
-      // Handle external route navigation
-      if (location.pathname === route) {
-        setSelected(option)
-      } else if (location.pathname === '/') {
-        setSelected(1)
-      }
+	const NavItem = withRouter(
+		({
+			option, route, history, location, children
+		}) => {
+			// Handle external route navigation
+			if (location.pathname === route) {
+				setSelected(option);
+			} else if (location.pathname === "/") {
+				setSelected(1);
+			}
 
-      if (option === selected) {
-        return (
-          <SelectedMenuItem>
-            {children}
-          </SelectedMenuItem>
-        )
-      }
-      return (
-        <MenuItem onClick={() => {
-          setSelected(option)
-          history.push(route)
-        }}
-        >
-          {children}
-        </MenuItem>
-      )
-    }
-  )
+			if (option === selected) {
+				return (
+					<SelectedMenuItem>
+						{children}
+					</SelectedMenuItem>
+				);
+			}
+			return (
+				<MenuItem onClick={() => {
+					setSelected(option);
+					history.push(route);
+				}}
+				>
+					{children}
+				</MenuItem>
+			);
+		}
+	);
 
-  return (
-    <NavWrapper>
-      <LeftNav>  
-        <NavItem route="/"><DXDLogo src="DXdao.svg"></DXDLogo></NavItem>
-        <NavItem option={1} route="/exchange">
+	return (
+		<NavWrapper>
+			<LeftNav>  
+				<NavItem route="/"><DXDLogo src="DXdao.svg"></DXDLogo></NavItem>
+				<NavItem option={1} route="/exchange">
           Exchange
-        </NavItem>
-        <NavItem option={2} route="/redeem">
+				</NavItem>
+				<NavItem option={2} route="/redeem">
           Rewards
-        </NavItem>
-      </LeftNav>
-      <Web3ConnectButton>
-        <Avatar></Avatar>
-        <div>0x232b...8482</div>
-      </Web3ConnectButton>
-    </NavWrapper>
-  )
-}
+				</NavItem>
+			</LeftNav>
+			<Web3ConnectButton>
+				<Avatar></Avatar>
+				<div>0x232b...8482</div>
+			</Web3ConnectButton>
+		</NavWrapper>
+	);
+};
 
-export default NavBar
+export default NavBar;

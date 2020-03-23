@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const ContentWrapper = styled.div`
   height: 200px;
@@ -7,13 +7,13 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-`
+`;
 
 const CircleContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-`
+`;
 
 const CheckboxContainer = styled.div`
   display: flex;
@@ -25,12 +25,12 @@ const CheckboxContainer = styled.div`
   border-radius: 24px;
   border: 1px solid var(--panel-icon-2);
   margin-bottom: 16px;
-`
+`;
 
 const Checkbox = styled.img`
   height: 13px;
   width: 18px;
-`
+`;
 
 const Info = styled.div`
   //font-family: SF Pro Text;
@@ -42,7 +42,7 @@ const Info = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 8px;
-`
+`;
 
 const Status = styled.div`
   // font-family: SF Pro Text;
@@ -54,7 +54,7 @@ const Status = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 27px;
-`
+`;
 
 const EnableDXDButton = styled.div`
   background-color: #536DFE;
@@ -65,21 +65,21 @@ const EnableDXDButton = styled.div`
   height: 34px;
   line-height: 34px;
   text-transform: uppercase;
-`
+`;
 
 const SellContinue = ({}) => {
-  return (
-    <ContentWrapper>
-      <CircleContainer>
-        <CheckboxContainer>
-          <Checkbox src="checkbox_758AFE.svg" />
-        </CheckboxContainer>
-      </CircleContainer>
-      <Info>Enable DXD for trading</Info>
-      <Status>Confirmed</Status>
-      <EnableDXDButton>Continue</EnableDXDButton>
-    </ContentWrapper>
-  )
-}
+	return (
+		<ContentWrapper>
+			<CircleContainer>
+				<CheckboxContainer>
+					<Checkbox src="checkbox_758AFE.svg" />
+				</CheckboxContainer>
+			</CircleContainer>
+			<Info>Enable DXD for trading</Info>
+			<Status>Confirmed</Status>
+			<EnableDXDButton>Continue</EnableDXDButton>
+		</ContentWrapper>
+	);
+};
 
-export default SellContinue
+export default SellContinue;
