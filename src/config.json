@@ -1,10 +1,13 @@
 {
     "deployed": {
-        "BondedToken": "0xb5f3b8265a290c74f824cfb4528f0dd746f76e97",
-        "BondingCurve": "0xa8def88d436e29c3a463d47539e035f619808160",
+        "BondedToken": "0xc16dad15162e73d7cb9be3ba131edf5c66d7adb9",
+        "BondingCurve": "0x92237941582795ad0a6e9781f0885a067f0cbe6b",
+        "BondingCurveEther": "0x92237941582795ad0a6e9781f0885a067f0cbe6b",
         "RewardsDistributor": "0xda4c28a61c0b525b59ba669c9b034c811ea0799f",
         "CollateralToken": "0x7BFeE5A4Ce0fc3E21cA209067Ce68b3e82c70972",
         "StaticCurveLogic": "0x5952e79e71c079a12c98b437c6e9358e15b988f9"
     },
-    "activeNetworkId": 4
+    "activeNetworkId": 4,
+    "buyStartState": 4,
+    "collateralType": "ETH"
 }

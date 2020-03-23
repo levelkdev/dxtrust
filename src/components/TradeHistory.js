@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import store from '../stores/Root'
 import { observer, inject } from 'mobx-react'
+import { collateralType } from '../config.json'
 
 const TradingHistoryWrapper = styled.div`
   width: 100%;
