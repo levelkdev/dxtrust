@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx'
 import Web3 from 'web3';
 import store from './Root'
+import { BigNumber } from '../utils/bignumber';
 
 const schema = {
     BondedToken: require('../abi/BondedToken'),
@@ -25,6 +26,15 @@ class ProviderStore {
     @observable isConnected = false
     @observable chainId = ''
     @observable ETHBalance = 0
+
+    formatNumber(number) {
+        return Number(number).toFixed(3);
+    }
+
+    formatETHBalance() {
+        const stringBalance = Web3.utils.fromWei(this.ETHBalance.toString())
+        return this.formatNumber(stringBalance);
+    }
 
     loadObject = (type, address, label) => {
     	// TODO what to do about web3

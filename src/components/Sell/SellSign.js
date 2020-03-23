@@ -50,9 +50,9 @@ const PendingCircle = styled.div`
 class SellSign extends React.Component {
 
 	render() {
-    const price = store.tradingStore.price
-    const sellAmount = store.tradingStore.sellAmount
-    const rewardForSell = store.tradingStore.rewardForSell
+    const price = store.tradingStore.formatPrice()
+    const rewardForSell = store.tradingStore.formatRewardForSell()
+    const sellAmount = store.tradingStore.formatSellAmount()
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {

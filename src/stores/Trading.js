@@ -87,6 +87,34 @@ class TradingStore {
 		this.sellAmount = sellAmount
 	}
 
+	formatNumber(number) {
+		return Number(number).toFixed(3);
+	}
+
+	formatBondedTokenBalance() {
+		return this.formatNumber(this.bondedTokenBalance);
+	}
+
+	formatPrice() {
+		return this.formatNumber(this.price);
+	}
+
+	formatPriceToBuy() {
+		return this.formatNumber(this.priceToBuy);
+	}
+
+	formatRewardForSell() {
+		return this.formatNumber(this.rewardForSell);
+	}
+
+	formatBuyAmount() {
+		return this.formatNumber(this.buyAmount);
+	}
+
+	formatSellAmount() {
+		return this.formatNumber(this.sellAmount);
+	}
+
 	// TODO look into how to pass this as a callback??
 	// setEnableTKNStateConfirmed()
 	setStateConfirmed(confirmationFlag) {
@@ -158,9 +186,9 @@ class TradingStore {
 		const amount = sellEvent.returnValues.amount;
 		const totalReceived = sellEvent.returnValues.reward;
 		console.log("Burn reward: " + sellEvent.returnValues.reward);
-		container.amount = sellEvent.returnValues.amount;
-		container.price = totalReceived / amount;
-		container.totalReceived = totalReceived;
+		container.amount = this.formatNumber(sellEvent.returnValues.amount);
+		container.price = this.formatNumber(totalReceived / amount);
+		container.totalReceived = this.formatNumber(totalReceived);
 		container.blockNumber = sellEvent.blockNumber;
 		container.blockTime = await store.providerStore.getBlockTime(sellEvent.blockNumber);
 		container.type = "Sell";
@@ -181,9 +209,9 @@ class TradingStore {
 		const container = {};
 		const amount = buyEvent.returnValues.amount;
 		const price = buyEvent.returnValues.price;
-		container.amount = amount;
-		container.price = price;
-		container.totalPaid = price * amount;
+		container.amount = this.formatNumber(amount);
+		container.price = this.formatNumber(price);
+		container.totalPaid = this.formatNumber(price * amount);
 		container.blockNumber = buyEvent.blockNumber;
 		container.blockTime = await store.providerStore.getBlockTime(buyEvent.blockNumber);
 		container.type = "Buy";
