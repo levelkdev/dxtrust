@@ -97,7 +97,7 @@ class TradingStore {
 	}
 
 	formatBondedTokenBalance() {
-		return this.formatNumber(this.bondedTokenBalance);
+		return this.formatNumber(Web3.utils.fromWei(this.bondedTokenBalance.toString()));
 	}
 
 	formatPrice() {
