@@ -2,6 +2,34 @@
   "name": "BC-DAPP",
   "version": "0.1.0",
   "description": "Decentralized app for fundraising in DXdao.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx react-app-rewired start",
+    "linter": "npx eslint src",
+    "build": "npx webpack --mode production",
+    "deploy-ipfs": "npm run build && ipfs add -r dist && ipfs-deploy dist -p infura"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levelkdev/BC-DAPP.git"
+  },
+  "authors": "John Kelleher <john.kelleher@levelk.io>, Augusto Lemble <me@augustol.com>",
+  "bugs": {
+    "url": "https://github.com/levelkdev/BC-DAPP/issues"
+  },
+  "homepage": "./",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@arkane-network/web3-arkane-provider": "^0.2.5",
     "@portis/web3": "^2.0.0-beta.53",
@@ -60,33 +88,5 @@
     "style-loader": "^1.1.3",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.11"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx react-app-rewired start",
-    "linter": "npx eslint src",
-    "build": "npx webpack --mode production",
-    "deploy-ipfs": "npm run build && ipfs add -r dist && ipfs-deploy dist -p infura"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/levelkdev/BC-DAPP.git"
-  },
-  "authors": "John Kelleher <john.kelleher@levelk.io>, Augusto Lemble <me@augustol.com>",
-  "bugs": {
-    "url": "https://github.com/levelkdev/BC-DAPP/issues"
-  },
-  "homepage": "./",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
