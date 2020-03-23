@@ -14,8 +14,7 @@ const AddressPill = styled.div`
 	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
 	border-radius: 6px;
 
-	// font-family: SF Pro Text;
-	font-family: var(--open-sans);
+	font-family: var(--roboto);
 	font-size: 14px;
 	line-height: 17px;
 	letter-spacing: 0.2px;

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import ActiveButton from '../common/ActiveButton'
 import InactiveButton from '../common/InactiveButton'
 import store from '../../stores/Root'
+import { collateralType } from '../../config.json'
 
 const FormWrapper = styled.div`
   height: 200px;
@@ -50,9 +51,9 @@ const PendingCircle = styled.div`
 class SellUnconfirmed extends React.Component {
 
 	render() {
-    const price = store.tradingStore.price
-    const sellAmount = store.tradingStore.sellAmount
-    const rewardForSell = store.tradingStore.rewardForSell
+    const price = store.tradingStore.formatPrice()
+    const rewardForSell = store.tradingStore.formatRewardForSell()
+    const sellAmount = store.tradingStore.formatSellAmount()
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -70,11 +71,11 @@ class SellUnconfirmed extends React.Component {
       <FormWrapper>
         <InfoRow>
           <FormInfoText>Price</FormInfoText>
-          <div>{price} TKN</div>
+          <div>{price} {collateralType}</div>
         </InfoRow>
         <InfoRow>
           <FormInfoText>Receive</FormInfoText>
-          <div>{rewardForSell} TKN</div>
+          <div>{rewardForSell} {collateralType}</div>
         </InfoRow>
         <InfoRow>
           <FormInfoText>Sell Amount</FormInfoText>

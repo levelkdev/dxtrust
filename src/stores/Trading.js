@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx'
-import { deployed } from '../config.json'
+import { deployed, collateralType, buyStartState } from '../config.json'
 import store from './Root'
+import Web3 from 'web3'
 
 const ConfirmationFlags = {
   ENABLE_TKN: 'enable_TKN',
@@ -13,7 +14,7 @@ class TradingStore {
 	@observable reserveBalance = ''
 	@observable price = 0
 
-	@observable enableTKNState = 0
+	@observable enableTKNState = buyStartState
 	@observable buyingState = 0
 	@observable buyAmount = 0
 	@observable priceToBuy = 0
@@ -32,14 +33,18 @@ class TradingStore {
 	// getPriceToBuy(uint256 numTokens)
 	async getPriceToBuy(numTokens) {
 		const contract = this.loadBondingCurveContract()
-		const priceToBuy = await contract.methods.priceToBuy(numTokens).call()
+		const weiInput = Web3.utils.toWei(numTokens)
+		const weiPriceToBuy = await contract.methods.priceToBuy(weiInput).call()
+		const priceToBuy = Web3.utils.fromWei(weiPriceToBuy)
 		return priceToBuy
 	}
 
 	// getRewardForSell(uint256 numTokens)
 	async getRewardForSell(numTokens) {
 		const contract = this.loadBondingCurveContract()
-		const rewardForSell = await contract.methods.rewardForSell(numTokens).call()
+		const weiInput = Web3.utils.toWei(numTokens)
+		const weiRewardForSell = await contract.methods.rewardForSell(weiInput).call()
+		const rewardForSell = Web3.utils.fromWei(weiRewardForSell)
 		return rewardForSell
 	}
 
@@ -57,7 +62,7 @@ class TradingStore {
 
 	// setPrice()
 	async setPrice() {
-		const price = await this.getPriceToBuy(1)
+		const price = await this.getPriceToBuy("1")
 		this.price = price
 	}
 
@@ -86,10 +91,34 @@ class TradingStore {
 		this.setRewardForSell(sellAmount)
 		this.sellAmount = sellAmount
 	}
-  
-  formatNumber(number) {
-    return Number(number).toPrecision(4);
-  }
+
+	formatNumber(number) {
+		return Number(number).toFixed(3);
+	}
+
+	formatBondedTokenBalance() {
+		return this.formatNumber(this.bondedTokenBalance);
+	}
+
+	formatPrice() {
+		return this.formatNumber(this.price);
+	}
+
+	formatPriceToBuy() {
+		return this.formatNumber(this.priceToBuy);
+	}
+
+	formatRewardForSell() {
+		return this.formatNumber(this.rewardForSell);
+	}
+
+	formatBuyAmount() {
+		return this.formatNumber(this.buyAmount);
+	}
+
+	formatSellAmount() {
+		return this.formatNumber(this.sellAmount);
+	}
 
 	// TODO look into how to pass this as a callback??
 	// setEnableTKNStateConfirmed()
@@ -251,8 +280,24 @@ class TradingStore {
 		}
 	}
 
+	@action buy = () => {
+		if (collateralType === "ETH") {
+			this.ETHBuy()
+		} else {
+			this.ERC20Buy()
+		}
+	}
+
+	@action sell = () => {
+		if (collateralType === "ETH") {
+			this.ETHSell()
+		} else {
+			this.ERC20Sell()
+		}
+	}
+
 	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
-	@action buy = async () => {
+	@action ERC20Buy = async () => {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
 		// TODO figure out how to set maxPrice
@@ -273,7 +318,7 @@ class TradingStore {
 	}
 
 	// sell(uint256 numTokens, uint256 minPrice, address recipient)
-	@action sell = async () => {
+	@action ERC20Sell = async () => {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
 		// TODO figure out how to set minPrice
@@ -294,12 +339,60 @@ class TradingStore {
 		}
 	}
 
+	// buy(uint256 numTokens, uint256 maxPrice, address recipient)
+	@action ETHBuy = async () => {
+		const contract = this.loadBondingCurveEtherContract()
+		const recipient = store.providerStore.address
+		try {
+			const weiPriceToBuy = Web3.utils.toWei(this.priceToBuy)
+			const weiBuyAmount = Web3.utils.toWei(this.buyAmount)
+			console.log("weiPriceToBuy is: " + weiPriceToBuy)
+			console.log("weiBuyAmount is: " + weiBuyAmount)
+			await contract.methods.buy(weiBuyAmount, weiPriceToBuy, recipient).send({from: recipient, value: weiPriceToBuy})
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
+			})
+			console.log('buy executed for ' + this.buyAmount)
+			// TODO Don't think this reserve balance update is required?
+			// this.getReserveBalance()
+			this.buyingState = 2
+		} catch (e) {
+			// TODO set up logging
+			console.log(e)
+		}
+	}
+
+	// sell(uint256 numTokens, uint256 minReturn, address recipient)
+	@action ETHSell = async () => {
+		const contract = this.loadBondingCurveContract()
+		const recipient = store.providerStore.address
+		try {
+			const weiRewardForSell = Web3.utils.toWei(this.rewardForSell)
+			const weiSellAmount = Web3.utils.toWei(this.sellAmount)
+			await contract.methods.sell(weiSellAmount, weiRewardForSell, recipient).send()
+			.on('transactionHash', function(hash){
+				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
+			})
+			console.log('sell executed for ' + this.sellAmount)
+			// TODO Don't think this reserve balance update is required?
+			// this.getReserveBalance()
+			this.sellingState = 2
+		} catch (e) {
+			// TODO set up logging
+			console.log(e)
+		}
+	}
+
     loadBondedTokenContract() {
         return store.providerStore.loadObject('BondedToken', deployed.BondedToken, 'BondedToken')
     }
 
     loadBondingCurveContract() {
         return store.providerStore.loadObject('BondingCurve', deployed.BondingCurve, 'BondingCurve')
+    }
+
+    loadBondingCurveEtherContract() {
+        return store.providerStore.loadObject('BondingCurveEther', deployed.BondingCurveEther, 'BondingCurveEther')
     }
 
     loadRewardsDistributorContract() {

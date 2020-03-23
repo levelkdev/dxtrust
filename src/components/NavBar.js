@@ -18,13 +18,16 @@ const LeftNav = styled.div`
 `;
 
 const MenuItem = styled.div`
+  display: flex;
+  align-items: center;
   color: var(--nav-text-light);
-  line-height: 24px;
-  padding: 0px 20px;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 0px 12px;
   cursor: pointer;
 `;
 
-const SelectedMenuItem = styled.div`
+const SelectedMenuItem = styled(MenuItem)`
   color: var(--nav-text-dark);
   line-height: 24px;
   padding: 0px 10px;

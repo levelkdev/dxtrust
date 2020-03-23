@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx'
 import Web3 from 'web3';
 import store from './Root'
+import { BigNumber } from '../utils/bignumber';
+import * as moment from 'moment';
 
 const schema = {
     BondedToken: require('../abi/BondedToken'),
@@ -26,6 +28,15 @@ class ProviderStore {
     @observable chainId = ''
     @observable ETHBalance = 0
 
+    formatNumber(number) {
+        return Number(number).toFixed(3);
+    }
+
+    formatETHBalance() {
+        const stringBalance = Web3.utils.fromWei(this.ETHBalance.toString())
+        return this.formatNumber(stringBalance);
+    }
+
     loadObject = (type, address, label) => {
     	// TODO what to do about web3
         // TODO what function to use for the from field below?
@@ -40,7 +51,7 @@ class ProviderStore {
     async getBlockTime(blockNumber) {
         const blockData = await this.web3.eth.getBlock(blockNumber)
         const date = new Date(blockData.timestamp*1000)
-        return date.toUTCString()
+        return moment(date).format('DD.MM - HH:mm');
     }
 
     // get blockHash from blockNumber

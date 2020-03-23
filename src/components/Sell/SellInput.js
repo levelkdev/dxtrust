@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import ActiveButton from '../common/ActiveButton'
 import InactiveButton from '../common/InactiveButton'
 import store from '../../stores/Root'
+import { collateralType } from '../../config.json'
 
 const FormWrapper = styled.div`
   height: 200px;
@@ -83,8 +84,8 @@ class SellInput extends React.Component {
 
 	render() {
     const { hasError } = this.state
-    const price = store.tradingStore.price
-    const rewardForSell = store.tradingStore.rewardForSell
+    const price = store.tradingStore.formatPrice()
+    const rewardForSell = store.tradingStore.formatRewardForSell()
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -102,11 +103,11 @@ class SellInput extends React.Component {
       <FormWrapper>
         <InfoRow>
           <FormInfoText>Price</FormInfoText>
-          <div>{price} TKN</div>
+          <div>{price} {collateralType}</div>
         </InfoRow>
         <InfoRow>
           <FormInfoText>Receive</FormInfoText>
-          <div>{rewardForSell} TKN</div>
+          <div>{rewardForSell} {collateralType}</div>
         </InfoRow>
         <InputColumn>
           <FormContent>

@@ -11,11 +11,15 @@ const ChartPanelWrapper = styled.div`
 
 const ChartHeaderWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
   padding: 15px;
   border-bottom: 1px solid var(--line-gray);
 `;
+
+const ChartBox = styled.div`
+  display: flex;
+  justify-content: center;
+  width: calc(100% / 3);
+`
 
 const ChartHeaderFullElement = styled.div`
   color: var(--dark-text-gray);
@@ -138,5 +142,6 @@ const BondingCurveChart = ({}) => {
 		</ChartPanelWrapper>
 	);
 };
+
 
 export default BondingCurveChart;
