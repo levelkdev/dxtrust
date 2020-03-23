@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Button = styled.div`
   background-color: white;
@@ -10,14 +10,14 @@ const Button = styled.div`
   line-height: 34px;
   text-align: center;
   text-transform: uppercase;
-`
+`;
 const InactiveButton = ({children}) => {
-  return (
-    <Button>
-      {children}
-    </Button>
-  )
-}
+	return (
+		<Button>
+			{children}
+		</Button>
+	);
+};
 
-export default InactiveButton
+export default InactiveButton;
 

@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import store from '../../stores/Root'
+import React from "react";
+import styled from "styled-components";
+import store from "../../stores/Root";
 
 const ContentWrapper = styled.div`
   height: 200px;
@@ -8,13 +8,13 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-`
+`;
 
 const CircleContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-`
+`;
 
 const CheckboxContainer = styled.div`
   display: flex;
@@ -26,12 +26,12 @@ const CheckboxContainer = styled.div`
   border-radius: 24px;
   border: 1px solid var(--panel-icon-2);
   margin-bottom: 16px;
-`
+`;
 
 const Checkbox = styled.img`
   height: 13px;
   width: 18px;
-`
+`;
 
 const Info = styled.div`
   //font-family: SF Pro Text;
@@ -43,7 +43,7 @@ const Info = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 8px;
-`
+`;
 
 const Status = styled.div`
   // font-family: SF Pro Text;
@@ -55,7 +55,7 @@ const Status = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 27px;
-`
+`;
 
 const EnableButton = styled.div`
   background-color: #536DFE;
@@ -67,34 +67,34 @@ const EnableButton = styled.div`
   line-height: 34px;
   text-transform: uppercase;
   cursor: pointer;
-`
+`;
 
 const EnableContinue = ({tokenType}) => {
 
-  const Button = ({tokenType}) => {
-    if (tokenType === "TKN") {
-      return (
-        <EnableButton onClick={() => {store.tradingStore.enableTKNState=4}}>Continue</EnableButton>
-      ) 
-    } else if (tokenType === "DXD"){
-      return (
-        <EnableButton onClick={() => {store.tradingStore.enableDXDState=4}}>Continue</EnableButton>
-      )
-    }
-  }
+	const Button = ({tokenType}) => {
+		if (tokenType === "TKN") {
+			return (
+				<EnableButton onClick={() => {store.tradingStore.enableTKNState=4;}}>Continue</EnableButton>
+			); 
+		} else if (tokenType === "DXD"){
+			return (
+				<EnableButton onClick={() => {store.tradingStore.enableDXDState=4;}}>Continue</EnableButton>
+			);
+		}
+	};
 
-  return (
-    <ContentWrapper>
-      <CircleContainer>
-        <CheckboxContainer>
-          <Checkbox src="checkbox_758AFE.svg" />
-        </CheckboxContainer>
-      </CircleContainer>
-      <Info>Enable {tokenType} for trading</Info>
-      <Status>Confirmed</Status>
-      <Button tokenType={tokenType}>Continue</Button>
-    </ContentWrapper>
-  )
-}
+	return (
+		<ContentWrapper>
+			<CircleContainer>
+				<CheckboxContainer>
+					<Checkbox src="checkbox_758AFE.svg" />
+				</CheckboxContainer>
+			</CircleContainer>
+			<Info>Enable {tokenType} for trading</Info>
+			<Status>Confirmed</Status>
+			<Button tokenType={tokenType}>Continue</Button>
+		</ContentWrapper>
+	);
+};
 
-export default EnableContinue
+export default EnableContinue;

@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Button = styled.div`
   background-color: var(--blue-text);
@@ -11,13 +11,13 @@ const Button = styled.div`
   text-align: center;
   text-transform: uppercase;
   cursor: pointer;
-`
+`;
 const ActiveButton = ({children, onClick}) => {
-  return (
-    <Button onClick={onClick}>
-      {children}
-    </Button>
-  )
-}
+	return (
+		<Button onClick={onClick}>
+			{children}
+		</Button>
+	);
+};
 
-export default ActiveButton
+export default ActiveButton;

@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const AddressPill = styled.div`
 	height: 40px;
@@ -19,23 +19,23 @@ const AddressPill = styled.div`
 	line-height: 17px;
 	letter-spacing: 0.2px;
 	color: var(--dark-text-gray);
-`
+`;
 
 
 const UserAddress = ({address}) => {
 
 	function toAddressStub(address) {
-	  const start = address.slice(0, 5)
-	  const end = address.slice(-3)
+	  const start = address.slice(0, 5);
+	  const end = address.slice(-3);
 
-	  return `${start}...${end}`
+	  return `${start}...${end}`;
 	}
 
 	return (
 		<AddressPill>
 			{toAddressStub(address)}
 		</AddressPill>
-	)
-}
+	);
+};
 
-export default UserAddress
+export default UserAddress;
