@@ -38,10 +38,15 @@ const FormContent = styled.div`
   line-height: 34px;
   margin-top: 12px;
   margin-bottom: 33px;
+  font-weight: 600;
+  font-size: 15px;
   input, input:focus {
     border: none;
     font-size: inherit;
     outline: none;
+    ::placeholder {
+      color: rgba(48, 79, 254, 0.2);
+    }
   }
 `
 
