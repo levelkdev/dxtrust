@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from 'react';
 import styled from "styled-components";
+import Jazzicon from 'jazzicon';
 
 const AddressPill = styled.div`
 	height: 40px;
 	width: 166px;
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: center;
 
 	background: #FFFFFF;
@@ -21,18 +22,35 @@ const AddressPill = styled.div`
 	color: var(--dark-text-gray);
 `;
 
+const StyledIdenticon = styled.div`
+    height: 20px;
+    width: 20px;
+    border-radius: 15px;
+    background-color: #FFFFFF;
+`;
 
 const UserAddress = ({address}) => {
+    const ref = useRef();
 
 	function toAddressStub(address) {
-	  const start = address.slice(0, 5);
-	  const end = address.slice(-3);
+	  const start = address.slice(0, 6);
+	  const end = address.slice(-4);
 
 	  return `${start}...${end}`;
 	}
 
+    useEffect(() => {
+        if (address && ref.current) {
+            ref.current.innerHTML = '';
+            ref.current.appendChild(
+                Jazzicon(20, parseInt(address.slice(2, 10), 16))
+            );
+        }
+    });
+
 	return (
 		<AddressPill>
+			<StyledIdenticon ref={ref}/>
 			{toAddressStub(address)}
 		</AddressPill>
 	);
