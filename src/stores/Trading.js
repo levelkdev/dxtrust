@@ -97,7 +97,7 @@ class TradingStore {
 	}
 
 	formatBondedTokenBalance() {
-		return this.formatNumber(this.bondedTokenBalance);
+		return this.formatNumber(Web3.utils.fromWei(this.bondedTokenBalance.toString()));
 	}
 
 	formatPrice() {
@@ -188,10 +188,9 @@ class TradingStore {
 	// format sell event
 	async formatSellEvent(sellEvent) {
 		const container = {};
-		const amount = sellEvent.returnValues.amount;
-		const totalReceived = sellEvent.returnValues.reward;
-		console.log("Burn reward: " + sellEvent.returnValues.reward);
-		container.amount = this.formatNumber(sellEvent.returnValues.amount);
+		const amount = Web3.utils.fromWei(sellEvent.returnValues.amount);
+		const totalReceived = Web3.utils.fromWei(sellEvent.returnValues.reward);
+		container.amount = this.formatNumber(amount);
 		container.price = this.formatNumber(totalReceived / amount);
 		container.totalReceived = this.formatNumber(totalReceived);
 		container.blockNumber = sellEvent.blockNumber;
@@ -212,11 +211,11 @@ class TradingStore {
 	// format buy event
 	async formatBuyEvent(buyEvent) {
 		const container = {};
-		const amount = buyEvent.returnValues.amount;
-		const price = buyEvent.returnValues.price;
+		const amount = Web3.utils.fromWei(buyEvent.returnValues.amount);
+		const totalPrice = Web3.utils.fromWei(buyEvent.returnValues.price);
+		container.price = this.formatNumber(totalPrice/amount);
 		container.amount = this.formatNumber(amount);
-		container.price = this.formatNumber(price);
-		container.totalPaid = this.formatNumber(price * amount);
+		container.totalPaid = this.formatNumber(totalPrice);
 		container.blockNumber = buyEvent.blockNumber;
 		container.blockTime = await store.providerStore.getBlockTime(buyEvent.blockNumber);
 		container.type = "Buy";

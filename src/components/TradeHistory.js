@@ -69,9 +69,9 @@ class TradingHistory extends React.Component {
         <TradeHistoryTitle>Trade History</TradeHistoryTitle>
         <TableHeadersWrapper>
           <TableHeader width="15.5%" className="align-left">Type</TableHeader>
-          <TableHeader width="15.5%">Price TKN</TableHeader>
+          <TableHeader width="15.5%">Price {collateralType}</TableHeader>
           <TableHeader>Amount DXD</TableHeader>
-          <TableHeader>Total TKN</TableHeader>
+          <TableHeader>Total {collateralType}</TableHeader>
           <TableHeader className="align-right">Time</TableHeader>
         </TableHeadersWrapper>
         {recentTrades.map(trade => (
