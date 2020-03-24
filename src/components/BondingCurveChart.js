@@ -116,20 +116,26 @@ const BondingCurveChart = ({}) => {
 	return (
 		<ChartPanelWrapper>
 			<ChartHeaderWrapper>
-				<ChartHeaderFullElement>
-					<ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
-					<ChartHeaderBottomElement>1.25 DXD/DAI</ChartHeaderBottomElement>
-				</ChartHeaderFullElement>
-				<ChartHeaderFullElement>
-					<ChartHeaderTopElement>24h price</ChartHeaderTopElement>
-					<ChartHeaderBottomElement className="green-text">
-            +10.51%
-					</ChartHeaderBottomElement>
-				</ChartHeaderFullElement>
-				<ChartHeaderFullElement>
-					<ChartHeaderTopElement>Minted</ChartHeaderTopElement>
-					<ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
-				</ChartHeaderFullElement>
+				<ChartBox>
+					<ChartHeaderFullElement>
+						<ChartHeaderTopElement>Token Price</ChartHeaderTopElement>
+						<ChartHeaderBottomElement>1.25 DXD/DAI</ChartHeaderBottomElement>
+					</ChartHeaderFullElement>
+				</ChartBox>
+				<ChartBox>
+					<ChartHeaderFullElement>
+						<ChartHeaderTopElement>24h price</ChartHeaderTopElement>
+						<ChartHeaderBottomElement className="green-text">
+	            +10.51%
+						</ChartHeaderBottomElement>
+					</ChartHeaderFullElement>
+				</ChartBox>
+				<ChartBox>
+					<ChartHeaderFullElement>
+						<ChartHeaderTopElement>Minted</ChartHeaderTopElement>
+						<ChartHeaderBottomElement>41.02 DXD</ChartHeaderBottomElement>
+					</ChartHeaderFullElement>
+				</ChartBox>
 			</ChartHeaderWrapper>
 			<ChartWrapper>
 				<Line
