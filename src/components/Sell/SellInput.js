@@ -57,7 +57,7 @@ const ErrorValidation = styled.div`
   flex-direction: row;
   position: absolute;
   padding-top: 50px;
-  align-self: center;
+  align-self: flex-end;
   color: red;
 `
 
