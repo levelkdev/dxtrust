@@ -38,10 +38,15 @@ const FormContent = styled.div`
   line-height: 34px;
   margin-top: 12px;
   margin-bottom: 33px;
+  font-weight: 600;
+  font-size: 15px;
   input, input:focus {
     border: none;
     font-size: inherit;
     outline: none;
+    ::placeholder {
+      color: rgba(48, 79, 254, 0.4);
+    }
   }
 `
 
@@ -53,11 +58,12 @@ const InputColumn = styled.div`
 `
 
 const ErrorValidation = styled.div`
+  font-size: 14px;
   display: flex;
   flex-direction: row;
   position: absolute;
-  padding-top: 50px;
-  align-self: center;
+  padding-top: 40px;
+  align-self: flex-end;
   color: red;
 `
 

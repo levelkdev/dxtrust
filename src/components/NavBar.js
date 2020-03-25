@@ -30,12 +30,12 @@ const MenuItem = styled.div`
 const SelectedMenuItem = styled(MenuItem)`
   color: var(--nav-text-dark);
   line-height: 24px;
-  padding: 0px 10px;
+  padding: 0px 12px;
   cursor: pointer;
 `;
 
 const DXDLogo = styled.img`
-  margin-right: 37px;
+  margin-right: 17px;
 `;
 
 const Web3Connect = styled.div`
