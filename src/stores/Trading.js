@@ -306,6 +306,7 @@ class TradingStore {
 			await contract.methods.buy(this.buyAmount, maxPrice, recipient).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
+        this.buyingState = 3
 			})
 			console.log('buy executed for ' + this.buyAmount)
 			this.getReserveBalance()
@@ -327,6 +328,7 @@ class TradingStore {
 			await contract.methods.sell(this.sellAmount, minPrice, recipient).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
+        this.sellingState = 3
 			})
 			console.log('sell executed for ' + this.sellAmount)
 			// TODO figure out how to be polling for updates to displayed values
@@ -350,6 +352,7 @@ class TradingStore {
 			await contract.methods.buy(weiBuyAmount, weiPriceToBuy, recipient).send({from: recipient, value: weiPriceToBuy})
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
+        this.buyingState = 3
 			})
 			console.log('buy executed for ' + this.buyAmount)
 			// TODO Don't think this reserve balance update is required?
@@ -371,6 +374,7 @@ class TradingStore {
 			await contract.methods.sell(weiSellAmount, weiRewardForSell, recipient).send()
 			.on('transactionHash', function(hash){
 				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
+        this.sellingState = 3;
 			})
 			console.log('sell executed for ' + this.sellAmount)
 			// TODO Don't think this reserve balance update is required?

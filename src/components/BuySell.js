@@ -6,6 +6,7 @@ import BuyForm from './Buy/BuyForm'
 import EnableContinue from './common/EnableContinue'
 import Enable from './common/Enable'
 import EnablePending from './common/EnablePending'
+import ConnectionPending from './common/ConnectionPending'
 import SellForm from './Sell/SellForm'
 import store from '../stores/Root'
 
@@ -17,7 +18,7 @@ const BuySellWrapper = styled.div`
   border: 1px solid var(--medium-gray);
   border-radius: 4px;
   background-color: white;
-  justify-content: space-between;
+  justify-content: flex-start;
 `
 
 const TabWrapper = styled.div`
@@ -89,7 +90,8 @@ const LogoText = styled.div`
 class BuySell extends React.Component  {
   
   state = {
-    currentTab: 0
+    currentTab: 0,
+    isConnected: store.providerStore.isConnected
   }
 
   setCurrentTab (tabType) {
@@ -122,7 +124,9 @@ class BuySell extends React.Component  {
     }
 
     const CurrentForm = ({currentTab, incrementTKN, incrementDXD}) => {
-      if (currentTab === 0) {
+      if (!this.state.isConnected) {
+        return(<ConnectionPending/>)
+      } else if (currentTab === 0) {
         if (incrementTKN === 0) {
           return (
             <Enable tokenType="TKN"/>

@@ -29,14 +29,8 @@ const FormInfoText = styled.div`
 `
 
 const SignTransaction = styled.div`
-  // font-family: SF Pro Text;
-  font-size: 15px;
-  line-height: 18px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  letter-spacing: 0.4px;
-  color: var(--panel-pending);
+  flex-direction: column;
+  justify-content: center;
   margin-top: 8px;
   margin-bottom: 23px;
 `
