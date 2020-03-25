@@ -45,7 +45,7 @@ const FormContent = styled.div`
     font-size: inherit;
     outline: none;
     ::placeholder {
-      color: rgba(48, 79, 254, 0.2);
+      color: rgba(48, 79, 254, 0.4);
     }
   }
 `
