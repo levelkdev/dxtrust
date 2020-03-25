@@ -3,6 +3,7 @@
   "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
-    ["@babel/transform-runtime", { "regenerator": true }]
+    ["@babel/transform-runtime", { "regenerator": true }],
+    "emotion"
   ]
 }

@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
 import ActiveButton from '../common/ActiveButton'
 import InactiveButton from '../common/InactiveButton'
+import Loader from '../common/Loader'
 import store from '../../stores/Root'
 import { collateralType } from '../../config.json'
 
@@ -75,21 +76,8 @@ class BuySign extends React.Component {
 
 	  return (
       <FormWrapper>
-        <InfoRow>
-          <FormInfoText>Price</FormInfoText>
-          <div>{price} {collateralType}</div>
-        </InfoRow>
-        <InfoRow>
-          <FormInfoText>{infotext}</FormInfoText>
-          <div>{priceToBuy} {collateralType}</div>
-        </InfoRow>
-        <InfoRow>
-          <FormInfoText>Receive</FormInfoText>
-          <div>{buyAmount} DXD</div>
-        </InfoRow>
         <SignTransaction>
-          Sign Transaction...
-          <PendingCircle />
+          <Loader message="Signing Transaction..."></Loader>
         </SignTransaction>
         <Button active={false}>Buy DXD</Button>
       </FormWrapper>
