@@ -58,10 +58,11 @@ const InputColumn = styled.div`
 `
 
 const ErrorValidation = styled.div`
+  font-size: 14px;
   display: flex;
   flex-direction: row;
   position: absolute;
-  padding-top: 50px;
+  padding-top: 40px;
   align-self: flex-end;
   color: red;
 `
