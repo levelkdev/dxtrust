@@ -91,7 +91,6 @@ class BuySell extends React.Component  {
   
   state = {
     currentTab: 0,
-    isConnected: store.providerStore.isConnected
   }
 
   setCurrentTab (tabType) {
@@ -124,7 +123,7 @@ class BuySell extends React.Component  {
     }
 
     const CurrentForm = ({currentTab, incrementTKN, incrementDXD}) => {
-      if (!this.state.isConnected) {
+      if (!store.providerStore.isConnected) {
         return(<ConnectionPending/>)
       } else if (currentTab === 0) {
         if (incrementTKN === 0) {
