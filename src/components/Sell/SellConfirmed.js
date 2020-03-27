@@ -28,16 +28,19 @@ const FormInfoText = styled.div`
 `
 
 const Confirmed = styled.div`
-  // font-family: SF Pro Text;
   font-size: 15px;
+  line-height: 18px;	
+  display: flex;	
+  flex-direction: row;	
+  justify-content: space-between;	
+  font-style: normal;
+  font-weight: 500;
   line-height: 18px;
+  margin: 10px 0px 20px 0px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   letter-spacing: 0.4px;
-  color: var(--turquois-text);
-  margin-top: 8px;
-  margin-bottom: 23px;
+  color: #98A7FE;
 `
 
 const CheckboxContainer = styled.div`

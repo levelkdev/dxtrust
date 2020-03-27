@@ -3,11 +3,7 @@ import { observer, inject } from 'mobx-react'
 import styled from 'styled-components'
 import ActiveButton from '../common/ActiveButton'
 import InactiveButton from '../common/InactiveButton'
-import BuyInput from '../Buy/BuyInput'
-import BuySign from '../Buy/BuySign'
-import BuyUnconfirmed from '../Buy/BuyUnconfirmed'
-import BuyConfirmed from '../Buy/BuyConfirmed'
-
+import SellContinue from '../Sell/SellContinue'
 import SellInput from '../Sell/SellInput'
 import SellSign from '../Sell/SellSign'
 import SellUnconfirmed from '../Sell/SellUnconfirmed'
@@ -53,7 +49,9 @@ class SellForm extends React.Component {
         contentState = ContentStates.CONFIRMED
       }
       
-      if (contentState === ContentStates.SELL_FORM) {
+      if (!store.providerStore.isConnected) {
+        return <SellContinue infotext={infotext} />
+      } else if (contentState === ContentStates.SELL_FORM) {
         return(
           <SellInput />
         )

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Form from '../common/Form'
 import ActiveButton from '../common/ActiveButton'
 import InactiveButton from '../common/InactiveButton'
+import BuyContinue from '../Buy/BuyContinue'
 import BuyInput from '../Buy/BuyInput'
 import BuySign from '../Buy/BuySign'
 import BuyUnconfirmed from '../Buy/BuyUnconfirmed'
@@ -47,8 +48,9 @@ class BuyForm extends React.Component {
       } else {
         contentState = ContentStates.CONFIRMED
       }
-      
-      if (contentState === ContentStates.SELL_FORM) {
+      if (!store.providerStore.isConnected) {
+        return <BuyContinue infotext={infotext} />
+      } else if (contentState === ContentStates.SELL_FORM) {
         return(
           <BuyInput infotext={infotext} />
         )

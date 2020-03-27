@@ -123,30 +123,8 @@ class BuySell extends React.Component  {
     }
 
     const CurrentForm = ({currentTab, incrementTKN, incrementDXD}) => {
-      if (!store.providerStore.isConnected) {
-        return(<ConnectionPending/>)
-      } else if (currentTab === 0) {
-        if (incrementTKN === 0) {
-          return (
-            <Enable tokenType="TKN"/>
-          )
-        } else if (incrementTKN === 1) {
-          return (
-            <EnablePending tokenType="TKN" subtitleText="Sign Transaction..." />
-          )
-        } else if (incrementTKN === 2) {
-          return (
-            <EnablePending tokenType="TKN" subtitleText="Awaiting Confirmation..." />
-          )
-        } else if (incrementTKN === 3) {
-          return (
-            <EnableContinue tokenType="TKN" />
-          )
-        } else {
-          return (
-            <BuyForm />
-          )
-        }
+      if (currentTab === 0) {
+        return <BuyForm />
       } else {
         if (incrementDXD === 0) {
           return (

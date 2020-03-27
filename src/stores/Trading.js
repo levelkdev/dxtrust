@@ -133,6 +133,14 @@ class TradingStore {
 			return this.sellingState = 3
 		}
 	}
+  
+  setBuyingState(newState) {
+    this.buyingState = newState;
+  }
+  
+  setSellingState(newState) {
+    this.sellingState = newState;
+  }
 
 	async setRecentTrades(numToGet) {
 		const trades = await this.getRecentTrades(numToGet)
@@ -344,20 +352,23 @@ class TradingStore {
 	@action ETHBuy = async () => {
 		const contract = this.loadBondingCurveEtherContract()
 		const recipient = store.providerStore.address
+    const self = this;
 		try {
 			const weiPriceToBuy = Web3.utils.toWei(this.priceToBuy)
 			const weiBuyAmount = Web3.utils.toWei(this.buyAmount)
 			console.log("weiPriceToBuy is: " + weiPriceToBuy)
 			console.log("weiBuyAmount is: " + weiBuyAmount)
 			await contract.methods.buy(weiBuyAmount, weiPriceToBuy, recipient).send({from: recipient, value: weiPriceToBuy})
-			.on('transactionHash', function(hash){
-				store.providerStore.checkConfirmation(hash, ConfirmationFlags.DEPOSIT_TKN)
-        this.buyingState = 3
+      .on('transactionHash', function(hash){
+				self.setBuyingState(2)
+			})
+      .on('confirmation', function(hash){
+				self.setBuyingState(3)
+        self.setDappTradeData()
 			})
 			console.log('buy executed for ' + this.buyAmount)
 			// TODO Don't think this reserve balance update is required?
 			// this.getReserveBalance()
-			this.buyingState = 2
 		} catch (e) {
 			// TODO set up logging
 			console.log(e)
@@ -368,13 +379,17 @@ class TradingStore {
 	@action ETHSell = async () => {
 		const contract = this.loadBondingCurveContract()
 		const recipient = store.providerStore.address
+    const self = this;
 		try {
 			const weiRewardForSell = Web3.utils.toWei(this.rewardForSell)
 			const weiSellAmount = Web3.utils.toWei(this.sellAmount)
 			await contract.methods.sell(weiSellAmount, weiRewardForSell, recipient).send()
-			.on('transactionHash', function(hash){
-				store.providerStore.checkConfirmation(hash, ConfirmationFlags.SELL_DXD)
-        this.sellingState = 3;
+      .on('transactionHash', function(hash){
+				self.setSellingState(2)
+			})
+      .on('confirmation', function(hash){
+				self.setSellingState(3)
+        self.setDappTradeData()
 			})
 			console.log('sell executed for ' + this.sellAmount)
 			// TODO Don't think this reserve balance update is required?

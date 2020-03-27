@@ -7,47 +7,6 @@ import Loader from '../common/Loader'
 import store from '../../stores/Root'
 import { collateralType } from '../../config.json'
 
-const FormWrapper = styled.div`
-  height: 200px;
-  padding: 6px 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-`
-
-const InfoRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  line-height: 24px;
-  color: var(--dark-text-gray);
-  margin-bottom: 12px;
-`
-
-const FormInfoText = styled.div`
-  color: var(--light-text-gray);
-`
-
-const SignTransaction = styled.div`
-  // font-family: SF Pro Text;
-  font-size: 15px;
-  line-height: 18px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  letter-spacing: 0.4px;
-  color: var(--panel-pending);
-  margin-top: 8px;
-  margin-bottom: 23px;
-`
-
-const PendingCircle = styled.div`
-  width: 18px;
-  height: 18px;
-  border-radius: 10px;
-  border: 1px solid var(--panel-icon-2);
-`
-
 @observer
 class SellSign extends React.Component {
 
@@ -69,12 +28,27 @@ class SellSign extends React.Component {
     }
 
 	  return (
-      <FormWrapper>
-        <SignTransaction>
-          <Loader message="Signing Transaction..."></Loader>
-        </SignTransaction>
+      <div className="fromWrapper">
+        <div className="infoRow">
+          <div className="formInfoText">Price</div>
+          <div>{price} {collateralType}</div>
+        </div>
+        <div className="infoRow">
+          <div className="formInfoText">Receive</div>
+          <div>{rewardForSell} {collateralType}</div>
+        </div>
+        <div className="infoRow">
+          <div className="formInfoText">Sell Amount</div>	
+          <div>{sellAmount} DXD</div>	
+        </div>
+        <div className="transactionStatus">
+          <span>
+            Sign Transaction...
+          </span>
+          <Loader size="18"></Loader>
+        </div>
         <Button active={false}>Sell DXD</Button>
-      </FormWrapper>
+      </div>
 	  )
 	}
 }

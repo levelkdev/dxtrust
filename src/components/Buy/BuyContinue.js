@@ -1,85 +1,55 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import { observer, inject } from 'mobx-react'
+import styled from 'styled-components'
+import InactiveButton from '../common/InactiveButton'
+import store from '../../stores/Root'
+import { collateralType } from '../../config.json'
 
-const ContentWrapper = styled.div`
-  height: 200px;
-  padding: 6px 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-`;
+@observer
+class BuyInput extends React.Component {
 
-const CircleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
+  constructor(props) {
+      super(props)
+  }
 
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 48px;
-  width: 48px;
-  border-radius: 24px;
-  border: 1px solid var(--panel-icon-2);
-  margin-bottom: 16px;
-`;
+  state = {
+    hasError: false
+  };
 
-const Checkbox = styled.img`
-  height: 13px;
-  width: 18px;
-`;
+	render() {
 
-const Info = styled.div`
-  //font-family: SF Pro Text;
-  font-size: 16px;
-  line-height: 19px;
-  letter-spacing: 0.4px;
-  color: var(--panel-text);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 8px;
-`;
+    const { infotext } = this.props;
+    const price = store.tradingStore.formatPrice();
+    const priceToBuy = store.tradingStore.formatPriceToBuy();
+    const { hasError } = this.state;
 
-const Status = styled.div`
-  // font-family: SF Pro Text;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.4px;
-  color: var(--turquois-text);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 27px;
-`;
+	  return (
+      <div className="formWrapper">
+        <div className="infoRow">
+          <div className="formInfoText">Price</div>
+          <div>{price} {collateralType}</div>
+        </div>
+        <div className="infoRow">
+          <div className="formInfoText">{infotext}</div>
+          <div>{priceToBuy} {collateralType}</div>
+        </div>
+        <div className="inputColumn">
+          <div className="formContent">
+            <input 
+              className="form-vivid-blue"
+              type="text" 
+              placeholder="0" 
+            />
+            <div>DXD</div>
+          </div>
+          <span className="errorMessage">
+            Connect Wallet to proceed
+          </span>
+        </div>
+        <InactiveButton>Buy DXD</InactiveButton> 
+	  	</div>
+	  )
+	}
+}
 
-const EnableTKNButton = styled.div`
-  background-color: #536DFE;
-  border: 1px solid #304FFE;
-  border-radius: 4px;
-  color: white;
-  text-align: center;
-  height: 34px;
-  line-height: 34px;
-  text-transform: uppercase;
-`;
-
-const BuyContinue = ({}) => {
-	return (
-		<ContentWrapper>
-			<CircleContainer>
-				<CheckboxContainer>
-					<Checkbox src="checkbox_758AFE.svg" />
-				</CheckboxContainer>
-			</CircleContainer>
-			<Info>Enable TKN for trading</Info>
-			<Status>Confirmed</Status>
-			<EnableTKNButton>Continue</EnableTKNButton>
-		</ContentWrapper>
-	);
-};
-
-export default BuyContinue;
+export default BuyInput

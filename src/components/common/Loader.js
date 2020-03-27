@@ -7,16 +7,6 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin 20px 0px;
-`;
-
-const LoaderText = styled.div`
-	font-style: normal;
-	font-weight: 500;
-	font-size: 14px;
-	line-height: 17px;
-	color: rgba(83, 109, 254, 0.6);
-	margin-top: 10px;
 `;
 
 const clip = keyframes`
@@ -34,7 +24,7 @@ class Loader extends React.Component {
     super(props);
     this.state = {
       loading: true,
-			message: props.message
+			size: props.size
     };
   }
 
@@ -43,11 +33,10 @@ class Loader extends React.Component {
       <Container>
         <MoonLoader
 					css={loaderStyles}
-          size={48}
+          size={this.state.size}
           color={"#758AFE"}
           loading={this.state.loading}
         />
-				<LoaderText>{this.state.message}</LoaderText>
       </Container>
     );
   }
