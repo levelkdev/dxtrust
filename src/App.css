@@ -66,6 +66,76 @@ body {
   text-align: left;
 }
 
+.buySellWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 298px;
+  margin-left: 24px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background-color: white;
+  justify-content: flex-start;
+}
+
+.tabWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.activeTab {
+  color: var(--blue-text);
+  width: 50%;
+  text-align: center;
+  border-left: "1px solid var(--medium-gray)";
+  padding: 15px 0px;
+  cursor: pointer;
+}
+
+.inactiveTab {
+  color: var(--dark-text-gray);
+  width: 50%;
+  text-align: center;
+  background-color: var(--light-gray);
+  border-left: "1px solid var(--medium-gray)";
+  border-bottom: 1px solid var(--medium-gray);
+  border-radius: 0px 4px 0px 0px;
+  padding: 15px 0px;
+  cursor: pointer;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.cryptoInfoWrapper {
+  height: 100px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-bottom: 1px solid var(--line-gray);
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  line-height: 24px;
+  color: var(--dark-text-gray);
+}
+
+.logoAndText {
+  display: flex;
+  flex-direction: row;
+}
+
+.logoText {
+  margin-left: 10px;
+  color: var(--light-text-gray);
+}
+
 .transactionStatus {
   font-size: 15px;
   line-height: 18px;	
