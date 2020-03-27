@@ -80,27 +80,29 @@ class SellConfirmed extends React.Component {
     }
 
 	  return (
-      <FormWrapper>
-        <InfoRow>
-          <FormInfoText>Price</FormInfoText>
+      <div className="formWrapper">
+        <div className="infoRow">
+          <div className="formInfoText">Price</div>
           <div>{price} {collateralType}</div>
-        </InfoRow>
-        <InfoRow>
-          <FormInfoText>Receive</FormInfoText>
+        </div>
+        <div className="infoRow">
+          <div className="formInfoText">Receive</div>
           <div>{rewardForSell} {collateralType}</div>
-        </InfoRow>
-        <InfoRow>
-          <FormInfoText>Sell Amount</FormInfoText>
+        </div>
+        <div className="infoRow">
+          <div className="formInfoText">Sell Amount</div>
           <div>{sellAmount} DXD</div>
-        </InfoRow>
-        <Confirmed>
+        </div>
+        <div className="transactionStatus">
           Confirmed
-          <CheckboxContainer>
-            <Checkbox src="checkbox_758AFE.svg" />
-          </CheckboxContainer>
-        </Confirmed>
-        <Button active={true} onClick={() => {store.tradingStore.sellingState = 0; store.tradingStore.sellAmount = 0}}>Sell Again</Button>
-      </FormWrapper>
+          <div className="checkboxContainer">
+            <img className="checkboxIconimg" src="checkbox_758AFE.svg" />
+          </div>
+        </div>
+        <Button active={true} onClick={() => {
+          store.tradingStore.sellingState = 0; store.tradingStore.sellAmount = 0}
+        }>Sell Again</Button>
+      </div>
 	  )
 	}
 }

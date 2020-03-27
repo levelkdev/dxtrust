@@ -45,7 +45,7 @@ class SellInput extends React.Component {
     }
 
 	  return (
-      <div className="fromWrapper">
+      <div className="formWrapper">
         <div className="infoRow">
           <div className="formInfoText">Price</div>
           <div>{price} {collateralType}</div>
