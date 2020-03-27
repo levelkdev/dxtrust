@@ -6,59 +6,6 @@ import InactiveButton from '../common/InactiveButton'
 import store from '../../stores/Root'
 import { collateralType } from '../../config.json'
 
-const FormWrapper = styled.div`
-  height: 200px;
-  padding: 6px 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-`
-
-const InfoRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  line-height: 24px;
-  color: var(--dark-text-gray);
-  margin-bottom: 12px;
-`
-
-const FormInfoText = styled.div`
-  color: var(--light-text-gray);
-`
-
-const Confirmed = styled.div`
-  font-size: 15px;
-  line-height: 18px;	
-  display: flex;	
-  flex-direction: row;	
-  justify-content: space-between;	
-  font-style: normal;
-  font-weight: 500;
-  line-height: 18px;
-  margin: 10px 0px 20px 0px;
-  display: flex;
-  align-items: center;
-  letter-spacing: 0.4px;
-  color: #98A7FE;
-`
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 18px;
-  width: 18px;
-  border-radius: 10px;
-  border: 1px solid var(--panel-icon-2);
-`
-
-const Checkbox = styled.img`
-  height: 6px;
-  width: 8px;
-`
-
 @observer
 class SellConfirmed extends React.Component {
 

@@ -223,3 +223,47 @@ body {
   flex-direction: column;
   justify-content: center;
 }
+
+.connectText {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.4px;
+  color: rgba(83, 109, 254, 0.8);
+  padding-top: 30px;
+}
+
+.connectionPendingWrapper {
+  height: 176px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+}
+
+.web3connect-connect-button, .connectButton {
+  background-color: #536DFE !important;
+  border: 1px solid #304FFE !important;
+  border-radius: 4px !important;
+  color: white !important;
+  text-align: center !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;  
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  line-height: 18px !important;
+  align-items: center !important;
+  text-align: center !important;
+  letter-spacing: 1px !important;
+  color: #FFFFFF !important;
+}

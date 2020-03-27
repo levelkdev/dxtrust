@@ -58,7 +58,9 @@ class BuySell extends React.Component  {
       if (currentTab === 0) {
         return <BuyForm />
       } else {
-        if (incrementDXD === 0) {
+        if (!store.providerStore.isConnected) {
+          return <ConnectionPending/>
+        } else if (incrementDXD === 0) {
           return (
             <Enable tokenType="DXD" />
           )
