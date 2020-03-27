@@ -50,10 +50,10 @@ const ConnectionPending = ({tokenType}) => {
 		<ContentWrapper>
       <InfoWrapper>
         <Info>
-          Connet to Ethereum Wallet to start trading
+          Connect to Ethereum Wallet to start trading
         </Info>
       </InfoWrapper>
-			<EnableButton onClick={() => {store.tradingStore.enableToken(tokenType);}}>Connnect Wallet</EnableButton>
+			<EnableButton onClick={() => {store.tradingStore.enableToken(tokenType);}}>Connect Wallet</EnableButton>
 		</ContentWrapper>
 	);
 };
