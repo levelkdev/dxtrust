@@ -1,11 +1,11 @@
 import React from "react";
-import { createContext } from "react";
 import {
 	HashRouter,
 	Switch,
 	Route
 } from "react-router-dom";
 import "./App.css";
+import Web3ReactManager from 'components/Web3ReactManager';
 import ChartContainer from "./containers/ChartContainer";
 import TradeHistoryContainer from "./containers/TradeHistoryContainer";
 import BuySellContainer from "./containers/BuySellContainer";
@@ -13,15 +13,11 @@ import NavBarContainer from "./containers/NavBarContainer";
 import FooterContainer from "./containers/FooterContainer";
 import ExchangeContainer from "./containers/ExchangeContainer";
 import RedeemRewardsContainer from "./containers/RedeemRewardsContainer";
-import store from "./stores/Root";
 import styled from "styled-components";
 
-const GlobalStore = createContext(store);
-
-export default class App extends React.Component {
-	render () {
+const App = () => {
 		return (
-			<GlobalStore.Provider>
+			<Web3ReactManager>
 				<HashRouter>
 					<div className="app-shell">
 						<NavBarContainer />
@@ -39,7 +35,8 @@ export default class App extends React.Component {
 						<FooterContainer />
 					</div>
 				</HashRouter>
-			</GlobalStore.Provider>
+			</Web3ReactManager>
 		);
-	}
-}
+};
+
+export default App;

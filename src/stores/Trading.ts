@@ -479,27 +479,12 @@ class TradingStore {
         );
     }
 
-    loadRewardsDistributorContract() {
-        return this.rootStore.providerStore.loadObject(
-            'RewardsDistributor',
-            deployed.RewardsDistributor,
-            'RewardsDistributor'
-        );
-    }
-
     // loadCollateralTokenContract (ERC20 Version)
     loadCollateralTokenContract() {
         return this.rootStore.providerStore.loadObject(
             'CollateralToken',
             deployed.CollateralToken,
             'CollateralToken'
-        );
-    }
-    loadStaticCurveLogicContract() {
-        return this.rootStore.providerStore.loadObject(
-            'StaticCurveLogic',
-            deployed.StaticCurveLogic,
-            'StaticCurveLogic'
         );
     }
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Web3ConnectButton from "./common/Web3ConnectButton";
+import Web3ConnectStatus from './Web3ConnectStatus';
 
 const NavWrapper = styled.div`
   display: flex;
@@ -103,10 +104,7 @@ const NavBar = ({}) => {
           Rewards
 				</NavItem>
 			</LeftNav>
-			<Web3ConnectButton>
-				<Avatar></Avatar>
-				<div>0x232b...8482</div>
-			</Web3ConnectButton>
+			<Web3ConnectStatus />
 		</NavWrapper>
 	);
 };
