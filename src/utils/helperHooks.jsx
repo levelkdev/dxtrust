@@ -24,7 +24,7 @@ export function useInterval(callback, delay) {
 export function useCopyClipboard(timeout = 500) {
     const [isCopied, setIsCopied] = useState(false);
 
-    const staticCopy = useCallback(text => {
+    const staticCopy = useCallback((text) => {
         const didCopy = copy(text);
         setIsCopied(didCopy);
     }, []);
