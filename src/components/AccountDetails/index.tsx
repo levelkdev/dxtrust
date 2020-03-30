@@ -6,7 +6,7 @@ import Transaction from './Transaction';
 import { injected, SUPPORTED_WALLETS } from 'provider/connectors';
 //@ts-ignore
 import { ReactComponent as Close } from '../../assets/images/x.svg';
-import { getEtherscanLink } from 'utils/helpers';
+import { getEtherscanLink } from 'utils/etherscan';
 import Identicon from '../Identicon';
 import { web3Window as window } from 'provider/Web3Window';
 
@@ -266,12 +266,12 @@ export default function AccountDetails(props: Props) {
             window.ethereum && window.ethereum.isMetaMask ? true : false;
         const name = Object.keys(SUPPORTED_WALLETS)
             .filter(
-                k =>
+                (k) =>
                     SUPPORTED_WALLETS[k].connector === connector &&
                     (connector !== injected ||
                         isMetaMask === (k === 'METAMASK'))
             )
-            .map(k => SUPPORTED_WALLETS[k].name)[0];
+            .map((k) => SUPPORTED_WALLETS[k].name)[0];
         return <WalletName>{name}</WalletName>;
     }
 

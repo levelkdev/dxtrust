@@ -1,20 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createWeb3ReactRoot } from '@web3-react/core';
-import { ethers } from 'ethers';
 import 'index.css';
 import App from 'App';
 import * as serviceWorker from './serviceWorker';
 import { web3ContextNames } from 'provider/connectors';
 import ThemeProvider, { GlobalStyle } from './theme';
+import Web3 from 'web3';
 
 const Web3ProviderInjected = createWeb3ReactRoot(web3ContextNames.injected);
 const Web3ProviderBackup = createWeb3ReactRoot(web3ContextNames.backup);
 
 function getLibrary(provider) {
-    const library = new ethers.providers.Web3Provider(provider);
-    library.pollingInterval = 1000;
-    return library;
+    return new Web3(provider);
 }
 
 const Root = (

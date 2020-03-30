@@ -1,7 +1,5 @@
 import React from 'react';
-import { observer, inject } from 'mobx-react';
-import styled from 'styled-components';
-import Form from '../common/Form';
+import { observer } from 'mobx-react';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import BuyInput from './BuyInput';

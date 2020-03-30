@@ -113,6 +113,20 @@ export default class ProviderStore {
         return new ethers.Contract(address, schema[type], library);
     }
 
+    // get blockTime from blockNumber
+    async getBlockTime(blockNumber) {
+        const context = this.getActiveWeb3React();
+        const blockData = await context.library.eth.getBlock(blockNumber);
+        const date = new Date(blockData.timestamp * 1000);
+    }
+
+    // get blockHash from blockNumber
+    async getBlockHash(blockNumber) {
+        const context = this.getActiveWeb3React();
+        const blockData = await context.library.eth.getBlock(blockNumber);
+        return blockData.hash;
+    }
+
     getActiveWeb3React(): Web3ReactContextInterface {
         const contextBackup = this.web3Contexts[web3ContextNames.backup];
         const contextInjected = this.web3Contexts[web3ContextNames.injected];

@@ -2,7 +2,7 @@ import { action, observable } from 'mobx';
 import RootStore from 'stores/Root';
 import { ContractTypes } from 'stores/Provider';
 import * as helpers from 'utils/helpers';
-import { bnum, scale } from 'utils/helpers';
+import { bnum } from 'utils/helpers';
 import { parseEther } from 'ethers/utils';
 import { FetchCode } from './Transaction';
 import { BigNumber } from 'utils/bignumber';

@@ -68,7 +68,7 @@ const CircleWrapper = styled.div`
 
 const HeaderText = styled.div`
     ${({ theme }) => theme.flexRowNoWrap};
-    color: ${props =>
+    color: ${(props) =>
         props.color === 'blue'
             ? ({ theme }) => theme.royalBlue
             : ({ theme }) => theme.textColor};

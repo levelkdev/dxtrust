@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import styled from 'styled-components';
-import {
-    backup,
-    web3ContextNames,
-} from 'provider/connectors';
+import { backup, web3ContextNames } from 'provider/connectors';
 import { useEagerConnect, useInactiveListener } from 'provider/providerHooks';
 import { useStores } from 'contexts/storesContext';
 import { useInterval } from 'utils/helperHooks';
@@ -27,9 +24,7 @@ const Web3ReactManager = ({ children }) => {
 
     const web3ContextInjected = useWeb3React(web3ContextNames.injected);
     const web3ContextBackup = useWeb3React(web3ContextNames.backup);
-    const {
-        active: injectedActive,
-    } = web3ContextInjected;
+    const { active: injectedActive } = web3ContextInjected;
     const {
         active: networkActive,
         error: networkError,

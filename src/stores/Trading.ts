@@ -1,8 +1,7 @@
-import { observable, action } from 'mobx';
-import { deployed, collateralType, buyStartState } from '../config.json';
-import store from './Root';
-import Web3 from 'web3';
+import { action, observable } from 'mobx';
+import { buyStartState, collateralType, deployed } from '../config.json';
 import RootStore from './Root';
+import Web3 from 'web3';
 
 const ConfirmationFlags = {
     ENABLE_TKN: 'enable_TKN',

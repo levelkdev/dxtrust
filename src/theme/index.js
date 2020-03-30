@@ -63,7 +63,7 @@ export default function ThemeProvider({ children }) {
     );
 }
 
-const theme = darkMode => ({
+const theme = (darkMode) => ({
     white,
     black,
     textColor: darkMode ? white : '#010101',

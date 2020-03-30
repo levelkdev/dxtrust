@@ -14,25 +14,27 @@ class UncheckedJsonRpcSigner extends ethers.Signer {
     }
 
     sendTransaction(transaction) {
-        return this.signer.sendUncheckedTransaction(transaction).then(hash => {
-            return {
-                hash: hash,
-                nonce: null,
-                gasLimit: null,
-                gasPrice: null,
-                data: null,
-                value: null,
-                chainId: null,
-                confirmations: 0,
-                from: null,
-                wait: confirmations => {
-                    return this.signer.provider.waitForTransaction(
-                        hash,
-                        confirmations
-                    );
-                },
-            };
-        });
+        return this.signer
+            .sendUncheckedTransaction(transaction)
+            .then((hash) => {
+                return {
+                    hash: hash,
+                    nonce: null,
+                    gasLimit: null,
+                    gasPrice: null,
+                    data: null,
+                    value: null,
+                    chainId: null,
+                    confirmations: 0,
+                    from: null,
+                    wait: (confirmations) => {
+                        return this.signer.provider.waitForTransaction(
+                            hash,
+                            confirmations
+                        );
+                    },
+                };
+            });
     }
 
     signMessage(message) {

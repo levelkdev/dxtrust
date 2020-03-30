@@ -25,7 +25,7 @@ export function useEagerConnect() {
 
     useEffect(() => {
         console.debug('[Injected Eager Connect]', injected);
-        injected.isAuthorized().then(isAuthorized => {
+        injected.isAuthorized().then((isAuthorized) => {
             console.debug('[Eager Connect] Activate injected if authorized', {
                 isAuthorized,
             });
@@ -73,7 +73,7 @@ export function useInactiveListener(suppress = false) {
                 activate(injected, undefined, true).catch(() => {});
             };
 
-            const handleAccountsChanged = accounts => {
+            const handleAccountsChanged = (accounts) => {
                 if (accounts.length > 0) {
                     // eat errors
                     activate(injected, undefined, true).catch(() => {});

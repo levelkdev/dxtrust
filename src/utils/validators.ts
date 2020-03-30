@@ -42,7 +42,7 @@ export const validateTokenValue = (
         // restrict to 2 decimal places
         const acceptableValues = [/^$/, /^\d{1,2}$/, /^\d{0,2}\.\d{0,2}$/];
         // if its within accepted decimal limit, update the input state
-        if (!acceptableValues.some(a => a.test(value))) {
+        if (!acceptableValues.some((a) => a.test(value))) {
             return ValidationStatus.MAX_DIGITS_EXCEEDED;
         }
     }

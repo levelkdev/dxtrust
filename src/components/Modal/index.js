@@ -81,13 +81,15 @@ const StyledDialogContent = styled(FilteredDialogContent)`
         ${({ theme, mobile, isOpen }) => theme.mediaWidth.upToSmall`
       width:  85vw;
       max-height: 66vh;
-      ${mobile &&
+      ${
+          mobile &&
           css`
               width: 100vw;
               border-radius: 20px;
               border-bottom-left-radius: 0;
               border-bottom-right-radius: 0;
-          `}
+          `
+      }
     `}
     }
 `;
@@ -117,7 +119,7 @@ export default function Modal({
 
     const [{ xy }, set] = useSpring(() => ({ xy: [0, 0] }));
     const bind = useGesture({
-        onDrag: state => {
+        onDrag: (state) => {
             let velocity = state.velocity;
             if (velocity < 1) {
                 velocity = 1;
@@ -158,7 +160,7 @@ export default function Modal({
                                     : 'translateY(200px)',
                             }}
                         >
-                            {props => (
+                            {(props) => (
                                 <animated.div
                                     {...bind()}
                                     style={{

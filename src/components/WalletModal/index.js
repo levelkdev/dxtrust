@@ -168,10 +168,10 @@ const WalletModal = observer(
             connectorPrevious,
         ]);
 
-        const tryActivation = async connector => {
+        const tryActivation = async (connector) => {
             setPendingWallet(connector); // set wallet for pending view
             setWalletView(WALLET_VIEWS.PENDING);
-            activate(connector, undefined, true).catch(e => {
+            activate(connector, undefined, true).catch((e) => {
                 console.error('[Activation Error]', e);
                 setPendingError(true);
             });
@@ -180,7 +180,7 @@ const WalletModal = observer(
         // get wallets user can switch too, depending on device/browser
         function getOptions() {
             const isMetamask = window.ethereum && window.ethereum.isMetaMask;
-            return Object.keys(SUPPORTED_WALLETS).map(key => {
+            return Object.keys(SUPPORTED_WALLETS).map((key) => {
                 const option = SUPPORTED_WALLETS[key];
                 // check for mobile options
                 if (isMobile) {

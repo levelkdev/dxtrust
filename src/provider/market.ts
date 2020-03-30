@@ -36,7 +36,7 @@ export async function fetchAssetPrices(
     const prices = await response.json();
 
     const priceMap: MarketAssetPriceMap = {};
-    Object.keys(prices).forEach(key => {
+    Object.keys(prices).forEach((key) => {
         const price = prices[key].usd;
         const symbol = idToSymbolMap[key];
         priceMap[symbol] = {
@@ -71,9 +71,9 @@ export async function fetchAssetList(
     // toUpperCase symbol, compare to symbols in list, store if match
     const assets = await response.json();
     const result: MarketAssetMap = {};
-    symbolsToFetch.forEach(assetSymbol => {
+    symbolsToFetch.forEach((assetSymbol) => {
         const match = assets.find(
-            value => value.symbol.toUpperCase() === assetSymbol
+            (value) => value.symbol.toUpperCase() === assetSymbol
         );
         if (match) {
             result[assetSymbol] = formatAsset(match);

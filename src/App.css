@@ -1,67 +1,66 @@
 :root {
-  --active-button-border: #304FFE;
-  --orange: #F9AA33;
-  --blue-text: #536DFE;
-  --red-text: #FF4081;
-  --light-text-gray: #BDBDBD;
-  --dark-text-gray: #616161;
-  --nav-text-light: rgba(55, 71, 79, 0.4);
-  --nav-text-dark: rgba(55, 71, 79, 1);
-  --panel-text: rgba(83, 109, 254, 0.8);
-  --pending-panel-text: rgba(83, 109, 254, 0.6);
-  --panel-icon: rgba(83, 109, 254, 0.2);
-  --panel-icon-2: #758AFE;
-  --panel-pending: #98A7FE;
-  --footer-text-gray: #C2C2C2;
-  --pending-text-gray: #D4DCDF;
-  --pending-ellipses-purple: #DDE2FF;
-  --medium-gray: rgba(207, 216, 220, 0.9);/*For border*/
-  --light-gray: rgba(245, 246, 246, 0.5);/*Site background*/
-  --line-gray: rgba(225, 227, 231, 0.4);
-  --turquois-text: #2D9CDB;
-  
-  --rewards-text-green: #54AE6F;
-  --rewards-background-green: rgba(84, 174, 111, 0.1);
-  
-  --roboto: 'Roboto', sans-serif;
+    --active-button-border: #304ffe;
+    --orange: #f9aa33;
+    --blue-text: #536dfe;
+    --red-text: #ff4081;
+    --light-text-gray: #bdbdbd;
+    --dark-text-gray: #616161;
+    --nav-text-light: rgba(55, 71, 79, 0.4);
+    --nav-text-dark: rgba(55, 71, 79, 1);
+    --panel-text: rgba(83, 109, 254, 0.8);
+    --pending-panel-text: rgba(83, 109, 254, 0.6);
+    --panel-icon: rgba(83, 109, 254, 0.2);
+    --panel-icon-2: #758afe;
+    --panel-pending: #98a7fe;
+    --footer-text-gray: #c2c2c2;
+    --pending-text-gray: #d4dcdf;
+    --pending-ellipses-purple: #dde2ff;
+    --medium-gray: rgba(207, 216, 220, 0.9); /*For border*/
+    --light-gray: rgba(245, 246, 246, 0.5); /*Site background*/
+    --line-gray: rgba(225, 227, 231, 0.4);
+    --turquois-text: #2d9cdb;
+
+    --rewards-text-green: #54ae6f;
+    --rewards-background-green: rgba(84, 174, 111, 0.1);
+
+    --roboto: 'Roboto', sans-serif;
 }
 
 body {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  font-family: var(--roboto);
-  background-color: var(--light-gray);
-  src: url('/public/fonts/Roboto-Regular.ttf');
-  src: url('/public/fonts/Roboto-Medium.ttf');
-  src: url('/public/fonts/Roboto-Bold.ttf');
-  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-family: var(--roboto);
+    background-color: var(--light-gray);
+    src: url('/public/fonts/Roboto-Regular.ttf');
+    src: url('/public/fonts/Roboto-Medium.ttf');
+    src: url('/public/fonts/Roboto-Bold.ttf');
 }
 
 .app-shell {
-  width: 936px;
+    width: 936px;
 }
 
 .green-text {
-  color: #54AE6F;
+    color: #54ae6f;
 }
 
 .blue-text {
-  color: var(--blue-text);
+    color: var(--blue-text);
 }
 
 .red-text {
-  color: #FF4081;
+    color: #ff4081;
 }
 
 .turquois-text {
-  color: var(--turquois-text);
+    color: var(--turquois-text);
 }
 
 .form-vivid-blue {
-  color: rgba(48, 79, 254, 0.6);
+    color: rgba(48, 79, 254, 0.6);
 }
 
 .align-left {
-  text-align: left;
+    text-align: left;
 }

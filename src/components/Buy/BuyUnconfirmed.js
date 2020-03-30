@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer, inject } from 'mobx-react';
+import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import store from '../../stores/Root';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
 

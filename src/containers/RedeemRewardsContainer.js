@@ -1,3 +1,4 @@
-import React from "react";
-import RedeemRewards from "../components/RedeemRewards";
+import React from 'react';
+import RedeemRewards from '../components/RedeemRewards';
+
 export default RedeemRewards;
