@@ -5,6 +5,7 @@ import ActiveButton from '../common/ActiveButton'
 import InactiveButton from '../common/InactiveButton'
 import store from '../../stores/Root'
 import { collateralType } from '../../config.json'
+import { useStores } from '../../contexts/storesContext';
 
 const FormWrapper = styled.div`
   height: 200px;
@@ -47,19 +48,15 @@ const PendingCircle = styled.div`
   border: 1px solid var(--panel-icon-2);
 `
 
-@observer
-class BuySign extends React.Component {
+const BuySign = observer((props) => {
+    const {
+        root: { tradingStore },
+    } = useStores();
 
-  constructor(props) {
-      super(props)
-  }
-
-	render() {
-
-    const { infotext } = this.props
-    const price = store.tradingStore.formatPrice()
-    const priceToBuy = store.tradingStore.formatPriceToBuy()
-    const buyAmount = store.tradingStore.formatBuyAmount()
+    const { infotext } = props
+    const price = tradingStore.formatPrice()
+    const priceToBuy = tradingStore.formatPriceToBuy()
+    const buyAmount = tradingStore.formatBuyAmount()
 
     const Button = ({active, children, onClick}) => {
       if (active === true) {
@@ -94,7 +91,6 @@ class BuySign extends React.Component {
         <Button active={false}>Buy DXD</Button>
       </FormWrapper>
 	  )
-	}
 }
 
 export default BuySign
