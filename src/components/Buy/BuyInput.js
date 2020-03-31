@@ -69,7 +69,7 @@ const ErrorValidation = styled.div`
 
 const BuyInput = observer((props) => {
     const {
-        root: { tradingStore },
+        root: { datStore, tradingStore, contractMetadataStore },
     } = useStores();
 
     const { infotext } = props;
@@ -133,7 +133,7 @@ const BuyInput = observer((props) => {
             <Button
                 active={checkActive()}
                 onClick={() => {
-                    tradingStore.buy();
+                    datStore.buy();
                     tradingStore.buyingState = 1;
                 }}
             >

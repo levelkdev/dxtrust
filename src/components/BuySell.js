@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import BuyForm from './Buy/BuyForm';
@@ -7,6 +7,7 @@ import Enable from './common/Enable';
 import EnablePending from './common/EnablePending';
 import SellForm from './Sell/SellForm';
 import store from '../stores/Root';
+import { useStores } from '../contexts/storesContext';
 
 const BuySellWrapper = styled.div`
     display: flex;
@@ -84,135 +85,128 @@ const LogoText = styled.div`
     color: var(--light-text-gray);
 `;
 
-@observer
-class BuySell extends React.Component {
-    state = {
-        currentTab: 0,
+const BuySell = observer(() => {
+    const {
+        root: { tradingStore, providerStore },
+    } = useStores();
+    
+    const [currentTab, setCurrentTab] = useState(0);
+
+    const incrementTKN = tradingStore.enableTKNState;
+    const incrementDXD = tradingStore.enableDXDState;
+    const ETHBalance = "0.000";
+    // TODO figure out units for bonded token (dividing by a million?)
+    const BondedTokenBalance = tradingStore.formatBondedTokenBalance();
+
+    const TabButton = ({ currentTab, tabType, left, children }) => {
+        if (currentTab === tabType) {
+            return (
+                <ActiveTab
+                    onClick={() => {
+                        setCurrentTab(tabType);
+                    }}
+                    left={left}
+                >
+                    {children}
+                </ActiveTab>
+            );
+        } else {
+            return (
+                <InactiveTab
+                    onClick={() => {
+                        setCurrentTab(tabType);
+                    }}
+                    left={left}
+                >
+                    {children}
+                </InactiveTab>
+            );
+        }
     };
 
-    setCurrentTab(tabType) {
-        this.setState({ currentTab: tabType });
-    }
-
-    render() {
-        const { currentTab } = this.state;
-        const incrementTKN = store.tradingStore.enableTKNState;
-        const incrementDXD = store.tradingStore.enableDXDState;
-        // const ETHBalance = store.providerStore.ETHBalance ? Web3.utils.fromWei(store.providerStore.ETHBalance) : "0.000"
-        const ETHBalance = store.providerStore.formatETHBalance();
-        // TODO figure out units for bonded token (dividing by a million?)
-        const BondedTokenBalance = store.tradingStore.formatBondedTokenBalance();
-
-        const TabButton = ({ currentTab, tabType, left, children }) => {
-            if (currentTab === tabType) {
+    const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {
+        if (currentTab === 0) {
+            if (incrementTKN === 0) {
+                return <Enable tokenType="TKN" />;
+            } else if (incrementTKN === 1) {
                 return (
-                    <ActiveTab
-                        onClick={() => {
-                            this.setCurrentTab(tabType);
-                        }}
-                        left={left}
-                    >
-                        {children}
-                    </ActiveTab>
-                );
-            } else {
-                return (
-                    <InactiveTab
-                        onClick={() => {
-                            this.setCurrentTab(tabType);
-                        }}
-                        left={left}
-                    >
-                        {children}
-                    </InactiveTab>
-                );
-            }
-        };
-
-        const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {
-            if (currentTab === 0) {
-                if (incrementTKN === 0) {
-                    return <Enable tokenType="TKN" />;
-                } else if (incrementTKN === 1) {
-                    return (
-                        <EnablePending
-                            tokenType="TKN"
-                            subtitleText="Sign Transaction..."
-                        />
-                    );
-                } else if (incrementTKN === 2) {
-                    return (
-                        <EnablePending
-                            tokenType="TKN"
-                            subtitleText="Awaiting Confirmation..."
-                        />
-                    );
-                } else if (incrementTKN === 3) {
-                    return <EnableContinue tokenType="TKN" />;
-                } else {
-                    return <BuyForm />;
-                }
-            } else {
-                if (incrementDXD === 0) {
-                    return <Enable tokenType="DXD" />;
-                } else if (incrementDXD === 1) {
-                    return (
-                        <EnablePending
-                            tokenType="DXD"
-                            subtitleText="Sign Transaction..."
-                        />
-                    );
-                } else if (incrementDXD === 2) {
-                    return (
-                        <EnablePending
-                            tokenType="DXD"
-                            subtitleText="Awaiting Confirmation..."
-                        />
-                    );
-                } else if (incrementDXD === 3) {
-                    return <EnableContinue tokenType="DXD" />;
-                } else {
-                    return <SellForm />;
-                }
-            }
-        };
-
-        return (
-            <BuySellWrapper>
-                <TabWrapper>
-                    <TabButton currentTab={currentTab} tabType={0}>
-                        Buy
-                    </TabButton>
-                    <TabButton currentTab={currentTab} tabType={1} left={true}>
-                        Sell
-                    </TabButton>
-                </TabWrapper>
-                <ContentWrapper>
-                    <CryptoInfoWrapper>
-                        <InfoRow>
-                            <LogoAndText>
-                                <ETHLogo src="ether.svg"></ETHLogo>
-                                <LogoText>Ether</LogoText>
-                            </LogoAndText>
-                            <div>{ETHBalance} ETH</div>
-                        </InfoRow>
-                        <InfoRow>
-                            <LogoAndText>
-                                <DXDLogo src="dxdao-circle.svg"></DXDLogo>
-                                <LogoText>DXdao</LogoText>
-                            </LogoAndText>
-                            <div>{BondedTokenBalance} DXD</div>
-                        </InfoRow>
-                    </CryptoInfoWrapper>
-                    <CurrentForm
-                        currentTab={currentTab}
-                        incrementTKN={incrementTKN}
-                        incrementDXD={incrementDXD}
+                    <EnablePending
+                        tokenType="TKN"
+                        subtitleText="Sign Transaction..."
                     />
-                </ContentWrapper>
-            </BuySellWrapper>
-        );
-    }
-}
+                );
+            } else if (incrementTKN === 2) {
+                return (
+                    <EnablePending
+                        tokenType="TKN"
+                        subtitleText="Awaiting Confirmation..."
+                    />
+                );
+            } else if (incrementTKN === 3) {
+                return <EnableContinue tokenType="TKN" />;
+            } else {
+                return <BuyForm />;
+            }
+        } else {
+            if (incrementDXD === 0) {
+                return <Enable tokenType="DXD" />;
+            } else if (incrementDXD === 1) {
+                return (
+                    <EnablePending
+                        tokenType="DXD"
+                        subtitleText="Sign Transaction..."
+                    />
+                );
+            } else if (incrementDXD === 2) {
+                return (
+                    <EnablePending
+                        tokenType="DXD"
+                        subtitleText="Awaiting Confirmation..."
+                    />
+                );
+            } else if (incrementDXD === 3) {
+                return <EnableContinue tokenType="DXD" />;
+            } else {
+                return <SellForm />;
+            }
+        }
+    };
+
+    return (
+        <BuySellWrapper>
+            <TabWrapper>
+                <TabButton currentTab={currentTab} tabType={0}>
+                    Buy
+                </TabButton>
+                <TabButton currentTab={currentTab} tabType={1} left={true}>
+                    Sell
+                </TabButton>
+            </TabWrapper>
+            <ContentWrapper>
+                <CryptoInfoWrapper>
+                    <InfoRow>
+                        <LogoAndText>
+                            <ETHLogo src="ether.svg"></ETHLogo>
+                            <LogoText>Ether</LogoText>
+                        </LogoAndText>
+                        <div>{ETHBalance} ETH</div>
+                    </InfoRow>
+                    <InfoRow>
+                        <LogoAndText>
+                            <DXDLogo src="dxdao-circle.svg"></DXDLogo>
+                            <LogoText>DXdao</LogoText>
+                        </LogoAndText>
+                        <div>{BondedTokenBalance} DXD</div>
+                    </InfoRow>
+                </CryptoInfoWrapper>
+                <CurrentForm
+                    currentTab={currentTab}
+                    incrementTKN={incrementTKN}
+                    incrementDXD={incrementDXD}
+                />
+            </ContentWrapper>
+        </BuySellWrapper>
+    );
+});
 
 export default BuySell;

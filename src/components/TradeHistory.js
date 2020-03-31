@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import store from '../stores/Root';
 import { observer } from 'mobx-react';
 import { collateralType } from '../config.json';
+import { useStores } from '../contexts/storesContext';
+import { EventType } from '../stores/datStore';
 
 const TradingHistoryWrapper = styled.div`
     width: 100%;
@@ -60,10 +62,12 @@ const TableCell = styled.div`
     width: ${(props) => props.width || '23%'};
 `;
 
-@observer
-class TradingHistory extends React.Component {
-    render() {
-        const recentTrades = store.tradingStore.recentTrades;
+const TradingHistory = observer(() => {
+    const {
+        root: { tradingStore, providerStore },
+    } = useStores();
+
+        const recentTrades = tradingStore.recentTrades;
         return (
             <TradingHistoryWrapper>
                 <TradeHistoryTitle>Trade History</TradeHistoryTitle>
@@ -83,7 +87,7 @@ class TradingHistory extends React.Component {
                         <TableCell
                             width="15.5%"
                             color={
-                                trade.type == 'Buy'
+                                trade.type === EventType.Buy
                                     ? 'var(--blue-text)'
                                     : 'var(--red-text)'
                             }
@@ -111,7 +115,6 @@ class TradingHistory extends React.Component {
                 ))}
             </TradingHistoryWrapper>
         );
-    }
-}
+});
 
 export default TradingHistory;
