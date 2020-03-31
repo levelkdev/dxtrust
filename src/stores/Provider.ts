@@ -7,7 +7,13 @@ import { ActionResponse, sendAction } from './actions/actions';
 import { supportedChainId, web3ContextNames } from '../provider/connectors';
 
 export enum ContractTypes {
-    TestToken = 'TestToken',
+    ERC20,
+    BondedToken,
+    BondingCurve,
+    BondingCurveEther,
+    RewardsDistributor,
+    StaticCurveLogic,
+    DecentralizedAutonomousTrust
 }
 
 export const schema = {
@@ -17,6 +23,7 @@ export const schema = {
     BondingCurveEther: require('../abi/ERC20').abi,
     RewardsDistributor: require('../abi/ERC20').abi,
     StaticCurveLogic: require('../abi/ERC20').abi,
+    DecentralizedAutonomousTrust: require('../abi/DecentralizedAutonomousTrust').abi
 };
 
 export interface ChainData {
@@ -118,6 +125,7 @@ export default class ProviderStore {
         const context = this.getActiveWeb3React();
         const blockData = await context.library.eth.getBlock(blockNumber);
         const date = new Date(blockData.timestamp * 1000);
+        return blockData.timestamp * 1000;
     }
 
     // get blockHash from blockNumber

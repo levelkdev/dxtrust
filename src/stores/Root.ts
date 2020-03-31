@@ -5,7 +5,9 @@ import TokenStore from 'stores/Token';
 import TransactionStore from './Transaction';
 import AppSettingsStore from './AppSettings';
 import ModalStore from './Modal';
-import TradingStore from './Trading';
+import TradingFormStore from './TradingForm';
+import DatStore from './datStore';
+import ConfigStore from './config';
 
 export default class RootStore {
     providerStore: ProviderStore;
@@ -14,7 +16,9 @@ export default class RootStore {
     transactionStore: TransactionStore;
     appSettingsStore: AppSettingsStore;
     modalStore: ModalStore;
-    tradingStore: TradingStore;
+    tradingStore: TradingFormStore;
+    datStore: DatStore;
+    blockchainConfigStore: ConfigStore;
 
     constructor() {
         this.providerStore = new ProviderStore(this);
@@ -23,7 +27,9 @@ export default class RootStore {
         this.transactionStore = new TransactionStore(this);
         this.appSettingsStore = new AppSettingsStore(this);
         this.modalStore = new ModalStore(this);
-        this.tradingStore = new TradingStore(this);
+        this.tradingStore = new TradingFormStore(this);
+        this.datStore = new DatStore(this);
+        this.blockchainConfigStore = new ConfigStore(this);
 
         this.asyncSetup().catch((e) => {
             //TODO: Add retry on these fetches

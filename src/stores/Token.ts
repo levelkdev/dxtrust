@@ -293,7 +293,7 @@ export default class TokenStore {
         const { providerStore } = this.rootStore;
         return await providerStore.sendTransaction(
             web3React,
-            ContractTypes.TestToken,
+            ContractTypes.ERC20,
             tokenAddress,
             'approve',
             [spender, helpers.MAX_UINT.toString()]
@@ -308,7 +308,7 @@ export default class TokenStore {
         const { providerStore } = this.rootStore;
         return await providerStore.sendTransaction(
             web3React,
-            ContractTypes.TestToken,
+            ContractTypes.ERC20,
             tokenAddress,
             'approve',
             [spender, 0]
@@ -423,7 +423,7 @@ export default class TokenStore {
             } else {
                 const token = providerStore.getContract(
                     web3React,
-                    ContractTypes.TestToken,
+                    ContractTypes.ERC20,
                     tokenAddress
                 );
                 balance = bnum(await token.balanceOf(account));
@@ -477,7 +477,7 @@ export default class TokenStore {
         const { providerStore } = this.rootStore;
         await providerStore.sendTransaction(
             web3React,
-            ContractTypes.TestToken,
+            ContractTypes.ERC20,
             tokenAddress,
             'mint',
             [parseEther(amount).toString()]
@@ -492,7 +492,7 @@ export default class TokenStore {
         const { providerStore } = this.rootStore;
         const token = providerStore.getContract(
             web3React,
-            ContractTypes.TestToken,
+            ContractTypes.ERC20,
             tokenAddress
         );
 
@@ -577,7 +577,7 @@ export default class TokenStore {
 
         const token = providerStore.getContract(
             web3React,
-            ContractTypes.TestToken,
+            ContractTypes.ERC20,
             tokenAddress
         );
 

@@ -55,7 +55,7 @@ export const sendAction = async (
     };
 
     try {
-        actionResponse.txResponse = await contract[action](...data, overrides);
+        actionResponse.txResponse = await contract.methods[action].send(...data);
     } catch (e) {
         actionResponse.error = e;
     }
