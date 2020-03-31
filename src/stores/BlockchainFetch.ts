@@ -19,8 +19,8 @@ export default class BlockchainFetchStore {
             const { library, account, chainId } = web3React;
             const { providerStore } = this.rootStore;
 
-            library
-                .getBlockNumber()
+            library.eth.
+                getBlockNumber()
                 .then((blockNumber) => {
                     const lastCheckedBlock = providerStore.getCurrentBlockNumber();
 
