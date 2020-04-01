@@ -1214,10 +1214,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+<<<<<<< HEAD
 "@jest/types@^25.1.0", "@jest/types@^25.2.6":
   version "25.2.6"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-25.2.6.tgz#c12f44af9bed444438091e4b59e7ed05f8659cb6"
   integrity sha512-myJTTV37bxK7+3NgKc4Y/DlQ5q92/NOwZsZ+Uch7OXdElxOg61QYc72fPYNAjlvbnJ2YvbXLamIsa9tj48BmyQ==
+=======
+"@jest/types@^25.2.3":
+  version "25.2.3"
+  resolved "https://registry.yarnpkg.com/@jest/types/-/types-25.2.3.tgz#035c4fb94e2da472f359ff9a211915d59987f6b6"
+  integrity sha512-6oLQwO9mKif3Uph3RX5J1i3S7X7xtDHWBaaaoeKw8hOzV6YUd0qDcYcHZ6QXMHDIzSr7zzrEa51o2Ovlj6AtKQ==
+>>>>>>> feat(devops): Add development script
   dependencies:
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/istanbul-reports" "^1.1.1"
@@ -1551,12 +1558,21 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@^25.1.1":
+<<<<<<< HEAD
   version "25.1.5"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.1.5.tgz#3c3c078b3cd19c6403e21277f1cfdc0ce5ebf9a9"
   integrity sha512-FBmb9YZHoEOH56Xo/PIYtfuyTL0IzJLM3Hy0Sqc82nn5eqqXgefKcl/eMgChM8eSGVfoDee8cdlj7K74T8a6Yg==
   dependencies:
     jest-diff "25.1.0"
     pretty-format "25.1.0"
+=======
+  version "25.1.4"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.1.4.tgz#9e9f1e59dda86d3fd56afce71d1ea1b331f6f760"
+  integrity sha512-QDDY2uNAhCV7TMCITrxz+MRk1EizcsevzfeS6LykIlq2V1E5oO4wXG8V2ZEd9w7Snxeeagk46YbMgZ8ESHx3sw==
+  dependencies:
+    jest-diff "^25.1.0"
+    pretty-format "^25.1.0"
+>>>>>>> feat(devops): Add development script
 
 "@types/json-schema@^7.0.3":
   version "7.0.4"
@@ -1569,9 +1585,15 @@
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
 "@types/node@*", "@types/node@^13.7.0":
+<<<<<<< HEAD
   version "13.11.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.0.tgz#390ea202539c61c8fa6ba4428b57e05bc36dc47b"
   integrity sha512-uM4mnmsIIPK/yeO+42F2RQhGUIs39K2RFmugcJANppXe6J1nvH87PvzPZYpza7Xhhs8Yn9yIAVdLZ84z61+0xQ==
+=======
+  version "13.9.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.9.8.tgz#09976420fc80a7a00bf40680c63815ed8c7616f4"
+  integrity sha512-1WgO8hsyHynlx7nhP1kr0OFzsgKz5XDQL+Lfc3b1Q3qIln/n8cKD4m09NJ0+P1Rq7Zgnc7N0+SsMnoD1rEb0kA==
+>>>>>>> feat(devops): Add development script
 
 "@types/node@^10.12.18", "@types/node@^10.3.2":
   version "10.17.18"
@@ -1606,9 +1628,15 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^16.9.19":
+<<<<<<< HEAD
   version "16.9.32"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.32.tgz#f6368625b224604148d1ddf5920e4fefbd98d383"
   integrity sha512-fmejdp0CTH00mOJmxUPPbWCEBWPvRIL4m8r0qD+BSDUqmutPyGQCHifzMpMzdvZwROdEdL78IuZItntFWgPXHQ==
+=======
+  version "16.9.31"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.31.tgz#6a543529766c8934ec8a89667376c2e73e9e2636"
+  integrity sha512-NpYJpNMWScFXtx3A2BJMeew2G3+9SEslVWMdxNJ6DLvxIuxWjY1bizK9q5Y1ujhln31vtjmhjOAYDr9Xx3k9FQ==
+>>>>>>> feat(devops): Add development script
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -4919,10 +4947,17 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
+<<<<<<< HEAD
 diff-sequences@^25.1.0:
   version "25.2.6"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-25.2.6.tgz#5f467c00edd35352b7bca46d7927d60e687a76dd"
   integrity sha512-Hq8o7+6GaZeoFjtpgvRBUknSXNeJiCx7V9Fr94ZMljNiCr9n9L8H8aJqgWOQiDDGdyn29fRNcDdRVJ5fdyihfg==
+=======
+diff-sequences@^25.2.1:
+  version "25.2.1"
+  resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-25.2.1.tgz#fcfe8aa07dd9b0c648396a478dabca8e76c6ab27"
+  integrity sha512-foe7dXnGlSh3jR1ovJmdv+77VQj98eKCHHwJPbZ2eEf0fHwKbkZicpPxEch9smZ+n2dnF6QFwkOQdLq9hpeJUg==
+>>>>>>> feat(devops): Add development script
 
 diff@^4.0.1:
   version "4.0.2"
@@ -5121,9 +5156,15 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.247, electron-to-chromium@^1.3.390, electron-to-chromium@^1.3.47:
+<<<<<<< HEAD
   version "1.3.393"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.393.tgz#d13fa4cbf5065e18451c84465d22aef6aca9a911"
   integrity sha512-Ko3/VdhZAaMaJBLBFqEJ+M1qMiBI8sJfPY/hSJvDrkB3Do8LJsL9tmXy4w7o9nPXif/jFaZGSlXTQWU8XVsYtg==
+=======
+  version "1.3.392"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.392.tgz#280ab4f7a3ae47419cfabb15dbfc1567be7f1111"
+  integrity sha512-/hsgeVdReDsyTBE0aU9FRdh1wnNPrX3xlz3t61F+CJPOT+Umfi9DXHsCX85TEgWZQqlow0Rw44/4/jbU2Sqgkg==
+>>>>>>> feat(devops): Add development script
 
 elliptic@6.3.3:
   version "6.3.3"
@@ -8117,6 +8158,7 @@ jazzicon@^1.5.0:
     mersenne-twister "^1.0.1"
     raphael "^2.2.0"
 
+<<<<<<< HEAD
 jest-diff@25.1.0:
   version "25.1.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-25.1.0.tgz#58b827e63edea1bc80c1de952b80cec9ac50e1ad"
@@ -8131,6 +8173,22 @@ jest-get-type@^25.1.0:
   version "25.2.6"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-25.2.6.tgz#0b0a32fab8908b44d508be81681487dbabb8d877"
   integrity sha512-DxjtyzOHjObRM+sM1knti6or+eOgcGU4xVSb2HNP1TqO4ahsT+rqZg+nyqHWJSvWgKC5cG3QjGFBqxLghiF/Ig==
+=======
+jest-diff@^25.1.0:
+  version "25.2.3"
+  resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-25.2.3.tgz#54d601a0a754ef26e808a8c8dbadd278c215aa3f"
+  integrity sha512-VtZ6LAQtaQpFsmEzps15dQc5ELbJxy4L2DOSo2Ev411TUEtnJPkAMD7JneVypeMJQ1y3hgxN9Ao13n15FAnavg==
+  dependencies:
+    chalk "^3.0.0"
+    diff-sequences "^25.2.1"
+    jest-get-type "^25.2.1"
+    pretty-format "^25.2.3"
+
+jest-get-type@^25.2.1:
+  version "25.2.1"
+  resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-25.2.1.tgz#6c83de603c41b1627e6964da2f5454e6aa3c13a6"
+  integrity sha512-EYjTiqcDTCRJDcSNKbLTwn/LcDPEE7ITk8yRMNAOjEsN6yp+Uu+V1gx4djwnuj/DvWg0YGmqaBqPVGsPxlvE7w==
+>>>>>>> feat(devops): Add development script
 
 jest-haste-map@^24.9.0:
   version "24.9.0"
@@ -9314,7 +9372,11 @@ mkdirp@*:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.3.tgz#4cf2e30ad45959dddea53ad97d518b6c8205e1ea"
   integrity sha512-6uCP4Qc0sWsgMLy1EOqqS/3rjDHOEnsStVr/4vtAIK2Y5i2kA7lFFejYrpIyiN9w0pYf4ckeCYT9f1r1P9KX5g==
 
+<<<<<<< HEAD
 "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@~0.5.1:
+=======
+"mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
+>>>>>>> feat(devops): Add development script
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.4.tgz#fd01504a6797ec5c9be81ff43d204961ed64a512"
   integrity sha512-iG9AK/dJLtJ0XNgTuDbSyNS3zECqDlAhnQW4CsNxBG3LQJBbHmRX1egw39DmtOdCAqY+dKXV+sgPgilNWUKMVw==
@@ -11195,6 +11257,7 @@ pretty-error@^2.1.1:
     renderkid "^2.0.1"
     utila "~0.4"
 
+<<<<<<< HEAD
 pretty-format@25.1.0:
   version "25.1.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-25.1.0.tgz#ed869bdaec1356fc5ae45de045e2c8ec7b07b0c8"
@@ -11211,6 +11274,14 @@ pretty-format@^25.1.0:
   integrity sha512-DEiWxLBaCHneffrIT4B+TpMvkV9RNvvJrd3lY9ew1CEQobDzEXmYT1mg0hJhljZty7kCc10z13ohOFAE8jrUDg==
   dependencies:
     "@jest/types" "^25.2.6"
+=======
+pretty-format@^25.1.0, pretty-format@^25.2.3:
+  version "25.2.3"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-25.2.3.tgz#ba6e9603a0d80fa2e470b1fed55de1f9bfd81421"
+  integrity sha512-IP4+5UOAVGoyqC/DiomOeHBUKN6q00gfyT2qpAsRH64tgOKB2yF7FHJXC18OCiU0/YFierACup/zdCOWw0F/0w==
+  dependencies:
+    "@jest/types" "^25.2.3"
+>>>>>>> feat(devops): Add development script
     ansi-regex "^5.0.0"
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
@@ -11728,9 +11799,15 @@ react-style-singleton@^2.0.0:
     tslib "^1.0.0"
 
 react-use-gesture@^7.0.4:
+<<<<<<< HEAD
   version "7.0.8"
   resolved "https://registry.yarnpkg.com/react-use-gesture/-/react-use-gesture-7.0.8.tgz#0a0663d96ab375b14a8e9126287187390995e454"
   integrity sha512-Fy50US06pVkfsIEKDV18v3835Xa65/3QH9gDYRStjCgM273jnaH8WUsx4UxUag/NgevLnB3RPePUHkxtJheoSw==
+=======
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/react-use-gesture/-/react-use-gesture-7.0.6.tgz#c3bd1f711401a5b591995467fbdf22b988e70a5d"
+  integrity sha512-JARLfiF1h9JYbB5FTCADMAsYtYjaDN2IVRDvk51n+8YtgQveJdw8AKvzkJSCd6YgJAmJ8qJsVQoIWWz2cJerVg==
+>>>>>>> feat(devops): Add development script
 
 react@^16.10.2:
   version "16.13.1"
@@ -13756,9 +13833,15 @@ tslint-react@^4.2.0:
     tsutils "^3.9.1"
 
 tslint@^6.0.0:
+<<<<<<< HEAD
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-6.1.1.tgz#ac03fbd17f85bfefaae348b353b25a88efe10cde"
   integrity sha512-kd6AQ/IgPRpLn6g5TozqzPdGNZ0q0jtXW4//hRcj10qLYBaa3mTUU2y2MCG+RXZm8Zx+KZi0eA+YCrMyNlF4UA==
+=======
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-6.1.0.tgz#c6c611b8ba0eed1549bf5a59ba05a7732133d851"
+  integrity sha512-fXjYd/61vU6da04E505OZQGb2VCN2Mq3doeWcOIryuG+eqdmFUXTYVwdhnbEu2k46LNLgUYt9bI5icQze/j0bQ==
+>>>>>>> feat(devops): Add development script
   dependencies:
     "@babel/code-frame" "^7.0.0"
     builtin-modules "^1.1.1"
@@ -13768,7 +13851,11 @@ tslint@^6.0.0:
     glob "^7.1.1"
     js-yaml "^3.13.1"
     minimatch "^3.0.4"
+<<<<<<< HEAD
     mkdirp "^0.5.3"
+=======
+    mkdirp "^0.5.1"
+>>>>>>> feat(devops): Add development script
     resolve "^1.3.2"
     semver "^5.3.0"
     tslib "^1.10.0"
