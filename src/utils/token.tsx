@@ -17,21 +17,7 @@ export const normalizeBalance = (
     return scale(bnum(amount), decimals);
 };
 
-export const formatBalanceTruncated = (
-    balance: BigNumber,
-    decimals: number,
-    precision: number,
-    truncateAt: number
-): string => {
-    const result = formatBalance(balance, decimals, precision);
-    if (result.length > truncateAt) {
-        return result.substring(0, 20) + '...';
-    } else {
-        return result;
-    }
-};
-
-export const formatNormalizedBalance = (
+export const formatNumberValue = (
     normalizedBalance: BigNumber,
     displayPrecision: number = 4,
     truncateAt?: number

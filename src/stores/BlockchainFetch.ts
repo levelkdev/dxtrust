@@ -50,27 +50,26 @@ export default class BlockchainFetchStore {
                         // Set block number
                         providerStore.setCurrentBlockNumber(blockNumber);
 
-                        console.log('fetchRecentTrades');
-
                         // Get global blockchain data
                         datStore
                             .fetchRecentTrades(configStore.activeDatAddress, 10)
                             .then((trades) => {
-                                console.log('fetchRecentTrades', trades);
                                 tradingStore.setRecentTrades(trades);
                             });
 
                         // Get user-specific blockchain data
                         if (account) {
-                            console.log('fetchTokenBalances');
-                            tokenStore
-                                .fetchTokenBalances(web3React, account, [
-                                    'ether',
-                                    configStore.getDXDTokenAddress(),
-                                ])
-                                .then((result) => {
-                                    console.log('fetchTokenBalances', result);
-                                });
+                            tokenStore.fetchTokenBalances(web3React, account, [
+                                'ether',
+                                configStore.getDXDTokenAddress(),
+                            ]);
+
+                            tokenStore.fetchAccountApprovals(
+                                web3React,
+                                ['ether', configStore.getDXDTokenAddress()],
+                                account,
+                                configStore.activeDatAddress
+                            );
                         }
                     }
                 })

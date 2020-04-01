@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { collateralType } from '../config.json';
 import { useStores } from '../contexts/storesContext';
 import { EventType } from '../stores/datStore';
-import { formatBalance, formatNormalizedBalance } from '../utils/token';
+import { formatBalance, formatNumberValue } from '../utils/token';
 
 const TradingHistoryWrapper = styled.div`
     width: 100%;
@@ -94,7 +94,7 @@ const TradingHistory = observer(() => {
                         {trade.type}
                     </TableCell>
                     <TableCell width="15.5%">
-                        {formatNormalizedBalance(trade.price)}
+                        {formatNumberValue(trade.price)}
                     </TableCell>
                     <TableCell>{formatBalance(trade.amount)}</TableCell>
                     <TableCell>
