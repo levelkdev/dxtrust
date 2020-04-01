@@ -1,6 +1,5 @@
 import { BigNumber } from 'utils/bignumber';
 import { ValidationStatus } from './utils/validators';
-import {TransactionReceipt, EventLog, Log} from 'web3-core';
 
 export interface BigNumberMap {
     [index: string]: BigNumber;
@@ -58,7 +57,7 @@ export interface Checkbox {
 
 export enum Web3Errors {
     UNKNOWN_ERROR,
-    SIGNATURE_REJECTED
+    SIGNATURE_REJECTED,
 }
 
 export enum TXEvents {
@@ -67,12 +66,12 @@ export enum TXEvents {
     CONFIRMATION = 'confirmation',
     TX_ERROR = 'txerror',
     FINALLY = 'finally',
-    INVARIANT = 'invariant'
+    INVARIANT = 'invariant',
 }
 
 export type TxHash = string;
 
 export interface TransactionEvent {
-    type: TXEvents,
-    data: any
+    type: TXEvents;
+    data: any;
 }

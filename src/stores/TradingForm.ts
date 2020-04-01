@@ -1,7 +1,6 @@
 import { action, observable } from 'mobx';
 import { buyStartState } from '../config.json';
 import RootStore from './Root';
-import Web3 from 'web3';
 import { TradeEvent } from './datStore';
 
 const ConfirmationFlags = {
@@ -15,7 +14,7 @@ export enum TransactionState {
     NONE,
     SIGNING_TX,
     UNCONFIRMED,
-    CONFIRMED
+    CONFIRMED,
 }
 
 class TradingFormStore {

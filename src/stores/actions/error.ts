@@ -1,7 +1,7 @@
 import { Web3Errors } from '../../types';
 
 const errorCodeMapping = {
-    '4001': Web3Errors.SIGNATURE_REJECTED
+    '4001': Web3Errors.SIGNATURE_REJECTED,
 };
 
 export const isKnownErrorCode = (code: number): boolean => {
@@ -14,6 +14,6 @@ export const getErrorByCode = (code: number): Web3Errors => {
     if (isKnownErrorCode(code)) {
         return errorCodeMapping[codeStr];
     } else {
-        return Web3Errors.UNKNOWN_ERROR
+        return Web3Errors.UNKNOWN_ERROR;
     }
 };
