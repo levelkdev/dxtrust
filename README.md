@@ -4,12 +4,27 @@ Bonding Curve Dapp, based in the [DXdao Bonding Curve DAPP Proposal doc](https:/
 
 ## Setup
 
-`npm install`
+### Installation
+- Install dependencies
+    ```
+    yarn
+    ```
 
-## Run
 
-To run the app just use the command `npm start` it will start the read app server in developer mode and refresh it watching for changes in the source code.
+### Start App
+- As per create-react-app
+    ```
+    yarn start
+    ```
 
-## Build
-
-To build the production version of the app run `npm run build` it will compile the source code using webpapck production configuration.
+### Test
+- No front-end tests at the moment. (Jest is included for testing React components).
+    ```
+    yarn test
+    ```
+    
+### Build For Production
+- Full dApp build will live in /build folder.
+    ```
+    yarn build
+    ```
