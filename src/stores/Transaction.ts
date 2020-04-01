@@ -1,14 +1,12 @@
 import { action, observable } from 'mobx';
-import { providers } from 'ethers';
 import RootStore from 'stores/Root';
-import { TransactionResponse } from 'ethers/providers';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
+import { TransactionReceipt } from 'web3-core';
 
 export interface TransactionRecord {
     hash: string;
-    response: providers.TransactionResponse;
     blockNumberChecked: number;
-    receipt: providers.TransactionReceipt | undefined;
+    receipt: TransactionReceipt | undefined;
 }
 
 const ERRORS = {
@@ -94,18 +92,12 @@ export default class TransactionStore {
     }
 
     // @dev Add transaction record. It's in a pending state until mined.
-    @action addTransactionRecord(
-        account: string,
-        txResponse: any
-    ) {
+    @action addTransactionRecord(account: string, txHash: string) {
         const record: TransactionRecord = {
-            hash: txResponse.transactionHash,
-            response: txResponse,
+            hash: txHash,
             blockNumberChecked: 0,
             receipt: undefined,
         };
-
-        const txHash = txResponse.transactionHash;
 
         if (!txHash) {
             throw new Error(

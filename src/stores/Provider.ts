@@ -3,8 +3,10 @@ import RootStore from 'stores/Root';
 import { ethers } from 'ethers';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import UncheckedJsonRpcSigner from 'provider/UncheckedJsonRpcSigner';
-import { ActionResponse, sendAction } from './actions/actions';
+import { sendAction } from './actions/actions';
 import { supportedChainId, web3ContextNames } from '../provider/connectors';
+import PromiEvent from 'promievent';
+import { TXEvents } from '../types';
 
 export enum ContractTypes {
     ERC20 = 'ERC20',
@@ -156,14 +158,14 @@ export default class ProviderStore {
         this.web3Contexts[name] = context;
     }
 
-    @action sendTransaction = async (
+    @action sendTransaction = (
         web3React: Web3ReactContextInterface,
         contractType: ContractTypes,
         contractAddress: string,
         action: string,
         params: any[],
         overrides?: any
-    ): Promise<ActionResponse> => {
+    ): PromiEvent<any> => {
         const { transactionStore } = this.rootStore;
         const { chainId, account } = web3React;
 
@@ -184,25 +186,16 @@ export default class ProviderStore {
             account
         );
 
-        const response = await sendAction({
+        const response = sendAction({
             contract,
             action,
             sender: account,
             data: params,
             overrides,
+        }).on(TXEvents.TX_HASH, (hash) => {
+            console.log('tracking transaction', hash);
+            transactionStore.addTransactionRecord(account, hash);
         });
-
-        const { error, txResponse } = response;
-
-        console.log(response);
-
-        if (error) {
-            console.warn('[Send Transaction Error', error);
-        } else if (txResponse) {
-            transactionStore.addTransactionRecord(account, txResponse);
-        } else {
-            throw new Error(ERRORS.BlockchainActionNoResponse);
-        }
 
         return response;
     };

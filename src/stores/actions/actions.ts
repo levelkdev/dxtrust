@@ -1,5 +1,7 @@
 import { Contract } from 'ethers';
-import { TransactionResponse } from 'ethers/providers';
+import { TXEvents } from '../../types';
+import { getErrorByCode, isKnownErrorCode } from './error';
+import PromiEvent from 'promievent';
 
 interface ActionRequest {
     contract: Contract;
@@ -39,9 +41,7 @@ const postLog = (result: ActionResponse) => {
     });
 };
 
-export const sendAction = async (
-    params: ActionRequest
-): Promise<ActionResponse> => {
+export const sendAction = (params: ActionRequest): PromiEvent<any> => {
     const { contract, action, sender, data, overrides } = params;
     preLog(params);
 
@@ -54,14 +54,48 @@ export const sendAction = async (
         error: undefined,
     };
 
-    try {
-        actionResponse.txResponse = await contract.methods[action](
-            ...data
-        ).send({from: sender});
-    } catch (e) {
-        actionResponse.error = e;
-    }
+    const promiEvent = new PromiEvent<any>((resolve, reject) => {
+        contract.methods[action](...data)
+            .send({ from: sender, ...overrides })
+            .once('transactionHash', (hash) => {
+                promiEvent.emit(TXEvents.TX_HASH, hash);
+                console.log(TXEvents.TX_HASH, hash);
+            })
+            .once('receipt', (receipt) => {
+                promiEvent.emit(TXEvents.RECEIPT, receipt);
+                console.log(TXEvents.RECEIPT, receipt);
+            })
+            .once('confirmation', (confNumber, receipt) => {
+                promiEvent.emit(TXEvents.CONFIRMATION, {
+                    confNumber,
+                    receipt,
+                });
+                console.log(TXEvents.CONFIRMATION, {
+                    confNumber,
+                    receipt,
+                });
+            })
+            .on('error', (error) => {
+                console.log(error.code);
+                if (error.code && isKnownErrorCode(error.code)) {
+                    promiEvent.emit(
+                        TXEvents.TX_ERROR,
+                        getErrorByCode(error.code)
+                    );
+                    console.log(TXEvents.TX_ERROR, getErrorByCode(error.code));
+                } else {
+                    promiEvent.emit(TXEvents.INVARIANT, error);
+                    console.log(TXEvents.INVARIANT, error);
+                }
+            })
+            .then((receipt) => {
+                promiEvent.emit(TXEvents.FINALLY, receipt);
+                console.log(TXEvents.FINALLY, receipt);
+            })
+            .catch((e) => {
+                console.log('rejected, e');
+            });
+    });
 
-    postLog(actionResponse);
-    return actionResponse;
+    return promiEvent;
 };

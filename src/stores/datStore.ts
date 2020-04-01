@@ -3,10 +3,7 @@ import { BigNumber } from '../utils/bignumber';
 import { ContractTypes } from './Provider';
 import { action } from 'mobx';
 import { bnum } from '../utils/helpers';
-import PromiEvent from 'promievent/PromiEvent';
-import { TransactionReceipt, EventLog, Log } from 'web3-core';
-import { TXEvents } from '../types';
-import { getErrorByCode, isKnownErrorCode } from './actions/error';
+import PromiEvent from 'promievent';
 
 export enum EventType {
     Buy = 'Buy',
@@ -227,72 +224,15 @@ export default class DatStore {
         });
 
         const { providerStore } = this.rootStore;
-        const { account } = providerStore.getActiveWeb3React();
-        const contract = providerStore.getContract(
+
+        return providerStore.sendTransaction(
             providerStore.getActiveWeb3React(),
             ContractTypes.DecentralizedAutonomousTrust,
-            datAddress
+            datAddress,
+            'buy',
+            [to, currencyValue.toString(), minTokensBought.toString()],
+            { value: currencyValue.toString() }
         );
-
-        const promiEvent = new PromiEvent<any>((resolve, reject) => {
-            contract.methods
-                .buy(to, currencyValue.toString(), minTokensBought.toString())
-                .send({ from: account, value: currencyValue.toString() })
-                .once('transactionHash', (hash) => {
-                    promiEvent.emit(TXEvents.TX_HASH, hash);
-                    console.log(TXEvents.TX_HASH, hash);
-                })
-                .once('receipt', (receipt) => {
-                    promiEvent.emit(TXEvents.RECEIPT, receipt);
-                    console.log(TXEvents.RECEIPT, receipt);
-                })
-                .once('confirmation', (confNumber, receipt) => {
-                    promiEvent.emit(TXEvents.CONFIRMATION, {
-                        confNumber,
-                        receipt,
-                    });
-                    console.log(TXEvents.CONFIRMATION, {
-                        confNumber,
-                        receipt,
-                    });
-                })
-                .on('error', (error) => {
-                    console.log(error.code);
-                    if (error.code && isKnownErrorCode(error.code)) {
-                        promiEvent.emit(TXEvents.TX_ERROR, getErrorByCode(error.code));
-                        console.log(TXEvents.TX_ERROR, getErrorByCode(error.code));
-                    } else {
-                        promiEvent.emit(TXEvents.INVARIANT, error);
-                        console.log(TXEvents.INVARIANT, error);
-                    }
-                })
-                .then((receipt) => {
-                    promiEvent.emit(TXEvents.FINALLY, receipt);
-                    console.log(TXEvents.FINALLY, receipt);
-                }).catch(e => {
-                    console.log('rejected, e');
-            })
-        });
-
-        return promiEvent;
-        // contract.methods
-        //     .buy(to, currencyValue.toString(), minTokensBought.toString())
-        //     .send({ from: account, value: currencyValue.toString() })
-        //     .then((result) => {
-        //         console.log('buyResult', result);
-        //     })
-        //     .catch((e) => {
-        //         console.log('buyResult', e);
-        //     });
-
-        //
-        // await providerStore.sendTransaction(
-        //     providerStore.getActiveWeb3React(),
-        //     ContractTypes.DecentralizedAutonomousTrust,
-        //     datAddress,
-        //     'buy',
-        //     [to, currencyValue.toString(), minTokensBought.toString()]
-        // );
     }
 
     //TODO: Return status on failure
@@ -303,11 +243,12 @@ export default class DatStore {
         minCurrencyReturned: BigNumber
     ) {
         const { providerStore } = this.rootStore;
-        await providerStore.sendTransaction(
+
+        return providerStore.sendTransaction(
             providerStore.getActiveWeb3React(),
             ContractTypes.DecentralizedAutonomousTrust,
             datAddress,
-            'buy',
+            'sell',
             [to, quantityToSell.toString(), minCurrencyReturned.toString()]
         );
     }

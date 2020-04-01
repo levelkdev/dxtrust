@@ -97,16 +97,23 @@ const BuySell = observer(() => {
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
 
-    let ETHBalance, DXDBalance = undefined;
+    let ETHBalance,
+        DXDBalance = undefined;
 
     if (account) {
         ETHBalance = tokenStore.getBalance('ether', account);
-        DXDBalance = tokenStore.getBalance(configStore.getDXDTokenAddress(), account);
-        console.log('DXDBalance', DXDBalance ? DXDBalance.toString() : undefined);
+        DXDBalance = tokenStore.getBalance(
+            configStore.getDXDTokenAddress(),
+            account
+        );
+        console.log(
+            'DXDBalance',
+            DXDBalance ? DXDBalance.toString() : undefined
+        );
     }
 
     const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
-    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance): '0.000';
+    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance) : '0.000';
 
     const TabButton = ({ currentTab, tabType, left, children }) => {
         if (currentTab === tabType) {
