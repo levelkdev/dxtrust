@@ -106,10 +106,6 @@ const BuySell = observer(() => {
             configStore.getDXDTokenAddress(),
             account
         );
-        console.log(
-            'DXDBalance',
-            DXDBalance ? DXDBalance.toString() : undefined
-        );
     }
 
     const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';

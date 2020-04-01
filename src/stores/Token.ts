@@ -15,13 +15,7 @@ import {
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { BigNumberMap } from '../types';
 import { ActionResponse } from './actions/actions';
-
-export interface ContractMetadata {
-    bFactory: string;
-    proxy: string;
-    weth: string;
-    tokens: TokenMetadata[];
-}
+import { PromiEvent } from 'web3-core';
 
 export interface TokenBalance {
     balance: BigNumber;
@@ -285,13 +279,13 @@ export default class TokenStore {
         return undefined;
     }
 
-    @action approveMax = async (
+    @action approveMax = (
         web3React,
         tokenAddress,
         spender
-    ): Promise<ActionResponse> => {
+    ): PromiEvent<any> => {
         const { providerStore } = this.rootStore;
-        return await providerStore.sendTransaction(
+        return providerStore.sendTransaction(
             web3React,
             ContractTypes.ERC20,
             tokenAddress,
@@ -300,13 +294,13 @@ export default class TokenStore {
         );
     };
 
-    @action revokeApproval = async (
+    @action revokeApproval = (
         web3React,
         tokenAddress,
         spender
-    ): Promise<ActionResponse> => {
+    ): PromiEvent<any> => {
         const { providerStore } = this.rootStore;
-        return await providerStore.sendTransaction(
+        return providerStore.sendTransaction(
             web3React,
             ContractTypes.ERC20,
             tokenAddress,
@@ -655,9 +649,7 @@ export default class TokenStore {
     hasMaxApproval = (tokenAddress, account, spender): boolean => {
         const allowance = this.getAllowance(tokenAddress, account, spender);
         if (!allowance) {
-            throw new Error(
-                `Allowance not loaded for ${tokenAddress} ${account} ${spender}`
-            );
+            return false;
         }
         return helpers.hasMaxApproval(allowance);
     };
