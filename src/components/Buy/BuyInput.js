@@ -5,6 +5,8 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
+import { denormalizeBalance } from '../../utils/token';
+import { bnum, str } from '../../utils/helpers';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -69,8 +71,20 @@ const ErrorValidation = styled.div`
 
 const BuyInput = observer((props) => {
     const {
-        root: { datStore, tradingStore, contractMetadataStore },
+        root: {
+            datStore,
+            tradingStore,
+            configStore,
+            contractMetadataStore,
+            providerStore,
+        },
     } = useStores();
+
+    const { account } = providerStore.getActiveWeb3React();
+
+    if (account) {
+        console.log('account', account);
+    }
 
     const { infotext } = props;
     const price = tradingStore.formatPrice();
@@ -88,13 +102,16 @@ const BuyInput = observer((props) => {
     };
 
     const checkActive = () => {
-        return tradingStore.buyAmount > 0;
+        console.log('active', {
+            buyAmount: tradingStore.buyAmount,
+            account,
+            active: tradingStore.buyAmount > 0 && !!account && !hasError,
+        });
+        return tradingStore.buyAmount > 0 && !!account && !hasError;
     };
 
     const validateNumber = (value) => {
-        if (value > 0) {
-            tradingStore.setBuyAmount(value);
-        }
+        tradingStore.setBuyAmount(value);
         hasError = !(value > 0);
     };
 
@@ -133,7 +150,16 @@ const BuyInput = observer((props) => {
             <Button
                 active={checkActive()}
                 onClick={() => {
-                    datStore.buy();
+                    datStore
+                        .buy(
+                            configStore.activeDatAddress,
+                            account,
+                            denormalizeBalance(str(tradingStore.buyAmount)),
+                            bnum(1)
+                        )
+                        .catch((e) => {
+                            console.log(e);
+                        });
                     tradingStore.buyingState = 1;
                 }}
             >

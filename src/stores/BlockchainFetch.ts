@@ -17,10 +17,16 @@ export default class BlockchainFetchStore {
     ) {
         if (web3React.active && web3React.chainId === supportedChainId) {
             const { library, account, chainId } = web3React;
-            const { providerStore } = this.rootStore;
+            const {
+                providerStore,
+                datStore,
+                configStore,
+                tokenStore,
+                tradingStore,
+            } = this.rootStore;
 
-            library.eth.
-                getBlockNumber()
+            library.eth
+                .getBlockNumber()
                 .then((blockNumber) => {
                     const lastCheckedBlock = providerStore.getCurrentBlockNumber();
 
@@ -44,14 +50,27 @@ export default class BlockchainFetchStore {
                         // Set block number
                         providerStore.setCurrentBlockNumber(blockNumber);
 
+                        console.log('fetchRecentTrades');
+
                         // Get global blockchain data
+                        datStore
+                            .fetchRecentTrades(configStore.activeDatAddress, 10)
+                            .then((trades) => {
+                                console.log('fetchRecentTrades', trades);
+                                tradingStore.setRecentTrades(trades);
+                            });
 
                         // Get user-specific blockchain data
                         if (account) {
-                            providerStore.fetchUserBlockchainData(
-                                web3React,
-                                account
-                            );
+                            console.log('fetchTokenBalances');
+                            tokenStore
+                                .fetchTokenBalances(web3React, account, [
+                                    'ether',
+                                    configStore.getDXDTokenAddress(),
+                                ])
+                                .then((result) => {
+                                    console.log('fetchTokenBalances', result);
+                                });
                         }
                     }
                 })

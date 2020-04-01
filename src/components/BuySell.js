@@ -6,8 +6,8 @@ import EnableContinue from './common/EnableContinue';
 import Enable from './common/Enable';
 import EnablePending from './common/EnablePending';
 import SellForm from './Sell/SellForm';
-import store from '../stores/Root';
 import { useStores } from '../contexts/storesContext';
+import { formatBalance } from '../utils/token';
 
 const BuySellWrapper = styled.div`
     display: flex;
@@ -87,14 +87,17 @@ const LogoText = styled.div`
 
 const BuySell = observer(() => {
     const {
-        root: { tradingStore, providerStore },
+        root: { tradingStore, providerStore, tokenStore },
     } = useStores();
-    
+
+    const { account } = providerStore.getActiveWeb3React();
+
     const [currentTab, setCurrentTab] = useState(0);
 
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-    const ETHBalance = "0.000";
+    const ETHBalance = tokenStore.getBalance('ether', account);
+    const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
     // TODO figure out units for bonded token (dividing by a million?)
     const BondedTokenBalance = tradingStore.formatBondedTokenBalance();
 
@@ -189,7 +192,7 @@ const BuySell = observer(() => {
                             <ETHLogo src="ether.svg"></ETHLogo>
                             <LogoText>Ether</LogoText>
                         </LogoAndText>
-                        <div>{ETHBalance} ETH</div>
+                        <div>{ETHBalanceDisplay} ETH</div>
                     </InfoRow>
                     <InfoRow>
                         <LogoAndText>

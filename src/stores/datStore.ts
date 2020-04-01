@@ -1,10 +1,8 @@
 import RootStore from 'stores/Root';
 import { BigNumber } from '../utils/bignumber';
 import { ContractTypes } from './Provider';
-import { parseEther } from 'ethers/utils';
 import { action } from 'mobx';
 import { bnum } from '../utils/helpers';
-import Web3 from 'web3';
 
 export enum EventType {
     Buy = 'Buy',
@@ -149,12 +147,15 @@ export default class DatStore {
     }
 
     async parseBuyEvent(buyEvent) {
-        const amount = bnum(buyEvent.returnValues.amount);
-        const totalPrice = bnum(buyEvent.returnValues.price);
+        const amount = bnum(buyEvent.returnValues._fairValue);
+        const totalPrice = bnum(buyEvent.returnValues._currencyValue);
 
         const blockTime = await this.rootStore.providerStore.getBlockTime(
             buyEvent.blockNumber
         );
+
+        const price = totalPrice.div(amount);
+        console.log('price', price.toString());
 
         const event: BuyEvent = {
             price: totalPrice.div(amount),
@@ -171,8 +172,8 @@ export default class DatStore {
 
     // format sell event
     async parseSellEvent(sellEvent) {
-        const amount = bnum(sellEvent.returnValues.amount);
-        const totalReceived = bnum(sellEvent.returnValues.reward);
+        const amount = bnum(sellEvent.returnValues._fairValue);
+        const totalReceived = bnum(sellEvent.returnValues._currencyValue);
 
         const blockTime = await this.rootStore.providerStore.getBlockTime(
             sellEvent.blockNumber
@@ -214,14 +215,41 @@ export default class DatStore {
         currencyValue: BigNumber,
         minTokensBought: BigNumber
     ) {
+        console.log('buyParams', {
+            datAddress,
+            to,
+            currencyValue: currencyValue.toString(),
+            minTokensBought: minTokensBought.toString(),
+        });
+
         const { providerStore } = this.rootStore;
-        await providerStore.sendTransaction(
+        const { account } = providerStore.getActiveWeb3React();
+        const contract = providerStore.getContract(
             providerStore.getActiveWeb3React(),
             ContractTypes.DecentralizedAutonomousTrust,
-            datAddress,
-            'buy',
-            [to, currencyValue.toString(), minTokensBought.toString()]
+            datAddress
         );
+
+        console.log(contract.methods);
+
+        contract.methods
+            .buy(to, currencyValue.toString(), minTokensBought.toString())
+            .send({ from: account, value: currencyValue.toString() })
+            .then((result) => {
+                console.log('buyResult', result);
+            })
+            .catch((e) => {
+                console.log('buyResult', e);
+            });
+
+        //
+        // await providerStore.sendTransaction(
+        //     providerStore.getActiveWeb3React(),
+        //     ContractTypes.DecentralizedAutonomousTrust,
+        //     datAddress,
+        //     'buy',
+        //     [to, currencyValue.toString(), minTokensBought.toString()]
+        // );
     }
 
     //TODO: Return status on failure

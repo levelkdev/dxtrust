@@ -1,7 +1,8 @@
 import { action, observable } from 'mobx';
-import { buyStartState, collateralType, deployed } from '../config.json';
+import { buyStartState } from '../config.json';
 import RootStore from './Root';
 import Web3 from 'web3';
+import { TradeEvent } from './datStore';
 
 const ConfirmationFlags = {
     ENABLE_TKN: 'enable_TKN',
@@ -114,7 +115,7 @@ class TradingFormStore {
         }
     }
 
-    async setRecentTrades(trades) {
+    @action setRecentTrades(trades: TradeEvent[]) {
         this.recentTrades = trades;
         this.recentTradesSet = true;
     }

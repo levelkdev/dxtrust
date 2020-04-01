@@ -7,13 +7,13 @@ import { ActionResponse, sendAction } from './actions/actions';
 import { supportedChainId, web3ContextNames } from '../provider/connectors';
 
 export enum ContractTypes {
-    ERC20,
-    BondedToken,
-    BondingCurve,
-    BondingCurveEther,
-    RewardsDistributor,
-    StaticCurveLogic,
-    DecentralizedAutonomousTrust
+    ERC20 = 'ERC20',
+    BondedToken = 'BondedToken',
+    BondingCurve = 'BondingCurve',
+    BondingCurveEther = 'BondingCurveEther',
+    RewardsDistributor = 'RewardsDistributor',
+    StaticCurveLogic = 'StaticCurveLogic',
+    DecentralizedAutonomousTrust = 'DecentralizedAutonomousTrust',
 }
 
 export const schema = {
@@ -23,7 +23,8 @@ export const schema = {
     BondingCurveEther: require('../abi/ERC20').abi,
     RewardsDistributor: require('../abi/ERC20').abi,
     StaticCurveLogic: require('../abi/ERC20').abi,
-    DecentralizedAutonomousTrust: require('../abi/DecentralizedAutonomousTrust').abi
+    DecentralizedAutonomousTrust: require('../abi/DecentralizedAutonomousTrust')
+        .abi,
 };
 
 export interface ChainData {
@@ -110,14 +111,12 @@ export default class ProviderStore {
         const { library } = web3React;
 
         if (signerAccount) {
-            return new ethers.Contract(
-                address,
-                schema[type],
-                this.getProviderOrSigner(library, signerAccount)
-            );
+            return new library.eth.Contract(schema[type], address, {
+                from: signerAccount,
+            });
         }
 
-        return new ethers.Contract(address, schema[type], library);
+        return new library.eth.Contract(schema[type], address);
     }
 
     // get blockTime from blockNumber

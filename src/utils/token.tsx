@@ -3,17 +3,15 @@ import { BigNumber } from './bignumber';
 import { bnum, DEFAULT_TOKEN_DECIMALS, scale } from './helpers';
 
 export const denormalizeBalance = (
-    amount: BigNumber,
-    tokenAddress: string,
+    normalizedBalance: string,
     decimals: number = DEFAULT_TOKEN_DECIMALS
 ): BigNumber => {
-    return scale(bnum(amount), decimals);
+    return scale(bnum(normalizedBalance), decimals);
 };
 
 // Wei Scale -> Token Scale
 export const normalizeBalance = (
     amount: BigNumber,
-    tokenAddress: string,
     decimals: number = DEFAULT_TOKEN_DECIMALS
 ): BigNumber => {
     return scale(bnum(amount), decimals);
@@ -33,9 +31,9 @@ export const formatBalanceTruncated = (
     }
 };
 
-export const formatNormalizedTokenValue = (
+export const formatNormalizedBalance = (
     normalizedBalance: BigNumber,
-    displayPrecision: number,
+    displayPrecision: number = 4,
     truncateAt?: number
 ): string => {
     if (normalizedBalance.eq(0)) {
@@ -57,8 +55,8 @@ export const formatNormalizedTokenValue = (
 
 export const formatBalance = (
     balance: BigNumber,
-    decimals: number,
-    precision: number
+    decimals: number = 18,
+    precision: number = 4
 ): string => {
     if (balance.eq(0)) {
         return bnum(0).toFixed(2);

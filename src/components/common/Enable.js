@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import store from '../../stores/Root';
+import { useStores } from '../../contexts/storesContext';
+import { observer } from 'mobx-react';
 
 const ContentWrapper = styled.div`
     height: 200px;
@@ -57,7 +58,13 @@ const EnableButton = styled.div`
     cursor: pointer;
 `;
 
-const Enable = ({ tokenType }) => {
+const Enable = observer(({ tokenType }) => {
+    const {
+        root: { providerStore, configStore, tokenStore },
+    } = useStores();
+
+    const tokenAddress = configStore.getTokenAddress(tokenType);
+
     return (
         <ContentWrapper>
             <CircleContainer>
@@ -68,13 +75,17 @@ const Enable = ({ tokenType }) => {
             <Info>Enable {tokenType} for trading</Info>
             <EnableButton
                 onClick={() => {
-                    store.tradingStore.enableToken(tokenType);
+                    tokenStore.approveMax(
+                        providerStore.getActiveWeb3React(),
+                        tokenAddress,
+                        configStore.activeDatAddress
+                    );
                 }}
             >
                 Enable {tokenType}
             </EnableButton>
         </ContentWrapper>
     );
-};
+});
 
 export default Enable;

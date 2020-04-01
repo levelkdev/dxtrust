@@ -18,7 +18,7 @@ export default class RootStore {
     modalStore: ModalStore;
     tradingStore: TradingFormStore;
     datStore: DatStore;
-    blockchainConfigStore: ConfigStore;
+    configStore: ConfigStore;
 
     constructor() {
         this.providerStore = new ProviderStore(this);
@@ -29,7 +29,7 @@ export default class RootStore {
         this.modalStore = new ModalStore(this);
         this.tradingStore = new TradingFormStore(this);
         this.datStore = new DatStore(this);
-        this.blockchainConfigStore = new ConfigStore(this);
+        this.configStore = new ConfigStore(this);
 
         this.asyncSetup().catch((e) => {
             //TODO: Add retry on these fetches

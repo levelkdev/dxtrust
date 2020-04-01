@@ -419,14 +419,15 @@ export default class TokenStore {
 
             if (tokenAddress === EtherKey) {
                 const { library } = web3React;
-                balance = bnum(await library.getBalance(account));
+                balance = bnum(await library.eth.getBalance(account));
             } else {
+                console.log('getBalanceOf', tokenAddress);
                 const token = providerStore.getContract(
                     web3React,
                     ContractTypes.ERC20,
                     tokenAddress
                 );
-                balance = bnum(await token.balanceOf(account));
+                balance = bnum(await token.methods.balanceOf(account));
             }
 
             const stale =
