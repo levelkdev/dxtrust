@@ -427,7 +427,8 @@ export default class TokenStore {
                     ContractTypes.ERC20,
                     tokenAddress
                 );
-                balance = bnum(await token.methods.balanceOf(account));
+                balance = bnum(await token.methods.balanceOf(account).call());
+                console.log('balance', account, tokenAddress, balance);
             }
 
             const stale =

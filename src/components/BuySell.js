@@ -87,7 +87,7 @@ const LogoText = styled.div`
 
 const BuySell = observer(() => {
     const {
-        root: { tradingStore, providerStore, tokenStore },
+        root: { tradingStore, providerStore, tokenStore, configStore },
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
@@ -96,10 +96,17 @@ const BuySell = observer(() => {
 
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-    const ETHBalance = tokenStore.getBalance('ether', account);
+
+    let ETHBalance, DXDBalance = undefined;
+
+    if (account) {
+        ETHBalance = tokenStore.getBalance('ether', account);
+        DXDBalance = tokenStore.getBalance(configStore.getDXDTokenAddress(), account);
+        console.log('DXDBalance', DXDBalance ? DXDBalance.toString() : undefined);
+    }
+
     const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
-    // TODO figure out units for bonded token (dividing by a million?)
-    const BondedTokenBalance = tradingStore.formatBondedTokenBalance();
+    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance): '0.000';
 
     const TabButton = ({ currentTab, tabType, left, children }) => {
         if (currentTab === tabType) {
@@ -199,7 +206,7 @@ const BuySell = observer(() => {
                             <DXDLogo src="dxdao-circle.svg"></DXDLogo>
                             <LogoText>DXdao</LogoText>
                         </LogoAndText>
-                        <div>{BondedTokenBalance} DXD</div>
+                        <div>{DXDBalanceDisplay} DXD</div>
                     </InfoRow>
                 </CryptoInfoWrapper>
                 <CurrentForm

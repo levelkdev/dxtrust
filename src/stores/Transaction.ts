@@ -96,16 +96,16 @@ export default class TransactionStore {
     // @dev Add transaction record. It's in a pending state until mined.
     @action addTransactionRecord(
         account: string,
-        txResponse: TransactionResponse
+        txResponse: any
     ) {
         const record: TransactionRecord = {
-            hash: txResponse.hash,
+            hash: txResponse.transactionHash,
             response: txResponse,
             blockNumberChecked: 0,
             receipt: undefined,
         };
 
-        const txHash = txResponse.hash;
+        const txHash = txResponse.transactionHash;
 
         if (!txHash) {
             throw new Error(

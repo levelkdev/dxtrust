@@ -14,7 +14,7 @@ export interface ActionResponse {
     action: string;
     sender: string;
     data: object;
-    txResponse: TransactionResponse | undefined;
+    txResponse: any | undefined;
     error: any | undefined;
 }
 
@@ -57,7 +57,7 @@ export const sendAction = async (
     try {
         actionResponse.txResponse = await contract.methods[action](
             ...data
-        ).send();
+        ).send({from: sender});
     } catch (e) {
         actionResponse.error = e;
     }

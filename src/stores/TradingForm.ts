@@ -11,17 +11,24 @@ const ConfirmationFlags = {
     SELL_DXD: 'sell_dxd',
 };
 
+export enum TransactionState {
+    NONE,
+    SIGNING_TX,
+    UNCONFIRMED,
+    CONFIRMED
+}
+
 class TradingFormStore {
     @observable reserveBalance = '';
     @observable price = 0;
 
     @observable enableTKNState = buyStartState;
-    @observable buyingState = 0;
+    @observable buyingState = TransactionState.NONE;
     @observable buyAmount = 0;
     @observable priceToBuy = 0;
 
-    @observable enableDXDState = 0;
-    @observable sellingState = 0;
+    @observable enableDXDState = TransactionState.NONE;
+    @observable sellingState = TransactionState.NONE;
     @observable sellAmount = 0;
     @observable rewardForSell = 0;
 
@@ -36,25 +43,10 @@ class TradingFormStore {
         this.rootStore = rootStore;
     }
 
-    // setPriceToBuy(uint256 numTokens)
-    async setPriceToBuy(priceToBuy) {
-        this.priceToBuy = priceToBuy;
-    }
-
-    // setRewardForSell(uint256 numTokens)
-    async setRewardForSell(rewardForSell) {
-        this.rewardForSell = rewardForSell;
-    }
-
     // setPrice()
     async setPrice() {
         // const price = await this.getPriceToBuy('1');
         this.price = 0;
-    }
-
-    // setBondedTokenBalance()
-    setBondedTokenBalance(tokenBalance) {
-        this.bondedTokenBalance = tokenBalance;
     }
 
     // setBuyAmount()
@@ -73,12 +65,6 @@ class TradingFormStore {
 
     formatNumber(number) {
         return Number(number).toFixed(3);
-    }
-
-    formatBondedTokenBalance() {
-        return this.formatNumber(
-            Web3.utils.fromWei(this.bondedTokenBalance.toString())
-        );
     }
 
     formatPrice() {
@@ -119,14 +105,6 @@ class TradingFormStore {
         this.recentTrades = trades;
         this.recentTradesSet = true;
     }
-
-    // async setDappTradeData() {
-    //     await this.setPrice();
-    //     await this.rootStore.providerStore.setETHBalance();
-    //     await this.setBondedTokenBalance();
-    //     await this.getReserveBalance();
-    //     this.setRecentTrades();
-    // }
 
     async validateCollateralAllowance(allowance) {
         if (allowance > 40000) {

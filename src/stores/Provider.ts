@@ -194,6 +194,8 @@ export default class ProviderStore {
 
         const { error, txResponse } = response;
 
+        console.log(response);
+
         if (error) {
             console.warn('[Send Transaction Error', error);
         } else if (txResponse) {

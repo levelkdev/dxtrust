@@ -7,6 +7,8 @@ import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
 import { denormalizeBalance } from '../../utils/token';
 import { bnum, str } from '../../utils/helpers';
+import { TXEvents } from '../../types';
+import { TransactionState } from '../../stores/TradingForm';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -150,6 +152,7 @@ const BuyInput = observer((props) => {
             <Button
                 active={checkActive()}
                 onClick={() => {
+                    tradingStore.buyingState = TransactionState.SIGNING_TX;
                     datStore
                         .buy(
                             configStore.activeDatAddress,
@@ -157,10 +160,17 @@ const BuyInput = observer((props) => {
                             denormalizeBalance(str(tradingStore.buyAmount)),
                             bnum(1)
                         )
-                        .catch((e) => {
-                            console.log(e);
+                        .on(TXEvents.TX_HASH, (hash) => {
+                            tradingStore.buyingState =
+                                TransactionState.UNCONFIRMED;
+                        })
+                        .on(TXEvents.RECEIPT, (receipt) => {
+                            tradingStore.buyingState =
+                                TransactionState.CONFIRMED;
+                        })
+                        .on(TXEvents.TX_ERROR, (error) => {
+                            tradingStore.buyingState = TransactionState.NONE;
                         });
-                    tradingStore.buyingState = 1;
                 }}
             >
                 Buy DXD
