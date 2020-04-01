@@ -69,14 +69,14 @@ const SpinnerWrapper = styled(Spinner)`
 
 const Web3ConnectStatus = observer(() => {
     const {
-        root: { modalStore, transactionStore },
+        root: { modalStore, transactionStore, providerStore },
     } = useStores();
-    const { chainId, active, connector, error } = useActiveWeb3React();
-    const { account, chainId: injectedChainId } = useWeb3React(
+    const { chainId, active, connector, error } = providerStore.getActiveWeb3React();
+    const { account, chainId: injectedChainId } = providerStore.getWeb3React(
         web3ContextNames.injected
     );
 
-    const contextNetwork = useWeb3React(web3ContextNames.backup);
+    const contextNetwork = providerStore.getWeb3React(web3ContextNames.backup);
 
     if (!chainId) {
         throw new Error('No chain ID specified');
