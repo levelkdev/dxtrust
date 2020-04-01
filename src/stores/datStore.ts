@@ -1,7 +1,7 @@
 import RootStore from 'stores/Root';
 import { BigNumber } from '../utils/bignumber';
 import { ContractTypes } from './Provider';
-import { action } from 'mobx';
+import { action, observable } from 'mobx';
 import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
 
@@ -33,6 +33,7 @@ export interface SellEvent {
 export type TradeEvent = BuyEvent | SellEvent;
 
 export default class DatStore {
+    @observable datParams;
     rootStore: RootStore;
 
     constructor(rootStore) {
@@ -118,6 +119,7 @@ export default class DatStore {
             toBlock: 'latest',
         });
 
+        buyEvents.reverse();
         buyEvents = buyEvents.slice(0, numToGet);
 
         return Promise.all(
@@ -140,6 +142,8 @@ export default class DatStore {
             fromBlock: 0,
             toBlock: 'latest',
         });
+
+        sellEvents.reverse();
         sellEvents = sellEvents.slice(0, numToGet);
 
         return Promise.all(
@@ -154,9 +158,6 @@ export default class DatStore {
         const blockTime = await this.rootStore.providerStore.getBlockTime(
             buyEvent.blockNumber
         );
-
-        const price = totalPrice.div(amount);
-        console.log('price', price.toString());
 
         const event: BuyEvent = {
             price: totalPrice.div(amount),
