@@ -12,6 +12,7 @@ cleanup() {
     kill -9 $ganache_pid
   fi
 }
+mnemonic=`cat .mnemonic`
 
 ganache_running() {
   nc -z localhost 8545
@@ -19,7 +20,7 @@ ganache_running() {
 
 start_ganache() {
 
-  npx ganache-cli --gasLimit 0xfffffffffff > /dev/null &
+  npx ganache-cli --gasLimit 0xfffffffffff -d -m "$mnemonic" -i 66 -e 1000 &
 
   ganache_pid=$!
 
@@ -41,4 +42,3 @@ fi
 
 npx truffle version
 node scripts/deploy.js
-npx react-app-rewired start

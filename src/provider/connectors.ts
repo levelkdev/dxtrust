@@ -16,6 +16,7 @@ export const getSupportedChainName = () => {
 export const chainNameById = {
     '1': 'mainnet',
     '42': 'kovan',
+    '66': 'develop',
 };
 
 export const isChainIdSupported = (chainId: number): boolean => {
@@ -26,11 +27,13 @@ const POLLING_INTERVAL = 1000;
 const RPC_URLS: { [chainId: number]: string } = {
     1: process.env.REACT_APP_RPC_URL_1 as string,
     42: process.env.REACT_APP_RPC_URL_42 as string,
+    66: process.env.REACT_APP_RPC_URL_LOCAL as string,
 };
 
 export const SUBGRAPH_URLS: { [chainId: number]: string } = {
     1: process.env.REACT_APP_SUBGRAPH_URL_1 as string,
     42: process.env.REACT_APP_SUBGRAPH_URL_42 as string,
+    66: process.env.REACT_APP_SUBGRAPH_URL_LOCAL as string,
 };
 
 export const web3ContextNames = {

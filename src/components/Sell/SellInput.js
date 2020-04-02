@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import store from '../../stores/Root';
-import { collateralType } from '../../config.json';
+import { DATinfo } from '../../blockchainInfo.json';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -112,13 +112,13 @@ class SellInput extends React.Component {
                 <InfoRow>
                     <FormInfoText>Price</FormInfoText>
                     <div>
-                        {price} {collateralType}
+                        {price} {DATinfo.collateralType}
                     </div>
                 </InfoRow>
                 <InfoRow>
                     <FormInfoText>Receive</FormInfoText>
                     <div>
-                        {rewardForSell} {collateralType}
+                        {rewardForSell} {DATinfo.collateralType}
                     </div>
                 </InfoRow>
                 <InputColumn>

@@ -1,12 +1,14 @@
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 
-module.exports = async function deployDat(web3, accounts, options, useProxy = true) {
+module.exports = async function deployDat(web3, options, useProxy = true) {
   
   ZWeb3.initialize(web3.currentProvider);
   // workaround for https://github.com/zeppelinos/zos/issues/704
   Contracts.setArtifactsDefaults({
     gas: 60000000,
   });
+  
+  const accounts = await web3.eth.getAccounts();
 
   const DATContract = Contracts.getFromLocal("DecentralizedAutonomousTrust");
   const WhitelistContract = Contracts.getFromLocal("Whitelist");
@@ -24,9 +26,9 @@ module.exports = async function deployDat(web3, accounts, options, useProxy = tr
       buySlopeDen: "100000000000000000000",
       investmentReserveBasisPoints: "1000",
       revenueCommitmentBasisPoints: "1000",
-      control: accounts.length > 2 ? accounts[1] : accounts[0],
-      beneficiary: accounts[0],
-      feeCollector: accounts.length > 2 ? accounts[2] : accounts[0],
+      control: accounts[1],
+      beneficiary: accounts[2],
+      feeCollector: accounts[3],
       name: "Test org",
       symbol: "TFO"
     },

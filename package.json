@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
+        "dev": "./scripts/dev.sh",
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js"
@@ -135,7 +136,6 @@
         "ethereumjs-util": "^6.1.0",
         "ethers": "^4.0.45",
         "file-loader": "3.0.1",
-        "fs-extra": "7.0.1",
         "hdkey": "^1.1.1",
         "html-webpack-plugin": "4.0.0-beta.5",
         "identity-obj-proxy": "3.0.0",
@@ -197,6 +197,9 @@
         "workbox-webpack-plugin": "4.3.1"
     },
     "devDependencies": {
+        "@openzeppelin/upgrades": "^2.8.0",
+        "fs-extra": "^7.0.1",
+        "hardlydifficult-ethereum-contracts": "^0.10.0",
         "husky": "^4.0.10",
         "pretty-quick": "^2.0.1"
     }

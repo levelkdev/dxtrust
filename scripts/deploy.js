@@ -1,28 +1,32 @@
-const BigNumber = require("bignumber.js");
 const deployDat = require("./deployDAT");
 const fs = require("fs");
 const Web3 = require("web3");
+const BN = require("bignumber.js");
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const args = process.argv;
+const zeroAddress = '0x0000000000000000000000000000000000000000';
+const { tokens } = require("hardlydifficult-ethereum-contracts");
 
-let network,mnemonic, web3;
+// Get network to use from arguments
+let network = 'develop', mnemonic, httpProviderUrl, web3;
 for (var i = 0; i < args.length; i++) {
   if (args[i] == "--network")
     network = args[i+1];
 }
+mnemonic = (fs.readFileSync('.mnemonic', 'utf8')).toString().replace(/(\r\n|\n|\r)/gm,"");
+httpProviderUrl = 'http://localhost:8545';
 
-if (fs.existsSync('keys.json') && network) {
+// Get development keys
+if (fs.existsSync('keys.json') && network != 'develop') {
   keys = JSON.parse(fs.readFileSync('keys.json', 'utf8'))
-  mnemonic = keys.mnemonic
-  infuraProjectID = keys.infura_projectid  
-  const httpProviderUrl = `https://${network}.infura.io/v3/${infuraProjectID}`
-  const provider = new HDWalletProvider(mnemonic, new Web3.providers.HttpProvider(httpProviderUrl));
-  web3 = new Web3(provider)
+  httpProviderUrl = `https://${network}.infura.io/v3/${keys.infura_projectid }`
 } else {
   console.log('no keys.json found. You can only deploy to the testrpc.')
-  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 }
+
+const provider = new HDWalletProvider(mnemonic, new Web3.providers.HttpProvider(httpProviderUrl), 0, 10);
+web3 = new Web3(provider)
 
 ZWeb3.initialize(web3.currentProvider);
 // workaround for https://github.com/zeppelinos/zos/issues/704
@@ -30,85 +34,39 @@ Contracts.setArtifactsDefaults({
   gas: 60000000,
 });
 
-const { tokens } = require("hardlydifficult-ethereum-contracts");
-
-const abiJson = {};
-const bytecodeJson = {};
-
-const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+// Get configuration file
+const config = JSON.parse(fs.readFileSync("config/app.json", "utf-8"));
 const addresses = config.addresses || {};
 
-console.log(config);
 async function deployOrgs() {
-  
-  const accounts = await web3.eth.getAccounts();
-  const DATInfo = config.DAT;
-  let currencyToken;
-  let currencyDecimals = 18;
-  
-  if (addresses[DATInfo.currencyType]) {
-    if (
-      DATInfo.currencyType &&
-      DATInfo.currencyType.toLowerCase().includes("dai")
-    ) {
-      currencyToken = tokens.sai.getToken(
-        web3,
-        addresses[DATInfo.currencyType]
-      );
-    } else if (
-      DATInfo.currencyType &&
-      DATInfo.currencyType.toLowerCase().includes("usdc")
-    ) {
-      currencyToken = tokens.usdc.getToken(
-        web3,
-        addresses[DATInfo.currencyType]
-      );
-    } else {
-      throw new Error("Missing currency type");
-    }
-  } else {
-    if (
-      DATInfo.currencyType === "dai" ||
-      DATInfo.currencyType === "testDAI"
-    ) {
-      console.log(accounts)
-      currencyToken = await tokens.sai.deploy(web3, accounts[0]);
-    } else if (
-      DATInfo.currencyType === "usdc" ||
-      DATInfo.currencyType === "testUSDC"
-    ) {
-      currencyToken = await tokens.usdc.deploy(
-        web3,
-        accounts[accounts.length - 1],
-        accounts[0]
-      );
-    } else {
-      throw new Error("Missing currency type");
-    }
+  console.log(await web3.eth.getAccounts());
+  const DATInfo = config.DATinfo;
+  let collateralToken = zeroAddress;
 
-    console.log(
-      `Deployed currency: ${
-        currencyToken.address
-      } (${await currencyToken.symbol()})`
-    );
-  }
-  if (currencyToken) {
-    currencyDecimals = parseInt(await currencyToken.decimals());
-  }
   const contracts = await deployDat(
     web3,
-    accounts,
     Object.assign(
       {
         whitelistAddress: addresses.whitelist,
-        currency: currencyToken.address,
-        minInvestment: new BigNumber("100")
-          .shiftedBy(currencyDecimals)
+        currency: (DATInfo.collateralType == "ETH") ? zeroAddress :collateralToken.address,
+        minInvestment: new BN("100")
+          .shiftedBy(18)
           .toFixed()
       },
       DATInfo
     )
   );    
-}
+  
+  const blockchainInfo = {
+    network: network,
+    DAT: contracts.dat.address,
+    collateral: zeroAddress,
+    DATinfo: config.DATinfo
+  };
+  
+  fs.writeFileSync('src/blockchainInfo.json', JSON.stringify(blockchainInfo, null, 2), {encoding:'utf8',flag:'w'})
 
-deployOrgs();
+  return;
+} 
+
+return deployOrgs();

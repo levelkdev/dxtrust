@@ -1,0 +1,25 @@
+{
+    "contracts": {
+        "kovan": {
+            "collateral": "0x000000000000000000000000000000000000000",
+            "DAT": "0x00F09759594fB1a5e0935BC00b937fA9eCB24b53"
+        }
+    },
+    "DATinfo": {
+        "collateralType": "ETH",
+        "name": "Ether",
+        "symbol": "ETH",
+        "revenueCommitmentBasisPoints": "1000",
+        "investmentReserveBasisPoints": "1000",
+        "buySlopeNum": "1",
+        "buySlopeDen": "100000000000000000000000000000000000",
+        "initGoal": "141421360000000000000000",
+        "initReserve": "140000000000000000000000",
+        "autoBurn": false,
+        "feeBasisPoints": "0",
+        "minInvestment": "100000000",
+        "openUntilAtLeast": "1735689599",
+        "beneficiary": "0x3532adfb048AD60920a89F0d62AB90B1CF80bf81",
+        "feeCollector": "0xADec422B6a7511c7E7131b81d533F23993ED16bf"
+    }
+}
