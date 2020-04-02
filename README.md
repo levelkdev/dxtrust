@@ -10,6 +10,17 @@ Bonding Curve Dapp, based in the [DXdao Bonding Curve DAPP Proposal doc](https:/
     yarn
     ```
 
+### Development
+1.- Add a 12 phrase mnemonic phrase in the .mnemonic file.
+2.- Start the local testnet, it will deploy new orgs based in the configuration from `config/app.json` file. Once the deployment finish it will create the file `src/blockchainInfo.json` with the tetsing addresses for the app.
+    ```
+    yarn run dev
+    ```
+3.- Once the contracts are deployed and testnet running execute the start script and use metamask from `localhost:8545`
+    ```
+    yarn start
+    ```    
+    
 
 ### Start App
 - As per create-react-app
