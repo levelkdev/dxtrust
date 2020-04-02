@@ -119,8 +119,6 @@ const BuyInput = observer((props) => {
 
          */
 
-        console.log('status', status);
-
         if (status === ValidationStatus.VALID) {
             tradingStore.setPayAmountPending(true);
 
@@ -132,6 +130,9 @@ const BuyInput = observer((props) => {
             );
 
             tradingStore.handleBuyReturn(buyReturn);
+        } else {
+            tradingStore.setPayAmount(bnum(0));
+            tradingStore.setPrice(bnum(0));
         }
     };
 

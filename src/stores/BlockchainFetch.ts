@@ -68,10 +68,6 @@ export default class BlockchainFetchStore {
                                 );
                             })
                             .then(async () => {
-                                console.log(
-                                    'validateTokenValue(tradingStore.buyAmount)',
-                                    validateTokenValue(tradingStore.buyAmount)
-                                );
                                 if (
                                     validateTokenValue(
                                         tradingStore.buyAmount
