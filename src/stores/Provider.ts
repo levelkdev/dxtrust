@@ -7,6 +7,7 @@ import { sendAction } from './actions/actions';
 import { supportedChainId, web3ContextNames } from '../provider/connectors';
 import PromiEvent from 'promievent';
 import { TXEvents } from '../types';
+import moment from 'moment';
 
 export enum ContractTypes {
     ERC20 = 'ERC20',
@@ -126,8 +127,9 @@ export default class ProviderStore {
         const context = this.getActiveWeb3React();
         const blockData = await context.library.eth.getBlock(blockNumber);
         const date = new Date(blockData.timestamp * 1000);
-        return blockData.timestamp * 1000;
+        return moment(date).format('DD.MM - HH:mm');
     }
+
 
     // get blockHash from blockNumber
     async getBlockHash(blockNumber) {
