@@ -57,6 +57,22 @@ export default class BlockchainFetchStore {
                                 tradingStore.setRecentTrades(trades);
                             });
 
+                        datStore
+                            .fetchMinInvestment(configStore.activeDatAddress)
+                            .then((minInvestment) => {
+                                datStore.setMinInvestment(
+                                    configStore.activeDatAddress,
+                                    minInvestment
+                                );
+                            })
+                            .then(() => {
+                                datStore
+                                    .fetchPrice(configStore.activeDatAddress)
+                                    .then((price) => {
+                                        tradingStore.setPrice(price);
+                                    });
+                            });
+
                         // Get user-specific blockchain data
                         if (account) {
                             tokenStore.fetchTokenBalances(web3React, account, [

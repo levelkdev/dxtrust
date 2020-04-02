@@ -2,6 +2,8 @@ import { action, observable } from 'mobx';
 import { buyStartState } from '../config.json';
 import RootStore from './Root';
 import { TradeEvent } from './datStore';
+import { BigNumber } from '../utils/bignumber';
+import { bnum } from '../utils/helpers';
 
 const ConfirmationFlags = {
     ENABLE_TKN: 'enable_TKN',
@@ -19,7 +21,7 @@ export enum TransactionState {
 
 class TradingFormStore {
     @observable reserveBalance = '';
-    @observable price = 0;
+    @observable price: BigNumber = bnum(0);
 
     @observable enableTKNState = buyStartState;
     @observable buyingState = TransactionState.NONE;
@@ -43,9 +45,8 @@ class TradingFormStore {
     }
 
     // setPrice()
-    async setPrice() {
-        // const price = await this.getPriceToBuy('1');
-        this.price = 0;
+    setPrice(price: BigNumber) {
+        this.price = price;
     }
 
     // setBuyAmount()
