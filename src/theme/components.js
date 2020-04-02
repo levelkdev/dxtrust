@@ -39,7 +39,7 @@ export const Link = styled.a.attrs({
 })`
     text-decoration: none;
     cursor: pointer;
-    color: ${({ theme }) => theme.royalBlue};
+    color: var(--turquois-text);
 
     :focus {
         outline: none;

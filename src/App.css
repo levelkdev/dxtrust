@@ -1,7 +1,9 @@
 :root {
     --active-button-border: #304ffe;
     --orange: #f9aa33;
-    --blue-text: #536dfe;
+    --blue-text: #536DFE;
+    --blue-onHover: #4864FE;
+    --blue-onHover-border: #2545FE;
     --red-text: #ff4081;
     --light-text-gray: #bdbdbd;
     --dark-text-gray: #616161;
@@ -19,6 +21,7 @@
     --light-gray: rgba(245, 246, 246, 0.5); /*Site background*/
     --line-gray: rgba(225, 227, 231, 0.4);
     --turquois-text: #2d9cdb;
+    --white: #ffffff;
 
     --rewards-text-green: #54ae6f;
     --rewards-background-green: rgba(84, 174, 111, 0.1);

@@ -18,14 +18,16 @@ const OptionButton = styled.div`
     ${({ theme }) => theme.flexColumnNoWrap}
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
-    border: 1px solid ${({ theme }) => theme.royalBlue};
-    color: ${({ theme }) => theme.royalBlue};
+    border-radius: 4px;
+    border: 1px solid var(--active-button-border);
+    background-color: var(--blue-text);
+    color: #FFFFFF;
     padding: 8px 24px;
 
     &:hover {
-        border: 1px solid ${({ theme }) => theme.malibuBlue};
         cursor: pointer;
+        border: 1px solid var(--blue-onHover-border);
+        background-color: var(--blue-onHover);
     }
 
     ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -170,8 +172,7 @@ const ConnectButtonRow = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-    color: ${({ hasENS, isENS, theme }) =>
-        hasENS ? (isENS ? theme.royalBlue : theme.doveGray) : theme.royalBlue};
+    color: var(--turquois-text);
 `;
 
 const CloseIcon = styled.div`
