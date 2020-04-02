@@ -15,7 +15,7 @@ export interface BuyEvent {
     amount: BigNumber;
     totalPaid: BigNumber;
     blockNumber: number;
-    blockTime: number;
+    blockTime: string;
     type: EventType;
     hash: string;
 }
@@ -25,7 +25,7 @@ export interface SellEvent {
     amount: BigNumber;
     totalReceived: BigNumber;
     blockNumber: number;
-    blockTime: number;
+    blockTime: string;
     type: EventType;
     hash: string;
 }
