@@ -1,5 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from 'provider/NetworkConnector';
+import { MetamaskConnector } from './MetamaskConnector';
 
 export const supportedChainId = Number(
     process.env.REACT_APP_SUPPORTED_NETWORK_ID
@@ -47,8 +48,8 @@ export const backup = new NetworkConnector({
     pollingInterval: POLLING_INTERVAL,
 });
 
-export const injected = new InjectedConnector({
-    // supportedChainIds: supportedNetworks,
+export const injected = new MetamaskConnector({
+    // supportedChainIds: [1, supportedChainId],
 });
 
 export default {
