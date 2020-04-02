@@ -63,10 +63,14 @@ const Enable = observer(({ tokenType }) => {
         root: { providerStore, configStore, tokenStore },
     } = useStores();
 
-    const {account} = providerStore.getActiveWeb3React();
+    const { account } = providerStore.getActiveWeb3React();
     const tokenAddress = configStore.getTokenAddress(tokenType);
 
-    const hasMaxApproval = tokenStore.hasMaxApproval(tokenAddress, account, configStore.activeDatAddress);
+    const hasMaxApproval = tokenStore.hasMaxApproval(
+        tokenAddress,
+        account,
+        configStore.activeDatAddress
+    );
 
     return (
         <ContentWrapper>

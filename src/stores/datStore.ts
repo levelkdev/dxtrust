@@ -4,6 +4,7 @@ import { ContractTypes } from './Provider';
 import { action, observable } from 'mobx';
 import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
+import { BigNumberCached } from '../services/blockchainReader';
 
 export enum EventType {
     Buy = 'Buy',
@@ -31,11 +32,34 @@ export interface SellEvent {
 }
 
 interface DatParams {
-    minInvestment: BigNumber;
+    minInvestment?: BigNumber;
+    currentPrice?: BigNumberCached;
 }
 
 interface DatParamsMap {
     [index: string]: DatParams;
+}
+
+export interface BuyReturnCached {
+    value: BuyReturn;
+    blockNumber: number;
+}
+
+export interface SellReturnCached {
+    value: SellReturn;
+    blockNumber: number;
+}
+
+export interface BuyReturn {
+    tokensIssued: BigNumber;
+    totalPaid: BigNumber;
+    pricePerToken: BigNumber;
+}
+
+export interface SellReturn {
+    tokensSold: BigNumber;
+    currencyReturned: BigNumber;
+    returnPerToken: BigNumber;
 }
 
 export type TradeEvent = BuyEvent | SellEvent;
@@ -85,6 +109,41 @@ export default class DatStore {
     getFAIRSupply()
     getRecentTrades()
      */
+
+    @action setDatParams(datAddress: string, updated) {
+        if (!this.datParams[datAddress]) {
+            this.datParams[datAddress] = {};
+        }
+
+        this.datParams[datAddress] = {
+            ...this.datParams[datAddress],
+            ...updated,
+        };
+    }
+
+    @action updatePrice(datAddress: string, newPrice: BigNumberCached) {
+        const { providerStore } = this.rootStore;
+        const hasExistingValue =
+            this.datParams[datAddress] &&
+            this.datParams[datAddress].currentPrice;
+
+        // Don't update if stale
+        if (
+            hasExistingValue &&
+            providerStore.isFresher(
+                newPrice.blockNumber,
+                this.datParams[datAddress].currentPrice.blockNumber
+            )
+        ) {
+            this.setDatParams(datAddress, {
+                currentPrice: newPrice,
+            });
+        } else if (!hasExistingValue) {
+            this.setDatParams(datAddress, {
+                currentPrice: newPrice,
+            });
+        }
+    }
 
     private getDatContract(datAddress: string) {
         const { providerStore } = this.rootStore;
@@ -224,7 +283,49 @@ export default class DatStore {
         return event;
     }
 
-    async fetchPrice(datAddress: string): Promise<BigNumber> {
+    async fetchBuyReturn(
+        datAddress: string,
+        totalPaid: BigNumber
+    ): Promise<BuyReturnCached> {
+        const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+
+        const tokensIssued = await this.estimateBuyValue(datAddress, totalPaid);
+        const pricePerToken = totalPaid.div(tokensIssued);
+
+        return {
+            value: {
+                totalPaid,
+                tokensIssued,
+                pricePerToken,
+            },
+            blockNumber,
+        };
+    }
+
+    async fetchSellReturn(
+        datAddress: string,
+        tokensSold: BigNumber
+    ): Promise<SellReturnCached> {
+        const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+
+        const currencyReturned = await this.estimateSellValue(
+            datAddress,
+            tokensSold
+        );
+
+        const returnPerToken = currencyReturned.div(tokensSold);
+
+        return {
+            value: {
+                tokensSold,
+                currencyReturned,
+                returnPerToken,
+            },
+            blockNumber,
+        };
+    }
+
+    async fetchSpotPrice(datAddress: string): Promise<BigNumber> {
         console.log('spotTokens');
 
         const minInvestment = this.getMinInvestment(datAddress);

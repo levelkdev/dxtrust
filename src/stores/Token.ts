@@ -14,7 +14,6 @@ import {
 } from './actions/fetch';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { BigNumberMap } from '../types';
-import { ActionResponse } from './actions/actions';
 import { PromiEvent } from 'web3-core';
 
 export interface TokenBalance {

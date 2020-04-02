@@ -1,4 +1,3 @@
-import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from 'provider/NetworkConnector';
 import { MetamaskConnector } from './MetamaskConnector';
 

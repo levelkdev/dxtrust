@@ -62,6 +62,14 @@ export default class ProviderStore {
         this.chainData = { currentBlockNumber: -1 } as ChainData;
     }
 
+    isFresh(blockNumber: number): boolean {
+        return blockNumber === this.getCurrentBlockNumber();
+    }
+
+    isFresher(newBlockNumber: number, oldBlockNumber: number): boolean {
+        return newBlockNumber > oldBlockNumber;
+    }
+
     isBlockStale(blockNumber: number) {
         return blockNumber < this.chainData.currentBlockNumber;
     }
