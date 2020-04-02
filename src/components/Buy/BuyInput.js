@@ -108,17 +108,6 @@ const BuyInput = observer((props) => {
         hasError = !(value > 0);
         const status = validateTokenValue(value);
 
-        /*
-            So, you need to make sure the PRICE is loaded and UPDATED
-            So we don't do it here, when get get a new PRICE - we check if the input is valid, and if it is, we refresh.
-
-            We also need to update WHEN the input is changed & valid - if there is a PRICE loaded, set it.
-
-            When a PRICE is loaded, set the result based on input
-            When a INPUT is added, set the results based on input
-
-         */
-
         if (status === ValidationStatus.VALID) {
             tradingStore.setPayAmountPending(true);
 

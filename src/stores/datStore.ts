@@ -31,13 +31,13 @@ export interface SellEvent {
     hash: string;
 }
 
-interface DatParams {
+interface DatInfo {
     minInvestment?: BigNumber;
     currentPrice?: BigNumberCached;
 }
 
-interface DatParamsMap {
-    [index: string]: DatParams;
+interface DatInfoMap {
+    [index: string]: DatInfo;
 }
 
 export interface BuyReturnCached {
@@ -65,12 +65,12 @@ export interface SellReturn {
 export type TradeEvent = BuyEvent | SellEvent;
 
 export default class DatStore {
-    @observable datParams: DatParamsMap;
+    @observable datParams: DatInfoMap;
     rootStore: RootStore;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
-        this.datParams = {} as DatParamsMap;
+        this.datParams = {} as DatInfoMap;
     }
 
     /*
