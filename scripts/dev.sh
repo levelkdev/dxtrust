@@ -12,7 +12,8 @@ cleanup() {
     kill -9 $ganache_pid
   fi
 }
-mnemonic=`cat .mnemonic`
+set -o allexport; source .env; set +o allexport
+mnemonic="$BCAPP_KEY_MNEMONIC"
 
 ganache_running() {
   nc -z localhost 8545
@@ -20,7 +21,7 @@ ganache_running() {
 
 start_ganache() {
 
-  npx ganache-cli --gasLimit 0xfffffffffff -d -m "$mnemonic" -i 66 -e 1000 &
+  npx ganache-cli --gasLimit 0xfffffffffff -d -m "$mnemonic" -e 1000 > /dev/null &
 
   ganache_pid=$!
 

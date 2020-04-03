@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
-        "dev": "./scripts/dev.sh",
+        "deploy": "node scripts/deploy.js",
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js"
@@ -199,6 +199,7 @@
     "devDependencies": {
         "@openzeppelin/upgrades": "^2.8.0",
         "fs-extra": "^7.0.1",
+        "ganache-cli": "^6.9.1",
         "hardlydifficult-ethereum-contracts": "^0.10.0",
         "husky": "^4.0.10",
         "pretty-quick": "^2.0.1"

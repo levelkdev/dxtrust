@@ -3,10 +3,6 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 module.exports = async function deployDat(web3, options, useProxy = true) {
   
   ZWeb3.initialize(web3.currentProvider);
-  // workaround for https://github.com/zeppelinos/zos/issues/704
-  Contracts.setArtifactsDefaults({
-    gas: 60000000,
-  });
   
   const accounts = await web3.eth.getAccounts();
 
@@ -26,9 +22,9 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
       buySlopeDen: "100000000000000000000",
       investmentReserveBasisPoints: "1000",
       revenueCommitmentBasisPoints: "1000",
-      control: accounts[1],
-      beneficiary: accounts[2],
-      feeCollector: accounts[3],
+      control: accounts[0],
+      beneficiary: accounts[1],
+      feeCollector: accounts[2],
       name: "Test org",
       symbol: "TFO"
     },
@@ -65,7 +61,7 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
   } else {
     contracts.dat = datContract;
   }
-  console.log(contracts.dat.methods)
+  
   await contracts.dat.methods.initialize(
     callOptions.initReserve,
     callOptions.currency,
