@@ -18,12 +18,12 @@ export const validateTokenValue = (
         limitDigits?: boolean;
     }
 ): ValidationStatus => {
-    if (value.substr(0, 1) === '.') {
-        value = '0' + value;
-    }
-
     if (ValidationRules.isEmpty(value)) {
         return ValidationStatus.EMPTY;
+    }
+
+    if (value.substr(0, 1) === '.') {
+        value = '0' + value;
     }
 
     if (!ValidationRules.isFloat(value)) {
