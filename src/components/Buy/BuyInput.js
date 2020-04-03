@@ -5,7 +5,11 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
-import { denormalizeBalance, formatBalance } from '../../utils/token';
+import {
+    denormalizeBalance,
+    formatBalance,
+    normalizeBalance,
+} from '../../utils/token';
 import { bnum, str } from '../../utils/helpers';
 import { TXEvents } from '../../types';
 import { TransactionState } from '../../stores/TradingForm';
@@ -74,13 +78,7 @@ const ErrorValidation = styled.div`
 
 const BuyInput = observer((props) => {
     const {
-        root: {
-            datStore,
-            tradingStore,
-            configStore,
-            contractMetadataStore,
-            providerStore,
-        },
+        root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
@@ -106,7 +104,13 @@ const BuyInput = observer((props) => {
     const validateNumber = async (value) => {
         tradingStore.setBuyAmount(value);
         hasError = !(value > 0);
-        const status = validateTokenValue(value);
+
+        const minValue = normalizeBalance(
+            datStore.getMinInvestment(configStore.activeDatAddress)
+        );
+        const status = validateTokenValue(value, {
+            minValue,
+        });
 
         if (status === ValidationStatus.VALID) {
             tradingStore.setPayAmountPending(true);
