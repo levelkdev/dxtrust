@@ -14,7 +14,7 @@ export const normalizeBalance = (
     amount: BigNumber,
     decimals: number = DEFAULT_TOKEN_DECIMALS
 ): BigNumber => {
-    return scale(bnum(amount), decimals);
+    return scale(bnum(amount), -decimals);
 };
 
 export const formatNumberValue = (

@@ -6,6 +6,7 @@ import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
+import { TransactionState } from '../../stores/TradingForm';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -64,8 +65,6 @@ const BuyConfirmed = observer((props) => {
 
     const { infotext } = props;
     const price = tradingStore.formatPrice();
-    const priceToBuy = tradingStore.formatPriceToBuy();
-    const buyAmount = tradingStore.formatBuyAmount();
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -104,8 +103,7 @@ const BuyConfirmed = observer((props) => {
             <Button
                 active={true}
                 onClick={() => {
-                    tradingStore.buyingState = 0;
-                    tradingStore.buyAmount = 0;
+                    tradingStore.resetBuyForm();
                 }}
             >
                 Buy Again
