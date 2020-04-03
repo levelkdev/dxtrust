@@ -147,6 +147,7 @@ const BuyInput = observer((props) => {
                         className="form-vivid-blue"
                         type="text"
                         placeholder="0"
+                        value={tradingStore.buyAmount}
                         onChange={(e) => validateNumber(e.target.value)}
                     />
                     <div>ETH</div>
