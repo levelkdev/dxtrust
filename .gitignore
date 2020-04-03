@@ -9,8 +9,6 @@
 /coverage
 
 # development
-keys.json
-.mnemonc
 src/blockchainInfo.json
 
 # production
