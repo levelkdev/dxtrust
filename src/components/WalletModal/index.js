@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { isMobile } from 'react-device-detect';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { observer } from 'mobx-react';
+import { URI_AVAILABLE } from '@web3-react/walletconnect-connector'
 
 import Modal from '../Modal';
 import AccountDetails from '../AccountDetails';
@@ -12,7 +13,7 @@ import { usePrevious } from 'utils/helperHooks';
 import { Link } from '../../theme';
 import MetamaskIcon from 'assets/images/metamask.png';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
-import { injected, SUPPORTED_WALLETS } from 'provider/connectors';
+import { injected, walletconnect, SUPPORTED_WALLETS } from 'provider/connectors';
 import { useStores } from 'contexts/storesContext';
 import {
     isChainIdSupported,
@@ -146,7 +147,21 @@ const WalletModal = observer(
                 setWalletView(WALLET_VIEWS.ACCOUNT);
             }
         }, [walletModalOpen]);
-
+        
+        // set up uri listener for walletconnect
+        const [uri, setUri] = useState()
+        useEffect(() => {
+          const activateWC = uri => {
+            console.log('uri',uri)
+            setUri(uri)
+            // setWalletView(WALLET_VIEWS.PENDING)
+          }
+          walletconnect.on(URI_AVAILABLE, activateWC)
+          return () => {
+            walletconnect.off(URI_AVAILABLE, activateWC)
+          }
+        }, [])
+        
         // close modal when a connection is successful
         const activePrevious = usePrevious(active);
         const connectorPrevious = usePrevious(connector);
@@ -340,6 +355,7 @@ const WalletModal = observer(
                     <ContentWrapper>
                         {walletView === WALLET_VIEWS.PENDING ? (
                             <PendingView
+                                uri={uri}
                                 size={220}
                                 connector={pendingWallet}
                                 error={pendingError}

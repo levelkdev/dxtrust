@@ -1,5 +1,6 @@
 import { NetworkConnector } from 'provider/NetworkConnector';
 import { MetamaskConnector } from './MetamaskConnector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 export const supportedChainId = Number(
     process.env.REACT_APP_SUPPORTED_NETWORK_ID
@@ -51,6 +52,15 @@ export const injected = new MetamaskConnector({
     // supportedChainIds: [1, supportedChainId],
 });
 
+const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
+
+export const walletconnect = new WalletConnectConnector({
+  rpc: { 42: NETWORK_URL },
+  bridge: 'https://bridge.walletconnect.org',
+  qrcode: false,
+  pollingInterval: POLLING_INTERVAL,
+})
+
 export default {
     backup,
     injected,
@@ -71,6 +81,14 @@ export const SUPPORTED_WALLETS = {
         name: 'MetaMask',
         iconName: 'metamask.png',
         description: 'Easy-to-use browser extension.',
+        href: null,
+        color: '#E8831D',
+    },
+    WALLETCONNECT: {
+        connector: walletconnect,
+        name: 'WalletConnect',
+        iconName: 'walletConnectIcon.svg',
+        description: 'Connect form mobile.',
         href: null,
         color: '#E8831D',
     },
