@@ -5,10 +5,11 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
-import { denormalizeBalance } from '../../utils/token';
+import { denormalizeBalance, formatBalance } from '../../utils/token';
 import { bnum, str } from '../../utils/helpers';
 import { TXEvents } from '../../types';
 import { TransactionState } from '../../stores/TradingForm';
+import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -83,11 +84,6 @@ const BuyInput = observer((props) => {
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
-
-    if (account) {
-        console.log('account', account);
-    }
-
     const { infotext } = props;
     const price = tradingStore.formatPrice();
     const priceToBuy = tradingStore.formatPriceToBuy();
@@ -104,17 +100,29 @@ const BuyInput = observer((props) => {
     };
 
     const checkActive = () => {
-        console.log('active', {
-            buyAmount: tradingStore.buyAmount,
-            account,
-            active: tradingStore.buyAmount > 0 && !!account && !hasError,
-        });
         return tradingStore.buyAmount > 0 && !!account && !hasError;
     };
 
-    const validateNumber = (value) => {
+    const validateNumber = async (value) => {
         tradingStore.setBuyAmount(value);
         hasError = !(value > 0);
+        const status = validateTokenValue(value);
+
+        if (status === ValidationStatus.VALID) {
+            tradingStore.setPayAmountPending(true);
+
+            const weiValue = denormalizeBalance(value);
+
+            const buyReturn = await datStore.fetchBuyReturn(
+                configStore.activeDatAddress,
+                weiValue
+            );
+
+            tradingStore.handleBuyReturn(buyReturn);
+        } else {
+            tradingStore.setPayAmount(bnum(0));
+            tradingStore.setPrice(bnum(0));
+        }
     };
 
     return (
@@ -127,9 +135,7 @@ const BuyInput = observer((props) => {
             </InfoRow>
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
-                <div>
-                    {priceToBuy} {collateralType}
-                </div>
+                <div>{formatBalance(tradingStore.payAmount)} DXD</div>
             </InfoRow>
             <InputColumn>
                 <FormContent>
@@ -139,7 +145,7 @@ const BuyInput = observer((props) => {
                         placeholder="0"
                         onChange={(e) => validateNumber(e.target.value)}
                     />
-                    <div>DXD</div>
+                    <div>ETH</div>
                 </FormContent>
                 {hasError ? (
                     <ErrorValidation>

@@ -1,7 +1,10 @@
 import { action, observable } from 'mobx';
 import { buyStartState } from '../config.json';
 import RootStore from './Root';
-import { TradeEvent } from './datStore';
+import { BuyReturnCached, TradeEvent } from './datStore';
+import { BigNumber } from '../utils/bignumber';
+import { bnum } from '../utils/helpers';
+import { denormalizeBalance } from '../utils/token';
 
 const ConfirmationFlags = {
     ENABLE_TKN: 'enable_TKN',
@@ -19,12 +22,12 @@ export enum TransactionState {
 
 class TradingFormStore {
     @observable reserveBalance = '';
-    @observable price = 0;
+    @observable price: BigNumber = bnum(0);
 
     @observable enableTKNState = buyStartState;
     @observable buyingState = TransactionState.NONE;
-    @observable buyAmount = 0;
-    @observable priceToBuy = 0;
+    @observable buyAmount = '';
+    @observable priceToBuy: BigNumber = bnum(0);
 
     @observable enableDXDState = TransactionState.NONE;
     @observable sellingState = TransactionState.NONE;
@@ -34,6 +37,9 @@ class TradingFormStore {
     @observable bondedTokenBalance = 0;
     @observable bondedTokenPrice = 0;
 
+    @observable payAmount: BigNumber = bnum(0);
+    @observable payAmountPending = false;
+
     @observable recentTrades = [];
     @observable recentTradesSet = false;
     rootStore: RootStore;
@@ -42,23 +48,40 @@ class TradingFormStore {
         this.rootStore = rootStore;
     }
 
+    setPayAmount(amount: BigNumber) {
+        this.payAmount = amount;
+    }
+
+    setPayAmountPending(isPending: boolean) {
+        this.payAmountPending = isPending;
+    }
+
     // setPrice()
-    async setPrice() {
-        // const price = await this.getPriceToBuy('1');
-        this.price = 0;
+    setPrice(price: BigNumber) {
+        this.price = price;
+    }
+
+    handleBuyReturn(buyReturn: BuyReturnCached) {
+        const weiValue = denormalizeBalance(this.buyAmount);
+
+        const inputValueFresh = buyReturn.value.totalPaid.eq(weiValue);
+
+        if (
+            this.rootStore.providerStore.isFresh(buyReturn.blockNumber) &&
+            inputValueFresh
+        )
+            this.setPrice(buyReturn.value.pricePerToken);
+        this.setPayAmount(buyReturn.value.tokensIssued);
+        this.setPayAmountPending(false);
     }
 
     // setBuyAmount()
     setBuyAmount(buyAmount) {
-        // TODO: Async get the price to buy
-        // this.setPriceToBuy(buyAmount);
         this.buyAmount = buyAmount;
     }
 
     // setSellAmount()
     setSellAmount(sellAmount) {
-        // TODO: Async get the reward to sell
-        // this.setRewardForSell(sellAmount);
         this.sellAmount = sellAmount;
     }
 

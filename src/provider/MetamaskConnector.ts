@@ -8,14 +8,14 @@ export class MetamaskConnector extends InjectedConnector {
     public async isAuthorized(): Promise<boolean> {
         // @ts-ignore
         if (!window.ethereum) {
-            return false
+            return false;
         }
 
         try {
             const provider = await this.getProvider();
-            return !!(provider && provider['selectedAddress']); }
-        catch {
-            return false
+            return !!(provider && provider['selectedAddress']);
+        } catch {
+            return false;
         }
     }
 }

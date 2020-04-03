@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { UnsupportedChainIdError } from '@web3-react/core';
 import { Activity } from 'react-feather';
 import { observer } from 'mobx-react';
 import { shortenAddress } from 'utils/address';
@@ -16,7 +16,6 @@ import Identicon from '../Identicon';
 import { useStores } from '../../contexts/storesContext';
 import Button from 'components/common/Button';
 import Web3PillBox from '../Web3PillBox';
-import { useActiveWeb3React } from 'provider/providerHooks';
 
 const Web3StatusGeneric = styled.button`
     ${({ theme }) => theme.flexRowNoWrap}
@@ -71,7 +70,12 @@ const Web3ConnectStatus = observer(() => {
     const {
         root: { modalStore, transactionStore, providerStore },
     } = useStores();
-    const { chainId, active, connector, error } = providerStore.getActiveWeb3React();
+    const {
+        chainId,
+        active,
+        connector,
+        error,
+    } = providerStore.getActiveWeb3React();
     const { account, chainId: injectedChainId } = providerStore.getWeb3React(
         web3ContextNames.injected
     );

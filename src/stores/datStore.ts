@@ -4,6 +4,7 @@ import { ContractTypes } from './Provider';
 import { action, observable } from 'mobx';
 import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
+import { BigNumberCached } from '../services/blockchainReader';
 
 export enum EventType {
     Buy = 'Buy',
@@ -30,14 +31,46 @@ export interface SellEvent {
     hash: string;
 }
 
+interface DatInfo {
+    minInvestment?: BigNumber;
+    currentPrice?: BigNumberCached;
+}
+
+interface DatInfoMap {
+    [index: string]: DatInfo;
+}
+
+export interface BuyReturnCached {
+    value: BuyReturn;
+    blockNumber: number;
+}
+
+export interface SellReturnCached {
+    value: SellReturn;
+    blockNumber: number;
+}
+
+export interface BuyReturn {
+    tokensIssued: BigNumber;
+    totalPaid: BigNumber;
+    pricePerToken: BigNumber;
+}
+
+export interface SellReturn {
+    tokensSold: BigNumber;
+    currencyReturned: BigNumber;
+    returnPerToken: BigNumber;
+}
+
 export type TradeEvent = BuyEvent | SellEvent;
 
 export default class DatStore {
-    @observable datParams;
+    @observable datParams: DatInfoMap;
     rootStore: RootStore;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
+        this.datParams = {} as DatInfoMap;
     }
 
     /*
@@ -77,44 +110,105 @@ export default class DatStore {
     getRecentTrades()
      */
 
-    async estimateBuyValue(
-        datAddress: string,
-        currencyValue: BigNumber
-    ): Promise<BigNumber> {
+    @action setDatParams(datAddress: string, updated) {
+        if (!this.datParams[datAddress]) {
+            this.datParams[datAddress] = {};
+        }
+
+        this.datParams[datAddress] = {
+            ...this.datParams[datAddress],
+            ...updated,
+        };
+    }
+
+    @action updatePrice(datAddress: string, newPrice: BigNumberCached) {
         const { providerStore } = this.rootStore;
-        const dat = providerStore.getContract(
+        const hasExistingValue =
+            this.datParams[datAddress] &&
+            this.datParams[datAddress].currentPrice;
+
+        // Don't update if stale
+        if (
+            hasExistingValue &&
+            providerStore.isFresher(
+                newPrice.blockNumber,
+                this.datParams[datAddress].currentPrice.blockNumber
+            )
+        ) {
+            this.setDatParams(datAddress, {
+                currentPrice: newPrice,
+            });
+        } else if (!hasExistingValue) {
+            this.setDatParams(datAddress, {
+                currentPrice: newPrice,
+            });
+        }
+    }
+
+    private getDatContract(datAddress: string) {
+        const { providerStore } = this.rootStore;
+        return providerStore.getContract(
             providerStore.getActiveWeb3React(),
             ContractTypes.DecentralizedAutonomousTrust,
             datAddress
         );
-        return bnum(await dat.estimateBuyValue(currencyValue.toString()));
+    }
+
+    getMinInvestment(datAddress: string): BigNumber | undefined {
+        if (
+            this.datParams[datAddress] &&
+            this.datParams[datAddress].minInvestment
+        ) {
+            return this.datParams[datAddress].minInvestment;
+        } else {
+            return undefined;
+        }
+    }
+
+    async fetchMinInvestment(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.minInvestment().call());
+    }
+
+    @action setMinInvestment(datAddress: string, minInvestment: BigNumber) {
+        if (this.datParams[datAddress]) {
+            this.datParams[datAddress].minInvestment = minInvestment;
+        } else {
+            this.datParams[datAddress] = {
+                minInvestment: minInvestment,
+            };
+        }
+    }
+
+    async estimateBuyValue(
+        datAddress: string,
+        currencyValue: BigNumber
+    ): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(
+            await dat.methods.estimateBuyValue(currencyValue.toString()).call()
+        );
     }
 
     async estimateSellValue(
         datAddress: string,
         quantityToSell: BigNumber
     ): Promise<BigNumber> {
-        const { providerStore } = this.rootStore;
-        const dat = providerStore.getContract(
-            providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
-            datAddress
+        const dat = this.getDatContract(datAddress);
+        return bnum(
+            await dat.methods
+                .estimateSellValue(quantityToSell.toString())
+                .call()
         );
-        return bnum(await dat.estimateSellValue(quantityToSell.toString()));
     }
 
     async fetchBuyEvents(
         datAddress: string,
         numToGet: number
     ): Promise<TradeEvent[]> {
-        const { providerStore } = this.rootStore;
-        const contract = providerStore.getContract(
-            providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
-            datAddress
-        );
+        const dat = this.getDatContract(datAddress);
 
-        let buyEvents = await contract.getPastEvents('Buy', {
+        let buyEvents = await dat.getPastEvents('Buy', {
             fromBlock: 0,
             toBlock: 'latest',
         });
@@ -131,14 +225,9 @@ export default class DatStore {
         datAddress: string,
         numToGet: number
     ): Promise<TradeEvent[]> {
-        const { providerStore } = this.rootStore;
-        const contract = providerStore.getContract(
-            providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
-            datAddress
-        );
+        const dat = this.getDatContract(datAddress);
 
-        let sellEvents = await contract.getPastEvents('Sell', {
+        let sellEvents = await dat.getPastEvents('Sell', {
             fromBlock: 0,
             toBlock: 'latest',
         });
@@ -192,6 +281,62 @@ export default class DatStore {
         };
 
         return event;
+    }
+
+    async fetchBuyReturn(
+        datAddress: string,
+        totalPaid: BigNumber
+    ): Promise<BuyReturnCached> {
+        const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+
+        const tokensIssued = await this.estimateBuyValue(datAddress, totalPaid);
+        const pricePerToken = totalPaid.div(tokensIssued);
+
+        return {
+            value: {
+                totalPaid,
+                tokensIssued,
+                pricePerToken,
+            },
+            blockNumber,
+        };
+    }
+
+    async fetchSellReturn(
+        datAddress: string,
+        tokensSold: BigNumber
+    ): Promise<SellReturnCached> {
+        const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+
+        const currencyReturned = await this.estimateSellValue(
+            datAddress,
+            tokensSold
+        );
+
+        const returnPerToken = currencyReturned.div(tokensSold);
+
+        return {
+            value: {
+                tokensSold,
+                currencyReturned,
+                returnPerToken,
+            },
+            blockNumber,
+        };
+    }
+
+    async fetchSpotPrice(datAddress: string): Promise<BigNumber> {
+        console.log('spotTokens');
+
+        const minInvestment = this.getMinInvestment(datAddress);
+        const spotTokens = await this.estimateBuyValue(
+            datAddress,
+            minInvestment
+        );
+        const price = minInvestment.div(spotTokens);
+        console.log('spotTokens', spotTokens.toString());
+        console.log('price', price.toString());
+        return price;
     }
 
     // getRecentTrades(numberOfTrades)

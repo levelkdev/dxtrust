@@ -2,6 +2,8 @@ import { action, observable } from 'mobx';
 import RootStore from 'stores/Root';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { supportedChainId } from '../provider/connectors';
+import { validateTokenValue, ValidationStatus } from '../utils/validators';
+import { denormalizeBalance } from '../utils/token';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
@@ -55,6 +57,33 @@ export default class BlockchainFetchStore {
                             .fetchRecentTrades(configStore.activeDatAddress, 10)
                             .then((trades) => {
                                 tradingStore.setRecentTrades(trades);
+                            });
+
+                        datStore
+                            .fetchMinInvestment(configStore.activeDatAddress)
+                            .then((minInvestment) => {
+                                datStore.setMinInvestment(
+                                    configStore.activeDatAddress,
+                                    minInvestment
+                                );
+                            })
+                            .then(async () => {
+                                if (
+                                    validateTokenValue(
+                                        tradingStore.buyAmount
+                                    ) === ValidationStatus.VALID
+                                ) {
+                                    const weiValue = denormalizeBalance(
+                                        tradingStore.buyAmount
+                                    );
+
+                                    const buyReturn = await datStore.fetchBuyReturn(
+                                        configStore.activeDatAddress,
+                                        weiValue
+                                    );
+
+                                    tradingStore.handleBuyReturn(buyReturn);
+                                }
                             });
 
                         // Get user-specific blockchain data

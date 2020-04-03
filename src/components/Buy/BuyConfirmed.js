@@ -5,6 +5,7 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
+import { formatBalance } from '../../utils/token';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -87,12 +88,12 @@ const BuyConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
                 <div>
-                    {priceToBuy} {collateralType}
+                    {formatBalance(tradingStore.payAmount)} {collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive</FormInfoText>
-                <div>{buyAmount} DXD</div>
+                <FormInfoText>Pay</FormInfoText>
+                <div>{tradingStore.buyAmount} DXD</div>
             </InfoRow>
             <Confirmed>
                 Confirmed
