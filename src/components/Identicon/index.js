@@ -6,8 +6,8 @@ import Jazzicon from 'jazzicon';
 import { useActiveWeb3React } from 'provider/providerHooks';
 
 const StyledIdenticon = styled.div`
-    height: 1rem;
-    width: 1rem;
+    height: 20px;
+    width: 20px;
     border-radius: 1.125rem;
     background-color: ${({ theme }) => theme.silverGray};
 `;
@@ -21,7 +21,7 @@ export default function Identicon() {
         if (account && ref.current) {
             ref.current.innerHTML = '';
             ref.current.appendChild(
-                Jazzicon(16, parseInt(account.slice(2, 10), 16))
+                Jazzicon(20, parseInt(account.slice(2, 10), 16))
             );
         }
     });
