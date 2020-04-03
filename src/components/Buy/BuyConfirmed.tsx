@@ -103,8 +103,7 @@ const BuyConfirmed = observer((props) => {
             <Button
                 active={true}
                 onClick={() => {
-                    tradingStore.setBuyingState(TransactionState.NONE);
-                    tradingStore.resetBuyAmount();
+                    tradingStore.resetBuyForm();
                 }}
             >
                 Buy Again

@@ -75,12 +75,17 @@ class TradingFormStore {
         this.setPayAmountPending(false);
     }
 
-    @action setBuyingState(state: TransactionState) {
-         this.buyingState = state;
+    @action resetBuyForm() {
+        this.buyAmount = '';
+        this.buyingState = TransactionState.NONE;
+        this.price = bnum(0);
+        this.priceToBuy = bnum(0);
+        this.payAmount = bnum(0);
+        this.setPayAmountPending(false);
     }
 
-    @action resetBuyAmount() {
-        this.buyAmount = '';
+    @action setBuyingState(state: TransactionState) {
+         this.buyingState = state;
     }
 
     // setBuyAmount()
