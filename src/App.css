@@ -4,7 +4,10 @@
     --blue-text: #536DFE;
     --blue-onHover: #4864FE;
     --blue-onHover-border: #2545FE;
-    --red-text: #ff4081;
+    --wrong-network-border: #D81B60;
+    --wrong-network-border-hover: #C2185B;
+    --wrong-network-hover: #E91E63;
+    --wrong-network: #EC407A;
     --light-text-gray: #bdbdbd;
     --dark-text-gray: #616161;
     --nav-text-light: rgba(55, 71, 79, 0.4);
@@ -18,7 +21,7 @@
     --pending-text-gray: #d4dcdf;
     --pending-ellipses-purple: #dde2ff;
     --medium-gray: rgba(207, 216, 220, 0.9); /*For border*/
-    --light-gray: rgba(245, 246, 246, 0.5); /*Site background*/
+    --light-gray: #FAFAFA; /*Site background*/
     --line-gray: rgba(225, 227, 231, 0.4);
     --turquois-text: #2d9cdb;
     --white: #ffffff;
