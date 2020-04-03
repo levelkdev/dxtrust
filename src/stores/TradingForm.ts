@@ -38,7 +38,6 @@ class TradingFormStore {
     @observable bondedTokenPrice = 0;
 
     @observable payAmount: BigNumber = bnum(0);
-    @observable payAmountPending = false;
 
     @observable recentTrades = [];
     @observable recentTradesSet = false;
@@ -52,10 +51,6 @@ class TradingFormStore {
         this.payAmount = amount;
     }
 
-    setPayAmountPending(isPending: boolean) {
-        this.payAmountPending = isPending;
-    }
-
     // setPrice()
     setPrice(price: BigNumber) {
         this.price = price;
@@ -63,16 +58,13 @@ class TradingFormStore {
 
     handleBuyReturn(buyReturn: BuyReturnCached) {
         const weiValue = denormalizeBalance(this.buyAmount);
-
         const inputValueFresh = buyReturn.value.totalPaid.eq(weiValue);
-
         if (
             this.rootStore.providerStore.isFresh(buyReturn.blockNumber) &&
             inputValueFresh
         )
-            this.setPrice(buyReturn.value.pricePerToken);
+        this.setPrice(buyReturn.value.pricePerToken);
         this.setPayAmount(buyReturn.value.tokensIssued);
-        this.setPayAmountPending(false);
     }
 
     @action resetBuyForm() {
@@ -81,7 +73,6 @@ class TradingFormStore {
         this.price = bnum(0);
         this.priceToBuy = bnum(0);
         this.payAmount = bnum(0);
-        this.setPayAmountPending(false);
     }
 
     @action setBuyingState(state: TransactionState) {

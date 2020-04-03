@@ -129,8 +129,6 @@ const BuyInput = observer((props) => {
         });
 
         if (status === ValidationStatus.VALID) {
-            tradingStore.setPayAmountPending(true);
-
             const weiValue = denormalizeBalance(value);
 
             const buyReturn = await datStore.fetchBuyReturn(
