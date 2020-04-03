@@ -1,4 +1,6 @@
 import { ValidationRules } from 'react-form-validator-core';
+import { BigNumber } from './bignumber';
+import { bnum } from './helpers';
 
 export enum ValidationStatus {
     VALID = 'Valid',
@@ -10,11 +12,13 @@ export enum ValidationStatus {
     NO_POOLS = 'There are no Pools with selected tokens',
     MAX_DIGITS_EXCEEDED = 'Maximum Digits Exceeded',
     MAX_VALUE_EXCEEDED = 'Maximum Value Exceeded',
+    MIN_VALUE_NOT_EXCEEDED = 'Below minimum investment'
 }
 
 export const validateTokenValue = (
     value: string,
     options?: {
+        minValue?: BigNumber | undefined;
         limitDigits?: boolean;
     }
 ): ValidationStatus => {
@@ -38,12 +42,21 @@ export const validateTokenValue = (
         return ValidationStatus.NEGATIVE;
     }
 
+    // Is a valid positive number, beyond this point
+
     if (options && options.limitDigits) {
         // restrict to 2 decimal places
         const acceptableValues = [/^$/, /^\d{1,2}$/, /^\d{0,2}\.\d{0,2}$/];
         // if its within accepted decimal limit, update the input state
         if (!acceptableValues.some((a) => a.test(value))) {
             return ValidationStatus.MAX_DIGITS_EXCEEDED;
+        }
+    }
+
+    if (options && options.minValue) {
+        const valueBN = bnum(value);
+        if (valueBN.lt(options.minValue)) {
+            return ValidationStatus.MIN_VALUE_NOT_EXCEEDED;
         }
     }
 

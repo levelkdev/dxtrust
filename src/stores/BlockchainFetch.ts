@@ -3,7 +3,7 @@ import RootStore from 'stores/Root';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { supportedChainId } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
-import { denormalizeBalance } from '../utils/token';
+import { denormalizeBalance, normalizeBalance } from '../utils/token';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
@@ -68,9 +68,12 @@ export default class BlockchainFetchStore {
                                 );
                             })
                             .then(async () => {
+                                const minValue = normalizeBalance(datStore.getMinInvestment(configStore.activeDatAddress));
+
                                 if (
                                     validateTokenValue(
-                                        tradingStore.buyAmount
+                                        tradingStore.buyAmount,
+                                        {minValue}
                                     ) === ValidationStatus.VALID
                                 ) {
                                     const weiValue = denormalizeBalance(
