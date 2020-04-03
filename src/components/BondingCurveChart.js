@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
+import { observer } from 'mobx-react';
+import { useStores } from '../contexts/storesContext';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -42,7 +44,25 @@ const ChartWrapper = styled.div`
     padding: 20px 20px 0px 20px;
 `;
 
-const BondingCurveChart = ({}) => {
+const BondingCurveChart = observer(({}) => {
+    const {
+        root: { tradingStore, providerStore, tokenStore, configStore, datStore },
+    } = useStores();
+
+    const totalSupply = tokenStore.getTotalSupply(configStore.getDXDTokenAddress());
+    // const buySlope = datStore.getBuySlope(configStore.activeDatAddress);
+    // const sellSlope = datStore.getSellSlope(configStore.activeDatAddress);
+    // const initGoal = datStore.getInitGoal(configStore.activeDatAddress);
+
+    /*
+        Draw a strait line for the inital goal. The PRICE for this is the slope for total supply 0
+        We may have to hardcode this value...
+
+        It's a slope but I DON"T understand because it's 1 / 10^18!!!! And it seems to be about 1/3 of tokens.
+     */
+
+    // const allDataFetched = !!totalSupply && !!buySlope && !! sellSlope;
+
     const options = {
         maintainAspectRatio: false,
         legend: {
@@ -97,22 +117,23 @@ const BondingCurveChart = ({}) => {
                 fill: false,
                 data: [
                     { x: 1, y: 1 },
-                    { x: 2, y: 2 },
-                    { x: 3, y: 4 },
-                    { x: 4, y: 7 },
+                    { x: 2, y: 1 },
+                    { x: 3, y: 1 },
+                    { x: 4, y: 3 },
                 ],
                 borderWidth: 2,
                 pointRadius: 0,
                 borderColor: '#5b76fa',
+                lineTension: 0
             },
             {
                 label: '',
                 fill: false,
                 data: [
-                    { x: 4, y: 7 },
-                    { x: 5, y: 11 },
-                    { x: 6, y: 16 },
-                    { x: 7, y: 22 },
+                    { x: 4, y: 3 },
+                    { x: 5, y: 5 },
+                    { x: 6, y: 7 },
+                    { x: 7, y: 9 },
                 ],
                 borderWidth: 2,
                 pointRadius: 0,
@@ -121,7 +142,7 @@ const BondingCurveChart = ({}) => {
             {
                 label: '',
                 fill: false,
-                data: [{ x: 4, y: 7 }],
+                data: [{ x: 4, y: 3 }],
                 pointRadius: 7,
                 pointBackgroundColor: '#5b76fa',
                 borderWidth: 1,
@@ -170,6 +191,6 @@ const BondingCurveChart = ({}) => {
             </ChartWrapper>
         </ChartPanelWrapper>
     );
-};
+});
 
 export default BondingCurveChart;
