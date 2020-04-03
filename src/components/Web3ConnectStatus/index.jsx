@@ -14,8 +14,37 @@ import {
 } from 'provider/connectors';
 import Identicon from '../Identicon';
 import { useStores } from '../../contexts/storesContext';
-import Button from 'components/common/Button';
 import Web3PillBox from '../Web3PillBox';
+
+const ConnectButton = styled.div`
+    height: 38px;
+    width: 154px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    user-select: none;
+    
+    padding: 0.5rem;
+    border-image: initial;
+    background: var(--blue-text);
+    color: var(--white);
+    border: 1px solid var(--active-button-border);
+    box-sizing: border-box;
+    border-radius: 6px;
+    &:hover{
+        cursor: pointer;
+        background: var(--blue-onHover);
+        border: 1px solid var(--blue-onHover-border);
+    }
+
+`;
 
 const Web3StatusGeneric = styled.button`
     ${({ theme }) => theme.flexRowNoWrap}
@@ -54,6 +83,8 @@ const Text = styled.p`
     margin: 0 0.5rem 0 0.25rem;
     font-size: 0.83rem;
 `;
+
+
 
 const NetworkIcon = styled(Activity)`
     margin-left: 0.25rem;
@@ -144,11 +175,13 @@ const Web3ConnectStatus = observer(() => {
             );
         } else {
             return (
-                <Button
+                <ConnectButton
                     onClick={toggleWalletModal}
-                    buttonText="Connect Wallet"
                     active={true}
-                />
+                    >
+                    Connect Wallet
+                </ConnectButton>
+                
             );
         }
     }
