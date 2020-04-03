@@ -62,9 +62,10 @@ class TradingFormStore {
         if (
             this.rootStore.providerStore.isFresh(buyReturn.blockNumber) &&
             inputValueFresh
-        )
-        this.setPrice(buyReturn.value.pricePerToken);
-        this.setPayAmount(buyReturn.value.tokensIssued);
+        ) {
+            this.setPrice(buyReturn.value.pricePerToken);
+            this.setPayAmount(buyReturn.value.tokensIssued);
+        }
     }
 
     @action resetBuyForm() {
