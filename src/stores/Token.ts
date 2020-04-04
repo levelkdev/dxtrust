@@ -591,7 +591,7 @@ export default class TokenStore {
             this.getAllowanceLastFetched(tokenAddress, owner, spender);
         if (!stale) {
             try {
-                const allowance = bnum(await token.allowance(owner, spender));
+                const allowance = bnum(await token.methods.allowance(owner, spender).call());
 
                 const stale =
                     fetchBlock <=
