@@ -21,6 +21,7 @@ const ConnectButton = styled.div`
     justify-content: center;
     align-items: center;
 
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
     font-size: 0.9rem;
     font-weight: 500;
     line-height: 18px;
@@ -55,6 +56,7 @@ const WrongNetworkButton = styled.button`
     background-color: var(--wrong-network);
     color: var(--white);
     
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
     font-size:0.9rem;
     font-weight:500;
     box-sizing: border-box;
@@ -131,9 +133,6 @@ const Web3ConnectStatus = observer(() => {
         } else if (account) {
             return (
                 <Web3PillBox onClick={toggleWalletModal}>
-                    {hasPendingTransactions && (
-                        <SpinnerWrapper src={Circle} alt="loader" />
-                    )}
                     {getStatusIcon()}
                     {shortenAddress(account)}
                 </Web3PillBox>
