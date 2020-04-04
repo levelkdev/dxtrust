@@ -51,7 +51,7 @@ const HeaderRow = styled.div`
     ${({ theme }) => theme.flexRowNoWrap};
     padding: 1.5rem 1.5rem;
     font-weight: 500;
-    color: #fafafa;
+    color: var(--header-text);
     ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
   `};

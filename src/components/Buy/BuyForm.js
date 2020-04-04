@@ -22,7 +22,7 @@ const BuyForm = observer((props) => {
 
     const infotext = 'Tokens Issued';
     const count = tradingStore.buyingState;
-
+    
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;

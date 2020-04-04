@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { Activity } from 'react-feather';
 import { observer } from 'mobx-react';
 import { shortenAddress } from 'utils/address';
 import WalletModal from 'components/WalletModal';
@@ -14,52 +12,64 @@ import {
 } from 'provider/connectors';
 import Identicon from '../Identicon';
 import { useStores } from '../../contexts/storesContext';
-import Button from 'components/common/Button';
 import Web3PillBox from '../Web3PillBox';
 
-const Web3StatusGeneric = styled.button`
-    ${({ theme }) => theme.flexRowNoWrap}
-    width: 100%;
-    font-size: 0.9rem;
+const ConnectButton = styled.div`
+    height: 38px;
+    width: 154px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 0.5rem;
-    border-radius: 4px;
-    box-sizing: border-box;
+
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 1px;
+
     cursor: pointer;
     user-select: none;
+    
+    padding: 0.5rem;
+    border-image: initial;
+    background: var(--blue-text);
+    color: var(--white);
+    border: 1px solid var(--active-button-border);
+    box-sizing: border-box;
+    border-radius: 6px;
+    &:hover{
+        cursor: pointer;
+        background: var(--blue-onHover);
+        border: 1px solid var(--blue-onHover-border);
+    }
+
+`;
+
+
+const WrongNetworkButton = styled.button`
+    width: 142px;
+    font-size: 0.9rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid var(--wrong-network-border);
+    background-color: var(--wrong-network);
+    color: var(--white);
+    
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
+    font-size:0.9rem;
+    font-weight:500;
+    box-sizing: border-box;
+    border-radius: 6px;
+    user-select: none;
+    &:hover {
+        cursor: pointer;
+        border: 1px solid var(--wrong-network-border-hover);
+        background-color: var(--wrong-network-hover);
+    }
     :focus {
         outline: none;
     }
-`;
-
-const WarningIcon = styled.img`
-    width: 22px;
-    height: 26px;
-    margin-right: 0px;
-    color: var(--warning);
-`;
-
-const Web3StatusError = styled(Web3StatusGeneric)`
-    background-color: var(--panel);
-    border: 1px solid var(--warning);
-    color: ${({ theme }) => theme.white};
-    font-weight: 500;
-`;
-
-const Text = styled.p`
-    flex: 1 1 auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin: 0 0.5rem 0 0.25rem;
-    font-size: 0.83rem;
-`;
-
-const NetworkIcon = styled(Activity)`
-    margin-left: 0.25rem;
-    margin-right: 0.5rem;
-    width: 16px;
-    height: 16px;
 `;
 
 const SpinnerWrapper = styled(Spinner)`
@@ -116,39 +126,32 @@ const Web3ConnectStatus = observer(() => {
         // Wrong network
         if (account && !isChainIdSupported(injectedChainId)) {
             return (
-                <Web3StatusError onClick={toggleWalletModal}>
-                    <WarningIcon src="WarningSign.svg" />
-                    <Text>Wrong Network</Text>
-                </Web3StatusError>
+                <WrongNetworkButton onClick={toggleWalletModal}>
+                    Wrong Network
+                </WrongNetworkButton>
             );
         } else if (account) {
             return (
                 <Web3PillBox onClick={toggleWalletModal}>
-                    {hasPendingTransactions && (
-                        <SpinnerWrapper src={Circle} alt="loader" />
-                    )}
                     {getStatusIcon()}
                     {shortenAddress(account)}
                 </Web3PillBox>
             );
         } else if (error) {
             return (
-                <Web3StatusError onClick={toggleWalletModal}>
-                    <NetworkIcon />
-                    <Text>
-                        {error instanceof UnsupportedChainIdError
-                            ? 'Wrong Network'
-                            : 'Error'}
-                    </Text>
-                </Web3StatusError>
+                <WrongNetworkButton onClick={toggleWalletModal}>
+                    Wrong Network
+                </WrongNetworkButton>
             );
         } else {
             return (
-                <Button
+                <ConnectButton
                     onClick={toggleWalletModal}
-                    buttonText="Connect Wallet"
                     active={true}
-                />
+                    >
+                    Connect Wallet
+                </ConnectButton>
+                
             );
         }
     }
