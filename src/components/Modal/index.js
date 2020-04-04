@@ -52,7 +52,7 @@ const FilteredDialogContent = ({
     slideInAnimation,
     mobile,
     ...rest
-}) => <DialogContent {...rest} />;
+}) => <DialogContent aria-label="BCDappModal" {...rest} />;
 const StyledDialogContent = styled(FilteredDialogContent)`
     &[data-reach-dialog-content] {
         border: 1px solid var(--panel-border);
