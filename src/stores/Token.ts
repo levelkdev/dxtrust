@@ -327,6 +327,8 @@ export default class TokenStore {
             responses.forEach((response) => {
                 if (response instanceof TotalSupplyFetch) {
                     const { status, request, payload } = response;
+                    console.log(response);
+
                     if (status === AsyncStatus.SUCCESS) {
                         this.setTotalSupplyProperty(
                             request.tokenAddress,
@@ -495,7 +497,7 @@ export default class TokenStore {
             fetchBlock <= this.getTotalSupplyLastFetched(tokenAddress);
         if (!stale) {
             try {
-                const totalSupply = bnum(await token.totalSupply());
+                const totalSupply = bnum(await token.methods.totalSupply().call());
 
                 const stale =
                     fetchBlock <= this.getTotalSupplyLastFetched(tokenAddress);
