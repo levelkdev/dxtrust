@@ -6,7 +6,6 @@ import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
-import { TransactionState } from '../../stores/TradingForm';
 
 const FormWrapper = styled.div`
     height: 200px;

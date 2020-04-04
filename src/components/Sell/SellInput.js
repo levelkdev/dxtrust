@@ -11,6 +11,8 @@ import {
     normalizeBalance,
 } from '../../utils/token';
 import { bnum, str } from '../../utils/helpers';
+import { TXEvents } from '../../types';
+import { TransactionState } from '../../stores/TradingForm';
 import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 
 const FormWrapper = styled.div`
@@ -79,6 +81,7 @@ const SellInput = observer((props) => {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
 
+    const { account } = providerStore.getActiveWeb3React();
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     console.log("reward for sell:" + rewardForSell);
@@ -165,8 +168,28 @@ const SellInput = observer((props) => {
             <Button
                 active={checkActive()}
                 onClick={() => {
-                    tradingStore.sell();
-                    tradingStore.sellingState = 1;
+                    tradingStore.sellingState = TransactionState.SIGNING_TX;
+
+                    // TODO What should last argument be set to?  (the minCurrencyReturned) 
+                    datStore
+                        .sell(
+                            configStore.activeDatAddress,
+                            account,
+                            denormalizeBalance(str(tradingStore.sellAmount)),
+                            bnum(1)
+                        )
+                        .on(TXEvents.TX_HASH, (hash) => {
+                            tradingStore.sellingState =
+                                TransactionState.UNCONFIRMED;
+                        })
+                        .on(TXEvents.RECEIPT, (receipt) => {
+                            tradingStore.sellingState =
+                                TransactionState.CONFIRMED;
+                        })
+                        .on(TXEvents.TX_ERROR, (error) => {
+                            tradingStore.sellingState =
+                                TransactionState.NONE;
+                        })
                 }}
             >
                 Sell DXD

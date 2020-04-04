@@ -382,7 +382,7 @@ export default class DatStore {
     }
 
     //TODO: Return status on failure
-    @action async sell(
+    @action sell(
         datAddress: string,
         to: string,
         quantityToSell: BigNumber,
