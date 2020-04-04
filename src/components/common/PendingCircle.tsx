@@ -12,21 +12,21 @@ const SpinningCircle = styled.div`
     -moz-animation: rotation 1s infinite linear;
     -o-animation: rotation 1s infinite linear;
     animation: rotation 1s infinite linear;
-    border:3px solid #d4dcdf;
+    border:2px solid #d4dcdf;
     border-radius:100%;
 
     :before {
         content:"";
         display:block;
         position:absolute;
-        left:-3px;
-        top: -3px;
+        left:-2px;
+        top: -2px;
         height:100%;
         width:100%;
-        border-top:3px solid #758afe;
-        border-left:3px solid #758afe;
-        border-bottom:3px solid #758afe;
-        border-right:3px solid transparent;
+        border-top:2px solid #758afe;
+        border-left:2px solid #758afe;
+        border-bottom:2px solid #758afe;
+        border-right:2px solid transparent;
         border-radius:100%;
     }
 
