@@ -22,9 +22,9 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
       buySlopeDen: "100000000000000000000",
       investmentReserveBasisPoints: "1000",
       revenueCommitmentBasisPoints: "1000",
-      control: accounts[0],
-      beneficiary: accounts[1],
-      feeCollector: accounts[2],
+      control: accounts[1],
+      beneficiary: accounts[2],
+      feeCollector: accounts[3],
       name: "Test org",
       symbol: "TFO"
     },
