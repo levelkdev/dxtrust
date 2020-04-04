@@ -154,7 +154,7 @@ const WalletModal = observer(
           const activateWC = uri => {
             console.log('uri',uri)
             setUri(uri)
-            // setWalletView(WALLET_VIEWS.PENDING)
+            setWalletView(WALLET_VIEWS.PENDING)
           }
           walletconnect.on(URI_AVAILABLE, activateWC)
           return () => {

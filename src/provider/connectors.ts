@@ -23,16 +23,11 @@ export const isChainIdSupported = (chainId: number): boolean => {
     return supportedChainId === chainId;
 };
 
-const POLLING_INTERVAL = 1000;
+const POLLING_INTERVAL = 5000;
 const RPC_URLS: { [chainId: number]: string } = {
-    1: process.env.REACT_APP_RPC_URL_1 as string,
-    42: process.env.REACT_APP_RPC_URL_42 as string,
+    [process.env.REACT_APP_SUPPORTED_NETWORK_ID] : process.env.REACT_APP_SUPPORTED_NETWORK_URL as string,
 };
 
-export const SUBGRAPH_URLS: { [chainId: number]: string } = {
-    1: process.env.REACT_APP_SUBGRAPH_URL_1 as string,
-    42: process.env.REACT_APP_SUBGRAPH_URL_42 as string,
-};
 
 export const web3ContextNames = {
     backup: 'BACKUP',
@@ -49,13 +44,14 @@ export const backup = new NetworkConnector({
 });
 
 export const injected = new MetamaskConnector({
-    // supportedChainIds: [1, supportedChainId],
+    supportedChainIds: [1, Number(process.env.REACT_APP_SUPPORTED_NETWORK_ID)],
 });
 
-const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
 
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 42: NETWORK_URL },
+  rpc: { 
+    [process.env.REACT_APP_SUPPORTED_NETWORK_ID] : process.env.REACT_APP_SUPPORTED_NETWORK_URL,
+  },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: false,
   pollingInterval: POLLING_INTERVAL,
