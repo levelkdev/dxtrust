@@ -76,7 +76,7 @@ const BuyUnconfirmed = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Pay</FormInfoText>
+                <FormInfoText>Pay Amount</FormInfoText>
                 <div>{tradingStore.buyAmount} DXD</div>
             </InfoRow>
             <Unconfirmed>

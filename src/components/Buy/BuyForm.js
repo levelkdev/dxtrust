@@ -20,7 +20,7 @@ const BuyForm = observer((props) => {
         root: { tradingStore },
     } = useStores();
 
-    const infotext = 'Tokens Issued';
+    const infotext = 'Buy Amount';
     const count = tradingStore.buyingState;
     
     const Button = ({ active, children, onClick }) => {
