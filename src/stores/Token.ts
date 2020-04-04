@@ -289,7 +289,7 @@ export default class TokenStore {
         tokenAddress,
         spender
     ): PromiEvent<any> => {
-        const { providerStore } = this.rootStore;
+        const { providerStore, tradingStore } = this.rootStore;
         return providerStore.sendTransaction(
             web3React,
             ContractTypes.ERC20,
@@ -297,6 +297,7 @@ export default class TokenStore {
             'approve',
             [spender, helpers.MAX_UINT.toString()]
         );
+        tradingStore.enableDXDState = TransactionState.APPROVED;
     };
 
     @action revokeApproval = (
