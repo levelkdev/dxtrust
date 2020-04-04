@@ -1,12 +1,12 @@
 import { action, observable } from 'mobx';
 import { buyStartState } from '../config.json';
 import RootStore from './Root';
-import { BuyReturnCached, TradeEvent } from './datStore';
+import { BuyReturnCached, SellReturnCached, TradeEvent } from './datStore';
 import { BigNumber } from '../utils/bignumber';
 import { bnum } from '../utils/helpers';
 import { denormalizeBalance } from '../utils/token';
 
-const ConfirmationFlags = {
+export const ConfirmationFlags = {
     ENABLE_TKN: 'enable_TKN',
     DEPOSIT_TKN: 'deposit_TKN',
     ENABLE_DXD: 'enabled_DXD',
@@ -18,11 +18,13 @@ export enum TransactionState {
     SIGNING_TX,
     UNCONFIRMED,
     CONFIRMED,
+    APPROVED,
 }
 
 class TradingFormStore {
     @observable reserveBalance = '';
     @observable price: BigNumber = bnum(0);
+    @observable sellPrice: BigNumber = bnum(0);
 
     @observable enableTKNState = buyStartState;
     @observable buyingState = TransactionState.NONE;
@@ -31,8 +33,9 @@ class TradingFormStore {
 
     @observable enableDXDState = TransactionState.NONE;
     @observable sellingState = TransactionState.NONE;
-    @observable sellAmount = 0;
-    @observable rewardForSell = 0;
+    
+    @observable sellAmount = '';
+    @observable rewardForSell: BigNumber = bnum(0);
 
     @observable bondedTokenBalance = 0;
     @observable bondedTokenPrice = 0;
@@ -51,9 +54,21 @@ class TradingFormStore {
         this.payAmount = amount;
     }
 
+    setSellAmount(amount: string) {
+        this.sellAmount = amount;
+    }
+
+    setRewardForSell(amount: BigNumber) {
+        this.rewardForSell = amount;
+    }
+
     // setPrice()
     setPrice(price: BigNumber) {
         this.price = price;
+    }
+
+    setSellPrice(price: BigNumber) {
+        this.sellPrice = price;
     }
 
     handleBuyReturn(buyReturn: BuyReturnCached) {
@@ -65,6 +80,18 @@ class TradingFormStore {
         ) {
             this.setPrice(buyReturn.value.pricePerToken);
             this.setPayAmount(buyReturn.value.tokensIssued);
+        }
+    }
+
+    handleSellReturn(sellReturn: SellReturnCached) {
+        const weiValue = denormalizeBalance(this.sellAmount);
+        const inputValueFresh = sellReturn.value.tokensSold.eq(weiValue);
+        if (
+            this.rootStore.providerStore.isFresh(sellReturn.blockNumber) &&
+            inputValueFresh
+        ) {
+            this.setSellPrice(sellReturn.value.returnPerToken);
+            this.setRewardForSell(sellReturn.value.currencyReturned);
         }
     }
 
@@ -85,17 +112,16 @@ class TradingFormStore {
         this.buyAmount = buyAmount;
     }
 
-    // setSellAmount()
-    @action setSellAmount(sellAmount) {
-        this.sellAmount = sellAmount;
-    }
-
     formatNumber(number) {
         return Number(number).toFixed(3);
     }
 
     formatPrice() {
         return this.formatNumber(this.price);
+    }
+
+    formatSellPrice() {
+        return this.formatNumber(this.sellPrice);
     }
 
     formatPriceToBuy() {

@@ -15,6 +15,7 @@ import {
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { BigNumberMap } from '../types';
 import { PromiEvent } from 'web3-core';
+import { TransactionState } from './TradingForm';
 
 export interface TokenBalance {
     balance: BigNumber;
@@ -136,6 +137,7 @@ export default class TokenStore {
             responses.forEach((response) => {
                 if (response instanceof UserAllowanceFetch) {
                     const { status, request, payload } = response;
+                    const { tradingStore } = this.rootStore;
                     if (status === AsyncStatus.SUCCESS) {
                         this.setAllowanceProperty(
                             request.tokenAddress,
@@ -144,6 +146,10 @@ export default class TokenStore {
                             payload.allowance,
                             payload.lastFetched
                         );
+
+                        if (this.hasMaxApproval(request.tokenAddress, request.owner, request.spender)) {
+                            tradingStore.enableDXDState = TransactionState.APPROVED;
+                        };
                     } else {
                         allFetchesSuccess = false;
                     }

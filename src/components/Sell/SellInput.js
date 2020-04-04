@@ -3,8 +3,15 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import store from '../../stores/Root';
 import { collateralType } from '../../config.json';
+import { useStores } from '../../contexts/storesContext';
+import {
+    denormalizeBalance,
+    formatBalance,
+    normalizeBalance,
+} from '../../utils/token';
+import { bnum, str } from '../../utils/helpers';
+import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -67,90 +74,105 @@ const ErrorValidation = styled.div`
     color: red;
 `;
 
-@observer
-class SellInput extends React.Component {
-    state = {
-        hasError: false,
-    };
+const SellInput = observer((props) => {
+    const {
+        root: { datStore, tradingStore, configStore, providerStore },
+    } = useStores();
 
-    checkActive() {
-        if (store.tradingStore.sellAmount > 0) {
+    const price = tradingStore.formatSellPrice();
+    const rewardForSell = tradingStore.rewardForSell;
+    console.log("reward for sell:" + rewardForSell);
+    let hasError = false;
+
+    const checkActive = () => {
+        if (tradingStore.sellAmount > 0) {
             return true;
         } else {
             return false;
         }
     }
 
-    validateNumber(value) {
+    const validateNumber = async (value) => {
         if (value > 0) {
-            store.tradingStore.setSellAmount(value);
+            tradingStore.setSellAmount(value);
         }
-        this.setState({ hasError: !(value > 0) });
+        hasError = !(value > 0);
+
+        const status = validateTokenValue(value);
+
+        if (status === ValidationStatus.VALID) {
+            const weiValue = denormalizeBalance(value);
+
+            const sellReturn = await datStore.fetchSellReturn(
+                configStore.activeDatAddress,
+                weiValue
+            );
+
+            tradingStore.handleSellReturn(sellReturn);
+        } else {
+            tradingStore.setSellAmount(bnum(0));
+            tradingStore.setSellPrice(bnum(0));
+        }
     }
 
-    render() {
-        const { hasError } = this.state;
-        const price = store.tradingStore.formatPrice();
-        const rewardForSell = store.tradingStore.formatRewardForSell();
 
-        const Button = ({ active, children, onClick }) => {
-            if (active === true) {
-                return (
-                    <ActiveButton onClick={onClick}>{children}</ActiveButton>
-                );
-            } else {
-                return (
-                    <InactiveButton>{children}</InactiveButton>
-                );
-            }
-        };
+    const Button = ({ active, children, onClick }) => {
+        if (active === true) {
+            return (
+                <ActiveButton onClick={onClick}>{children}</ActiveButton>
+            );
+        } else {
+            return (
+                <InactiveButton>{children}</InactiveButton>
+            );
+        }
+    };
 
-        return (
-            <FormWrapper>
-                <InfoRow>
-                    <FormInfoText>Price</FormInfoText>
-                    <div>
-                        {price} {collateralType}
-                    </div>
-                </InfoRow>
-                <InfoRow>
-                    <FormInfoText>Receive</FormInfoText>
-                    <div>
-                        {rewardForSell} {collateralType}
-                    </div>
-                </InfoRow>
-                <InputColumn>
-                    <FormContent>
-                        <input
-                            className="form-vivid-blue"
-                            type="text"
-                            placeholder="0"
-                            onChange={(e) =>
-                                this.validateNumber(e.target.value)
-                            }
-                        />
-                        <div>DXD</div>
-                    </FormContent>
-                    {hasError ? (
-                        <ErrorValidation>
-                            <p>Must be a positive number</p>
-                        </ErrorValidation>
-                    ) : (
-                        <></>
-                    )}
-                </InputColumn>
-                <Button
-                    active={this.checkActive()}
-                    onClick={() => {
-                        store.tradingStore.sell();
-                        store.tradingStore.sellingState = 1;
-                    }}
-                >
-                    Sell DXD
-                </Button>
-            </FormWrapper>
-        );
-    }
-}
+    return (
+        <FormWrapper>
+            <InfoRow>
+                <FormInfoText>Price</FormInfoText>
+                <div>
+                    {price} {collateralType}
+                </div>
+            </InfoRow>
+            <InfoRow>
+                <FormInfoText>Receive</FormInfoText>
+                <div>
+                    {formatBalance(rewardForSell)} {collateralType}
+                </div>
+            </InfoRow>
+            <InputColumn>
+                <FormContent>
+                    <input
+                        className="form-vivid-blue"
+                        type="text"
+                        placeholder="0"
+                        onChange={(e) =>
+                            validateNumber(e.target.value)
+                        }
+                    />
+                    <div>DXD</div>
+                </FormContent>
+                {hasError ? (
+                    <ErrorValidation>
+                        <p>Must be a positive number</p>
+                    </ErrorValidation>
+                ) : (
+                    <></>
+                )}
+            </InputColumn>
+            <Button
+                active={checkActive()}
+                onClick={() => {
+                    tradingStore.sell();
+                    tradingStore.sellingState = 1;
+                }}
+            >
+                Sell DXD
+            </Button>
+        </FormWrapper>
+    );
+});
 
 export default SellInput;
