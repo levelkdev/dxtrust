@@ -3,9 +3,9 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import store from '../../stores/Root';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
+import { formatBalance } from '../../utils/token';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -54,7 +54,7 @@ const SellUnconfirmed = observer((props) => {
     } = useStores();
 
     const price = tradingStore.formatPrice();
-    const rewardForSell = tradingStore.formatRewardForSell();
+    const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
 
     const Button = ({ active, children, onClick }) => {
@@ -80,7 +80,7 @@ const SellUnconfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Receive</FormInfoText>
                 <div>
-                    {rewardForSell} {collateralType}
+                    {formatBalance(rewardForSell)} {collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
