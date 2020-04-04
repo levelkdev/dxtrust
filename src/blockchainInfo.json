@@ -1,6 +1,6 @@
 {
-  "network": "kovan",
-  "DAT": "0x4EdDF9B5498062D48d1aF66f0DA46d6a0661450A",
+  "network": "develop",
+  "DAT": "0x4C3C1c8F611bCE29E3d37DEA71B0D02efEeeB993",
   "collateral": "0x0000000000000000000000000000000000000000",
   "DATinfo": {
     "collateralType": "ETH",

@@ -11,8 +11,8 @@ const Button = styled.div`
     text-align: center;
     text-transform: uppercase;
 `;
-const InactiveButton = ({ children }) => {
-    return <Button>{children}</Button>;
+const InactiveButton = ({ children, onClick }) => {
+    return <Button onClick={onClick}>{children}</Button>;
 };
 
 export default InactiveButton;

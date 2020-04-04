@@ -1,5 +1,6 @@
 import { NetworkConnector } from 'provider/NetworkConnector';
 import { MetamaskConnector } from './MetamaskConnector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 export const supportedChainId = Number(
     process.env.REACT_APP_SUPPORTED_NETWORK_ID
@@ -23,22 +24,17 @@ export const isChainIdSupported = (chainId: number): boolean => {
     return supportedChainId === chainId;
 };
 
-const POLLING_INTERVAL = 1000;
+const POLLING_INTERVAL = 5000;
 const RPC_URLS: { [chainId: number]: string } = {
-    1: process.env.REACT_APP_RPC_URL_1 as string,
-    42: process.env.REACT_APP_RPC_URL_42 as string,
-    66: process.env.REACT_APP_RPC_URL_LOCAL as string,
+    [process.env.REACT_APP_SUPPORTED_NETWORK_ID] : process.env.REACT_APP_SUPPORTED_NETWORK_URL as string,
 };
 
-export const SUBGRAPH_URLS: { [chainId: number]: string } = {
-    1: process.env.REACT_APP_SUBGRAPH_URL_1 as string,
-    42: process.env.REACT_APP_SUBGRAPH_URL_42 as string,
-    66: process.env.REACT_APP_SUBGRAPH_URL_LOCAL as string,
-};
 
 export const web3ContextNames = {
     backup: 'BACKUP',
     injected: 'INJECTED',
+    metamask: 'METAMASK',
+    walletconnect: 'WALLETCONNECT',
 };
 
 const backupUrls = {};
@@ -51,12 +47,23 @@ export const backup = new NetworkConnector({
 });
 
 export const injected = new MetamaskConnector({
-    // supportedChainIds: [1, supportedChainId],
+    supportedChainIds: [1, Number(process.env.REACT_APP_SUPPORTED_NETWORK_ID)],
 });
+
+
+export const walletconnect = new WalletConnectConnector({
+  rpc: { 
+    [process.env.REACT_APP_SUPPORTED_NETWORK_ID] : process.env.REACT_APP_SUPPORTED_NETWORK_URL,
+  },
+  bridge: 'https://bridge.walletconnect.org',
+  qrcode: false,
+  pollingInterval: POLLING_INTERVAL,
+})
 
 export default {
     backup,
     injected,
+    walletconnect
 };
 
 export const SUPPORTED_WALLETS = {
@@ -74,6 +81,14 @@ export const SUPPORTED_WALLETS = {
         name: 'MetaMask',
         iconName: 'metamask.png',
         description: 'Easy-to-use browser extension.',
+        href: null,
+        color: '#E8831D',
+    },
+    WALLETCONNECT: {
+        connector: walletconnect,
+        name: 'WalletConnect',
+        iconName: 'walletConnectIcon.svg',
+        description: 'Connect form mobile.',
         href: null,
         color: '#E8831D',
     },
