@@ -61,9 +61,7 @@ class SellUnconfirmed extends React.Component {
                 );
             } else {
                 return (
-                    <InactiveButton onClick={onClick}>
-                        {children}
-                    </InactiveButton>
+                    <InactiveButton>{children}</InactiveButton>
                 );
             }
         };

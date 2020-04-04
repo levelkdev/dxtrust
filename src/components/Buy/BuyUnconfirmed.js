@@ -57,7 +57,7 @@ const BuyUnconfirmed = observer((props) => {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
         } else {
             return (
-                <InactiveButton onClick={onClick}>{children}</InactiveButton>
+                <InactiveButton>{children}</InactiveButton>
             );
         }
     };
