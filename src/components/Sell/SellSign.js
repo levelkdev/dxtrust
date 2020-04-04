@@ -5,6 +5,7 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { useStores } from '../../contexts/storesContext';
 import { collateralType } from '../../config.json';
+import { formatBalance } from '../../utils/token';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -53,8 +54,8 @@ const SellSign = observer((props) => {
         root: { tradingStore },
     } = useStores();
 
-    const price = tradingStore.formatPrice();
-    const rewardForSell = tradingStore.formatRewardForSell();
+    const price = tradingStore.formatSellPrice();
+    const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
 
     const Button = ({ active, children, onClick }) => {
@@ -80,7 +81,7 @@ const SellSign = observer((props) => {
             <InfoRow>
                 <FormInfoText>Receive</FormInfoText>
                 <div>
-                    {rewardForSell} {collateralType}
+                    {formatBalance(rewardForSell)} {collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
