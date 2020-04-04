@@ -124,12 +124,7 @@ const WalletModal = observer(
         const {
             root: { modalStore },
         } = useStores();
-        const { active, connector, error, activate } = useActiveWeb3React();
-
-        const { account, chainId: injectedChainId } = useWeb3React(
-            web3ContextNames.injected
-        );
-
+        const { active, connector, error, activate, account, chainId } = useActiveWeb3React();
         const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
         const [pendingWallet, setPendingWallet] = useState();
         const [pendingError, setPendingError] = useState();
@@ -304,7 +299,7 @@ const WalletModal = observer(
             }
             if (
                 account &&
-                !isChainIdSupported(injectedChainId) &&
+                !isChainIdSupported(chainId) &&
                 walletView === WALLET_VIEWS.ACCOUNT
             ) {
                 return (
@@ -321,12 +316,13 @@ const WalletModal = observer(
                     </UpperSection>
                 );
             }
+            console.log(account, walletView === WALLET_VIEWS.ACCOUNT)
             if (account && walletView === WALLET_VIEWS.ACCOUNT) {
                 return (
                     <AccountDetails
                         toggleWalletModal={toggleWalletModal}
-                        pendingTransactions={pendingTransactions}
-                        confirmedTransactions={confirmedTransactions}
+                        pendingTransactions={pendingTransactions || []}
+                        confirmedTransactions={confirmedTransactions || []}
                         openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
                     />
                 );

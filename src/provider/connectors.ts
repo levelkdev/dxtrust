@@ -32,6 +32,8 @@ const RPC_URLS: { [chainId: number]: string } = {
 export const web3ContextNames = {
     backup: 'BACKUP',
     injected: 'INJECTED',
+    metamask: 'METAMASK',
+    walletconnect: 'WALLETCONNECT',
 };
 
 const backupUrls = {};
@@ -60,6 +62,7 @@ export const walletconnect = new WalletConnectConnector({
 export default {
     backup,
     injected,
+    walletconnect
 };
 
 export const SUPPORTED_WALLETS = {
