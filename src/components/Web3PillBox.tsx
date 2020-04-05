@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Pill = styled.div`
-    background: var(--panel-background);
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-    color: var(--button-text);
+    background: #FFFFFF;
+    border: 1px solid #E1E3E7;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
 
     display: flex;
     justify-content: space-evenly;
@@ -13,13 +14,15 @@ const Pill = styled.div`
     text-align: center;
 
     font-family: var(--roboto);
+    color: var(--dark-text-gray);
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 16px;
+    letter-spacing: 0.2px;
     cursor: pointer;
 
-    width: 158px;
+    width: 166px;
     height: 40px;
 `;
 

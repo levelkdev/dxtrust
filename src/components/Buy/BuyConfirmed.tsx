@@ -6,7 +6,6 @@ import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
-import { TransactionState } from '../../stores/TradingForm';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -71,7 +70,7 @@ const BuyConfirmed = observer((props) => {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
         } else {
             return (
-                <InactiveButton onClick={onClick}>{children}</InactiveButton>
+                <InactiveButton>{children}</InactiveButton>
             );
         }
     };

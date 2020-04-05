@@ -76,6 +76,20 @@ const ErrorValidation = styled.div`
     color: red;
 `;
 
+const DisconnectedError = styled.div`
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    padding-top: 40px;
+    text-align: right;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0.2px;
+    align-self: flex-end;
+    color: #E57373;
+`;
+
 const BuyInput = observer((props) => {
     const {
         root: { datStore, tradingStore, configStore, providerStore },
@@ -86,13 +100,14 @@ const BuyInput = observer((props) => {
     const price = tradingStore.formatPrice();
     const priceToBuy = tradingStore.formatPriceToBuy();
     let hasError = false;
+    let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
         } else {
             return (
-                <InactiveButton onClick={onClick}>{children}</InactiveButton>
+                <InactiveButton>{children}</InactiveButton>
             );
         }
     };
@@ -102,6 +117,7 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
+        disconnectedError = (account == null) ? true : false;
         tradingStore.setBuyAmount(value);
         hasError = !(value > 0);
 
@@ -113,8 +129,6 @@ const BuyInput = observer((props) => {
         });
 
         if (status === ValidationStatus.VALID) {
-            tradingStore.setPayAmountPending(true);
-
             const weiValue = denormalizeBalance(value);
 
             const buyReturn = await datStore.fetchBuyReturn(
@@ -156,6 +170,13 @@ const BuyInput = observer((props) => {
                     <ErrorValidation>
                         <p>Must be a positive number</p>
                     </ErrorValidation>
+                ) : (
+                    <></>
+                )}
+                {disconnectedError ? (
+                    <DisconnectedError>
+                        <p>Connect Wallet to proceed with order</p>
+                    </DisconnectedError>
                 ) : (
                     <></>
                 )}

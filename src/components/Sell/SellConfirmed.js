@@ -3,8 +3,9 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import store from '../../stores/Root';
 import { collateralType } from '../../config.json';
+import { useStores } from '../../contexts/storesContext';
+import { formatBalance } from '../../utils/token';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -56,63 +57,62 @@ const Checkbox = styled.img`
     width: 8px;
 `;
 
-@observer
-class SellConfirmed extends React.Component {
-    render() {
-        const price = store.tradingStore.formatPrice();
-        const rewardForSell = store.tradingStore.formatRewardForSell();
-        const sellAmount = store.tradingStore.formatSellAmount();
+const SellConfirmed = observer((props) => {
+    const {
+        root: { tradingStore },
+    } = useStores();
 
-        const Button = ({ active, children, onClick }) => {
-            if (active === true) {
-                return (
-                    <ActiveButton onClick={onClick}>{children}</ActiveButton>
-                );
-            } else {
-                return (
-                    <InactiveButton onClick={onClick}>
-                        {children}
-                    </InactiveButton>
-                );
-            }
-        };
+    const price = tradingStore.formatPrice();
+    const rewardForSell = tradingStore.rewardForSell;
+    const sellAmount = tradingStore.formatSellAmount();
 
-        return (
-            <FormWrapper>
-                <InfoRow>
-                    <FormInfoText>Price</FormInfoText>
-                    <div>
-                        {price} {collateralType}
-                    </div>
-                </InfoRow>
-                <InfoRow>
-                    <FormInfoText>Receive</FormInfoText>
-                    <div>
-                        {rewardForSell} {collateralType}
-                    </div>
-                </InfoRow>
-                <InfoRow>
-                    <FormInfoText>Sell Amount</FormInfoText>
-                    <div>{sellAmount} DXD</div>
-                </InfoRow>
-                <Confirmed>
-                    Confirmed
-                    <CheckboxContainer>
-                        <Checkbox src="checkbox_758AFE.svg" />
-                    </CheckboxContainer>
-                </Confirmed>
-                <Button
-                    active={true}
-                    onClick={() => {
-                        store.tradingStore.sellingState = 0;
-                        store.tradingStore.sellAmount = 0;
-                    }}
-                >
-                    Sell Again
-                </Button>
-            </FormWrapper>
-        );
-    }
-}
+    const Button = ({ active, children, onClick }) => {
+        if (active === true) {
+            return (
+                <ActiveButton onClick={onClick}>{children}</ActiveButton>
+            );
+        } else {
+            return (
+                <InactiveButton>{children}</InactiveButton>
+            );
+        }
+    };
+
+    return (
+        <FormWrapper>
+            <InfoRow>
+                <FormInfoText>Price</FormInfoText>
+                <div>
+                    {price} {collateralType}
+                </div>
+            </InfoRow>
+            <InfoRow>
+                <FormInfoText>Receive</FormInfoText>
+                <div>
+                    {formatBalance(rewardForSell)} {collateralType}
+                </div>
+            </InfoRow>
+            <InfoRow>
+                <FormInfoText>Sell Amount</FormInfoText>
+                <div>{sellAmount} DXD</div>
+            </InfoRow>
+            <Confirmed>
+                Confirmed
+                <CheckboxContainer>
+                    <Checkbox src="checkbox_758AFE.svg" />
+                </CheckboxContainer>
+            </Confirmed>
+            <Button
+                active={true}
+                onClick={() => {
+                    tradingStore.sellingState = 0;
+                    tradingStore.sellAmount = 0;
+                }}
+            >
+                Sell Again
+            </Button>
+        </FormWrapper>
+    );
+});
 
 export default SellConfirmed;

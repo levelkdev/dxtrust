@@ -6,6 +6,7 @@ import InactiveButton from '../common/InactiveButton';
 import { collateralType } from '../../config.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
+import PendingCircle from '../common/PendingCircle';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -41,13 +42,6 @@ const Unconfirmed = styled.div`
     margin-bottom: 23px;
 `;
 
-const PendingCircle = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 10px;
-    border: 1px solid var(--panel-icon-2);
-`;
-
 const BuyUnconfirmed = observer((props) => {
     const {
         root: { tradingStore },
@@ -63,7 +57,7 @@ const BuyUnconfirmed = observer((props) => {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
         } else {
             return (
-                <InactiveButton onClick={onClick}>{children}</InactiveButton>
+                <InactiveButton>{children}</InactiveButton>
             );
         }
     };
@@ -82,7 +76,7 @@ const BuyUnconfirmed = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Pay</FormInfoText>
+                <FormInfoText>Pay Amount</FormInfoText>
                 <div>{tradingStore.buyAmount} DXD</div>
             </InfoRow>
             <Unconfirmed>

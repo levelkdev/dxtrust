@@ -104,7 +104,7 @@ export default class BlockchainFetchStore {
 
                             tokenStore.fetchAccountApprovals(
                                 web3React,
-                                ['ether', configStore.getDXDTokenAddress()],
+                                [configStore.getDXDTokenAddress()],
                                 account,
                                 configStore.activeDatAddress
                             );
