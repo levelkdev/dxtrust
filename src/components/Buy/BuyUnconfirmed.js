@@ -75,7 +75,7 @@ const BuyUnconfirmed = observer((props) => {
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Total cost</FormInfoText>
-                <div>{tradingStore.buyAmount} {collateralType}</div>
+                <div>{tradingStore.buyAmount} {DATinfo.collateralType}</div>
             </InfoRow>
             <Unconfirmed>
                 Unconfirmed...
