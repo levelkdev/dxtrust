@@ -1,6 +1,6 @@
 {
   "network": "develop",
-  "DAT": "0x156b3ce02C54Cbe22DD596FdC94D331253032f88",
+  "DAT": "0x70459511a0eF57877B0C95EC0A5500d119437BCf",
   "collateral": "0x0000000000000000000000000000000000000000",
   "DATinfo": {
     "collateralType": "ETH",
@@ -14,6 +14,6 @@
     "initGoal": "0",
     "initReserve": "42000000000000000000",
     "feeBasisPoints": "0",
-    "minInvestment": "100000000"
+    "minInvestment": "100000000000000000"
   }
 }
