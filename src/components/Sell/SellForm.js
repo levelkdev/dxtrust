@@ -20,7 +20,7 @@ const SellForm = observer((props) => {
         root: { tradingStore },
     } = useStores();
 
-    const infotext = 'Receive';
+    const infotext = 'Receive Amount';
     const count = tradingStore.sellingState;
 
     const Button = ({ active, children, onClick }) => {
