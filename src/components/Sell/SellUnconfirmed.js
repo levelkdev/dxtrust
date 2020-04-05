@@ -3,8 +3,9 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import store from '../../stores/Root';
 import { DATinfo } from '../../blockchainInfo.json';
+import { useStores } from '../../contexts/storesContext';
+import { formatBalance } from '../../utils/token';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -47,53 +48,52 @@ const PendingCircle = styled.div`
     border: 1px solid var(--panel-icon-2);
 `;
 
-@observer
-class SellUnconfirmed extends React.Component {
-    render() {
-        const price = store.tradingStore.formatPrice();
-        const rewardForSell = store.tradingStore.formatRewardForSell();
-        const sellAmount = store.tradingStore.formatSellAmount();
+const SellUnconfirmed = observer((props) => {
+    const {
+        root: { tradingStore },
+    } = useStores();
 
-        const Button = ({ active, children, onClick }) => {
-            if (active === true) {
-                return (
-                    <ActiveButton onClick={onClick}>{children}</ActiveButton>
-                );
-            } else {
-                return (
-                    <InactiveButton onClick={onClick}>
-                        {children}
-                    </InactiveButton>
-                );
-            }
-        };
+    const price = tradingStore.formatPrice();
+    const rewardForSell = tradingStore.rewardForSell;
+    const sellAmount = tradingStore.formatSellAmount();
 
-        return (
-            <FormWrapper>
-                <InfoRow>
-                    <FormInfoText>Price</FormInfoText>
-                    <div>
-                        {price} {DATinfo.collateralType}
-                    </div>
-                </InfoRow>
-                <InfoRow>
-                    <FormInfoText>Receive</FormInfoText>
-                    <div>
-                        {rewardForSell} {DATinfo.collateralType}
-                    </div>
-                </InfoRow>
-                <InfoRow>
-                    <FormInfoText>Sell Amount</FormInfoText>
-                    <div>{sellAmount} DXD</div>
-                </InfoRow>
-                <Unconfirmed>
-                    Unconfirmed...
-                    <PendingCircle />
-                </Unconfirmed>
-                <Button active={false}>Sell DXD</Button>
-            </FormWrapper>
-        );
-    }
-}
+    const Button = ({ active, children, onClick }) => {
+        if (active === true) {
+            return (
+                <ActiveButton onClick={onClick}>{children}</ActiveButton>
+            );
+        } else {
+            return (
+                <InactiveButton>{children}</InactiveButton>
+            );
+        }
+    };
+
+    return (
+        <FormWrapper>
+            <InfoRow>
+                <FormInfoText>Price</FormInfoText>
+                <div>
+                    {price} {DATinfo.collateralType}
+                </div>
+            </InfoRow>
+            <InfoRow>
+                <FormInfoText>Receive</FormInfoText>
+                <div>
+                    {formatBalance(rewardForSell)} {DATinfo.collateralType}
+                </div>
+            </InfoRow>
+            <InfoRow>
+                <FormInfoText>Sell Amount</FormInfoText>
+                <div>{sellAmount} DXD</div>
+            </InfoRow>
+            <Unconfirmed>
+                Unconfirmed...
+                <PendingCircle />
+            </Unconfirmed>
+            <Button active={false}>Sell DXD</Button>
+        </FormWrapper>
+    );
+});
 
 export default SellUnconfirmed;

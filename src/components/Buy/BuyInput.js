@@ -107,7 +107,7 @@ const BuyInput = observer((props) => {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
         } else {
             return (
-                <InactiveButton onClick={onClick}>{children}</InactiveButton>
+                <InactiveButton>{children}</InactiveButton>
             );
         }
     };
@@ -129,8 +129,6 @@ const BuyInput = observer((props) => {
         });
 
         if (status === ValidationStatus.VALID) {
-            tradingStore.setPayAmountPending(true);
-
             const weiValue = denormalizeBalance(value);
 
             const buyReturn = await datStore.fetchBuyReturn(

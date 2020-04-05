@@ -45,6 +45,7 @@ body {
 
 .app-shell {
     width: 936px;
+    height: 100vh;
 }
 
 .green-text {

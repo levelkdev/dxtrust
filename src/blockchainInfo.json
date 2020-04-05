@@ -1,22 +1,19 @@
 {
   "network": "develop",
-  "DAT": "0x4C3C1c8F611bCE29E3d37DEA71B0D02efEeeB993",
+  "DAT": "0x156b3ce02C54Cbe22DD596FdC94D331253032f88",
   "collateral": "0x0000000000000000000000000000000000000000",
   "DATinfo": {
     "collateralType": "ETH",
-    "name": "Ether",
-    "symbol": "ETH",
+    "currency": "0x0000000000000000000000000000000000000000",
+    "name": "TestOrg",
+    "symbol": "TFO",
     "revenueCommitmentBasisPoints": "1000",
     "investmentReserveBasisPoints": "1000",
     "buySlopeNum": "1",
-    "buySlopeDen": "100000000000000000000000000000000000",
-    "initGoal": "141421360000000000000000",
-    "initReserve": "140000000000000000000000",
-    "autoBurn": false,
+    "buySlopeDen": "100000000000000000000",
+    "initGoal": "0",
+    "initReserve": "42000000000000000000",
     "feeBasisPoints": "0",
-    "minInvestment": "100000000",
-    "openUntilAtLeast": "1735689599",
-    "beneficiary": "0x3532adfb048AD60920a89F0d62AB90B1CF80bf81",
-    "feeCollector": "0xADec422B6a7511c7E7131b81d533F23993ED16bf"
+    "minInvestment": "100000000"
   }
 }
