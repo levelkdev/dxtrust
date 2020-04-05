@@ -17,6 +17,6 @@
         "initGoal": "0",
         "initReserve": "42000000000000000000",
         "feeBasisPoints": "0",
-        "minInvestment": "100000000"
+        "minInvestment": "100000000000000000"
     }
 }

@@ -140,7 +140,7 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
       await contracts.dat.methods.feeBasisPoints().call(),
       await contracts.dat.methods.autoBurn().call(),
       await contracts.dat.methods.revenueCommitmentBasisPoints().call(),
-      await contracts.dat.methods.minInvestment().call(),
+      options.minInvestment,
       await contracts.dat.methods.openUntilAtLeast().call()
     ).send({ from: callOptions.control })
   );

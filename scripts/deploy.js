@@ -41,19 +41,7 @@ async function deployOrgs() {
   const DATInfo = config.DATinfo;
   let collateralToken = zeroAddress;
 
-  const contracts = await deployDat(
-    web3,
-    Object.assign(
-      {
-        whitelistAddress: addresses.whitelist,
-        currency: (DATInfo.collateralType == "ETH") ? zeroAddress :collateralToken.address,
-        minInvestment: new BN("100")
-          .shiftedBy(18)
-          .toFixed()
-      },
-      DATInfo
-    )
-  );    
+  const contracts = await deployDat( web3, DATInfo);
   
   const blockchainInfo = {
     network: network,
