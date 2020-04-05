@@ -44,15 +44,8 @@ const CheckboxContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 18px;
-    width: 18px;
-    border-radius: 10px;
-    border: 1px solid var(--panel-icon-2);
-`;
-
-const Checkbox = styled.img`
-    height: 6px;
-    width: 8px;
+    height: 24px;
+    width: 24px;
 `;
 
 const SellConfirmed = observer((props) => {
@@ -97,7 +90,7 @@ const SellConfirmed = observer((props) => {
             <Confirmed>
                 Confirmed
                 <CheckboxContainer>
-                    <Checkbox src="checkbox_758AFE.svg" />
+                    <img src="tick.svg"/>
                 </CheckboxContainer>
             </Confirmed>
             <Button
