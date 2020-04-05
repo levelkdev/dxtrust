@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SpinningCircle = styled.div`
-    height:18px;
-    width:18px;
+    height:16px;
+    width:16px;
     color: blue;
     top:50%;
     left:50%;

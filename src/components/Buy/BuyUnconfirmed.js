@@ -31,13 +31,13 @@ const FormInfoText = styled.div`
 
 const Unconfirmed = styled.div`
     font-size: 15px;
-    line-height: 24px;
+    line-height: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     letter-spacing: 0.4px;
     color: var(--turquois-text);
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 `;
 
 const BuyUnconfirmed = observer((props) => {
