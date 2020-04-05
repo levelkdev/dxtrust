@@ -31,7 +31,7 @@ const FormInfoText = styled.div`
 
 const SignTransaction = styled.div`
     font-size: 15px;
-    line-height: 22px;
+    line-height: 24px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

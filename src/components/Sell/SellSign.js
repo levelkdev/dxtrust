@@ -6,6 +6,7 @@ import InactiveButton from '../common/InactiveButton';
 import { useStores } from '../../contexts/storesContext';
 import { collateralType } from '../../config.json';
 import { formatBalance } from '../../utils/token';
+import PendingCircle from '../common/PendingCircle';
 
 const FormWrapper = styled.div`
     height: 200px;
@@ -31,7 +32,7 @@ const FormInfoText = styled.div`
 const SignTransaction = styled.div`
     // font-family: SF Pro Text;
     font-size: 15px;
-    line-height: 18px;
+    line-height: 24px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -41,12 +42,6 @@ const SignTransaction = styled.div`
     margin-bottom: 23px;
 `;
 
-const PendingCircle = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 10px;
-    border: 1px solid var(--panel-icon-2);
-`;
 
 // class SellSign extends React.Component {
 const SellSign = observer((props) => {
@@ -79,7 +74,7 @@ const SellSign = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive</FormInfoText>
+                <FormInfoText>Receive Amount</FormInfoText>
                 <div>
                     {formatBalance(rewardForSell)} {collateralType}
                 </div>

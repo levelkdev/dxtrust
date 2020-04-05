@@ -87,7 +87,7 @@ const SellConfirmed = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive</FormInfoText>
+                <FormInfoText>Receive Amount</FormInfoText>
                 <div>
                     {formatBalance(rewardForSell)} {collateralType}
                 </div>

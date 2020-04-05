@@ -32,7 +32,7 @@ const FormInfoText = styled.div`
 const Unconfirmed = styled.div`
     // font-family: SF Pro Text;
     font-size: 15px;
-    line-height: 18px;
+    line-height: 24px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
