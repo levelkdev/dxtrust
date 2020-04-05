@@ -8,8 +8,7 @@ import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
 
 const FormWrapper = styled.div`
-    height: 200px;
-    padding: 6px 0px;
+    padding-top: 24px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -19,7 +18,7 @@ const InfoRow = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    line-height: 24px;
+    line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
 `;
@@ -29,16 +28,15 @@ const FormInfoText = styled.div`
 `;
 
 const Confirmed = styled.div`
-    // font-family: SF Pro Text;
-    font-size: 15px;
-    line-height: 18px;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
+    font-size: 15px;
+    line-height: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     letter-spacing: 0.4px;
     color: var(--turquois-text);
-    margin-top: 8px;
-    margin-bottom: 23px;
+    margin-bottom: 24px;
 `;
 
 const CheckboxContainer = styled.div`
@@ -79,12 +77,12 @@ const BuyConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
                 <div>
-                    {formatBalance(tradingStore.payAmount)} {collateralType}
+                    {formatBalance(tradingStore.payAmount)} DXD
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Pay</FormInfoText>
-                <div>{tradingStore.buyAmount} DXD</div>
+            <FormInfoText>Total cost</FormInfoText>
+                <div>{tradingStore.buyAmount} {collateralType}</div>
             </InfoRow>
             <Confirmed>
                 Confirmed
