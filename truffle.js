@@ -2,8 +2,8 @@
 const HDWalletProvider = require('truffle-hdwallet-provider')	
 const fs = require('fs')	
 
-mnemonic = provess.env.BCAPP_KEY_MNEMONIC;
-infuraApiKey = provess.env.BCAPP_KEY_INFURA_API_KEY;
+mnemonic = process.env.BCAPP_KEY_MNEMONIC;
+infuraApiKey = process.env.BCAPP_KEY_INFURA_API_KEY;
 
 module.exports = {	
   networks: {	
