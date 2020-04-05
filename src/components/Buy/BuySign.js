@@ -76,7 +76,7 @@ const BuySign = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Pay</FormInfoText>
+                <FormInfoText>Receive Amount</FormInfoText>
                 <div>{tradingStore.buyAmount} DXD</div>
             </InfoRow>
             <SignTransaction>
