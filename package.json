@@ -100,6 +100,7 @@
         "@babel/plugin-transform-react-jsx": "^7.3.0",
         "@ledgerhq/hw-app-eth": "^4.72.1",
         "@ledgerhq/hw-transport-u2f": "^4.72.1",
+        "@openzeppelin/contracts": "^2.5.0",
         "@reach/dialog": "^0.8.5",
         "@svgr/webpack": "4.3.2",
         "@types/jest": "^25.1.1",
