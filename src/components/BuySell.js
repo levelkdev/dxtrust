@@ -51,12 +51,11 @@ const InactiveTab = styled.div`
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 18px;
+    padding: 24px;
 `;
 
 const CryptoInfoWrapper = styled.div`
-    height: 100px;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -67,6 +66,7 @@ const InfoRow = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-bottom: 12px;
     line-height: 24px;
     color: var(--dark-text-gray);
 `;
@@ -81,7 +81,7 @@ const LogoAndText = styled.div`
 `;
 
 const LogoText = styled.div`
-    margin-left: 10px;
+    margin-left: 12px;
     color: var(--light-text-gray);
 `;
 
