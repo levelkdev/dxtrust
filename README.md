@@ -11,7 +11,7 @@ Bonding Curve Dapp, based in the [DXdao Bonding Curve DAPP Proposal doc](https:/
     ```
 
 ### Development
-1.- Add a 12 phrase mnemonic phrase in the .mnemonic file.
+1.- Add a 12 phrase mnemonic phrase in the .env file on the BCAPP_KEY_MNEMONIC variable.
 2.- Configure your .env file, make sure to set the environment to develop.
 3- Modify the `node_modules/@web3-react/core/dist/core.esm.js` file in line 141. COmmet it and override the chainId for 66, the chainId of the localtestnet.
 
