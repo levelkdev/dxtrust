@@ -31,13 +31,13 @@ const FormInfoText = styled.div`
 const Confirmed = styled.div`
     align-items: center;
     font-size: 15px;
-    line-height: 24px;
+    line-height: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     letter-spacing: 0.4px;
     color: var(--turquois-text);
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 `;
 
 const CheckboxContainer = styled.div`
@@ -45,8 +45,8 @@ const CheckboxContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 24px;
-    width: 24px;
+    height: 20px;
+    width: 20px;
 `;
 
 const SellConfirmed = observer((props) => {
