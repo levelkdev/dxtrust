@@ -217,7 +217,11 @@ export default class DatStore {
         buyEvents = buyEvents.slice(0, numToGet);
 
         return Promise.all(
-            buyEvents.map((buyEvent) => this.parseBuyEvent(buyEvent))
+            buyEvents.map((buyEvent) => {
+                if (this.isBuyEventValid(buyEvent)) {
+                    return this.parseBuyEvent(buyEvent);
+                }
+            })
         );
     }
 
@@ -236,7 +240,11 @@ export default class DatStore {
         sellEvents = sellEvents.slice(0, numToGet);
 
         return Promise.all(
-            sellEvents.map((sellEvent) => this.parseSellEvent(sellEvent))
+            sellEvents.map((sellEvent) => {
+                if (this.isSellEventValid(sellEvent)) {
+                    return this.parseSellEvent(sellEvent);
+                }
+            })
         );
     }
 
@@ -281,6 +289,22 @@ export default class DatStore {
         };
 
         return event;
+    }
+
+    isBuyEventValid(buyEvent) {
+        return (
+            !!buyEvent.returnValues &&
+            buyEvent.returnValues._fairValue &&
+            !!buyEvent.returnValues._currencyValue
+        );
+    }
+
+    isSellEventValid(sellEvent) {
+        return (
+            !!sellEvent.returnValues &&
+            sellEvent.returnValues._fairValue &&
+            !!sellEvent.returnValues._currencyValue
+        );
     }
 
     async fetchBuyReturn(
