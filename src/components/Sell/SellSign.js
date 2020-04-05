@@ -80,7 +80,7 @@ const SellSign = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Sell Amount</FormInfoText>
+                <FormInfoText>Total cost</FormInfoText>
                 <div>{sellAmount} DXD</div>
             </InfoRow>
             <SignTransaction>
