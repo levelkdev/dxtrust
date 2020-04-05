@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import { collateralType } from '../../config.json';
+import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import {
     denormalizeBalance,
@@ -147,7 +147,7 @@ const BuyInput = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {collateralType}
+                    {price} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>

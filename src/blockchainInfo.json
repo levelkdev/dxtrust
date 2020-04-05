@@ -1,0 +1,19 @@
+{
+  "network": "develop",
+  "DAT": "0x156b3ce02C54Cbe22DD596FdC94D331253032f88",
+  "collateral": "0x0000000000000000000000000000000000000000",
+  "DATinfo": {
+    "collateralType": "ETH",
+    "currency": "0x0000000000000000000000000000000000000000",
+    "name": "TestOrg",
+    "symbol": "TFO",
+    "revenueCommitmentBasisPoints": "1000",
+    "investmentReserveBasisPoints": "1000",
+    "buySlopeNum": "1",
+    "buySlopeDen": "100000000000000000000",
+    "initGoal": "0",
+    "initReserve": "42000000000000000000",
+    "feeBasisPoints": "0",
+    "minInvestment": "100000000"
+  }
+}

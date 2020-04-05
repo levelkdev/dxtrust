@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import { collateralType } from '../../config.json';
+import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
 import PendingCircle from '../common/PendingCircle';
@@ -66,13 +66,13 @@ const SellUnconfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {collateralType}
+                    {price} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {collateralType}
+                    {formatBalance(rewardForSell)} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>

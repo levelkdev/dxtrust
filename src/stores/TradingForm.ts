@@ -1,5 +1,4 @@
 import { action, observable } from 'mobx';
-import { buyStartState } from '../config.json';
 import RootStore from './Root';
 import { BuyReturnCached, SellReturnCached, TradeEvent } from './datStore';
 import { BigNumber } from '../utils/bignumber';
@@ -26,7 +25,7 @@ class TradingFormStore {
     @observable price: BigNumber = bnum(0);
     @observable sellPrice: BigNumber = bnum(0);
 
-    @observable enableTKNState = buyStartState;
+    @observable enableTKNState = 4;
     @observable buyingState = TransactionState.NONE;
     @observable buyAmount = '';
     @observable priceToBuy: BigNumber = bnum(0);

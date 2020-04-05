@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { useStores } from '../../contexts/storesContext';
-import { collateralType } from '../../config.json';
+import { DATinfo } from '../../blockchainInfo.json';
 import { formatBalance } from '../../utils/token';
 import PendingCircle from '../common/PendingCircle';
 
@@ -67,13 +67,13 @@ const SellSign = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {collateralType}
+                    {price} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {collateralType}
+                    {formatBalance(rewardForSell)} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>

@@ -1,6 +1,6 @@
 import RootStore from 'stores/Root';
 import { StringMap } from '../types';
-import * as config from 'config.json';
+import * as config from '../blockchainInfo.json';
 
 export default class ConfigStore {
     rootStore: RootStore;
@@ -26,8 +26,8 @@ export default class ConfigStore {
     }
 
     parseMetadataFromJson() {
-        this.tokens['DXD'] = config.deployed.DXD;
-        this.tokens['Collateral'] = config.deployed.Collateral;
-        this.activeDatAddress = config.deployed.DAT;
+        this.tokens['DXD'] = config.DAT;
+        this.tokens['Collateral'] = config.collateral;
+        this.activeDatAddress = config.DAT;
     }
 }
