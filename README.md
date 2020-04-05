@@ -11,6 +11,7 @@ Bonding Curve Dapp, based in the [DXdao Bonding Curve DAPP Proposal doc](https:/
     ```
 
 ### Development
+
 1.- Add a 12 phrase mnemonic phrase in the .env file on the BCAPP_KEY_MNEMONIC variable.
 2.- Configure your .env file, make sure to set the environment to develop.
 3- Modify the `node_modules/@web3-react/core/dist/core.esm.js` file in line 141. COmmet it and override the chainId for 66, the chainId of the localtestnet.
@@ -28,8 +29,11 @@ parsedChainId = 66; // localtestnet chainId override.
 5.- Once the contracts are deployed and testnet running execute the start script and use metamask from `localhost:8545`
     ```
     yarn start
-    ```    
+    ```
     
+### Kovan developement
+
+To develop over kovan you have to use the right values for network id and url in the .env file. You can run a deploy in kovan by executing `yarn run deploy --network kovan`. You will need to have balance in the account index 1 generated from your mnemonic key.    
 
 ### Start App
 - As per create-react-app
