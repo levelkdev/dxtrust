@@ -16,8 +16,7 @@ import { TransactionState } from '../../stores/TradingForm';
 import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 
 const FormWrapper = styled.div`
-    height: 200px;
-    padding: 6px 0px;
+    padding-top: 24px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -27,7 +26,7 @@ const InfoRow = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    line-height: 24px;
+    line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
 `;
@@ -46,7 +45,7 @@ const FormContent = styled.div`
     height: 34px;
     line-height: 34px;
     margin-top: 12px;
-    margin-bottom: 33px;
+    margin-bottom: 32px;
     font-weight: 600;
     font-size: 15px;
     input,
@@ -140,7 +139,7 @@ const SellInput = observer((props) => {
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive</FormInfoText>
+                <FormInfoText>Receive Amount</FormInfoText>
                 <div>
                     {formatBalance(rewardForSell)} {DATinfo.collateralType}
                 </div>
