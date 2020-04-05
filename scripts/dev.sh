@@ -42,4 +42,5 @@ else
 fi
 
 npx truffle version
+npx truffle compile
 node scripts/deploy.js -- --network develop

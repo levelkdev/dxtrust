@@ -206,6 +206,7 @@
         "ganache-cli": "^6.9.1",
         "hardlydifficult-ethereum-contracts": "^0.10.0",
         "husky": "^4.0.10",
-        "pretty-quick": "^2.0.1"
+        "pretty-quick": "^2.0.1",
+        "truffle": "^5.1.20"
     }
 }
