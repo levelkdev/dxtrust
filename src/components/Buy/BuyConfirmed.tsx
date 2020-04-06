@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
 
@@ -50,7 +49,7 @@ const CheckboxContainer = styled.div`
 
 const BuyConfirmed = observer((props) => {
     const {
-        root: { tradingStore },
+        root: { tradingStore, configStore },
     } = useStores();
 
     const { infotext } = props;
@@ -71,18 +70,18 @@ const BuyConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {DATinfo.collateralType}
+                    {price} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
                 <div>
-                    {formatBalance(tradingStore.payAmount)} {DATinfo.collateralType}
+                    {formatBalance(tradingStore.payAmount)} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
             <FormInfoText>Total cost</FormInfoText>
-                <div>{tradingStore.buyAmount} {DATinfo.collateralType}</div>
+                <div>{tradingStore.buyAmount} {configStore.getCollateralType()}</div>
             </InfoRow>
             <Confirmed>
                 Confirmed

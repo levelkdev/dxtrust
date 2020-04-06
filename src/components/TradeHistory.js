@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
-import { DATinfo } from '../blockchainInfo.json';
 import { useStores } from '../contexts/storesContext';
 import { EventType } from '../stores/datStore';
 import { formatBalance, formatNumberValue } from '../utils/token';
@@ -64,7 +63,7 @@ const TableCell = styled.div`
 
 const TradingHistory = observer(() => {
     const {
-        root: { tradingStore, providerStore },
+        root: { tradingStore, providerStore, configStore },
     } = useStores();
 
     const recentTrades = tradingStore.recentTrades;
@@ -75,9 +74,9 @@ const TradingHistory = observer(() => {
                 <TableHeader width="15.5%" className="align-left">
                     Type
                 </TableHeader>
-                <TableHeader width="15.5%">Price {DATinfo.collateralType}</TableHeader>
+                <TableHeader width="15.5%">Price {configStore.getCollateralType()}</TableHeader>
                 <TableHeader>Amount DXD</TableHeader>
-                <TableHeader>Total {DATinfo.collateralType}</TableHeader>
+                <TableHeader>Total {configStore.getCollateralType()}</TableHeader>
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
             {recentTrades.map((trade) => (

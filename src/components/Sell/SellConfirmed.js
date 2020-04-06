@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import store from '../../stores/Root';
-import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
 
@@ -51,7 +50,7 @@ const CheckboxContainer = styled.div`
 
 const SellConfirmed = observer((props) => {
     const {
-        root: { tradingStore },
+        root: { tradingStore,configStore },
     } = useStores();
 
     const price = tradingStore.formatPrice();
@@ -75,13 +74,13 @@ const SellConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {DATinfo.collateralType}
+                    {price} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {DATinfo.collateralType}
+                    {formatBalance(rewardForSell)} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
