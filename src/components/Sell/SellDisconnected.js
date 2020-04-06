@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
 import PendingCircle from '../common/PendingCircle';

@@ -94,7 +94,7 @@ const SellInput = observer((props) => {
     }
 
     const validateNumber = async (value) => {
-        value = value.replace(/^00+/, '0').replace(/[^0-9.]/g, '');
+        value = value.replace(/^0[0-9]+/, '0').replace(/[^0-9.]/g, '');
         tradingStore.setSellAmount(value);
         
         hasError = !(value > 0);
