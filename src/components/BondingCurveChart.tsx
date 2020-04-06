@@ -82,7 +82,7 @@ const BondingCurveChart = observer(({}) => {
     const generateLine = (data: ChartPoint[], color: string, label: string) => {
         return {
             label: label,
-            fill: false,
+            fill: true,
             data: data,
             borderWidth: 2,
             pointRadius: 0,
@@ -91,9 +91,9 @@ const BondingCurveChart = observer(({}) => {
         };
     };
 
-    const generateSupplyMarker = (point: ChartPoint) => {
+    const generateSupplyMarker = (point: ChartPoint, label: string) => {
         return {
-            label: '',
+            label: label,
             fill: false,
             data: [point],
             pointRadius: 7,
@@ -167,9 +167,9 @@ const BondingCurveChart = observer(({}) => {
         // TODO: If future point is HIGHER than Max - redo MAx
 
         let maxSupplyToShow = totalSupplyWithoutPremint.times(2);
-        if (maxSupplyToShow.lt(initGoal.times(6))) {
+        if (maxSupplyToShow.lt(initGoal.times(2))) {
             maxSupplyToShow = totalSupplyWithoutPremint.plus(
-                initGoal.times(6)
+                initGoal.times(2)
             );
         }
         const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
@@ -188,7 +188,7 @@ const BondingCurveChart = observer(({}) => {
             validateTokenValue(tradingStore.buyAmount) ===
             ValidationStatus.VALID
         ) {
-            supplyIncrease = denormalizeBalance(tradingStore.buyAmount);
+            supplyIncrease = tradingStore.payAmount;
             futureSupply = totalSupplyWithoutPremint.plus(supplyIncrease);
             futurePrice = cOrg.getPriceAtSupply(futureSupply);
             points['futureSupply'] = {
@@ -316,6 +316,14 @@ const BondingCurveChart = observer(({}) => {
 
             datasets.push(
                 generateLine(
+                    [points.kickstarterEnd, points.curveStart],
+                    chartBlue,
+                    'Curve chart point of change'
+                )
+            );
+
+            datasets.push(
+                generateLine(
                     [points.currentSupply, points.maxSupplyToShow],
                     chartGray,
                     'Curve chart unfunded'
@@ -324,14 +332,27 @@ const BondingCurveChart = observer(({}) => {
         } else {
             datasets.push(
                 generateLine(
-                    [points.kickstarterEnd, points.maxSupplyToShow],
+                    [points.kickstarterEnd, points.curveStart],
+                    chartGray,
+                    'Curve chart point of change'
+                )
+            );
+
+            datasets.push(
+                generateLine(
+                    [points.curveStart, points.maxSupplyToShow],
                     chartGray,
                     'Curve chart funded'
                 )
             );
         }
 
-        datasets.push(generateSupplyMarker(points.currentSupply));
+        datasets.push(generateSupplyMarker(points.currentSupply, 'Current Supply'));
+
+        // TODO: Determine how to display predicted future supply / price after current buy
+        // if (hasActiveInput) {
+        //     datasets.push(generateSupplyMarker(points.futureSupply, 'Future Supply'));
+        // }
 
         const data = {
             datasets,

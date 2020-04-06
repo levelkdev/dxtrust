@@ -1,6 +1,6 @@
 {
   "network": "develop",
-  "DAT": "0x70459511a0eF57877B0C95EC0A5500d119437BCf",
+  "DAT": "0x310b59Ce34e3E46Fc37815D8885F8c3192dC7f74",
   "collateral": "0x0000000000000000000000000000000000000000",
   "DATinfo": {
     "collateralType": "ETH",
@@ -10,10 +10,10 @@
     "revenueCommitmentBasisPoints": "1000",
     "investmentReserveBasisPoints": "1000",
     "buySlopeNum": "1",
-    "buySlopeDen": "100000000000000000000",
-    "initGoal": "0",
-    "initReserve": "42000000000000000000",
+    "buySlopeDen": "74390624918500000000000000",
+    "initGoal": "3306000000000000000000",
+    "initReserve": "100000000000000000000000",
     "feeBasisPoints": "0",
-    "minInvestment": "100000000000000000"
+    "minInvestment": "10000000000"
   }
 }
