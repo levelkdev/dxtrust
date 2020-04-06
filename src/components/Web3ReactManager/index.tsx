@@ -45,6 +45,11 @@ const Web3ReactManager = ({ children }) => {
         web3React: web3React,
     });
 
+    if (!networkActive && !networkError) {
+        activateNetwork(backup);
+        console.debug('[Web3ReactManager] Backup activation started');
+    }
+
     // try to eagerly connect to an injected provider, if it exists and has granted access already
     const triedEager = useEagerConnect();
 

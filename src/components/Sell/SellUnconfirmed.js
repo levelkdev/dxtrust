@@ -3,13 +3,14 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import { collateralType } from '../../config.json';
+import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
+import PendingCircle from '../common/PendingCircle';
+
 
 const FormWrapper = styled.div`
-    height: 200px;
-    padding: 6px 0px;
+    padding-top: 24px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -19,7 +20,7 @@ const InfoRow = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    line-height: 24px;
+    line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
 `;
@@ -29,23 +30,14 @@ const FormInfoText = styled.div`
 `;
 
 const Unconfirmed = styled.div`
-    // font-family: SF Pro Text;
     font-size: 15px;
-    line-height: 18px;
+    line-height: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     letter-spacing: 0.4px;
     color: var(--turquois-text);
-    margin-top: 8px;
-    margin-bottom: 23px;
-`;
-
-const PendingCircle = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 10px;
-    border: 1px solid var(--panel-icon-2);
+    margin-bottom: 28px;
 `;
 
 const SellUnconfirmed = observer((props) => {
@@ -74,13 +66,13 @@ const SellUnconfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {collateralType}
+                    {price} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive</FormInfoText>
+                <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {collateralType}
+                    {formatBalance(rewardForSell)} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>

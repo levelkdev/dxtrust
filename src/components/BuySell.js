@@ -6,6 +6,7 @@ import EnableContinue from './common/EnableContinue';
 import Enable from './common/Enable';
 import EnablePending from './common/EnablePending';
 import SellForm from './Sell/SellForm';
+import SellDisconnected from './Sell/SellDisconnected';
 import { useStores } from '../contexts/storesContext';
 import { formatBalance } from '../utils/token';
 
@@ -51,12 +52,11 @@ const InactiveTab = styled.div`
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 18px;
+    padding: 24px;
 `;
 
 const CryptoInfoWrapper = styled.div`
-    height: 100px;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -67,6 +67,7 @@ const InfoRow = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-bottom: 12px;
     line-height: 24px;
     color: var(--dark-text-gray);
 `;
@@ -81,7 +82,7 @@ const LogoAndText = styled.div`
 `;
 
 const LogoText = styled.div`
-    margin-left: 10px;
+    margin-left: 12px;
     color: var(--light-text-gray);
 `;
 
@@ -161,7 +162,9 @@ const BuySell = observer(() => {
                 return <BuyForm />;
             }
         } else {
-            if (incrementDXD === 0) {
+            if (!account) {
+                return <SellDisconnected />;
+            } else if (incrementDXD === 0) {
                 return <Enable tokenType="DXD" />;
             } else if (incrementDXD === 1) {
                 return (

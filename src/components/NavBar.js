@@ -100,7 +100,7 @@ const NavBar = ({}) => {
                     Rewards
                 </NavItem>
             </LeftNav>
-            <Web3ConnectStatus />
+            <Web3ConnectStatus text="Connect Wallet" />
         </NavWrapper>
     );
 };

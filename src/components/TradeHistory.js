@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
-import { collateralType } from '../config.json';
+import { DATinfo } from '../blockchainInfo.json';
 import { useStores } from '../contexts/storesContext';
 import { EventType } from '../stores/datStore';
 import { formatBalance, formatNumberValue } from '../utils/token';
@@ -75,9 +75,9 @@ const TradingHistory = observer(() => {
                 <TableHeader width="15.5%" className="align-left">
                     Type
                 </TableHeader>
-                <TableHeader width="15.5%">Price {collateralType}</TableHeader>
+                <TableHeader width="15.5%">Price {DATinfo.collateralType}</TableHeader>
                 <TableHeader>Amount DXD</TableHeader>
-                <TableHeader>Total {collateralType}</TableHeader>
+                <TableHeader>Total {DATinfo.collateralType}</TableHeader>
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
             {recentTrades.map((trade) => (

@@ -3,14 +3,13 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import { collateralType } from '../../config.json';
+import { DATinfo } from '../../blockchainInfo.json';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
 import PendingCircle from '../common/PendingCircle';
 
 const FormWrapper = styled.div`
-    height: 200px;
-    padding: 6px 0px;
+    padding-top: 24px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -20,7 +19,7 @@ const InfoRow = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    line-height: 24px;
+    line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
 `;
@@ -31,14 +30,13 @@ const FormInfoText = styled.div`
 
 const SignTransaction = styled.div`
     font-size: 15px;
-    line-height: 22px;
+    line-height: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     letter-spacing: 0.4px;
     color: var(--panel-pending);
-    margin-top: 8px;
-    margin-bottom: 23px;
+    margin-bottom: 28px;
 `;
 
 const BuySign = observer((props) => {
@@ -66,18 +64,18 @@ const BuySign = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {collateralType}
+                    {price} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
                 <div>
-                    {formatBalance(tradingStore.payAmount)} {collateralType}
+                    {formatBalance(tradingStore.payAmount)} {DATinfo.collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive Amount</FormInfoText>
-                <div>{tradingStore.buyAmount} DXD</div>
+                <FormInfoText>Total cost</FormInfoText>
+                <div>{tradingStore.buyAmount} {DATinfo.collateralType}</div>
             </InfoRow>
             <SignTransaction>
                 Sign Transaction...
