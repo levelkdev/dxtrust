@@ -14,37 +14,6 @@ import Identicon from '../Identicon';
 import { useStores } from '../../contexts/storesContext';
 import Web3PillBox from '../Web3PillBox';
 
-const ConnectButton = styled.div`
-    height: 38px;
-    width: 154px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 18px;
-    letter-spacing: 1px;
-
-    cursor: pointer;
-    user-select: none;
-    
-    padding: 0.5rem;
-    border-image: initial;
-    background: var(--blue-text);
-    color: var(--white);
-    border: 1px solid var(--active-button-border);
-    box-sizing: border-box;
-    border-radius: 6px;
-    &:hover{
-        cursor: pointer;
-        background: var(--blue-onHover);
-        border: 1px solid var(--blue-onHover-border);
-    }
-
-`;
-
 
 const WrongNetworkButton = styled.button`
     width: 142px;
@@ -76,7 +45,39 @@ const SpinnerWrapper = styled(Spinner)`
     margin: 0 0.25rem 0 0.25rem;
 `;
 
-const Web3ConnectStatus = observer(() => {
+const Web3ConnectStatus = observer((props) => {
+
+    const ConnectButton = styled.div`
+        height: 38px;
+        width: ${props.wide ? "unset" : "154px"}
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15);
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 18px;
+        letter-spacing: 1px;
+
+        cursor: pointer;
+        user-select: none;
+        
+        padding: 0.5rem;
+        border-image: initial;
+        background: var(--blue-text);
+        color: var(--white);
+        border: 1px solid var(--active-button-border);
+        box-sizing: border-box;
+        border-radius: 6px;
+        &:hover{
+            cursor: pointer;
+            background: var(--blue-onHover);
+            border: 1px solid var(--blue-onHover-border);
+        }
+
+    `;
+    
     const {
         root: { modalStore, transactionStore, providerStore },
     } = useStores();
@@ -149,7 +150,7 @@ const Web3ConnectStatus = observer(() => {
                     onClick={toggleWalletModal}
                     active={true}
                     >
-                    Connect Wallet
+                    {props.text}
                 </ConnectButton>
                 
             );
