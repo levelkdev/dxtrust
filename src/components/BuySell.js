@@ -6,6 +6,7 @@ import EnableContinue from './common/EnableContinue';
 import Enable from './common/Enable';
 import EnablePending from './common/EnablePending';
 import SellForm from './Sell/SellForm';
+import SellDisconnected from './Sell/SellDisconnected';
 import { useStores } from '../contexts/storesContext';
 import { formatBalance } from '../utils/token';
 
@@ -161,7 +162,9 @@ const BuySell = observer(() => {
                 return <BuyForm />;
             }
         } else {
-            if (incrementDXD === 0) {
+            if (!account) {
+                return <SellDisconnected />;
+            } else if (incrementDXD === 0) {
                 return <Enable tokenType="DXD" />;
             } else if (incrementDXD === 1) {
                 return (
