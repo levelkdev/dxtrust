@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { useStores } from '../../contexts/storesContext';
-import { DATinfo } from '../../blockchainInfo.json';
 import { formatBalance } from '../../utils/token';
 import PendingCircle from '../common/PendingCircle';
 
@@ -43,7 +42,7 @@ const SignTransaction = styled.div`
 // class SellSign extends React.Component {
 const SellSign = observer((props) => {
     const {
-        root: { tradingStore },
+        root: { tradingStore, configStore },
     } = useStores();
 
     const price = tradingStore.formatSellPrice();
@@ -67,13 +66,13 @@ const SellSign = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {DATinfo.collateralType}
+                    {price} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {DATinfo.collateralType}
+                    {formatBalance(rewardForSell)} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>

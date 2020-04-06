@@ -1,9 +1,5 @@
 {
-  "contracts": {
-    "kovan": {
-      "DAT": "0xA26449DAaD330A38C9EB08fa76C45990A582cd1e",
-      "collateral": "0x0000000000000000000000000000000000000000",
-      "DATinfo": {
+    "DATinfo": {
         "collateralType": "ETH",
         "name": "dxDAO Token",
         "symbol": "DXD",
@@ -15,7 +11,5 @@
         "investmentReserveBasisPoints": "1000",
         "revenueCommitmentBasisPoints": "1000",
         "minInvestment": "100000000000000000"
-      }
     }
-  }
 }

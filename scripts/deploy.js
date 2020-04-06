@@ -18,7 +18,7 @@ if (!network) throw('Not network selected, --network parameter missing');
 
 mnemonic = process.env.BCAPP_KEY_MNEMONIC;
 httpProviderUrl = 'http://localhost:8545';
-console.log(mnemonic, network)
+
 // Get development keys
 if (network != 'develop') {
   infuraApiKey = process.env.BCAPP_KEY_INFURA_API_KEY;
@@ -32,27 +32,30 @@ web3 = new Web3(provider)
 ZWeb3.initialize(web3.currentProvider);
 
 // Get configuration file
-const config = JSON.parse(fs.readFileSync("config/app.json", "utf-8"));
-const addresses = config.addresses || {};
+const contractsDeployed = JSON.parse(fs.readFileSync("config/contracts.json", "utf-8"));
+const toDeploy = JSON.parse(fs.readFileSync("config/toDeploy.json", "utf-8"));
+const addresses = toDeploy.addresses || {};
 
 async function deployOrgs() {
   const accounts = await web3.eth.getAccounts();
   console.log('Accounts:',accounts);
-  const DATInfo = config.DATinfo;
+  const DATInfo = toDeploy.DATinfo;
   let collateralToken = zeroAddress;
 
   const contracts = await deployDat( web3, DATInfo);
   
-  const blockchainInfo = {
-    network: network,
+  
+  let blockchainInfo = contractsDeployed;
+  blockchainInfo.contracts[network] = {
     DAT: contracts.dat.address,
     collateral: zeroAddress,
-    DATinfo: config.DATinfo
+    DATinfo: toDeploy.DATinfo
   };
+  
   console.log('New blockchainInfo.json file', blockchainInfo);
   fs.writeFileSync('src/blockchainInfo.json', JSON.stringify(blockchainInfo, null, 2), {encoding:'utf8',flag:'w'})
 
   return;
 } 
 
-return deployOrgs();
+deployOrgs();
