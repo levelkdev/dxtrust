@@ -142,10 +142,12 @@ export default class DatStore {
         );
     }
 
-    getBuySlope(datAddress: string) {
-        const num = this.datParams[datAddress].buySlopeNum.value;
-        const den = this.datParams[datAddress].buySlopeDen.value;
-        return num.div(den);
+    getBuySlopeNum(datAddress: string) {
+        return this.datParams[datAddress].buySlopeNum.value;
+    }
+
+    getBuySlopeDen(datAddress: string) {
+        return this.datParams[datAddress].buySlopeDen.value;
     }
 
     getInitGoal(datAddress: string) {
@@ -200,7 +202,7 @@ export default class DatStore {
 
     async fetchInitReserve(datAddress: string): Promise<BigNumber> {
         const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.initGoal().call());
+        return bnum(await dat.methods.initReserve().call());
     }
 
     async fetchInitGoal(datAddress: string): Promise<BigNumber> {

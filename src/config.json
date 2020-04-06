@@ -1,8 +1,8 @@
 {
     "deployed": {
-        "DXD": "0x00F09759594fB1a5e0935BC00b937fA9eCB24b53",
+        "DXD": "0xA26449DAaD330A38C9EB08fa76C45990A582cd1e",
         "Collateral": "0x000000000000000000000000000000000000000",
-        "DAT": "0x00F09759594fB1a5e0935BC00b937fA9eCB24b53"
+        "DAT": "0xA26449DAaD330A38C9EB08fa76C45990A582cd1e"
     },
     "activeNetworkId": 42,
     "buyStartState": 4,
