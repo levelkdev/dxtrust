@@ -94,25 +94,27 @@ const SellInput = observer((props) => {
     }
 
     const validateNumber = async (value) => {
-        if (value > 0) {
-            tradingStore.setSellAmount(value);
-        }
+        value = value.replace(/^00+/, '0').replace(/[^0-9.]/g, '');
+        tradingStore.setSellAmount(value);
+        
         hasError = !(value > 0);
+        
+        if (!hasError) {
+          const status = validateTokenValue(value);
 
-        const status = validateTokenValue(value);
+          if (status === ValidationStatus.VALID) {
+              const weiValue = denormalizeBalance(value);
 
-        if (status === ValidationStatus.VALID) {
-            const weiValue = denormalizeBalance(value);
+              const sellReturn = await datStore.fetchSellReturn(
+                  configStore.activeDatAddress,
+                  weiValue
+              );
 
-            const sellReturn = await datStore.fetchSellReturn(
-                configStore.activeDatAddress,
-                weiValue
-            );
-
-            tradingStore.handleSellReturn(sellReturn);
-        } else {
-            tradingStore.setSellAmount(bnum(0));
-            tradingStore.setSellPrice(bnum(0));
+              tradingStore.handleSellReturn(sellReturn);
+          } else {
+              tradingStore.setSellAmount(bnum(0));
+              tradingStore.setSellPrice(bnum(0));
+          }
         }
     }
 
@@ -149,6 +151,7 @@ const SellInput = observer((props) => {
                         className="form-vivid-blue"
                         type="text"
                         placeholder="0"
+                        value={tradingStore.sellAmount}
                         onChange={(e) =>
                             validateNumber(e.target.value)
                         }

@@ -115,29 +115,32 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
+        value = value.replace(/^00+/, '0').replace(/[^0-9.]/g, '');
         disconnectedError = (account == null) ? true : false;
         tradingStore.setBuyAmount(value);
         hasError = !(value > 0);
 
-        const minValue = normalizeBalance(
-            datStore.getMinInvestment(configStore.activeDatAddress)
-        );
-        const status = validateTokenValue(value, {
-            minValue,
-        });
+        if (!hasError) {
+          const minValue = normalizeBalance(
+              datStore.getMinInvestment(configStore.activeDatAddress)
+          );
+          const status = validateTokenValue(value, {
+              minValue,
+          });
 
-        if (status === ValidationStatus.VALID) {
-            const weiValue = denormalizeBalance(value);
+          if (status === ValidationStatus.VALID) {
+              const weiValue = denormalizeBalance(value);
 
-            const buyReturn = await datStore.fetchBuyReturn(
-                configStore.activeDatAddress,
-                weiValue
-            );
+              const buyReturn = await datStore.fetchBuyReturn(
+                  configStore.activeDatAddress,
+                  weiValue
+              );
 
-            tradingStore.handleBuyReturn(buyReturn);
-        } else {
-            tradingStore.setPayAmount(bnum(0));
-            tradingStore.setPrice(bnum(0));
+              tradingStore.handleBuyReturn(buyReturn);
+          } else {
+              tradingStore.setPayAmount(bnum(0));
+              tradingStore.setPrice(bnum(0));
+          }
         }
     };
 
