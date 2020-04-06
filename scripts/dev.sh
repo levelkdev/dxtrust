@@ -53,4 +53,5 @@ fi
 
 npx truffle version
 npx truffle compile
+cp -r build/contracts src/
 node scripts/deploy.js -- --network develop

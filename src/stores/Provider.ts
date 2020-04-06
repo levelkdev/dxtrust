@@ -20,13 +20,13 @@ export enum ContractTypes {
 }
 
 export const schema = {
-    ERC20: require('../abi/ERC20').abi,
-    BondedToken: require('../abi/ERC20').abi,
-    BondingCurve: require('../abi/ERC20').abi,
-    BondingCurveEther: require('../abi/ERC20').abi,
-    RewardsDistributor: require('../abi/ERC20').abi,
-    StaticCurveLogic: require('../abi/ERC20').abi,
-    DecentralizedAutonomousTrust: require('../abi/DecentralizedAutonomousTrust')
+    ERC20: require('../contracts/ERC20').abi,
+    BondedToken: require('../contracts/ERC20').abi,
+    BondingCurve: require('../contracts/ERC20').abi,
+    BondingCurveEther: require('../contracts/ERC20').abi,
+    RewardsDistributor: require('../contracts/ERC20').abi,
+    StaticCurveLogic: require('../contracts/ERC20').abi,
+    DecentralizedAutonomousTrust: require('../contracts/DecentralizedAutonomousTrust')
         .abi,
 };
 

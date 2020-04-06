@@ -1,6 +1,6 @@
 import RootStore from 'stores/Root';
 import { StringMap } from '../types';
-import blockchainInfo from '../blockchainInfo.json';
+import { contracts } from '../config/contracts.json';
 
 export default class ConfigStore {
     rootStore: RootStore;
@@ -29,12 +29,12 @@ export default class ConfigStore {
     }
     
     getCollateralType() {
-        return blockchainInfo.contracts[this.network].DATinfo.collateralType;
+        return contracts[this.network].DATinfo.collateralType;
     }
 
     parseMetadataFromJson() {
-        this.tokens['DXD'] = blockchainInfo.contracts[this.network].DAT;
-        this.tokens['Collateral'] = blockchainInfo.contracts[this.network].collateral;
-        this.activeDatAddress = blockchainInfo.contracts[this.network].DAT;
+        this.tokens['DXD'] = contracts[this.network].DAT;
+        this.tokens['Collateral'] = contracts[this.network].collateral;
+        this.activeDatAddress = contracts[this.network].DAT;
     }
 }

@@ -16,6 +16,23 @@
         "revenueCommitmentBasisPoints": "1000",
         "minInvestment": "100000000000000000"
       }
+    },
+    "develop": {
+      "DAT": "0x156b3ce02C54Cbe22DD596FdC94D331253032f88",
+      "collateral": "0x0000000000000000000000000000000000000000",
+      "DATinfo": {
+        "collateralType": "ETH",
+        "name": "dxDAO Token",
+        "symbol": "DXD",
+        "currency": "0x0000000000000000000000000000000000000000",
+        "initReserve": "85000000000000000000000",
+        "initGoal": "2500000000000000000000",
+        "buySlopeNum": "1",
+        "buySlopeDen": "46641791000000000000000",
+        "investmentReserveBasisPoints": "1000",
+        "revenueCommitmentBasisPoints": "1000",
+        "minInvestment": "100000000000000000"
+      }
     }
   }
 }

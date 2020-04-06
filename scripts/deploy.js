@@ -32,8 +32,8 @@ web3 = new Web3(provider)
 ZWeb3.initialize(web3.currentProvider);
 
 // Get configuration file
-const contractsDeployed = JSON.parse(fs.readFileSync("config/contracts.json", "utf-8"));
-const toDeploy = JSON.parse(fs.readFileSync("config/toDeploy.json", "utf-8"));
+const contractsDeployed = JSON.parse(fs.readFileSync("src/config/contracts.json", "utf-8"));
+const toDeploy = JSON.parse(fs.readFileSync("src/config/toDeploy.json", "utf-8"));
 const addresses = toDeploy.addresses || {};
 
 async function deployOrgs() {
@@ -45,15 +45,15 @@ async function deployOrgs() {
   const contracts = await deployDat( web3, DATInfo);
   
   
-  let blockchainInfo = contractsDeployed;
-  blockchainInfo.contracts[network] = {
+  let newContractsDeployed = contractsDeployed;
+  newContractsDeployed.contracts[network] = {
     DAT: contracts.dat.address,
     collateral: zeroAddress,
     DATinfo: toDeploy.DATinfo
   };
   
-  console.log('New blockchainInfo.json file', blockchainInfo);
-  fs.writeFileSync('src/blockchainInfo.json', JSON.stringify(blockchainInfo, null, 2), {encoding:'utf8',flag:'w'})
+  console.log('File contracts.json in src/config updated for network '+network);
+  fs.writeFileSync('src/config/contracts.json', JSON.stringify(newContractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
 
   return;
 } 
