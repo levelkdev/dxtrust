@@ -53,7 +53,7 @@ const SellConfirmed = observer((props) => {
         root: { tradingStore,configStore },
     } = useStores();
 
-    const price = tradingStore.formatPrice();
+    const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
 
@@ -96,8 +96,7 @@ const SellConfirmed = observer((props) => {
             <Button
                 active={true}
                 onClick={() => {
-                    tradingStore.sellingState = 0;
-                    tradingStore.sellAmount = 0;
+                    tradingStore.resetSellForm();
                 }}
             >
                 Sell Again

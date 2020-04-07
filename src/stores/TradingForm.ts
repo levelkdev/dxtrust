@@ -102,6 +102,13 @@ class TradingFormStore {
         this.payAmount = bnum(0);
     }
 
+    @action resetSellForm() {
+        this.sellAmount = '';
+        this.sellingState = TransactionState.NONE;
+        this.sellPrice = bnum(0);
+        this.rewardForSell = bnum(0)
+    }
+
     @action setBuyingState(state: TransactionState) {
          this.buyingState = state;
     }

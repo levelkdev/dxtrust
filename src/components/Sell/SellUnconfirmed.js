@@ -44,7 +44,7 @@ const SellUnconfirmed = observer((props) => {
         root: { tradingStore, configStore },
     } = useStores();
 
-    const price = tradingStore.formatPrice();
+    const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
 
