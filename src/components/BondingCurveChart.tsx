@@ -208,53 +208,6 @@ const BondingCurveChart = observer(({}) => {
                 };
             }
         }
-        const options = {
-            maintainAspectRatio: false,
-            legend: {
-                display: false,
-            },
-            scales: {
-                xAxes: [
-                    {
-                        type: 'linear',
-                        display: true,
-                        gridLines: {
-                            display: false,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '',
-                        },
-                        ticks: {
-                            major: {
-                                fontStyle: 'bold',
-                                fontColor: '#BDBDBD',
-                            },
-                        },
-                    },
-                ],
-                yAxes: [
-                    {
-                        display: true,
-                        gridLines: {
-                            display: true,
-                            color: '#E1E3E7',
-                        },
-                        position: 'right',
-                        ticks: {
-                            callback: function (value, index, values) {
-                                return value + ' ETH';
-                            },
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '',
-                        },
-                    },
-                ],
-            },
-        };
-
         const datasets = [];
 
         const hasInitGoal = initGoal.gt(0);
@@ -350,6 +303,57 @@ const BondingCurveChart = observer(({}) => {
 
         const data = {
             datasets,
+        };
+
+        const options = {
+            maintainAspectRatio: false,
+            legend: {
+                display: false,
+            },
+            scales: {
+                xAxes: [
+                    {
+                        type: 'linear',
+                        display: true,
+                        gridLines: {
+                            display: false,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '',
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            max: points.maxSupplyToShow.x,
+                            major: {
+                                fontStyle: 'bold',
+                                fontColor: '#BDBDBD',
+                            },
+                        },
+                    },
+                ],
+                yAxes: [
+                    {
+                        display: true,
+                        gridLines: {
+                            display: true,
+                            color: '#E1E3E7',
+                        },
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: points.maxSupplyToShow.y,
+                            callback: function (value, index, values) {
+                                return value + ' ETH';
+                            },
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '',
+                        },
+                    },
+                ],
+            },
         };
 
         return {
