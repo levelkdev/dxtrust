@@ -7,6 +7,7 @@ export default class ConfigStore {
     tokens: StringMap;
     activeDatAddress: string;
     network: string;
+    DAIinfo: object;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -30,6 +31,10 @@ export default class ConfigStore {
     
     getCollateralType() {
         return contracts[this.network].DATinfo.collateralType;
+    }
+    
+    getDATinfo() {
+        return contracts[this.network].DATinfo;
     }
 
     parseMetadataFromJson() {

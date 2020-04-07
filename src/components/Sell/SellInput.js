@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
@@ -64,14 +64,18 @@ const InputColumn = styled.div`
     justify-content: center;
 `;
 
-const ErrorValidation = styled.div`
-    font-size: 14px;
+const MessageError = styled.div`
+    font-size: 12px;
     display: flex;
     flex-direction: row;
     position: absolute;
     padding-top: 40px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0.2px;
     align-self: flex-end;
-    color: red;
+    color: #E57373;
+    white-space: nowrap;
 `;
 
 const SellInput = observer((props) => {
@@ -79,11 +83,12 @@ const SellInput = observer((props) => {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
 
+    const [hasError, setHasError] = useState(false);
+    const [status, setStatus] = useState("");
+
     const { account } = providerStore.getActiveWeb3React();
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
-    console.log("reward for sell:" + rewardForSell);
-    let hasError = false;
 
     const checkActive = () => {
         if (tradingStore.sellAmount > 0) {
@@ -94,25 +99,21 @@ const SellInput = observer((props) => {
     }
 
     const validateNumber = async (value) => {
-        if (value > 0) {
+        value = value.replace(/^0+/, '');
+        setHasError(!(value > 0));
+        const statusFetch = validateTokenValue(value);
+        setStatus(statusFetch);
+
+        if (statusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
-        }
-        hasError = !(value > 0);
-
-        const status = validateTokenValue(value);
-
-        if (status === ValidationStatus.VALID) {
             const weiValue = denormalizeBalance(value);
 
             const sellReturn = await datStore.fetchSellReturn(
-                configStore.activeDatAddress,
-                weiValue
+              configStore.activeDatAddress,
+              weiValue
             );
 
             tradingStore.handleSellReturn(sellReturn);
-        } else {
-            tradingStore.setSellAmount(bnum(0));
-            tradingStore.setSellPrice(bnum(0));
         }
     }
 
@@ -156,9 +157,9 @@ const SellInput = observer((props) => {
                     <div>DXD</div>
                 </FormContent>
                 {hasError ? (
-                    <ErrorValidation>
-                        <p>Must be a positive number</p>
-                    </ErrorValidation>
+                    <MessageError>
+                      {status}
+                    </MessageError>
                 ) : (
                     <></>
                 )}

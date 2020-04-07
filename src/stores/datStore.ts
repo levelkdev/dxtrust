@@ -161,7 +161,7 @@ export default class DatStore {
         ) {
             return this.datParams[datAddress].minInvestment;
         } else {
-            return undefined;
+            return this.rootStore.configStore.getDATinfo().minInvestment;
         }
     }
 

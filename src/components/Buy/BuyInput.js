@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
@@ -64,40 +64,32 @@ const InputColumn = styled.div`
     justify-content: center;
 `;
 
-const ErrorValidation = styled.div`
-    font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    padding-top: 40px;
-    align-self: flex-end;
-    color: red;
-`;
-
-const DisconnectedError = styled.div`
+const MessageError = styled.div`
     font-size: 12px;
     display: flex;
     flex-direction: row;
     position: absolute;
     padding-top: 40px;
-    text-align: right;
     font-weight: 600;
     line-height: 14px;
     letter-spacing: 0.2px;
     align-self: flex-end;
     color: #E57373;
+    white-space: nowrap;
 `;
 
 const BuyInput = observer((props) => {
     const {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
+    
+    const [hasError, setHasError] = useState(false);
+    const [status, setStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     const price = tradingStore.formatPrice();
     const priceToBuy = tradingStore.formatPriceToBuy();
-    let hasError = false;
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
 
     const Button = ({ active, children, onClick }) => {
@@ -115,29 +107,29 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
+        value = value.replace(/^0+/, '');
         disconnectedError = (account == null) ? true : false;
-        tradingStore.setBuyAmount(value);
-        hasError = !(value > 0);
+        setHasError(!(value > 0));
 
         const minValue = normalizeBalance(
             datStore.getMinInvestment(configStore.activeDatAddress)
         );
-        const status = validateTokenValue(value, {
+        const statusFetch = validateTokenValue(value, {
             minValue,
         });
+        setStatus(statusFetch);
 
-        if (status === ValidationStatus.VALID) {
+        if (statusFetch === ValidationStatus.VALID) {
+            console.log("setting value: " + value);
+            tradingStore.setBuyAmount(value);
             const weiValue = denormalizeBalance(value);
 
             const buyReturn = await datStore.fetchBuyReturn(
-                configStore.activeDatAddress,
-                weiValue
+              configStore.activeDatAddress,
+              weiValue
             );
 
             tradingStore.handleBuyReturn(buyReturn);
-        } else {
-            tradingStore.setPayAmount(bnum(0));
-            tradingStore.setPrice(bnum(0));
         }
     };
 
@@ -159,22 +151,18 @@ const BuyInput = observer((props) => {
                         className="form-vivid-blue"
                         type="text"
                         placeholder="0"
-                        value={tradingStore.buyAmount}
                         onChange={(e) => validateNumber(e.target.value)}
                     />
                     <div>ETH</div>
                 </FormContent>
-                {hasError ? (
-                    <ErrorValidation>
-                        <p>Must be a positive number</p>
-                    </ErrorValidation>
-                ) : (
-                    <></>
-                )}
-                {disconnectedError ? (
-                    <DisconnectedError>
-                        <p>Connect Wallet to proceed with order</p>
-                    </DisconnectedError>
+                {(disconnectedError || hasError) ? (
+                    <MessageError>
+                        { 
+                          hasError ? <span>{status}</span> :
+                          disconnectedError ? <p>Connect Wallet to proceed with order</p> 
+                          : <></>
+                        }
+                    </MessageError>
                 ) : (
                     <></>
                 )}
