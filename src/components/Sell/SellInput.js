@@ -114,6 +114,10 @@ const SellInput = observer((props) => {
             );
 
             tradingStore.handleSellReturn(sellReturn);
+        }   else {
+            tradingStore.setSellAmount(bnum(0));
+            tradingStore.setSellPrice(bnum(0));
+            tradingStore.setRewardForSell(bnum(0));
         }
     }
 

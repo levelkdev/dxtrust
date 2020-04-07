@@ -130,6 +130,9 @@ const BuyInput = observer((props) => {
             );
 
             tradingStore.handleBuyReturn(buyReturn);
+        }   else {
+            tradingStore.setPayAmount(bnum(0));
+            tradingStore.setPrice(bnum(0));
         }
     };
 
