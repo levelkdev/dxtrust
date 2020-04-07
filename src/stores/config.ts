@@ -1,6 +1,7 @@
 import RootStore from 'stores/Root';
 import { StringMap } from '../types';
 import { contracts } from '../config/contracts.json';
+import { ETH_NETWORK } from '../provider/connectors';
 
 export default class ConfigStore {
     rootStore: RootStore;
@@ -12,8 +13,6 @@ export default class ConfigStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
         this.tokens = {} as StringMap;
-        const networks = {42: "kovan", 66: "develop"}
-        this.network = networks[process.env.REACT_APP_SUPPORTED_NETWORK_ID];
         this.parseMetadataFromJson();
     }
     
@@ -30,16 +29,16 @@ export default class ConfigStore {
     }
     
     getCollateralType() {
-        return contracts[this.network].DATinfo.collateralType;
+        return contracts[ETH_NETWORK].DATinfo.collateralType;
     }
     
     getDATinfo() {
-        return contracts[this.network].DATinfo;
+        return contracts[ETH_NETWORK].DATinfo;
     }
 
     parseMetadataFromJson() {
-        this.tokens['DXD'] = contracts[this.network].DAT;
-        this.tokens['Collateral'] = contracts[this.network].collateral;
-        this.activeDatAddress = contracts[this.network].DAT;
+        this.tokens['DXD'] = contracts[ETH_NETWORK].DAT;
+        this.tokens['Collateral'] = contracts[ETH_NETWORK].collateral;
+        this.activeDatAddress = contracts[ETH_NETWORK].DAT;
     }
 }
