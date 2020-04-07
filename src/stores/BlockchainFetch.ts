@@ -65,6 +65,13 @@ export default class BlockchainFetchStore {
                             datStore.fetchStaticParams(configStore.activeDatAddress);
                         }
 
+                        datStore.fetchState(configStore.activeDatAddress).then(state => datStore.setDatInfo(configStore.activeDatAddress, {
+                            state: {
+                                value: state,
+                                blockNumber
+                            }
+                        }));
+
                         datStore
                             .fetchMinInvestment(configStore.activeDatAddress)
                             .then((minInvestment) => {

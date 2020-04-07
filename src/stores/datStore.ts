@@ -31,6 +31,18 @@ export interface SellEvent {
     hash: string;
 }
 
+export enum DatState {
+    STATE_INIT,
+    STATE_RUN,
+    STATE_CLOSE,
+    STATE_CANCEL
+}
+
+interface DatStateCached {
+    value: DatState;
+    blockNumber: number;
+}
+
 interface DatInfo {
     minInvestment?: BigNumber;
     currentPrice?: BigNumberCached;
@@ -38,6 +50,7 @@ interface DatInfo {
     initGoal?: BigNumberCached;
     buySlopeNum?: BigNumberCached;
     buySlopeDen?: BigNumberCached;
+    state?: DatStateCached;
 }
 
 interface DatInfoMap {
@@ -76,7 +89,7 @@ export default class DatStore {
         this.rootStore = rootStore;
         this.datParams = {} as DatInfoMap;
     }
-    @action setDatParams(datAddress: string, updated: DatInfo) {
+    @action setDatInfo(datAddress: string, updated: DatInfo) {
         if (!this.datParams[datAddress]) {
             this.datParams[datAddress] = {};
         }
@@ -101,11 +114,11 @@ export default class DatStore {
                 this.datParams[datAddress].currentPrice.blockNumber
             )
         ) {
-            this.setDatParams(datAddress, {
+            this.setDatInfo(datAddress, {
                 currentPrice: newPrice,
             });
         } else if (!hasExistingValue) {
-            this.setDatParams(datAddress, {
+            this.setDatInfo(datAddress, {
                 currentPrice: newPrice,
             });
         }
@@ -142,6 +155,14 @@ export default class DatStore {
         );
     }
 
+    getState(datAddress: string) {
+        if (this.datParams[datAddress] && this.datParams[datAddress].state) {
+            return this.datParams[datAddress].state.value;
+        } else {
+            return undefined;
+        }
+    }
+
     getBuySlopeNum(datAddress: string) {
         return this.datParams[datAddress].buySlopeNum.value;
     }
@@ -164,7 +185,7 @@ export default class DatStore {
         const fetchBlock = providerStore.getCurrentBlockNumber();
         this.fetchInitReserve(datAddress).then((initReserve) => {
             console.log('initReserve', initReserve.toString());
-            this.setDatParams(datAddress, {
+            this.setDatInfo(datAddress, {
                 initReserve: {
                     value: initReserve,
                     blockNumber: fetchBlock,
@@ -173,7 +194,7 @@ export default class DatStore {
         });
         this.fetchInitGoal(datAddress).then((initGoal) => {
             console.log('initGoal', initGoal.toString());
-            this.setDatParams(datAddress, {
+            this.setDatInfo(datAddress, {
                 initGoal: {
                     value: initGoal,
                     blockNumber: fetchBlock,
@@ -182,7 +203,7 @@ export default class DatStore {
         });
         this.fetchBuySlopeNum(datAddress).then((buySlopeNum) => {
             console.log('buySlopeNum', buySlopeNum.toString());
-            this.setDatParams(datAddress, {
+            this.setDatInfo(datAddress, {
                 buySlopeNum: {
                     value: buySlopeNum,
                     blockNumber: fetchBlock,
@@ -191,7 +212,7 @@ export default class DatStore {
         });
         this.fetchBuySlopeDen(datAddress).then((buySlopeDen) => {
             console.log('buySlopeDen', buySlopeDen.toString());
-            this.setDatParams(datAddress, {
+            this.setDatInfo(datAddress, {
                 buySlopeDen: {
                     value: buySlopeDen,
                     blockNumber: fetchBlock,
@@ -223,6 +244,11 @@ export default class DatStore {
     async fetchMinInvestment(datAddress: string): Promise<BigNumber> {
         const dat = this.getDatContract(datAddress);
         return bnum(await dat.methods.minInvestment().call());
+    }
+
+    async fetchState(datAddress: string): Promise<DatState> {
+        const dat = this.getDatContract(datAddress);
+        return await dat.methods.state().call() as DatState;
     }
 
     @action setMinInvestment(datAddress: string, minInvestment: BigNumber) {
