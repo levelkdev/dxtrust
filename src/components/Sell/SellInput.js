@@ -64,14 +64,18 @@ const InputColumn = styled.div`
     justify-content: center;
 `;
 
-const ErrorValidation = styled.div`
-    font-size: 14px;
+const MessageError = styled.div`
+    font-size: 12px;
     display: flex;
     flex-direction: row;
     position: absolute;
     padding-top: 40px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0.2px;
     align-self: flex-end;
-    color: red;
+    color: #E57373;
+    white-space: nowrap;
 `;
 
 const SellInput = observer((props) => {
@@ -95,11 +99,10 @@ const SellInput = observer((props) => {
     }
 
     const validateNumber = async (value) => {
-        value = value.replace(/^0+/, '')
+        value = value.replace(/^0+/, '');
         setHasError(!(value > 0));
-        
         const statusFetch = validateTokenValue(value);
-        setStatus(status);
+        setStatus(statusFetch);
 
         if (statusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
@@ -111,9 +114,6 @@ const SellInput = observer((props) => {
             );
 
             tradingStore.handleSellReturn(sellReturn);
-        } else {
-            tradingStore.setSellAmount(bnum(0));
-            tradingStore.setSellPrice(bnum(0));
         }
     }
 
@@ -157,9 +157,9 @@ const SellInput = observer((props) => {
                     <div>DXD</div>
                 </FormContent>
                 {hasError ? (
-                    <ErrorValidation>
-                        <p>Must be a positive number</p>
-                    </ErrorValidation>
+                    <MessageError>
+                      {status}
+                    </MessageError>
                 ) : (
                     <></>
                 )}

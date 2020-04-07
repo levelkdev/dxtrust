@@ -64,28 +64,18 @@ const InputColumn = styled.div`
     justify-content: center;
 `;
 
-const ErrorValidation = styled.div`
-    font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    padding-top: 40px;
-    align-self: flex-end;
-    color: red;
-`;
-
-const DisconnectedError = styled.div`
+const MessageError = styled.div`
     font-size: 12px;
     display: flex;
     flex-direction: row;
     position: absolute;
     padding-top: 40px;
-    text-align: right;
     font-weight: 600;
     line-height: 14px;
     letter-spacing: 0.2px;
     align-self: flex-end;
     color: #E57373;
+    white-space: nowrap;
 `;
 
 const BuyInput = observer((props) => {
@@ -117,7 +107,7 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
-        value = value.replace(/^0+/, '')
+        value = value.replace(/^0+/, '');
         disconnectedError = (account == null) ? true : false;
         setHasError(!(value > 0));
 
@@ -140,9 +130,6 @@ const BuyInput = observer((props) => {
             );
 
             tradingStore.handleBuyReturn(buyReturn);
-        } else {
-            tradingStore.setPayAmount(bnum(0));
-            tradingStore.setPrice(bnum(0));
         }
     };
 
@@ -168,17 +155,14 @@ const BuyInput = observer((props) => {
                     />
                     <div>ETH</div>
                 </FormContent>
-                {hasError ? (
-                    <ErrorValidation>
-                        <p>{status}</p>
-                    </ErrorValidation>
-                ) : (
-                    <></>
-                )}
-                {disconnectedError ? (
-                    <DisconnectedError>
-                        <p>Connect Wallet to proceed with order</p>
-                    </DisconnectedError>
+                {(disconnectedError || hasError) ? (
+                    <MessageError>
+                        { 
+                          hasError ? <span>{status}</span> :
+                          disconnectedError ? <p>Connect Wallet to proceed with order</p> 
+                          : <></>
+                        }
+                    </MessageError>
                 ) : (
                     <></>
                 )}

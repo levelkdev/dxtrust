@@ -29,7 +29,6 @@ export const validateTokenValue = (
     if (value.substr(0, 1) === '.') {
         value = '0' + value;
     }
-
     if (!ValidationRules.isFloat(value)) {
         return ValidationStatus.NOT_FLOAT;
     }
