@@ -83,36 +83,28 @@ const SellInput = observer((props) => {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
 
-    const [hasError, setHasError] = useState(false);
-    const [status, setStatus] = useState("");
+    const [sellInputStatus, setSellInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
 
     const checkActive = () => {
-        if (tradingStore.sellAmount > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return sellInputStatus === ValidationStatus.VALID;
     }
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
-        setHasError(!(value > 0));
-        const statusFetch = validateTokenValue(value);
-        setStatus(statusFetch);
+        
+        const sellInputStatusFetch = validateTokenValue(value);
+        setSellInputStatus(sellInputStatusFetch);
 
-        if (statusFetch === ValidationStatus.VALID) {
+        if (sellInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
-            const weiValue = denormalizeBalance(value);
-
             const sellReturn = await datStore.fetchSellReturn(
               configStore.activeDatAddress,
-              weiValue
+              denormalizeBalance(value)
             );
-
             tradingStore.handleSellReturn(sellReturn);
         }   else {
             tradingStore.setSellAmount(bnum(0));
@@ -160,9 +152,9 @@ const SellInput = observer((props) => {
                     />
                     <div>DXD</div>
                 </FormContent>
-                {hasError ? (
+                {sellInputStatus != ValidationStatus.VALID ? (
                     <MessageError>
-                      {status}
+                      {sellInputStatus}
                     </MessageError>
                 ) : (
                     <></>

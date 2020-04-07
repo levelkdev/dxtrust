@@ -82,9 +82,9 @@ const BuyInput = observer((props) => {
     const {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
+    tradingStore.buyAmount = "0";
     
-    const [hasError, setHasError] = useState(false);
-    const [status, setStatus] = useState("");
+    const [buyInputStatus, setBuyInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
@@ -103,32 +103,26 @@ const BuyInput = observer((props) => {
     };
 
     const checkActive = () => {
-        return tradingStore.buyAmount > 0 && !!account && !hasError;
+        return account && buyInputStatus === ValidationStatus.VALID;
     };
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
         disconnectedError = (account == null) ? true : false;
-        setHasError(!(value > 0));
-
-        const minValue = normalizeBalance(
-            datStore.getMinInvestment(configStore.activeDatAddress)
-        );
-        const statusFetch = validateTokenValue(value, {
-            minValue,
+        
+        const buyInputStatusFetch = validateTokenValue(value, {
+          minValue: normalizeBalance(
+              datStore.getMinInvestment(configStore.activeDatAddress)
+          ),
         });
-        setStatus(statusFetch);
+        setBuyInputStatus(buyInputStatusFetch);
 
-        if (statusFetch === ValidationStatus.VALID) {
-            console.log("setting value: " + value);
+        if (buyInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setBuyAmount(value);
-            const weiValue = denormalizeBalance(value);
-
             const buyReturn = await datStore.fetchBuyReturn(
               configStore.activeDatAddress,
-              weiValue
+              denormalizeBalance(value)
             );
-
             tradingStore.handleBuyReturn(buyReturn);
         }   else {
             tradingStore.setPayAmount(bnum(0));
@@ -158,10 +152,10 @@ const BuyInput = observer((props) => {
                     />
                     <div>ETH</div>
                 </FormContent>
-                {(disconnectedError || hasError) ? (
+                {(disconnectedError || (buyInputStatus != ValidationStatus.VALID)) ? (
                     <MessageError>
                         { 
-                          hasError ? <span>{status}</span> :
+                          (buyInputStatus != ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
                           disconnectedError ? <p>Connect Wallet to proceed with order</p> 
                           : <></>
                         }
