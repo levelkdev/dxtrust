@@ -34,6 +34,10 @@ export interface SellEvent {
 interface DatInfo {
     minInvestment?: BigNumber;
     currentPrice?: BigNumberCached;
+    initReserve?: BigNumberCached;
+    initGoal?: BigNumberCached;
+    buySlopeNum?: BigNumberCached;
+    buySlopeDen?: BigNumberCached;
 }
 
 interface DatInfoMap {
@@ -72,45 +76,7 @@ export default class DatStore {
         this.rootStore = rootStore;
         this.datParams = {} as DatInfoMap;
     }
-
-    /*
-    We'll get the relevant stuff every block
-    - reserve balance
-    - fair supply
-
-    We'll get certain things on-demand
-    price to buy X tokens
-    reward to sell X tokens
-
-    (These are like the preview actions)
-
-    // Set input value
-    // Set loading
-    // Fetch result
-    // Set result (IF the input value is the same as it was - aka, not stale
-    // Set not loading
-
-    ## Data Fetching
-    fetchPriceToBuy()
-    fetchRewardToSell()
-    fetchReserveBalance()
-    fetchFAIRBalance()
-    fetchFAIRSupply()
-    fetchRecentTrades()
-
-    ## Actions
-    buy()
-    sell()
-
-    ## Data Access
-    getPricePerToken()
-    getReserveBalance()
-    getFAIRBalance()
-    getFAIRSupply()
-    getRecentTrades()
-     */
-
-    @action setDatParams(datAddress: string, updated) {
+    @action setDatParams(datAddress: string, updated: DatInfo) {
         if (!this.datParams[datAddress]) {
             this.datParams[datAddress] = {};
         }
@@ -163,6 +129,95 @@ export default class DatStore {
         } else {
             return this.rootStore.configStore.getDATinfo().minInvestment;
         }
+    }
+
+    areAllStaticParamsLoaded(datAddress: string): boolean {
+        return (
+            !!this.datParams[datAddress] &&
+            !!this.datParams[datAddress].minInvestment &&
+            !!this.datParams[datAddress].initGoal &&
+            !!this.datParams[datAddress].initReserve &&
+            !!this.datParams[datAddress].buySlopeNum &&
+            !!this.datParams[datAddress].buySlopeDen
+        );
+    }
+
+    getBuySlopeNum(datAddress: string) {
+        return this.datParams[datAddress].buySlopeNum.value;
+    }
+
+    getBuySlopeDen(datAddress: string) {
+        return this.datParams[datAddress].buySlopeDen.value;
+    }
+
+    getInitGoal(datAddress: string) {
+        return this.datParams[datAddress].initGoal.value;
+    }
+
+    getInitReserve(datAddress: string) {
+        return this.datParams[datAddress].initReserve.value;
+    }
+
+    async fetchStaticParams(datAddress: string) {
+        const { providerStore } = this.rootStore;
+
+        const fetchBlock = providerStore.getCurrentBlockNumber();
+        this.fetchInitReserve(datAddress).then((initReserve) => {
+            console.log('initReserve', initReserve.toString());
+            this.setDatParams(datAddress, {
+                initReserve: {
+                    value: initReserve,
+                    blockNumber: fetchBlock,
+                },
+            });
+        });
+        this.fetchInitGoal(datAddress).then((initGoal) => {
+            console.log('initGoal', initGoal.toString());
+            this.setDatParams(datAddress, {
+                initGoal: {
+                    value: initGoal,
+                    blockNumber: fetchBlock,
+                },
+            });
+        });
+        this.fetchBuySlopeNum(datAddress).then((buySlopeNum) => {
+            console.log('buySlopeNum', buySlopeNum.toString());
+            this.setDatParams(datAddress, {
+                buySlopeNum: {
+                    value: buySlopeNum,
+                    blockNumber: fetchBlock,
+                },
+            });
+        });
+        this.fetchBuySlopeDen(datAddress).then((buySlopeDen) => {
+            console.log('buySlopeDen', buySlopeDen.toString());
+            this.setDatParams(datAddress, {
+                buySlopeDen: {
+                    value: buySlopeDen,
+                    blockNumber: fetchBlock,
+                },
+            });
+        });
+    }
+
+    async fetchInitReserve(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.initReserve().call());
+    }
+
+    async fetchInitGoal(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.initGoal().call());
+    }
+
+    async fetchBuySlopeNum(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.buySlopeNum().call());
+    }
+
+    async fetchBuySlopeDen(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.buySlopeDen().call());
     }
 
     async fetchMinInvestment(datAddress: string): Promise<BigNumber> {

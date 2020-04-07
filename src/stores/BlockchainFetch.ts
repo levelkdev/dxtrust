@@ -53,11 +53,17 @@ export default class BlockchainFetchStore {
                         providerStore.setCurrentBlockNumber(blockNumber);
 
                         // Get global blockchain data
+                        tokenStore.fetchTotalSupplies(web3React, [configStore.activeDatAddress]);
+
                         datStore
                             .fetchRecentTrades(configStore.activeDatAddress, 10)
                             .then((trades) => {
                                 tradingStore.setRecentTrades(trades);
                             });
+
+                        if (!datStore.areAllStaticParamsLoaded(configStore.activeDatAddress)) {
+                            datStore.fetchStaticParams(configStore.activeDatAddress);
+                        }
 
                         datStore
                             .fetchMinInvestment(configStore.activeDatAddress)
