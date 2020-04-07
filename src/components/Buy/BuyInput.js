@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
@@ -92,12 +92,14 @@ const BuyInput = observer((props) => {
     const {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
+    
+    const [hasError, setHasError] = useState(false);
+    const [status, setStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     const price = tradingStore.formatPrice();
     const priceToBuy = tradingStore.formatPriceToBuy();
-    let hasError = false;
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
 
     const Button = ({ active, children, onClick }) => {
@@ -115,32 +117,32 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
-        value = value.replace(/^00+/, '0').replace(/[^0-9.]/g, '');
+        value = value.replace(/^0+/, '')
         disconnectedError = (account == null) ? true : false;
-        tradingStore.setBuyAmount(value);
-        hasError = !(value > 0);
+        setHasError(!(value > 0));
 
-        if (!hasError) {
-          const minValue = normalizeBalance(
-              datStore.getMinInvestment(configStore.activeDatAddress)
-          );
-          const status = validateTokenValue(value, {
-              minValue,
-          });
+        const minValue = normalizeBalance(
+            datStore.getMinInvestment(configStore.activeDatAddress)
+        );
+        const statusFetch = validateTokenValue(value, {
+            minValue,
+        });
+        setStatus(statusFetch);
 
-          if (status === ValidationStatus.VALID) {
-              const weiValue = denormalizeBalance(value);
+        if (statusFetch === ValidationStatus.VALID) {
+            console.log("setting value: " + value);
+            tradingStore.setBuyAmount(value);
+            const weiValue = denormalizeBalance(value);
 
-              const buyReturn = await datStore.fetchBuyReturn(
-                  configStore.activeDatAddress,
-                  weiValue
-              );
+            const buyReturn = await datStore.fetchBuyReturn(
+              configStore.activeDatAddress,
+              weiValue
+            );
 
-              tradingStore.handleBuyReturn(buyReturn);
-          } else {
-              tradingStore.setPayAmount(bnum(0));
-              tradingStore.setPrice(bnum(0));
-          }
+            tradingStore.handleBuyReturn(buyReturn);
+        } else {
+            tradingStore.setPayAmount(bnum(0));
+            tradingStore.setPrice(bnum(0));
         }
     };
 
@@ -162,14 +164,13 @@ const BuyInput = observer((props) => {
                         className="form-vivid-blue"
                         type="text"
                         placeholder="0"
-                        value={tradingStore.buyAmount}
                         onChange={(e) => validateNumber(e.target.value)}
                     />
                     <div>ETH</div>
                 </FormContent>
                 {hasError ? (
                     <ErrorValidation>
-                        <p>Must be a positive number</p>
+                        <p>{status}</p>
                     </ErrorValidation>
                 ) : (
                     <></>

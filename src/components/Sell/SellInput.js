@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
@@ -79,11 +79,12 @@ const SellInput = observer((props) => {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
 
+    const [hasError, setHasError] = useState(false);
+    const [status, setStatus] = useState("");
+
     const { account } = providerStore.getActiveWeb3React();
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
-    console.log("reward for sell:" + rewardForSell);
-    let hasError = false;
 
     const checkActive = () => {
         if (tradingStore.sellAmount > 0) {
@@ -94,27 +95,25 @@ const SellInput = observer((props) => {
     }
 
     const validateNumber = async (value) => {
-        value = value.replace(/^0[0-9]+/, '0').replace(/[^0-9.]/g, '');
-        tradingStore.setSellAmount(value);
+        value = value.replace(/^0+/, '')
+        setHasError(!(value > 0));
         
-        hasError = !(value > 0);
-        
-        if (!hasError) {
-          const status = validateTokenValue(value);
+        const statusFetch = validateTokenValue(value);
+        setStatus(status);
 
-          if (status === ValidationStatus.VALID) {
-              const weiValue = denormalizeBalance(value);
+        if (statusFetch === ValidationStatus.VALID) {
+            tradingStore.setSellAmount(value);
+            const weiValue = denormalizeBalance(value);
 
-              const sellReturn = await datStore.fetchSellReturn(
-                  configStore.activeDatAddress,
-                  weiValue
-              );
+            const sellReturn = await datStore.fetchSellReturn(
+              configStore.activeDatAddress,
+              weiValue
+            );
 
-              tradingStore.handleSellReturn(sellReturn);
-          } else {
-              tradingStore.setSellAmount(bnum(0));
-              tradingStore.setSellPrice(bnum(0));
-          }
+            tradingStore.handleSellReturn(sellReturn);
+        } else {
+            tradingStore.setSellAmount(bnum(0));
+            tradingStore.setSellPrice(bnum(0));
         }
     }
 
@@ -151,7 +150,6 @@ const SellInput = observer((props) => {
                         className="form-vivid-blue"
                         type="text"
                         placeholder="0"
-                        value={tradingStore.sellAmount}
                         onChange={(e) =>
                             validateNumber(e.target.value)
                         }
