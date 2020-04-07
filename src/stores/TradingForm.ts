@@ -119,7 +119,7 @@ class TradingFormStore {
     }
 
     formatNumber(number) {
-        return Number(number).toFixed(3);
+        return Number(number).toFixed(4);
     }
 
     formatPrice() {

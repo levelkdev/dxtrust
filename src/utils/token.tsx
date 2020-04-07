@@ -23,14 +23,14 @@ export const formatNumberValue = (
     truncateAt?: number
 ): string => {
     if (normalizedBalance.eq(0)) {
-        return bnum(0).toFixed(2);
+        return bnum(0).toFixed(displayPrecision);
     }
 
     let result = bnum(normalizedBalance)
         .decimalPlaces(displayPrecision, BigNumber.ROUND_DOWN)
         .toString();
 
-    result = padToDecimalPlaces(result, 2);
+    result = padToDecimalPlaces(result, displayPrecision);
 
     if (truncateAt && result.length > truncateAt) {
         return result.substring(0, 20) + '...';
@@ -45,14 +45,14 @@ export const formatBalance = (
     precision: number = 4
 ): string => {
     if (balance.eq(0)) {
-        return bnum(0).toFixed(2);
+        return bnum(0).toFixed(precision);
     }
 
     const result = scale(balance, -decimals)
         .decimalPlaces(precision, BigNumber.ROUND_DOWN)
         .toString();
 
-    return padToDecimalPlaces(result, 2);
+    return padToDecimalPlaces(result, precision);
 };
 
 export const padToDecimalPlaces = (
