@@ -304,7 +304,6 @@ export default class DatStore {
     }
 
     async parseBuyEvent(buyEvent) {
-        console.log(buyEvent);
         const amount = bnum(buyEvent.returnValues._fairValue);
         const totalPrice = bnum(buyEvent.returnValues._currencyValue);
 
@@ -327,7 +326,6 @@ export default class DatStore {
 
     // format sell event
     async parseSellEvent(sellEvent) {
-        console.log(sellEvent);
         const amount = bnum(sellEvent.returnValues._fairValue);
         const totalReceived = bnum(sellEvent.returnValues._currencyValue);
 

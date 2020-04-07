@@ -262,9 +262,7 @@ const BondingCurveChart = observer(({}) => {
         const futureSupplyExceedsInitGoal =
             hasActiveInput && futureSupply.gt(initGoal);
 
-        // If future supply is within the kickstarter phase, show it there
-
-        console.log('chartParams', {
+        console.debug('chartParams', {
             datParams: datStore.datParams[configStore.activeDatAddress],
             initReserve: initReserve.toString(),
             initGoal: initGoal.toString(),
@@ -276,9 +274,6 @@ const BondingCurveChart = observer(({}) => {
             points: points,
         });
 
-        /*
-            Generate Kickstarter section content
-         */
         if (hasInitGoal && !hasExceededInitGoal) {
             datasets.push(
                 generateLine(
@@ -349,10 +344,9 @@ const BondingCurveChart = observer(({}) => {
 
         datasets.push(generateSupplyMarker(points.currentSupply, 'Current Supply'));
 
-        // TODO: Determine how to display predicted future supply / price after current buy
-        // if (hasActiveInput) {
-        //     datasets.push(generateSupplyMarker(points.futureSupply, 'Future Supply'));
-        // }
+        if (hasActiveInput) {
+            datasets.push(generateSupplyMarker(points.futureSupply, 'Future Supply'));
+        }
 
         const data = {
             datasets,

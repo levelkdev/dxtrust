@@ -334,7 +334,6 @@ export default class TokenStore {
             responses.forEach((response) => {
                 if (response instanceof TotalSupplyFetch) {
                     const { status, request, payload } = response;
-                    console.log(response);
 
                     if (status === AsyncStatus.SUCCESS) {
                         this.setTotalSupplyProperty(
@@ -423,14 +422,12 @@ export default class TokenStore {
                 const { library } = web3React;
                 balance = bnum(await library.eth.getBalance(account));
             } else {
-                console.log('getBalanceOf', tokenAddress);
                 const token = providerStore.getContract(
                     web3React,
                     ContractTypes.ERC20,
                     tokenAddress
                 );
                 balance = bnum(await token.methods.balanceOf(account).call());
-                console.log('balance', account, tokenAddress, balance);
             }
 
             const stale =
