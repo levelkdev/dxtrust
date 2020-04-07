@@ -83,7 +83,7 @@ const BuyInput = observer((props) => {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
     tradingStore.buyAmount = "0";
-    
+
     const [buyInputStatus, setBuyInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
@@ -91,6 +91,9 @@ const BuyInput = observer((props) => {
     const price = tradingStore.formatPrice();
     const priceToBuy = tradingStore.formatPriceToBuy();
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
+
+    const datState = datStore.getState(configStore.activeDatAddress);
+    const requiredDataLoaded = !!datState;
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -103,13 +106,13 @@ const BuyInput = observer((props) => {
     };
 
     const checkActive = () => {
-        return account && buyInputStatus === ValidationStatus.VALID;
+        return account && buyInputStatus === ValidationStatus.VALID && requiredDataLoaded;
     };
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
         disconnectedError = (account == null) ? true : false;
-        
+
         const buyInputStatusFetch = validateTokenValue(value, {
           minValue: normalizeBalance(
               datStore.getMinInvestment(configStore.activeDatAddress)
