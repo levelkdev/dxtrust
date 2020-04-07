@@ -96,8 +96,7 @@ const SellConfirmed = observer((props) => {
             <Button
                 active={true}
                 onClick={() => {
-                    tradingStore.sellingState = 0;
-                    tradingStore.sellAmount = 0;
+                    tradingStore.resetSellForm();
                 }}
             >
                 Sell Again
