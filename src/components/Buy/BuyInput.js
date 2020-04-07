@@ -82,7 +82,6 @@ const BuyInput = observer((props) => {
     const {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
-    tradingStore.buyAmount = "0";
 
     const [buyInputStatus, setBuyInputStatus] = useState("");
 
