@@ -38,6 +38,11 @@ const TableHeader = styled.div`
     width: ${(props) => props.width || '23%'};
 `;
 
+const TableRowsWrapper = styled.div`
+    overflow-y: scroll;
+    height: 260px;
+`;
+
 const TableRow = styled.div`
     font-size: 16px;
     font-weight: 500;
@@ -79,6 +84,7 @@ const TradingHistory = observer(() => {
                 <TableHeader>Total {configStore.getCollateralType()}</TableHeader>
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
+            <TableRowsWrapper>
             {recentTrades.map((trade) => (
                 <TableRow>
                     <TableCell
@@ -112,6 +118,7 @@ const TradingHistory = observer(() => {
                     </TableCell>
                 </TableRow>
             ))}
+            </TableRowsWrapper>
         </TradingHistoryWrapper>
     );
 });
