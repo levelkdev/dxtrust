@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { observer } from 'mobx-react';
 import { useStores } from '../contexts/storesContext';
-import { denormalizeBalance, formatBalance, formatNumberValue, normalizeBalance } from '../utils/token';
+import { formatBalance, formatNumberValue, normalizeBalance } from '../utils/token';
 import COrgSim from '../services/contractSimulators/cOrgSim';
 import { BigNumber } from '../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { bnum } from '../utils/helpers';
+import { DatState } from '../stores/datStore';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -76,7 +77,42 @@ const BondingCurveChart = observer(({}) => {
         configStore.activeDatAddress
     );
     const totalSupply = tokenStore.getTotalSupply(configStore.activeDatAddress);
-    const requiredDataLoaded = staticParamsLoaded && !!totalSupply;
+    const datState = datStore.getState(configStore.activeDatAddress);
+    const reserveBalance = datStore.getReserveBalance(configStore.activeDatAddress);
+
+    const requiredDataLoaded = staticParamsLoaded && !!totalSupply && !!datState && !!reserveBalance;
+
+    let buySlopeNum, buySlopeDen, initGoal, initReserve, cOrg, totalSupplyWithoutPremint, currentPrice, kickstarterPrice;
+
+    if (requiredDataLoaded) {
+        buySlopeNum = datStore.getBuySlopeNum(
+            configStore.activeDatAddress
+        );
+        buySlopeDen = datStore.getBuySlopeDen(
+            configStore.activeDatAddress
+        );
+        initGoal = datStore.getInitGoal(configStore.activeDatAddress);
+        initReserve = datStore.getInitReserve(
+            configStore.activeDatAddress
+        );
+
+        cOrg = new COrgSim({
+            buySlopeNum,
+            buySlopeDen,
+            initGoal,
+            initReserve,
+        });
+
+        if (initGoal && initGoal.gt(0)) {
+            kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
+        }
+
+        totalSupplyWithoutPremint = totalSupply.minus(initReserve);
+        currentPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
+    }
+
+
+
     let data, options;
 
     const generateLine = (data: ChartPoint[], color: string, label: string) => {
@@ -113,27 +149,6 @@ const BondingCurveChart = observer(({}) => {
     };
 
     const generateChart = () => {
-        const buySlopeNum = datStore.getBuySlopeNum(
-            configStore.activeDatAddress
-        );
-        const buySlopeDen = datStore.getBuySlopeDen(
-            configStore.activeDatAddress
-        );
-        const initGoal = datStore.getInitGoal(configStore.activeDatAddress);
-        const initReserve = datStore.getInitReserve(
-            configStore.activeDatAddress
-        );
-
-        const cOrg = new COrgSim({
-            buySlopeNum,
-            buySlopeDen,
-            initGoal,
-            initReserve,
-        });
-
-        const totalSupplyWithoutPremint = totalSupply.minus(initReserve);
-        const currentPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
-
         const points: ChartPointMap = {
             zero: {
                 x: 0,
@@ -146,8 +161,6 @@ const BondingCurveChart = observer(({}) => {
         };
 
         if (initGoal.gt(0)) {
-            const kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
-
             points.kickStarterStart = {
                 x: 0,
                 y: valueToNumber(kickstarterPrice),
@@ -375,36 +388,95 @@ const BondingCurveChart = observer(({}) => {
         It's a slope but I DON"T understand because it's 1 / 10^18!!!! And it seems to be about 1/3 of tokens.
      */
 
+    const renderChartHeader = () => {
+        if (datStore.isInitPhase(configStore.activeDatAddress)) {
+            return renderInitPhaseChartHeader();
+        } else if (datStore.isRunPhase(configStore.activeDatAddress)) {
+            return renderRunPhaseChartHeader();
+        } else {
+            return <React.Fragment/>
+        }
+    };
+
+    const renderInitPhaseChartHeader = () => {
+        console.log('kickstarterPrice', kickstarterPrice);
+        if (kickstarterPrice) {
+            console.log('kickstarterPrice', kickstarterPrice.toString());
+        }
+
+        return <ChartHeaderWrapper>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>
+                        Price
+                    </ChartHeaderTopElement>
+                    <ChartHeaderBottomElement>
+                        {requiredDataLoaded ? `${formatNumberValue(kickstarterPrice, 6)} DXD/ETH` : '- DXD/ETH'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>DXD Supply</ChartHeaderTopElement>
+                    <ChartHeaderBottomElement className="green-text">
+                        {requiredDataLoaded ? `${formatBalance(totalSupplyWithoutPremint)} DXD` : '- DXD'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
+                    <ChartHeaderBottomElement>
+                        {requiredDataLoaded ? `${formatBalance(reserveBalance)} ETH` : '- ETH'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>Goal</ChartHeaderTopElement>
+                    <ChartHeaderBottomElement>
+                        {requiredDataLoaded ? `${formatBalance(initGoal.times(kickstarterPrice))} ETH` : '- ETH'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+        </ChartHeaderWrapper>
+    };
+
+    const renderRunPhaseChartHeader = () => {
+        return <ChartHeaderWrapper>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>
+                        Price
+                    </ChartHeaderTopElement>
+                    <ChartHeaderBottomElement>
+                        {requiredDataLoaded ? `${formatNumberValue(currentPrice, 6)} DXD/ETH` : '- DXD/ETH'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>DXD Supply</ChartHeaderTopElement>
+                    <ChartHeaderBottomElement className="green-text">
+                        {requiredDataLoaded ? `${formatBalance(totalSupplyWithoutPremint)} DXD` : '- DXD'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+            <ChartBox>
+                <ChartHeaderFullElement>
+                    <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
+                    <ChartHeaderBottomElement>
+                        {requiredDataLoaded ? `${formatBalance(reserveBalance)} ETH` : '- ETH'}
+                    </ChartHeaderBottomElement>
+                </ChartHeaderFullElement>
+            </ChartBox>
+        </ChartHeaderWrapper>
+    };
+
+
     return (
         <ChartPanelWrapper>
-            <ChartHeaderWrapper>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>
-                            Token Price
-                        </ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            1.25 DXD/DAI
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement className="green-text">
-                            +10.51%
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            41.02 DXD
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-            </ChartHeaderWrapper>
+            {renderChartHeader()}
             <ChartWrapper>
                 {requiredDataLoaded ? (
                     <Line

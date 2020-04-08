@@ -48,6 +48,7 @@ interface DatInfo {
     currentPrice?: BigNumberCached;
     initReserve?: BigNumberCached;
     initGoal?: BigNumberCached;
+    reserveBalance?: BigNumberCached;
     buySlopeNum?: BigNumberCached;
     buySlopeDen?: BigNumberCached;
     state?: DatStateCached;
@@ -155,9 +156,22 @@ export default class DatStore {
         );
     }
 
-    getState(datAddress: string) {
+    isInitPhase(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_INIT;
+    }
+    isRunPhase(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_RUN;
+    }
+    isCancelled(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_CANCEL;
+    }
+    isClosed(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_CLOSE;
+    }
+
+    getState(datAddress: string): DatState | undefined {
         if (this.datParams[datAddress] && this.datParams[datAddress].state) {
-            return this.datParams[datAddress].state.value;
+            return this.datParams[datAddress].state.value as DatState;
         } else {
             return undefined;
         }
@@ -173,6 +187,14 @@ export default class DatStore {
 
     getInitGoal(datAddress: string) {
         return this.datParams[datAddress].initGoal.value;
+    }
+
+    getReserveBalance(datAddress: string): BigNumber | undefined {
+        if (this.datParams[datAddress] && this.datParams[datAddress].reserveBalance) {
+            return this.datParams[datAddress].reserveBalance.value;
+        } else {
+            return undefined;
+        }
     }
 
     getInitReserve(datAddress: string) {
@@ -249,6 +271,11 @@ export default class DatStore {
     async fetchState(datAddress: string): Promise<DatState> {
         const dat = this.getDatContract(datAddress);
         return await dat.methods.state().call() as DatState;
+    }
+
+    async fetchReserveBalance(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.buybackReserve().call());
     }
 
     @action setMinInvestment(datAddress: string, minInvestment: BigNumber) {

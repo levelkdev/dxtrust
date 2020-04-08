@@ -74,7 +74,7 @@ const MessageError = styled.div`
     line-height: 14px;
     letter-spacing: 0.2px;
     align-self: flex-end;
-    color: #E57373;
+    color: #e57373;
     white-space: nowrap;
 `;
 
@@ -83,13 +83,14 @@ const BuyInput = observer((props) => {
         root: { datStore, tradingStore, configStore, providerStore },
     } = useStores();
 
-    const [buyInputStatus, setBuyInputStatus] = useState("");
+    const [buyInputStatus, setBuyInputStatus] = useState('');
 
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     const price = tradingStore.formatPrice();
     const priceToBuy = tradingStore.formatPriceToBuy();
-    let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
+    let disconnectedError =
+        tradingStore.buyAmount > 0 ? (account == null ? true : false) : false;
 
     const datState = datStore.getState(configStore.activeDatAddress);
     const requiredDataLoaded = !!datState;
@@ -98,35 +99,37 @@ const BuyInput = observer((props) => {
         if (active === true) {
             return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
         } else {
-            return (
-                <InactiveButton>{children}</InactiveButton>
-            );
+            return <InactiveButton>{children}</InactiveButton>;
         }
     };
 
     const checkActive = () => {
-        return account && buyInputStatus === ValidationStatus.VALID && requiredDataLoaded;
+        return (
+            account &&
+            buyInputStatus === ValidationStatus.VALID &&
+            requiredDataLoaded
+        );
     };
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
-        disconnectedError = (account == null) ? true : false;
+        disconnectedError = account == null ? true : false;
 
         const buyInputStatusFetch = validateTokenValue(value, {
-          minValue: normalizeBalance(
-              datStore.getMinInvestment(configStore.activeDatAddress)
-          ),
+            minValue: normalizeBalance(
+                datStore.getMinInvestment(configStore.activeDatAddress)
+            ),
         });
         setBuyInputStatus(buyInputStatusFetch);
 
         if (buyInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setBuyAmount(value);
             const buyReturn = await datStore.fetchBuyReturn(
-              configStore.activeDatAddress,
-              denormalizeBalance(value)
+                configStore.activeDatAddress,
+                denormalizeBalance(value)
             );
             tradingStore.handleBuyReturn(buyReturn);
-        }   else {
+        } else {
             tradingStore.setPayAmount(bnum(0));
             tradingStore.setPrice(bnum(0));
         }
@@ -154,13 +157,16 @@ const BuyInput = observer((props) => {
                     />
                     <div>ETH</div>
                 </FormContent>
-                {(disconnectedError || (buyInputStatus != ValidationStatus.VALID)) ? (
+                {disconnectedError ||
+                buyInputStatus != ValidationStatus.VALID ? (
                     <MessageError>
-                        { 
-                          (buyInputStatus != ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
-                          disconnectedError ? <p>Connect Wallet to proceed with order</p> 
-                          : <></>
-                        }
+                        {buyInputStatus != ValidationStatus.VALID ? (
+                            <span>{buyInputStatus}</span>
+                        ) : disconnectedError ? (
+                            <p>Connect Wallet to proceed with order</p>
+                        ) : (
+                            <></>
+                        )}
                     </MessageError>
                 ) : (
                     <></>
@@ -184,7 +190,7 @@ const BuyInput = observer((props) => {
                         .on(TXEvents.RECEIPT, (receipt) => {
                             tradingStore.buyingState =
                                 TransactionState.CONFIRMED;
-                                tradingStore.resetBuyAmount();
+                            tradingStore.resetBuyAmount();
                         })
                         .on(TXEvents.TX_ERROR, (error) => {
                             tradingStore.buyingState = TransactionState.NONE;
