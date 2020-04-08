@@ -35,3 +35,8 @@ yarn build
 1.- Add a 12 phrase mnemonic phrase in the `.env` file on the `BCAPP_KEY_MNEMONIC` variable, you can generate and see your keys and addresses [here](https://iancoleman.io/bip39/), use 12 words, select ETH and use BIP 44.
 2.- Configure your `.env` file, make sure to set the environment to develop, see the `.env.example` file.
 4.- Execute `yarn start`, it will work with the contracts specified in the configuration from `src/config/contracts.json` file. The app will connect to an infura provider by default using your infura api key form the `.env` file, if you want to override is an option envarioment variable you can use.
+
+### Get last commit GIT
+```
+git rev-parse HEAD
+```
