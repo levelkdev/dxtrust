@@ -51,11 +51,6 @@ export const isChainIdSupported = (chainId: number): boolean => {
 
 const backupUrls = {};
 backupUrls[supportedChainId] = RPC_URLS[supportedChainId];
-console.log({
-    urls: backupUrls,
-    defaultChainId: supportedChainId,
-    pollingInterval: POLLING_INTERVAL,
-})
 export const backup = new NetworkConnector({
     urls: backupUrls,
     defaultChainId: supportedChainId,
