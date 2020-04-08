@@ -14,7 +14,7 @@ import { BigNumber } from '../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { bnum } from '../utils/helpers';
 import { DatState } from '../stores/datStore';
-import { roundToNearestInteger } from '../utils/number';
+import { roundUpToScale } from '../utils/number';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -180,11 +180,11 @@ const BondingCurveChart = observer(({}) => {
             };
         }
 
-        let maxSupplyToShow = denormalizeBalance(roundToNearestInteger(
+        let maxSupplyToShow = denormalizeBalance(roundUpToScale(
             normalizeBalance(totalSupplyWithoutPremint.times(2))
         ));
         if (maxSupplyToShow.lt(initGoal.times(2))) {
-            maxSupplyToShow = denormalizeBalance(roundToNearestInteger(
+            maxSupplyToShow = denormalizeBalance(roundUpToScale(
                 normalizeBalance(
                     totalSupplyWithoutPremint.plus(initGoal.times(2))
                 )));
@@ -216,7 +216,7 @@ const BondingCurveChart = observer(({}) => {
             hasActiveInput = true;
 
             if (futureSupply.gte(maxSupplyToShow)) {
-                const maxSupplyToShow = denormalizeBalance(roundToNearestInteger(
+                const maxSupplyToShow = denormalizeBalance(roundUpToScale(
                     normalizeBalance(futureSupply.times(1.5))));
                 const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
 

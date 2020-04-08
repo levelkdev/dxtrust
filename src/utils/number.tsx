@@ -56,7 +56,7 @@ export const numDigits = (value: BigNumber): number => {
     return value.toString().length;
 };
 
-export const roundToNearestInteger = (
+export const roundUpToScale = (
     value: BigNumber
 ): BigNumber => {
     const placesValue = numDigits(value.integerValue())-1;
