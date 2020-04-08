@@ -23,6 +23,22 @@ const MenuItem = styled.div`
     color: var(--nav-text-light);
     font-size: 16px;
     line-height: 19px;
+    cursor: pointer;
+`;
+
+const SelectedMenuItem = styled(MenuItem)`
+    color: var(--nav-text-dark);
+    line-height: 24px;
+    cursor: pointer;
+`;
+
+/*
+const MenuItem = styled.div`
+    display: flex;
+    align-items: center;
+    color: var(--nav-text-light);
+    font-size: 16px;
+    line-height: 19px;
     padding: 0px 12px;
     cursor: pointer;
 `;
@@ -33,32 +49,10 @@ const SelectedMenuItem = styled(MenuItem)`
     padding: 0px 12px;
     cursor: pointer;
 `;
-
 const DXDLogo = styled.img`
     margin-right: 17px;
 `;
-
-const Web3Connect = styled.div`
-    display: flex;
-    flex-direction: row;
-    font-size: 14px;
-    height: 28px;
-    line-height: 28px;
-    padding: 0px 15px;
-    border: 1px solid var(--medium-gray);
-    border-radius: 4px;
-    background: white;
-    color: #546e7a;
-`;
-
-const Avatar = styled.div`
-    height: 17px;
-    width: 17px;
-    border-radius: 8px;
-    background: #05575d;
-    margin: 5px 10px 0px 10px;
-`;
-
+*/
 const NavBar = ({}) => {
     const [selected, setSelected] = React.useState(0);
 
@@ -91,14 +85,15 @@ const NavBar = ({}) => {
         <NavWrapper>
             <LeftNav>
                 <NavItem route="/">
-                    <DXDLogo src="DXdao.svg"></DXDLogo>
+                <img src="DXdao.svg"/>
+                    {/*<DXDLogo src="DXdao.svg"></DXDLogo>*/}
                 </NavItem>
-                <NavItem option={1} route="/exchange">
+               {/* <NavItem option={1} route="/exchange">
                     Exchange
                 </NavItem>
                 <NavItem option={2} route="/redeem">
                     Rewards
-                </NavItem>
+        </NavItem> */}
             </LeftNav>
             <Web3ConnectStatus text="Connect Wallet" />
         </NavWrapper>
