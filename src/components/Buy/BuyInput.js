@@ -88,7 +88,6 @@ const BuyInput = observer((props) => {
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     const price = tradingStore.formatPrice();
-    const priceToBuy = tradingStore.formatPriceToBuy();
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
 
     const datState = datStore.getState(configStore.activeDatAddress);
