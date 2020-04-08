@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { observer } from 'mobx-react';
 import { useStores } from '../contexts/storesContext';
 import {
+    denormalizeBalance,
     formatBalance,
     formatNumberValue,
     normalizeBalance,
@@ -13,6 +14,7 @@ import { BigNumber } from '../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { bnum } from '../utils/helpers';
 import { DatState } from '../stores/datStore';
+import { roundToNearestInteger } from '../utils/number';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -178,11 +180,14 @@ const BondingCurveChart = observer(({}) => {
             };
         }
 
-        // TODO: If future point is HIGHER than Max - redo MAx
-
-        let maxSupplyToShow = totalSupplyWithoutPremint.times(2);
+        let maxSupplyToShow = denormalizeBalance(roundToNearestInteger(
+            normalizeBalance(totalSupplyWithoutPremint.times(2))
+        ));
         if (maxSupplyToShow.lt(initGoal.times(2))) {
-            maxSupplyToShow = totalSupplyWithoutPremint.plus(initGoal.times(2));
+            maxSupplyToShow = denormalizeBalance(roundToNearestInteger(
+                normalizeBalance(
+                    totalSupplyWithoutPremint.plus(initGoal.times(2))
+                )));
         }
         const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
 
@@ -211,7 +216,8 @@ const BondingCurveChart = observer(({}) => {
             hasActiveInput = true;
 
             if (futureSupply.gte(maxSupplyToShow)) {
-                const maxSupplyToShow = futureSupply.times(1.5);
+                const maxSupplyToShow = denormalizeBalance(roundToNearestInteger(
+                    normalizeBalance(futureSupply.times(1.5))));
                 const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
 
                 points.maxSupplyToShow = {
@@ -346,7 +352,9 @@ const BondingCurveChart = observer(({}) => {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
                             callback: function (value, index, values) {
-                                return formatNumberValue(bnum(value), 2) + ' ETH';
+                                return (
+                                    formatNumberValue(bnum(value), 2) + ' ETH'
+                                );
                             },
                         },
                         scaleLabel: {

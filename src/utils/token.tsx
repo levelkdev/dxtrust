@@ -3,7 +3,7 @@ import { BigNumber } from './bignumber';
 import { bnum, DEFAULT_TOKEN_DECIMALS, scale } from './helpers';
 
 export const denormalizeBalance = (
-    normalizedBalance: string,
+    normalizedBalance: string | BigNumber,
     decimals: number = DEFAULT_TOKEN_DECIMALS
 ): BigNumber => {
     return scale(bnum(normalizedBalance), decimals);
