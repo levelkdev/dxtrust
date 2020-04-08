@@ -15,6 +15,7 @@ const FooterWrapper = styled.div`
 const LeftFooter = styled.div`
     display: flex;
     flex-direction: row;
+    
 `;
 
 const RighFooter = styled.div`
@@ -27,6 +28,10 @@ const FooterItem = styled.div`
         text-decoration: none;
         color: var(--footer-text-gray);
     }
+    a:hover {
+        color: var(--text-gray-onHover);
+    }a
+    
 `;
 
 const FooterDivider = styled.div`
@@ -43,7 +48,41 @@ const LogoWrapper = styled.div`
     padding-left: 8px;
 `;
 
-const Logo = styled.img``;
+const Telegram = styled.div`
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background: url(telegram.svg);
+
+    &:hover {
+        background: url(telegram-onHover.svg);
+    }
+`;
+
+const Reddit = styled.div`
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background: url(reddit.svg);
+
+    &:hover {
+        background: url(reddit-onHover.svg);
+    }   
+`;
+
+const Twitter = styled.div`
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background: url(twitter.svg);
+
+    &:hover {
+        background: url(twitter-onHover.svg);
+    }   
+`;
 
 const Footer = ({}) => {
   console.log(process.env)
@@ -65,7 +104,7 @@ const Footer = ({}) => {
                         href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DAT}
                         target="#"
                     >
-                        DAT Proxy
+                        Proxy
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
@@ -74,7 +113,7 @@ const Footer = ({}) => {
                         href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DATinfo.implementationAddress}
                         target="#"
                     >
-                        DAT Contract
+                        Contract
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
@@ -96,18 +135,17 @@ const Footer = ({}) => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <Logo src="twitter.svg"></Logo>
+                        <Twitter></Twitter>
                     </a>
                 </LogoWrapper>
-                {/* TODO get Reddit and Telegram logos for below */}
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <Logo src="reddit.svg"></Logo>
+                        <Reddit></Reddit>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <Logo src="telegram.svg"></Logo>
+                        <Telegram></Telegram>
                     </a>
                 </LogoWrapper>
             </RighFooter>
