@@ -48,40 +48,10 @@ const LogoWrapper = styled.div`
     padding-left: 8px;
 `;
 
-const Telegram = styled.div`
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-size: cover;
-    background: url(telegram.svg);
-
-    &:hover {
-        background: url(telegram-onHover.svg);
+const FooterLogo = styled.img`
+    :hover {
+        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg) brightness(97%) contrast(86%);
     }
-`;
-
-const Reddit = styled.div`
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-size: cover;
-    background: url(reddit.svg);
-
-    &:hover {
-        background: url(reddit-onHover.svg);
-    }   
-`;
-
-const Twitter = styled.div`
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-size: cover;
-    background: url(twitter.svg);
-
-    &:hover {
-        background: url(twitter-onHover.svg);
-    }   
 `;
 
 const Footer = ({}) => {
@@ -135,17 +105,17 @@ const Footer = ({}) => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <Twitter></Twitter>
+                    <FooterLogo src="twitter.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <Reddit></Reddit>
+                    <FooterLogo src="reddit.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <Telegram></Telegram>
+                        <FooterLogo src="telegram.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
             </RighFooter>
