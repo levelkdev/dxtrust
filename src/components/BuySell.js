@@ -8,7 +8,7 @@ import EnablePending from './common/EnablePending';
 import SellForm from './Sell/SellForm';
 import SellDisconnected from './Sell/SellDisconnected';
 import { useStores } from '../contexts/storesContext';
-import { formatBalance } from '../utils/token';
+import BalanceInfo from './BalanceInfo';
 
 const BuySellWrapper = styled.div`
     display: flex;
@@ -55,40 +55,9 @@ const ContentWrapper = styled.div`
     padding: 24px;
 `;
 
-const CryptoInfoWrapper = styled.div`
-    padding-bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    border-bottom: 1px solid var(--line-gray);
-`;
-
-const InfoRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-bottom: 12px;
-    line-height: 24px;
-    color: var(--dark-text-gray);
-`;
-
-const DXDLogo = styled.img``;
-
-const ETHLogo = styled.img``;
-
-const LogoAndText = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const LogoText = styled.div`
-    margin-left: 12px;
-    color: var(--light-text-gray);
-`;
-
 const BuySell = observer(() => {
     const {
-        root: { tradingStore, providerStore, tokenStore, configStore },
+        root: { tradingStore, providerStore },
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
@@ -97,20 +66,6 @@ const BuySell = observer(() => {
 
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-
-    let ETHBalance,
-        DXDBalance = undefined;
-
-    if (account) {
-        ETHBalance = tokenStore.getBalance('ether', account);
-        DXDBalance = tokenStore.getBalance(
-            configStore.getDXDTokenAddress(),
-            account
-        );
-    }
-
-    const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
-    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance) : '0.000';
 
     const TabButton = ({ currentTab, tabType, left, children }) => {
         if (currentTab === tabType) {
@@ -199,22 +154,7 @@ const BuySell = observer(() => {
                 </TabButton>
             </TabWrapper>
             <ContentWrapper>
-                <CryptoInfoWrapper>
-                    <InfoRow>
-                        <LogoAndText>
-                            <ETHLogo src="ether.svg"></ETHLogo>
-                            <LogoText>Ether</LogoText>
-                        </LogoAndText>
-                        <div>{ETHBalanceDisplay} ETH</div>
-                    </InfoRow>
-                    <InfoRow>
-                        <LogoAndText>
-                            <DXDLogo src="dxdao-circle.svg"></DXDLogo>
-                            <LogoText>DXdao</LogoText>
-                        </LogoAndText>
-                        <div>{DXDBalanceDisplay} DXD</div>
-                    </InfoRow>
-                </CryptoInfoWrapper>
+                <BalanceInfo />
                 <CurrentForm
                     currentTab={currentTab}
                     incrementTKN={incrementTKN}
