@@ -55,7 +55,6 @@ export const validateTokenValue = (
     
     if (options && options.maxBalance) {
         const valueBN = bnum(value);
-        console.log(valueBN.toString(),options.maxBalance.toString())
         if (valueBN.gt(options.maxBalance)) {
             return ValidationStatus.INSUFFICIENT_BALANCE;
         }
