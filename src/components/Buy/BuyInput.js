@@ -80,7 +80,7 @@ const MessageError = styled.div`
 
 const BuyInput = observer((props) => {
     const {
-        root: { datStore, tradingStore, configStore, providerStore },
+        root: { datStore, tradingStore, configStore, providerStore, tokenStore },
     } = useStores();
 
     const [buyInputStatus, setBuyInputStatus] = useState("");
@@ -108,6 +108,7 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
+        const ETHBalance = (account) ? tokenStore.getBalance('ether', account) : 0;
         value = value.replace(/^0+/, '');
         disconnectedError = (account == null) ? true : false;
 
@@ -115,6 +116,7 @@ const BuyInput = observer((props) => {
           minValue: normalizeBalance(
               datStore.getMinInvestment(configStore.activeDatAddress)
           ),
+          maxBalance: (account) ? normalizeBalance(ETHBalance) : null,
         });
         setBuyInputStatus(buyInputStatusFetch);
 

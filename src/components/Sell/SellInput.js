@@ -80,7 +80,7 @@ const MessageError = styled.div`
 
 const SellInput = observer((props) => {
     const {
-        root: { datStore, tradingStore, configStore, providerStore },
+        root: { datStore, tradingStore, configStore, providerStore, tokenStore },
     } = useStores();
 
     const [sellInputStatus, setSellInputStatus] = useState("");
@@ -95,8 +95,10 @@ const SellInput = observer((props) => {
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
-        
-        const sellInputStatusFetch = validateTokenValue(value);
+        const DXDBalance =  (account) ? tokenStore.getBalance(configStore.getDXDTokenAddress(), account) : 0;
+        const sellInputStatusFetch = validateTokenValue(value, {
+          maxBalance: (account) ? normalizeBalance(DXDBalance) : null,
+        });
         setSellInputStatus(sellInputStatusFetch);
 
         if (sellInputStatusFetch === ValidationStatus.VALID) {

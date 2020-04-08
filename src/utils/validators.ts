@@ -12,12 +12,13 @@ export enum ValidationStatus {
     NO_POOLS = 'There are no Pools with selected tokens',
     MAX_DIGITS_EXCEEDED = 'Maximum Digits Exceeded',
     MAX_VALUE_EXCEEDED = 'Maximum Value Exceeded',
-    MIN_VALUE_NOT_EXCEEDED = 'Below minimum investment'
+    MIN_VALUE_NOT_EXCEEDED = 'Below minimum investment',
 }
 
 export const validateTokenValue = (
     value: string,
     options?: {
+        maxBalance?: BigNumber | undefined;
         minValue?: BigNumber | undefined;
         limitDigits?: boolean;
     }
@@ -49,6 +50,14 @@ export const validateTokenValue = (
         // if its within accepted decimal limit, update the input state
         if (!acceptableValues.some((a) => a.test(value))) {
             return ValidationStatus.MAX_DIGITS_EXCEEDED;
+        }
+    }
+    
+    if (options && options.maxBalance) {
+        const valueBN = bnum(value);
+        console.log(valueBN.toString(),options.maxBalance.toString())
+        if (valueBN.gt(options.maxBalance)) {
+            return ValidationStatus.INSUFFICIENT_BALANCE;
         }
     }
 
