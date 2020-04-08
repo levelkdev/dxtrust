@@ -9,6 +9,7 @@
     --wrong-network-hover: #E91E63;
     --wrong-network: #EC407A;
     --light-text-gray: #bdbdbd;
+    --text-gray-onHover: #727D82;
     --dark-text-gray: #616161;
     --nav-text-light: rgba(55, 71, 79, 0.4);
     --nav-text-dark: rgba(55, 71, 79, 1);
@@ -71,3 +72,4 @@ body {
 .align-left {
     text-align: left;
 }
+

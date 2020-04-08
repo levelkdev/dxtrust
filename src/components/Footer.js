@@ -15,6 +15,7 @@ const FooterWrapper = styled.div`
 const LeftFooter = styled.div`
     display: flex;
     flex-direction: row;
+    
 `;
 
 const RighFooter = styled.div`
@@ -27,6 +28,10 @@ const FooterItem = styled.div`
         text-decoration: none;
         color: var(--footer-text-gray);
     }
+    a:hover {
+        color: var(--text-gray-onHover);
+    }a
+    
 `;
 
 const FooterDivider = styled.div`
@@ -43,7 +48,11 @@ const LogoWrapper = styled.div`
     padding-left: 8px;
 `;
 
-const Logo = styled.img``;
+const FooterLogo = styled.img`
+    :hover {
+        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg) brightness(97%) contrast(86%);
+    }
+`;
 
 const Footer = ({}) => {
   console.log(process.env)
@@ -65,7 +74,7 @@ const Footer = ({}) => {
                         href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DAT}
                         target="#"
                     >
-                        DAT Proxy
+                        Proxy
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
@@ -74,7 +83,7 @@ const Footer = ({}) => {
                         href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DATinfo.implementationAddress}
                         target="#"
                     >
-                        DAT Contract
+                        Contract
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
@@ -96,18 +105,17 @@ const Footer = ({}) => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <Logo src="twitter.svg"></Logo>
+                    <FooterLogo src="twitter.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
-                {/* TODO get Reddit and Telegram logos for below */}
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <Logo src="reddit.svg"></Logo>
+                    <FooterLogo src="reddit.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <Logo src="telegram.svg"></Logo>
+                        <FooterLogo src="telegram.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
             </RighFooter>
