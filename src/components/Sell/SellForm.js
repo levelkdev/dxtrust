@@ -11,8 +11,10 @@ import { useStores } from '../../contexts/storesContext';
 const ContentStates = {
     SELL_FORM: 'sell_form',
     SIGN_TRANSACTION: 'signTransaction',
-    UNCOMFIRMED: 'unconfirmed',
+    UNCONFIRMED: 'unconfirmed',
     CONFIRMED: 'confirmed',
+    APPROVED: 'approved',
+    FAILED: 'failed'
 };
 
 const SellForm = observer((props) => {
@@ -41,8 +43,10 @@ const SellForm = observer((props) => {
             contentState = ContentStates.SIGN_TRANSACTION;
         } else if (contentCount === 2) {
             contentState = ContentStates.UNCONFIRMED;
-        } else {
+        } else if (contentCount === 3) {
             contentState = ContentStates.CONFIRMED;
+        } else {
+            contentState = ContentStates.FAILED;
         }
 
         if (contentState === ContentStates.SELL_FORM) {
@@ -53,6 +57,8 @@ const SellForm = observer((props) => {
             return <SellUnconfirmed />;
         } else if (contentState === ContentStates.CONFIRMED) {
             return <SellConfirmed />;
+        } else {
+          return <SellInput />;
         }
     };
 

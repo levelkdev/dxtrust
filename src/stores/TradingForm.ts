@@ -18,6 +18,7 @@ export enum TransactionState {
     UNCONFIRMED,
     CONFIRMED,
     APPROVED,
+    FAILED
 }
 
 class TradingFormStore {
