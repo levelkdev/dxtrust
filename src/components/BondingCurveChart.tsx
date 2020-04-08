@@ -357,7 +357,7 @@ const BondingCurveChart = observer(({}) => {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
                             callback: function (value, index, values) {
-                                return formatNumberValue(bnum(value), 6) + ' ETH';
+                                return formatNumberValue(bnum(value)) + ' ETH';
                             },
                         },
                         scaleLabel: {
@@ -450,7 +450,7 @@ const BondingCurveChart = observer(({}) => {
                         Price
                     </ChartHeaderTopElement>
                     <ChartHeaderBottomElement>
-                        {requiredDataLoaded ? `${formatNumberValue(currentPrice, 6)} DXD/ETH` : '- DXD/ETH'}
+                        {requiredDataLoaded ? `${formatNumberValue(currentPrice)} DXD/ETH` : '- DXD/ETH'}
                     </ChartHeaderBottomElement>
                 </ChartHeaderFullElement>
             </ChartBox>
