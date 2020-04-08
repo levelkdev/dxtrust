@@ -42,12 +42,13 @@ const SignTransaction = styled.div`
 // class SellSign extends React.Component {
 const SellSign = observer((props) => {
     const {
-        root: { tradingStore, configStore },
+        root: { datStore, tradingStore, configStore },
     } = useStores();
 
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
+    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -83,7 +84,7 @@ const SellSign = observer((props) => {
                 Sign Transaction...
                 <PendingCircle />
             </SignTransaction>
-            <Button active={false}>Sell DXD</Button>
+            <Button active={false}>{sellText} DXD</Button>
         </FormWrapper>
     );
 });

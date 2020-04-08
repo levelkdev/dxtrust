@@ -41,12 +41,13 @@ const Unconfirmed = styled.div`
 
 const SellUnconfirmed = observer((props) => {
     const {
-        root: { tradingStore, configStore },
+        root: { datStore, tradingStore, configStore },
     } = useStores();
 
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
+    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -82,7 +83,7 @@ const SellUnconfirmed = observer((props) => {
                 Unconfirmed...
                 <PendingCircle />
             </Unconfirmed>
-            <Button active={false}>Sell DXD</Button>
+            <Button active={false}>{sellText} DXD</Button>
         </FormWrapper>
     );
 });

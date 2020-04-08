@@ -50,12 +50,13 @@ const CheckboxContainer = styled.div`
 
 const SellConfirmed = observer((props) => {
     const {
-        root: { tradingStore,configStore },
+        root: { datStore, tradingStore, configStore },
     } = useStores();
 
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
+    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -99,7 +100,7 @@ const SellConfirmed = observer((props) => {
                     tradingStore.resetSellForm();
                 }}
             >
-                Sell Again
+                {sellText} Again
             </Button>
         </FormWrapper>
     );
