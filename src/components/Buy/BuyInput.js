@@ -184,9 +184,11 @@ const BuyInput = observer((props) => {
                         .on(TXEvents.RECEIPT, (receipt) => {
                             tradingStore.buyingState =
                                 TransactionState.CONFIRMED;
+                                tradingStore.resetBuyAmount();
                         })
                         .on(TXEvents.TX_ERROR, (error) => {
                             tradingStore.buyingState = TransactionState.NONE;
+                            tradingStore.resetBuyAmount();
                         });
                 }}
             >
