@@ -26,7 +26,7 @@ export const RPC_URLS = {
   '3': process.env.REACT_APP_SUPPORTED_NETWORK_3 || 'https://ropsten.infura.io/v3/'+INFURA_API_KEY,
   '4': process.env.REACT_APP_SUPPORTED_NETWORK_4 || 'https://rinkeby.infura.io/v3/'+INFURA_API_KEY,
   '42': process.env.REACT_APP_SUPPORTED_NETWORK_42 || 'https://kovan.infura.io/v3/'+INFURA_API_KEY,
-  '66': process.env.REACT_APP_SUPPORTED_NETWORK_66 || 'https://localhost8545',
+  '66': process.env.REACT_APP_SUPPORTED_NETWORK_66 || 'http://localhost:8545/',
 };
 
 export const web3ContextNames = {
@@ -50,8 +50,7 @@ export const isChainIdSupported = (chainId: number): boolean => {
 
 
 const backupUrls = {};
-backupUrls[supportedChainId.toString()] = RPC_URLS[supportedChainId];
-
+backupUrls[supportedChainId] = RPC_URLS[supportedChainId];
 export const backup = new NetworkConnector({
     urls: backupUrls,
     defaultChainId: supportedChainId,
