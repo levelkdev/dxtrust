@@ -12,7 +12,7 @@ const App = () => {
         <Web3ReactManager>
             <HashRouter>
                 <div className="app-shell">
-                    <NavBarContainer />
+                 <NavBarContainer />
                     <Switch>
                         <Route exact path="/">
                             <ExchangeContainer />

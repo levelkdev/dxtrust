@@ -206,7 +206,6 @@ export default class DatStore {
 
         const fetchBlock = providerStore.getCurrentBlockNumber();
         this.fetchInitReserve(datAddress).then((initReserve) => {
-            console.log('initReserve', initReserve.toString());
             this.setDatInfo(datAddress, {
                 initReserve: {
                     value: initReserve,
@@ -215,7 +214,6 @@ export default class DatStore {
             });
         });
         this.fetchInitGoal(datAddress).then((initGoal) => {
-            console.log('initGoal', initGoal.toString());
             this.setDatInfo(datAddress, {
                 initGoal: {
                     value: initGoal,
@@ -224,7 +222,6 @@ export default class DatStore {
             });
         });
         this.fetchBuySlopeNum(datAddress).then((buySlopeNum) => {
-            console.log('buySlopeNum', buySlopeNum.toString());
             this.setDatInfo(datAddress, {
                 buySlopeNum: {
                     value: buySlopeNum,
@@ -233,7 +230,6 @@ export default class DatStore {
             });
         });
         this.fetchBuySlopeDen(datAddress).then((buySlopeDen) => {
-            console.log('buySlopeDen', buySlopeDen.toString());
             this.setDatInfo(datAddress, {
                 buySlopeDen: {
                     value: buySlopeDen,

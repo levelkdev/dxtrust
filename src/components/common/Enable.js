@@ -4,17 +4,17 @@ import { useStores } from '../../contexts/storesContext';
 import { observer } from 'mobx-react';
 
 const ContentWrapper = styled.div`
-    height: 200px;
-    padding: 6px 0px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
 `;
 
 const CircleContainer = styled.div`
+    height:168px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
+    align-items:center;
 `;
 
 const CheckboxContainer = styled.div`
@@ -23,15 +23,8 @@ const CheckboxContainer = styled.div`
     justify-content: center;
     align-items: center;
     height: 48px;
-    width: 48px;
-    border-radius: 24px;
-    border: 1px solid var(--panel-icon);
+    width: 100%;
     margin-bottom: 16px;
-`;
-
-const Checkbox = styled.img`
-    height: 13px;
-    width: 18px;
 `;
 
 const Info = styled.div`
@@ -39,11 +32,11 @@ const Info = styled.div`
     font-size: 16px;
     line-height: 19px;
     letter-spacing: 0.4px;
+    width:100%;
     color: var(--panel-text);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-bottom: 40px;
 `;
 
 const EnableButton = styled.div`
@@ -76,10 +69,10 @@ const Enable = observer(({ tokenType }) => {
         <ContentWrapper>
             <CircleContainer>
                 <CheckboxContainer>
-                    <Checkbox src="checkbox.svg" />
+                    <img src="checkbox-circle.svg" />
                 </CheckboxContainer>
+                <Info>Enable {tokenType} for trading</Info>
             </CircleContainer>
-            <Info>Enable {tokenType} for trading</Info>
             <EnableButton
                 onClick={() => {
                     tokenStore.approveMax(

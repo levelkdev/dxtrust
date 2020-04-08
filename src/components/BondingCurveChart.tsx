@@ -388,11 +388,6 @@ const BondingCurveChart = observer(({}) => {
     };
 
     const renderInitPhaseChartHeader = () => {
-        console.log('kickstarterPrice', kickstarterPrice);
-        if (kickstarterPrice) {
-            console.log('kickstarterPrice', kickstarterPrice.toString());
-        }
-
         return (
             <ChartHeaderWrapper>
                 <ChartBox>
@@ -401,8 +396,7 @@ const BondingCurveChart = observer(({}) => {
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
                                 ? `${formatNumberValue(
-                                      kickstarterPrice,
-                                      6
+                                      kickstarterPrice
                                   )} DXD/ETH`
                                 : '- DXD/ETH'}
                         </ChartHeaderBottomElement>

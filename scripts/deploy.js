@@ -16,12 +16,12 @@ for (var i = 0; i < args.length; i++) {
 }
 if (!network) throw('Not network selected, --network parameter missing');
 
-mnemonic = process.env.BCAPP_KEY_MNEMONIC;
+mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
 httpProviderUrl = 'http://localhost:8545';
 
 // Get development keys
 if (network != 'develop') {
-  infuraApiKey = process.env.BCAPP_KEY_INFURA_API_KEY;
+  infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
   httpProviderUrl = `https://${network}.infura.io/v3/${infuraApiKey }`
 } 
 
@@ -44,14 +44,13 @@ async function deployOrgs() {
 
   const contracts = await deployDat( web3, DATInfo);
   
-  
   let newContractsDeployed = contractsDeployed;
+  toDeploy.DATinfo.implementationAddress = contracts.dat.implementation;
   newContractsDeployed.contracts[network] = {
     DAT: contracts.dat.address,
     collateral: zeroAddress,
     DATinfo: toDeploy.DATinfo
   };
-  
   console.log('File contracts.json in src/config updated for network '+network);
   fs.writeFileSync('src/config/contracts.json', JSON.stringify(newContractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
 

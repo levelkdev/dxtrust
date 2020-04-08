@@ -13,17 +13,7 @@ cleanup() {
   fi
 }
 set -o allexport; source .env; set +o allexport
-mnemonic="$BCAPP_KEY_MNEMONIC"
-
-while [ "$1" != "" ]; do
-    case $1 in
-        -n | --network )        shift
-                                network=$1
-                                ;;
-    esac
-    shift
-done
-echo $network
+mnemonic="$REACT_APP_KEY_MNEMONIC"
 
 ganache_running() {
   nc -z localhost 8545
@@ -53,5 +43,7 @@ fi
 
 npx truffle version
 npx truffle compile
-cp -r build/contracts src/
-node scripts/deploy.js -- --network develop
+node scripts/copyContracts.js
+node scripts/deploy.js -- --network develop &
+sleep 3
+FORCE_COLOR=true REACT_APP_ETH_NETWORK=develop node scripts/start.js | cat

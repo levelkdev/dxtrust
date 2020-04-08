@@ -54,6 +54,7 @@ const BuyConfirmed = observer((props) => {
 
     const { infotext } = props;
     const price = tradingStore.formatPrice();
+    const buyAmount = tradingStore.formatBuyAmount();
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -76,12 +77,12 @@ const BuyConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
                 <div>
-                    {formatBalance(tradingStore.payAmount)} {configStore.getCollateralType()}
+                    {formatBalance(tradingStore.payAmount)} DXD
                 </div>
             </InfoRow>
             <InfoRow>
             <FormInfoText>Total cost</FormInfoText>
-                <div>{tradingStore.buyAmount} {configStore.getCollateralType()}</div>
+                <div>{buyAmount} {configStore.getCollateralType()}</div>
             </InfoRow>
             <Confirmed>
                 Confirmed
