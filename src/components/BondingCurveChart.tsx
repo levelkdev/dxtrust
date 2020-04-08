@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { observer } from 'mobx-react';
 import { useStores } from '../contexts/storesContext';
-import { denormalizeBalance, normalizeBalance } from '../utils/token';
+import { denormalizeBalance, formatBalance, formatNumberValue, normalizeBalance } from '../utils/token';
 import COrgSim from '../services/contractSimulators/cOrgSim';
 import { BigNumber } from '../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
@@ -344,7 +344,7 @@ const BondingCurveChart = observer(({}) => {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
                             callback: function (value, index, values) {
-                                return value + ' ETH';
+                                return formatNumberValue(bnum(value), 6) + ' ETH';
                             },
                         },
                         scaleLabel: {
