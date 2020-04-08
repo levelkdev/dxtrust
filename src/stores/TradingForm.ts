@@ -94,8 +94,12 @@ class TradingFormStore {
         }
     }
 
-    @action resetBuyForm() {
+    @action resetBuyAmount() {
         this.buyAmount = '';
+    }
+
+    @action resetBuyForm() {
+        this.resetBuyAmount();
         this.buyingState = TransactionState.NONE;
         this.price = bnum(0);
         this.priceToBuy = bnum(0);

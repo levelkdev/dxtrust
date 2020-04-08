@@ -48,7 +48,6 @@ export const isChainIdSupported = (chainId: number): boolean => {
     return supportedChainId == chainId.toString();
 };
 
-
 const backupUrls = {};
 backupUrls[supportedChainId] = RPC_URLS[supportedChainId];
 export const backup = new NetworkConnector({

@@ -3,11 +3,16 @@ import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { observer } from 'mobx-react';
 import { useStores } from '../contexts/storesContext';
-import { denormalizeBalance, normalizeBalance } from '../utils/token';
+import {
+    formatBalance,
+    formatNumberValue,
+    normalizeBalance,
+} from '../utils/token';
 import COrgSim from '../services/contractSimulators/cOrgSim';
 import { BigNumber } from '../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { bnum } from '../utils/helpers';
+import { DatState } from '../stores/datStore';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -64,19 +69,51 @@ const chartGray = 'gray';
 
 const BondingCurveChart = observer(({}) => {
     const {
-        root: {
-            tradingStore,
-            tokenStore,
-            configStore,
-            datStore,
-        },
+        root: { tradingStore, tokenStore, configStore, datStore },
     } = useStores();
 
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         configStore.activeDatAddress
     );
     const totalSupply = tokenStore.getTotalSupply(configStore.activeDatAddress);
-    const requiredDataLoaded = staticParamsLoaded && !!totalSupply;
+    const datState = datStore.getState(configStore.activeDatAddress);
+    const reserveBalance = datStore.getReserveBalance(
+        configStore.activeDatAddress
+    );
+
+    const requiredDataLoaded =
+        staticParamsLoaded && !!totalSupply && !!datState && !!reserveBalance;
+
+    let buySlopeNum,
+        buySlopeDen,
+        initGoal,
+        initReserve,
+        cOrg,
+        totalSupplyWithoutPremint,
+        currentPrice,
+        kickstarterPrice;
+
+    if (requiredDataLoaded) {
+        buySlopeNum = datStore.getBuySlopeNum(configStore.activeDatAddress);
+        buySlopeDen = datStore.getBuySlopeDen(configStore.activeDatAddress);
+        initGoal = datStore.getInitGoal(configStore.activeDatAddress);
+        initReserve = datStore.getInitReserve(configStore.activeDatAddress);
+
+        cOrg = new COrgSim({
+            buySlopeNum,
+            buySlopeDen,
+            initGoal,
+            initReserve,
+        });
+
+        if (initGoal && initGoal.gt(0)) {
+            kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
+        }
+
+        totalSupplyWithoutPremint = totalSupply.minus(initReserve);
+        currentPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
+    }
+
     let data, options;
 
     const generateLine = (data: ChartPoint[], color: string, label: string) => {
@@ -113,27 +150,6 @@ const BondingCurveChart = observer(({}) => {
     };
 
     const generateChart = () => {
-        const buySlopeNum = datStore.getBuySlopeNum(
-            configStore.activeDatAddress
-        );
-        const buySlopeDen = datStore.getBuySlopeDen(
-            configStore.activeDatAddress
-        );
-        const initGoal = datStore.getInitGoal(configStore.activeDatAddress);
-        const initReserve = datStore.getInitReserve(
-            configStore.activeDatAddress
-        );
-
-        const cOrg = new COrgSim({
-            buySlopeNum,
-            buySlopeDen,
-            initGoal,
-            initReserve,
-        });
-
-        const totalSupplyWithoutPremint = totalSupply.minus(initReserve);
-        const currentPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
-
         const points: ChartPointMap = {
             zero: {
                 x: 0,
@@ -146,8 +162,6 @@ const BondingCurveChart = observer(({}) => {
         };
 
         if (initGoal.gt(0)) {
-            const kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
-
             points.kickStarterStart = {
                 x: 0,
                 y: valueToNumber(kickstarterPrice),
@@ -168,9 +182,7 @@ const BondingCurveChart = observer(({}) => {
 
         let maxSupplyToShow = totalSupplyWithoutPremint.times(2);
         if (maxSupplyToShow.lt(initGoal.times(2))) {
-            maxSupplyToShow = totalSupplyWithoutPremint.plus(
-                initGoal.times(2)
-            );
+            maxSupplyToShow = totalSupplyWithoutPremint.plus(initGoal.times(2));
         }
         const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
 
@@ -211,7 +223,9 @@ const BondingCurveChart = observer(({}) => {
         const datasets = [];
 
         const hasInitGoal = initGoal.gt(0);
-        const hasExceededInitGoal = totalSupplyWithoutPremint.gt(initGoal);
+        const hasExceededInitGoal = datStore.isRunPhase(
+            configStore.activeDatAddress
+        );
         const futureSupplyExceedsInitGoal =
             hasActiveInput && futureSupply.gt(initGoal);
 
@@ -243,30 +257,14 @@ const BondingCurveChart = observer(({}) => {
                     'Kickstarter Unfunded'
                 )
             );
-        } else if (hasInitGoal) {
-            datasets.push(
-                generateLine(
-                    [points.kickStarterStart, points.kickstarterEnd],
-                    chartBlue,
-                    'Kickstarter Funded'
-                )
-            );
         }
 
         if (hasExceededInitGoal) {
             datasets.push(
                 generateLine(
-                    [points.curveStart, points.currentSupply],
+                    [points.zero, points.curveStart, points.currentSupply],
                     chartBlue,
                     'Curve chart funded'
-                )
-            );
-
-            datasets.push(
-                generateLine(
-                    [points.kickstarterEnd, points.curveStart],
-                    chartBlue,
-                    'Curve chart point of change'
                 )
             );
 
@@ -295,10 +293,14 @@ const BondingCurveChart = observer(({}) => {
             );
         }
 
-        datasets.push(generateSupplyMarker(points.currentSupply, 'Current Supply'));
+        datasets.push(
+            generateSupplyMarker(points.currentSupply, 'Current Supply')
+        );
 
         if (hasActiveInput) {
-            datasets.push(generateSupplyMarker(points.futureSupply, 'Future Supply'));
+            datasets.push(
+                generateSupplyMarker(points.futureSupply, 'Future Supply')
+            );
         }
 
         const data = {
@@ -344,7 +346,7 @@ const BondingCurveChart = observer(({}) => {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
                             callback: function (value, index, values) {
-                                return value + ' ETH';
+                                return formatNumberValue(bnum(value)) + ' ETH';
                             },
                         },
                         scaleLabel: {
@@ -375,36 +377,115 @@ const BondingCurveChart = observer(({}) => {
         It's a slope but I DON"T understand because it's 1 / 10^18!!!! And it seems to be about 1/3 of tokens.
      */
 
-    return (
-        <ChartPanelWrapper>
+    const renderChartHeader = () => {
+        if (datStore.isInitPhase(configStore.activeDatAddress)) {
+            return renderInitPhaseChartHeader();
+        } else if (datStore.isRunPhase(configStore.activeDatAddress)) {
+            return renderRunPhaseChartHeader();
+        } else {
+            return <React.Fragment />;
+        }
+    };
+
+    const renderInitPhaseChartHeader = () => {
+        return (
             <ChartHeaderWrapper>
                 <ChartBox>
                     <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>Price</ChartHeaderTopElement>
+                        <ChartHeaderBottomElement>
+                            {requiredDataLoaded
+                                ? `${formatNumberValue(
+                                      kickstarterPrice
+                                  )} DXD/ETH`
+                                : '- DXD/ETH'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
+                <ChartBox>
+                    <ChartHeaderFullElement>
                         <ChartHeaderTopElement>
-                            Token Price
+                            DXD Supply
                         </ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            1.25 DXD/DAI
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>24h price</ChartHeaderTopElement>
                         <ChartHeaderBottomElement className="green-text">
-                            +10.51%
+                            {requiredDataLoaded
+                                ? `${formatBalance(
+                                      totalSupplyWithoutPremint
+                                  )} DXD`
+                                : '- DXD'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
                 <ChartBox>
                     <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Minted</ChartHeaderTopElement>
+                        <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
-                            41.02 DXD
+                            {requiredDataLoaded
+                                ? `${formatBalance(reserveBalance)} ETH`
+                                : '- ETH'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
+                <ChartBox>
+                    <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>Goal</ChartHeaderTopElement>
+                        <ChartHeaderBottomElement>
+                            {requiredDataLoaded
+                                ? `${formatBalance(
+                                      initGoal.times(kickstarterPrice)
+                                  )} ETH`
+                                : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
             </ChartHeaderWrapper>
+        );
+    };
+
+    const renderRunPhaseChartHeader = () => {
+        return (
+            <ChartHeaderWrapper>
+                <ChartBox>
+                    <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>Price</ChartHeaderTopElement>
+                        <ChartHeaderBottomElement>
+                            {requiredDataLoaded
+                                ? `${formatNumberValue(currentPrice)} DXD/ETH`
+                                : '- DXD/ETH'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
+                <ChartBox>
+                    <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>
+                            DXD Supply
+                        </ChartHeaderTopElement>
+                        <ChartHeaderBottomElement className="green-text">
+                            {requiredDataLoaded
+                                ? `${formatBalance(
+                                      totalSupplyWithoutPremint
+                                  )} DXD`
+                                : '- DXD'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
+                <ChartBox>
+                    <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
+                        <ChartHeaderBottomElement>
+                            {requiredDataLoaded
+                                ? `${formatBalance(reserveBalance)} ETH`
+                                : '- ETH'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
+            </ChartHeaderWrapper>
+        );
+    };
+
+    return (
+        <ChartPanelWrapper>
+            {renderChartHeader()}
             <ChartWrapper>
                 {requiredDataLoaded ? (
                     <Line

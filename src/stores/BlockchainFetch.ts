@@ -72,6 +72,13 @@ export default class BlockchainFetchStore {
                             }
                         }));
 
+                        datStore.fetchReserveBalance(configStore.activeDatAddress).then(reserveBalance => datStore.setDatInfo(configStore.activeDatAddress, {
+                            reserveBalance: {
+                                value: reserveBalance,
+                                blockNumber
+                            }
+                        }));
+
                         datStore
                             .fetchMinInvestment(configStore.activeDatAddress)
                             .then((minInvestment) => {

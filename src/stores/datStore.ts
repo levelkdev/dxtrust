@@ -48,6 +48,7 @@ interface DatInfo {
     currentPrice?: BigNumberCached;
     initReserve?: BigNumberCached;
     initGoal?: BigNumberCached;
+    reserveBalance?: BigNumberCached;
     buySlopeNum?: BigNumberCached;
     buySlopeDen?: BigNumberCached;
     state?: DatStateCached;
@@ -155,9 +156,22 @@ export default class DatStore {
         );
     }
 
-    getState(datAddress: string) {
+    isInitPhase(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_INIT;
+    }
+    isRunPhase(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_RUN;
+    }
+    isCancelled(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_CANCEL;
+    }
+    isClosed(datAddress: string) {
+        return this.getState(datAddress) == DatState.STATE_CLOSE;
+    }
+
+    getState(datAddress: string): DatState | undefined {
         if (this.datParams[datAddress] && this.datParams[datAddress].state) {
-            return this.datParams[datAddress].state.value;
+            return this.datParams[datAddress].state.value as DatState;
         } else {
             return undefined;
         }
@@ -175,6 +189,14 @@ export default class DatStore {
         return this.datParams[datAddress].initGoal.value;
     }
 
+    getReserveBalance(datAddress: string): BigNumber | undefined {
+        if (this.datParams[datAddress] && this.datParams[datAddress].reserveBalance) {
+            return this.datParams[datAddress].reserveBalance.value;
+        } else {
+            return undefined;
+        }
+    }
+
     getInitReserve(datAddress: string) {
         return this.datParams[datAddress].initReserve.value;
     }
@@ -184,7 +206,6 @@ export default class DatStore {
 
         const fetchBlock = providerStore.getCurrentBlockNumber();
         this.fetchInitReserve(datAddress).then((initReserve) => {
-            console.log('initReserve', initReserve.toString());
             this.setDatInfo(datAddress, {
                 initReserve: {
                     value: initReserve,
@@ -193,7 +214,6 @@ export default class DatStore {
             });
         });
         this.fetchInitGoal(datAddress).then((initGoal) => {
-            console.log('initGoal', initGoal.toString());
             this.setDatInfo(datAddress, {
                 initGoal: {
                     value: initGoal,
@@ -202,7 +222,6 @@ export default class DatStore {
             });
         });
         this.fetchBuySlopeNum(datAddress).then((buySlopeNum) => {
-            console.log('buySlopeNum', buySlopeNum.toString());
             this.setDatInfo(datAddress, {
                 buySlopeNum: {
                     value: buySlopeNum,
@@ -211,7 +230,6 @@ export default class DatStore {
             });
         });
         this.fetchBuySlopeDen(datAddress).then((buySlopeDen) => {
-            console.log('buySlopeDen', buySlopeDen.toString());
             this.setDatInfo(datAddress, {
                 buySlopeDen: {
                     value: buySlopeDen,
@@ -249,6 +267,11 @@ export default class DatStore {
     async fetchState(datAddress: string): Promise<DatState> {
         const dat = this.getDatContract(datAddress);
         return await dat.methods.state().call() as DatState;
+    }
+
+    async fetchReserveBalance(datAddress: string): Promise<BigNumber> {
+        const dat = this.getDatContract(datAddress);
+        return bnum(await dat.methods.buybackReserve().call());
     }
 
     @action setMinInvestment(datAddress: string, minInvestment: BigNumber) {
