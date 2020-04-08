@@ -11,15 +11,15 @@ module.exports = {
       network_id: '*',	
       host: 'localhost',	
       port: 8545,	
-      gas: 6.9e6,	
-      gasPrice: 15000000001	
+      gas: 9000000,	
+      gasPrice: 10000000000 //10 Gwei	
     },	
-    devnet: {	
-      network_id: '*',	
+    develop: {	
+      network_id: '66',	
       host: 'localhost',	
-      port: 8535,	
-      gas: 6.9e6,	
-      gasPrice: 15000000001	
+      port: 8545,	
+      gas: 9000000,	
+      gasPrice: 10000000000 //10 Gwei	
     },	
     mainnet: {	
       provider: function () {	
@@ -27,15 +27,15 @@ module.exports = {
       },	
       network_id: '1',	
       gas: 9000000,	
-      gasPrice: 10 * 10 ** 9,	
+      gasPrice: 10000000000 //10 Gwei	
     },	
     rinkeby: {	
       provider: function () {	
         return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraApiKey}`)	
       },	
       network_id: '4',	
-      gas: 6000000,	
-      gasPrice: 1 * 10 ** 9,	
+      gas: 9000000,	
+      gasPrice: 10000000000 //10 Gwei	
     },	
     ropsten: {	
       provider: function () {	
@@ -43,7 +43,7 @@ module.exports = {
       },	
       network_id: '3',	
       gas: 9000000,	
-      gasPrice: 1 * 10 ** 9,	
+      gasPrice: 10000000000 //10 Gwei	
     },	
     kovan: {	
       provider: function () {	
@@ -51,7 +51,7 @@ module.exports = {
       },	
       network_id: '42',	
       gas: 9000000,	
-      gasPrice: 1 * 10 ** 9,	
+      gasPrice: 10000000000 //10 Gwei	
     }	
   },	
   build: {},	
