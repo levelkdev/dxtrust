@@ -1,7 +1,7 @@
 {
   "contracts": {
     "kovan": {
-      "DAT": "0xA26449DAaD330A38C9EB08fa76C45990A582cd1e",
+      "DAT": "0xdfF860a86E59a4F41f8569054607077084b2bd20",
       "collateral": "0x0000000000000000000000000000000000000000",
       "DATinfo": {
         "collateralType": "ETH",
@@ -14,7 +14,8 @@
         "buySlopeDen": "46641791000000000000000",
         "investmentReserveBasisPoints": "1000",
         "revenueCommitmentBasisPoints": "1000",
-        "minInvestment": "100000000000000000"
+        "minInvestment": "100000000000000000",
+        "implementationAddress": "0xCeB9c95396Bd23Ed91db4bf2370dde5813Ae6426"
       }
     },
     "develop": {
@@ -31,7 +32,8 @@
         "buySlopeDen": "46641791000000000000000",
         "investmentReserveBasisPoints": "1000",
         "revenueCommitmentBasisPoints": "1000",
-        "minInvestment": "100000000000000000"
+        "minInvestment": "100000000000000000",
+        "implementationAddress": "0x009c1F472dAD7e766b16F8987D8C756744Ec78fe"
       }
     }
   }

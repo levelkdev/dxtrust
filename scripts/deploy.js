@@ -44,14 +44,13 @@ async function deployOrgs() {
 
   const contracts = await deployDat( web3, DATInfo);
   
-  
   let newContractsDeployed = contractsDeployed;
+  toDeploy.DATinfo.implementationAddress = contracts.dat.implementation;
   newContractsDeployed.contracts[network] = {
     DAT: contracts.dat.address,
     collateral: zeroAddress,
     DATinfo: toDeploy.DATinfo
   };
-  
   console.log('File contracts.json in src/config updated for network '+network);
   fs.writeFileSync('src/config/contracts.json', JSON.stringify(newContractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
 
