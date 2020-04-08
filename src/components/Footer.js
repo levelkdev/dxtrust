@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { contracts } from '../config/contracts';
+import { ETH_NETWORK } from '../provider/connectors';
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -44,15 +46,35 @@ const LogoWrapper = styled.div`
 const Logo = styled.img``;
 
 const Footer = ({}) => {
+  console.log(process.env)
+    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0,7);
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
                     <a
-                        href="https://github.com/levelkdev/BC-DAPP/tree/3a96d989da119b5e610ae4f62d2f020b2acc8384"
+                        href={"https://github.com/levelkdev/BC-DAPP/tree/"+process.env.REACT_APP_GIT_SHA}
                         target="#"
                     >
-                        DXdao Version 3a96d98 - 10/24/19
+                        DXdao Version {gitHash} - v0.1.0
+                    </a>
+                </FooterItem>
+                <FooterDivider></FooterDivider>
+                <FooterItem>
+                    <a
+                        href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DAT}
+                        target="#"
+                    >
+                        DAT Proxy
+                    </a>
+                </FooterItem>
+                <FooterDivider></FooterDivider>
+                <FooterItem>
+                    <a
+                        href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DATinfo.implementationAddress}
+                        target="#"
+                    >
+                        DAT Contract
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>

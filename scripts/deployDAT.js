@@ -58,6 +58,7 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
     console.log(`DAT proxy deployed ${datProxy.address}`);
 
     contracts.dat = await DATContract.at(datProxy.address);
+    contracts.dat.implementation = datContract.address;
   } else {
     contracts.dat = datContract;
   }
