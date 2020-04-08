@@ -346,7 +346,7 @@ const BondingCurveChart = observer(({}) => {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
                             callback: function (value, index, values) {
-                                return formatNumberValue(bnum(value)) + ' ETH';
+                                return formatNumberValue(bnum(value), 2) + ' ETH';
                             },
                         },
                         scaleLabel: {
