@@ -16,12 +16,12 @@ for (var i = 0; i < args.length; i++) {
 }
 if (!network) throw('Not network selected, --network parameter missing');
 
-mnemonic = process.env.BCAPP_KEY_MNEMONIC;
+mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
 httpProviderUrl = 'http://localhost:8545';
 
 // Get development keys
 if (network != 'develop') {
-  infuraApiKey = process.env.BCAPP_KEY_INFURA_API_KEY;
+  infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
   httpProviderUrl = `https://${network}.infura.io/v3/${infuraApiKey }`
 } 
 

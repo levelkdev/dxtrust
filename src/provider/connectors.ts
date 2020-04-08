@@ -2,43 +2,55 @@ import { NetworkConnector } from 'provider/NetworkConnector';
 import { MetamaskConnector } from './MetamaskConnector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-export const supportedChainId = Number(
-    process.env.REACT_APP_SUPPORTED_NETWORK_ID
-);
-
-export const getSupportedChainId = () => {
-    return supportedChainId;
-};
-
-export const getSupportedChainName = () => {
-    return chainNameById[supportedChainId];
-};
+export const INFURA_API_KEY = process.env.REACT_APP_KEY_INFURA_API_KEY;
+export const ETH_NETWORK = process.env.REACT_APP_ETH_NETWORK || 'develop';
 
 export const chainNameById = {
-    '1': 'mainnet',
-    '42': 'kovan',
-    '66': 'develop',
+  '1': 'mainnet',
+  '3': 'ropsten',
+  '4': 'rinkeby',
+  '42': 'kovan',
+  '66': 'develop',
 };
 
-export const isChainIdSupported = (chainId: number): boolean => {
-    return supportedChainId === chainId;
+export const chainIdByName = {
+  'mainnet': 1,
+  'ropsten': 3,
+  'rinkeby': 4,
+  'kovan': 42,
+  'develop': 66,
+};
+
+export const RPC_URLS = {
+  '1': process.env.REACT_APP_SUPPORTED_NETWORK_1 || 'https://mainnet.infura.io/v3/'+INFURA_API_KEY,
+  '3': process.env.REACT_APP_SUPPORTED_NETWORK_3 || 'https://ropsten.infura.io/v3/'+INFURA_API_KEY,
+  '4': process.env.REACT_APP_SUPPORTED_NETWORK_4 || 'https://rinkeby.infura.io/v3/'+INFURA_API_KEY,
+  '42': process.env.REACT_APP_SUPPORTED_NETWORK_42 || 'https://kovan.infura.io/v3/'+INFURA_API_KEY,
+  '66': process.env.REACT_APP_SUPPORTED_NETWORK_66 || 'https://localhost8545',
+};
+
+export const web3ContextNames = {
+  backup: 'BACKUP',
+  injected: 'INJECTED',
+  metamask: 'METAMASK',
+  walletconnect: 'WALLETCONNECT',
 };
 
 const POLLING_INTERVAL = 5000;
-const RPC_URLS: { [chainId: number]: string } = {
-    [process.env.REACT_APP_SUPPORTED_NETWORK_ID] : process.env.REACT_APP_SUPPORTED_NETWORK_URL as string,
+
+export const supportedChainId = chainIdByName[ETH_NETWORK];
+
+export const getSupportedChainName = () => {
+    return ETH_NETWORK;
 };
 
-
-export const web3ContextNames = {
-    backup: 'BACKUP',
-    injected: 'INJECTED',
-    metamask: 'METAMASK',
-    walletconnect: 'WALLETCONNECT',
+export const isChainIdSupported = (chainId: number): boolean => {
+    return supportedChainId == chainId.toString();
 };
+
 
 const backupUrls = {};
-backupUrls[supportedChainId] = RPC_URLS[supportedChainId];
+backupUrls[supportedChainId.toString()] = RPC_URLS[supportedChainId];
 
 export const backup = new NetworkConnector({
     urls: backupUrls,
@@ -47,13 +59,13 @@ export const backup = new NetworkConnector({
 });
 
 export const injected = new MetamaskConnector({
-    supportedChainIds: [1, Number(process.env.REACT_APP_SUPPORTED_NETWORK_ID)],
+    supportedChainIds: [1, 3, 4, 42, 66],
 });
 
 
 export const walletconnect = new WalletConnectConnector({
   rpc: { 
-    [process.env.REACT_APP_SUPPORTED_NETWORK_ID] : process.env.REACT_APP_SUPPORTED_NETWORK_URL,
+    [supportedChainId] : RPC_URLS[supportedChainId.toString()],
   },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: false,
