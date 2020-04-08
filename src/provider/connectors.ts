@@ -39,7 +39,6 @@ export const web3ContextNames = {
 const POLLING_INTERVAL = 5000;
 
 export const supportedChainId = chainIdByName[ETH_NETWORK];
-console.log(ETH_NETWORK, chainIdByName, chainIdByName[ETH_NETWORK]);
 
 export const getSupportedChainName = () => {
     return ETH_NETWORK;
