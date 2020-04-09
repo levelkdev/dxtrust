@@ -88,11 +88,15 @@ const BuyInput = observer((props) => {
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     
-    const price = tradingStore.formatPrice();
+    const price = (buyInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatPrice();
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
     let txFailedError = (tradingStore.buyingState == 5) && (buyInputStatus == "") ? true : false;
     const datState = datStore.getState(configStore.activeDatAddress);
     const requiredDataLoaded = !!datState;
+    
+    if (buyInputStatus == "" && tradingStore.payAmount != 0) {
+      tradingStore.setPayAmount(bnum(0));
+    }
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
