@@ -9,10 +9,12 @@ import BuyConfirmed from './BuyConfirmed';
 import { useStores } from '../../contexts/storesContext';
 
 const ContentStates = {
-    SELL_FORM: 'sell_form',
+    BUY_FORM: 'sell_form',
     SIGN_TRANSACTION: 'signTransaction',
     UNCONFIRMED: 'unconfirmed',
     CONFIRMED: 'confirmed',
+    APPROVED: 'approved',
+    FAILED: 'failed'
 };
 
 const BuyForm = observer((props) => {
@@ -34,16 +36,18 @@ const BuyForm = observer((props) => {
     const Content = ({ contentCount }) => {
         let contentState;
         if (contentCount === 0) {
-            contentState = ContentStates.SELL_FORM;
+            contentState = ContentStates.BUY_FORM;
         } else if (contentCount === 1) {
             contentState = ContentStates.SIGN_TRANSACTION;
         } else if (contentCount === 2) {
             contentState = ContentStates.UNCONFIRMED;
-        } else {
+        } else if (contentCount === 3) {
             contentState = ContentStates.CONFIRMED;
+        } else {
+            contentState = ContentStates.FAILED;
         }
 
-        if (contentState === ContentStates.SELL_FORM) {
+        if (contentState === ContentStates.BUY_FORM) {
             return <BuyInput infotext={infotext} />;
         } else if (contentState === ContentStates.SIGN_TRANSACTION) {
             return <BuySign infotext={infotext} />;
@@ -51,6 +55,8 @@ const BuyForm = observer((props) => {
             return <BuyUnconfirmed infotext={infotext} />;
         } else if (contentState === ContentStates.CONFIRMED) {
             return <BuyConfirmed infotext={infotext} />;
+        } else if (contentState === ContentStates.FAILED) {
+            return <BuyInput infotext={infotext} />;
         }
     };
     return <Content contentCount={count} />;

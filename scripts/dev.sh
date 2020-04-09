@@ -21,7 +21,8 @@ ganache_running() {
 
 start_ganache() {
 
-  npx ganache-cli --gasLimit 0xfffffffffff -d -m "$mnemonic" -e 1000 > /dev/null &
+  # Using 9000000 as gas limit and 10Gwei as gas price
+  npx ganache-cli --gasLimit 0x895440 --gasPrice 0x2540BE400 -d -m "$mnemonic" -e 1000 > /dev/null &
 
   ganache_pid=$!
 

@@ -87,9 +87,10 @@ const BuyInput = observer((props) => {
 
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
+    
     const price = tradingStore.formatPrice();
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
-
+    let txFailedError = (tradingStore.buyingState == 5) && (buyInputStatus == "") ? true : false;
     const datState = datStore.getState(configStore.activeDatAddress);
     const requiredDataLoaded = !!datState;
 
@@ -130,7 +131,6 @@ const BuyInput = observer((props) => {
             tradingStore.setPrice(bnum(0));
         }
     };
-
     return (
         <FormWrapper>
             <InfoRow>
@@ -153,12 +153,16 @@ const BuyInput = observer((props) => {
                     />
                     <div>ETH</div>
                 </FormContent>
+                { txFailedError ? 
+                    <MessageError> <p>Transaction failed</p> </MessageError>
+                  :
+                    <></>
+                }
                 {(disconnectedError || (buyInputStatus != ValidationStatus.VALID)) ? (
                     <MessageError>
                         { 
                           (buyInputStatus != ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
-                          disconnectedError ? <p>Connect Wallet to proceed with order</p> 
-                          : <></>
+                          disconnectedError ? <p>Connect Wallet to proceed with order</p> : <></>
                         }
                     </MessageError>
                 ) : (
@@ -184,8 +188,13 @@ const BuyInput = observer((props) => {
                             tradingStore.buyingState =
                                 TransactionState.CONFIRMED;
                         })
-                        .on(TXEvents.TX_ERROR, (error) => {
-                            tradingStore.buyingState = TransactionState.NONE;
+                        .on(TXEvents.TX_ERROR, (txerror) => {
+                            tradingStore.buyingState = 
+                                TransactionState.FAILED;
+                        })
+                        .on(TXEvents.INVARIANT, (error) => {
+                            tradingStore.buyingState = 
+                                TransactionState.FAILED;
                         });
                 }}
             >

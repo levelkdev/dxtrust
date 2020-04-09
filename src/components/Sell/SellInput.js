@@ -88,6 +88,7 @@ const SellInput = observer((props) => {
     const { account } = providerStore.getActiveWeb3React();
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
+    let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
@@ -152,6 +153,11 @@ const SellInput = observer((props) => {
                     />
                     <div>DXD</div>
                 </FormContent>
+                { txFailedError ? 
+                    <MessageError> <p>Transaction failed</p> </MessageError>
+                  :
+                    <></>
+                }
                 {sellInputStatus != ValidationStatus.VALID ? (
                     <MessageError>
                       {sellInputStatus}
@@ -183,8 +189,12 @@ const SellInput = observer((props) => {
                         })
                         .on(TXEvents.TX_ERROR, (error) => {
                             tradingStore.sellingState =
-                                TransactionState.NONE;
+                                TransactionState.FAILED;
                         })
+                        .on(TXEvents.INVARIANT, (error) => {
+                            tradingStore.sellingState = 
+                                TransactionState.FAILED;
+                        });
                 }}
             >
                 Sell DXD
