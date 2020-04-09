@@ -1,5 +1,6 @@
 import { NetworkConnector } from 'provider/NetworkConnector';
 import { MetamaskConnector } from './MetamaskConnector';
+import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 export const INFURA_API_KEY = process.env.REACT_APP_KEY_INFURA_API_KEY;
@@ -56,7 +57,7 @@ export const backup = new NetworkConnector({
     pollingInterval: POLLING_INTERVAL,
 });
 
-export const injected = new MetamaskConnector({
+export const injected = new InjectedConnector({
     supportedChainIds: [1, 3, 4, 42, 66],
 });
 
