@@ -8,7 +8,9 @@ import EnablePending from './common/EnablePending';
 import SellForm from './Sell/SellForm';
 import SellDisconnected from './Sell/SellDisconnected';
 import { useStores } from '../contexts/storesContext';
+import { DatState } from '../stores/datStore';
 import BalanceInfo from './BalanceInfo';
+import BuySellTabs from './BuySellTabs';
 
 const BuySellWrapper = styled.div`
     display: flex;
@@ -19,34 +21,6 @@ const BuySellWrapper = styled.div`
     border-radius: 4px;
     background-color: white;
     justify-content: space-between;
-`;
-
-const TabWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const ActiveTab = styled.div`
-    color: var(--blue-text);
-    width: 50%;
-    text-align: center;
-    border-left: ${(props) =>
-        props.left ? '1px solid var(--medium-gray)' : 'none'};
-    padding: 15px 0px;
-    cursor: pointer;
-`;
-
-const InactiveTab = styled.div`
-    color: var(--dark-text-gray);
-    width: 50%;
-    text-align: center;
-    background-color: var(--light-gray);
-    border-left: ${(props) =>
-        props.left ? '1px solid var(--medium-gray)' : 'none'};
-    border-bottom: 1px solid var(--medium-gray);
-    border-radius: 0px 4px 0px 0px;
-    padding: 15px 0px;
-    cursor: pointer;
 `;
 
 const ContentWrapper = styled.div`
@@ -61,37 +35,9 @@ const BuySell = observer(() => {
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
-
     const [currentTab, setCurrentTab] = useState(0);
-
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-
-    const TabButton = ({ currentTab, tabType, left, children }) => {
-        if (currentTab === tabType) {
-            return (
-                <ActiveTab
-                    onClick={() => {
-                        setCurrentTab(tabType);
-                    }}
-                    left={left}
-                >
-                    {children}
-                </ActiveTab>
-            );
-        } else {
-            return (
-                <InactiveTab
-                    onClick={() => {
-                        setCurrentTab(tabType);
-                    }}
-                    left={left}
-                >
-                    {children}
-                </InactiveTab>
-            );
-        }
-    };
 
     const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {
         if (currentTab === 0) {
@@ -145,14 +91,7 @@ const BuySell = observer(() => {
 
     return (
         <BuySellWrapper>
-            <TabWrapper>
-                <TabButton currentTab={currentTab} tabType={0}>
-                    Buy
-                </TabButton>
-                <TabButton currentTab={currentTab} tabType={1} left={true}>
-                    Sell
-                </TabButton>
-            </TabWrapper>
+            <BuySellTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
             <ContentWrapper>
                 <BalanceInfo />
                 <CurrentForm

@@ -89,6 +89,7 @@ const SellInput = observer((props) => {
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
+    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
@@ -199,7 +200,7 @@ const SellInput = observer((props) => {
                         });
                 }}
             >
-                Sell DXD
+                {sellText} DXD
             </Button>
         </FormWrapper>
     );
