@@ -1,6 +1,7 @@
 import { BigNumber } from '../../utils/bignumber';
 import { bnum } from '../../utils/helpers';
 import BigDivSim from './bigDivSim';
+import { DatState } from '../../stores/datStore';
 
 export interface COrgSimParams {
     buySlopeNum?: BigNumber;
@@ -8,6 +9,7 @@ export interface COrgSimParams {
     initGoal?: BigNumber;
     initReserve?: BigNumber;
     reservePercentage?: BigNumber;
+    state: DatState;
 }
 
 export default class COrgSim {
@@ -19,9 +21,9 @@ export default class COrgSim {
     }
 
     getPriceAtSupply(supply: BigNumber) {
-        const {buySlopeNum, buySlopeDen, initGoal} = this.params;
+        const {buySlopeNum, buySlopeDen, initGoal, state} = this.params;
 
-        if (initGoal.gt(0) && supply.lte(initGoal)) {
+        if (initGoal.gt(0) && supply.lte(initGoal) && state == DatState.STATE_INIT) {
             return initGoal.div(2).times(buySlopeNum).div(buySlopeDen);
         }
 

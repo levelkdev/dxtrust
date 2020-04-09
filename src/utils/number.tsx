@@ -1,5 +1,6 @@
 import { BigNumber } from './bignumber';
 import { bnum } from './helpers';
+import { normalizeBalance } from './token';
 
 export function formatFee(fee: BigNumber) {
     return fee.times(100).toString() + '%';
@@ -49,4 +50,17 @@ export const formatCurrency = (balance: BigNumber): string => {
         secondaryGroupSize: 2,
     };
     return balance.toFormat(2, BigNumber.ROUND_DOWN, fmt);
+};
+
+export const numDigits = (value: BigNumber): number => {
+    return value.toString().length;
+};
+
+export const roundUpToScale = (
+    value: BigNumber
+): BigNumber => {
+    const placesValue = numDigits(value.integerValue())-1;
+    const scaledValue = value
+        .shiftedBy(-placesValue);
+    return scaledValue.integerValue(BigNumber.ROUND_UP).shiftedBy(placesValue);
 };
