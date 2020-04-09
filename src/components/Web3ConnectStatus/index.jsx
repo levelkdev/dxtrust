@@ -9,6 +9,7 @@ import {
     injected,
     isChainIdSupported,
     web3ContextNames,
+    walletconnect
 } from 'provider/connectors';
 import Identicon from '../Identicon';
 import { useStores } from '../../contexts/storesContext';
@@ -84,24 +85,20 @@ const Web3ConnectStatus = observer((props) => {
     const {
         chainId,
         active,
+        account,
         connector,
         error,
     } = providerStore.getActiveWeb3React();
-    const { account, chainId: injectedChainId } = providerStore.getWeb3React(
-        web3ContextNames.injected
-    );
-
-    const contextNetwork = providerStore.getWeb3React(web3ContextNames.backup);
 
     if (!chainId) {
         throw new Error('No chain ID specified');
     }
-
+  
     let pending = undefined;
     let confirmed = undefined;
     let hasPendingTransactions = false;
 
-    if (account && isChainIdSupported(injectedChainId)) {
+    if (account && isChainIdSupported(chainId)) {
         pending = transactionStore.getPendingTransactions(account);
         confirmed = transactionStore.getConfirmedTransactions(account);
         hasPendingTransactions = !!pending.length;
@@ -115,17 +112,19 @@ const Web3ConnectStatus = observer((props) => {
     function getStatusIcon() {
         if (connector === injected) {
             return <Identicon />;
+        } else if (connector === walletconnect) {
+            return <img src="walletConnectIcon.svg" />;
         }
     }
 
     function getWeb3Status() {
         console.log('[GetWeb3Status]', {
             account,
-            injectedChainId: injectedChainId,
+            chainId: chainId,
             error,
         });
         // Wrong network
-        if (account && !isChainIdSupported(injectedChainId)) {
+        if (account && !isChainIdSupported(chainId)) {
             return (
                 <WrongNetworkButton onClick={toggleWalletModal}>
                     Wrong Network
@@ -155,10 +154,6 @@ const Web3ConnectStatus = observer((props) => {
                 
             );
         }
-    }
-
-    if (!contextNetwork.active && !active) {
-        return null;
     }
 
     return (
