@@ -86,13 +86,17 @@ const SellInput = observer((props) => {
     const [sellInputStatus, setSellInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
-    const price = tradingStore.formatSellPrice();
-    const rewardForSell = tradingStore.rewardForSell;
+    const price = (sellInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
+    const rewardForSell = (sellInputStatus == "") ? bnum(0) : tradingStore.rewardForSell;
     let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
     const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
+    }
+    
+    if (sellInputStatus == "" && tradingStore.sellAmount != 0) {
+      tradingStore.setSellAmount(bnum(0));
     }
 
     const validateNumber = async (value) => {
