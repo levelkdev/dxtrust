@@ -106,6 +106,7 @@ const BondingCurveChart = observer(({}) => {
             buySlopeDen,
             initGoal,
             initReserve,
+            state: datState
         });
 
         if (initGoal && initGoal.gt(0)) {
