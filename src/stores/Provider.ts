@@ -8,6 +8,7 @@ import { supportedChainId, web3ContextNames } from '../provider/connectors';
 import PromiEvent from 'promievent';
 import { TXEvents } from '../types';
 import moment from 'moment';
+import { schema } from '../services/ABIService';
 
 export enum ContractTypes {
     ERC20 = 'ERC20',
@@ -17,18 +18,8 @@ export enum ContractTypes {
     RewardsDistributor = 'RewardsDistributor',
     StaticCurveLogic = 'StaticCurveLogic',
     DecentralizedAutonomousTrust = 'DecentralizedAutonomousTrust',
+    Multicall = 'Multicall'
 }
-
-export const schema = {
-    ERC20: require('../contracts/ERC20').abi,
-    BondedToken: require('../contracts/ERC20').abi,
-    BondingCurve: require('../contracts/ERC20').abi,
-    BondingCurveEther: require('../contracts/ERC20').abi,
-    RewardsDistributor: require('../contracts/ERC20').abi,
-    StaticCurveLogic: require('../contracts/ERC20').abi,
-    DecentralizedAutonomousTrust: require('../contracts/DecentralizedAutonomousTrust')
-        .abi,
-};
 
 export interface ChainData {
     currentBlockNumber: number;
@@ -154,6 +145,10 @@ export default class ProviderStore {
             contextInjected.chainId === supportedChainId
             ? contextInjected
             : contextBackup;
+    }
+
+    getBackupWeb3React(): Web3ReactContextInterface {
+        return this.web3Contexts[web3ContextNames.backup];;
     }
 
     getWeb3React(name): Web3ReactContextInterface {

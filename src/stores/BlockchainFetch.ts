@@ -4,6 +4,7 @@ import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { supportedChainId } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
+import { ContractTypes } from './Provider';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
@@ -25,6 +26,7 @@ export default class BlockchainFetchStore {
                 configStore,
                 tokenStore,
                 tradingStore,
+                multicallService
             } = this.rootStore;
 
             library.eth
@@ -51,6 +53,25 @@ export default class BlockchainFetchStore {
 
                         // Set block number
                         providerStore.setCurrentBlockNumber(blockNumber);
+
+                        multicallService.addCall({
+                            contractType: ContractTypes.ERC20,
+                            address: configStore.activeDatAddress,
+                            method: 'totalSupply',
+                            params: []
+                        });
+
+                        multicallService.executeActiveCalls().then(response => {
+                            console.log('multicallService', response);
+                            const {calls, results, blockNumber} = response;
+                            calls.forEach((call, index) => {
+                                const response = results[index];
+                                console.log(multicallService.decodeCall(call, response).toString());
+                            })
+                        }).catch(e => {
+                            console.warn(e);
+
+                        });
 
                         // Get global blockchain data
                         tokenStore.fetchTotalSupplies(web3React, [configStore.activeDatAddress]);

@@ -1,6 +1,7 @@
 {
   "contracts": {
     "kovan": {
+      "multicall": "0x2cc8688c5f75e365aaeeb4ea8d6a480405a48d2a",
       "DAT": "0xdfF860a86E59a4F41f8569054607077084b2bd20",
       "collateral": "0x0000000000000000000000000000000000000000",
       "DATinfo": {
@@ -19,7 +20,7 @@
       }
     },
     "develop": {
-      "DAT": "0x156b3ce02C54Cbe22DD596FdC94D331253032f88",
+      "DAT": "0x349E69d35ca72F3b2EADb01DA3AB13508445D6D4",
       "collateral": "0x0000000000000000000000000000000000000000",
       "DATinfo": {
         "collateralType": "ETH",
@@ -33,7 +34,7 @@
         "investmentReserveBasisPoints": "1000",
         "revenueCommitmentBasisPoints": "1000",
         "minInvestment": "100000000000000000",
-        "implementationAddress": "0x009c1F472dAD7e766b16F8987D8C756744Ec78fe"
+        "implementationAddress": "0x465D142B16C7ee9FA6715BC215B20D1328fcE845"
       }
     }
   }
