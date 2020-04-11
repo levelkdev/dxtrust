@@ -42,20 +42,6 @@ interface TokenBalanceMap {
     };
 }
 
-export interface TokenMetadata {
-    address: string;
-    symbol: string;
-    decimals: number;
-    iconAddress: string;
-    precision: number;
-}
-
-interface BlockNumberMap {
-    [index: number]: {
-        [index: string]: number;
-    };
-}
-
 interface UserAllowanceMap {
     [index: string]: {
         [index: string]: {
@@ -215,17 +201,6 @@ export default class TokenStore {
         this.allowances = chainApprovals;
     }
 
-    private setTotalSupplyProperty(
-        tokenAddress: string,
-        totalSupply: BigNumber,
-        blockFetched: number
-    ): void {
-        this.totalSupplies[tokenAddress] = {
-            totalSupply: totalSupply,
-            lastFetched: blockFetched,
-        };
-    }
-
     private setBalanceProperty(
         tokenAddress: string,
         account: string,
@@ -247,8 +222,16 @@ export default class TokenStore {
     }
 
     getTotalSupply(tokenAddress: string): BigNumber | undefined {
-        if (this.totalSupplies[tokenAddress]) {
-            return this.totalSupplies[tokenAddress].totalSupply;
+        const {blockchainStore} = this.rootStore;
+        const entry = {
+            contractType: ContractTypes.ERC20,
+            address: tokenAddress,
+            method: 'totalSupply',
+            params: []
+        };
+
+        if (blockchainStore.has(entry)) {
+            return bnum(blockchainStore.get(entry).value);
         } else {
             return undefined;
         }
@@ -313,48 +296,6 @@ export default class TokenStore {
             'approve',
             [spender, 0]
         );
-    };
-
-    @action fetchTotalSupplies = async (
-        web3React: Web3ReactContextInterface,
-        tokensToTrack: string[]
-    ): Promise<FetchCode> => {
-        const { providerStore } = this.rootStore;
-
-        const promises: Promise<any>[] = [];
-        const fetchBlock = providerStore.getCurrentBlockNumber();
-        tokensToTrack.forEach((value, index) => {
-            promises.push(this.fetchTotalSupply(web3React, value, fetchBlock));
-        });
-
-        let allFetchesSuccess = true;
-
-        try {
-            const responses = await Promise.all(promises);
-            responses.forEach((response) => {
-                if (response instanceof TotalSupplyFetch) {
-                    const { status, request, payload } = response;
-
-                    if (status === AsyncStatus.SUCCESS) {
-                        this.setTotalSupplyProperty(
-                            request.tokenAddress,
-                            payload.totalSupply,
-                            payload.lastFetched
-                        );
-                    } else {
-                        allFetchesSuccess = false;
-                    }
-                }
-            });
-
-            if (allFetchesSuccess) {
-                console.debug('[All Fetches Success]');
-            }
-        } catch (e) {
-            console.error('[Fetch] Total Supply Data', { error: e });
-            return FetchCode.FAILURE;
-        }
-        return FetchCode.SUCCESS;
     };
 
     @action fetchTokenBalances = async (
@@ -485,71 +426,6 @@ export default class TokenStore {
         );
     };
 
-    @action fetchTotalSupply = async (
-        web3React: Web3ReactContextInterface,
-        tokenAddress: string,
-        fetchBlock: number
-    ): Promise<TotalSupplyFetch> => {
-        const { providerStore } = this.rootStore;
-        const token = providerStore.getContract(
-            web3React,
-            ContractTypes.ERC20,
-            tokenAddress
-        );
-
-        const stale =
-            fetchBlock <= this.getTotalSupplyLastFetched(tokenAddress);
-        if (!stale) {
-            try {
-                const totalSupply = bnum(await token.methods.totalSupply().call());
-
-                const stale =
-                    fetchBlock <= this.getTotalSupplyLastFetched(tokenAddress);
-                if (!stale) {
-                    console.debug('[Total Supply Fetch]', {
-                        tokenAddress,
-                        totalSupply: totalSupply.toString(),
-                        fetchBlock,
-                    });
-                    return new TotalSupplyFetch({
-                        status: AsyncStatus.SUCCESS,
-                        request: {
-                            tokenAddress,
-                            fetchBlock,
-                        },
-                        payload: {
-                            totalSupply,
-                            lastFetched: fetchBlock,
-                        },
-                    });
-                }
-            } catch (e) {
-                return new TotalSupplyFetch({
-                    status: AsyncStatus.FAILURE,
-                    request: {
-                        tokenAddress,
-                        fetchBlock,
-                    },
-                    payload: undefined,
-                    error: e.message,
-                });
-            }
-        } else {
-            console.debug('[Total Supply Fetch] - Stale', {
-                tokenAddress,
-                fetchBlock,
-            });
-            return new TotalSupplyFetch({
-                status: AsyncStatus.STALE,
-                request: {
-                    tokenAddress,
-                    fetchBlock,
-                },
-                payload: undefined,
-            });
-        }
-    };
-
     @action fetchAllowance = async (
         web3React: Web3ReactContextInterface,
         tokenAddress: string,
@@ -670,17 +546,6 @@ export default class TokenStore {
                         return userApprovals[spender].allowance;
                     }
                 }
-            }
-        }
-        return undefined;
-    };
-
-    getTotalSupplyLastFetched = (tokenAddress): number | undefined => {
-        const totalSupplies = this.totalSupplies;
-        if (totalSupplies) {
-            const totalSupply = totalSupplies[tokenAddress];
-            if (totalSupply) {
-                return totalSupply.lastFetched;
             }
         }
         return undefined;

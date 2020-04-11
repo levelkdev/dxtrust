@@ -27,27 +27,34 @@ export default class BlockchainStore {
         this.store = {};
     }
 
-    reduceMulticall(calls: Call[], result: any, blockNumber: number): Entry[] {
+    reduceMulticall(calls: Call[], results: any, blockNumber: number): Entry[] {
+        const { multicallService } = this.rootStore;
+        console.log(calls, results, blockNumber);
         return calls.map((call, index) => {
-            const value = result[index];
+            const value = results[index];
             return {
                 contractType: call.contractType,
                 address: call.address,
                 method: call.method,
                 params: call.params,
-                value: result[index],
+                value: multicallService.decodeCall(call, results[index]),
                 lastFetched: blockNumber,
             };
         });
     }
 
     has(entry: StoreEntry): boolean {
-        return !!this.store[entry.contractType][entry.address][entry.method][
-            entry.params.toString()
-        ];
+        return (
+            !!this.store[entry.contractType] &&
+            !!this.store[entry.contractType][entry.address] &&
+            !!this.store[entry.contractType][entry.address][entry.method] &&
+            !!this.store[entry.contractType][entry.address][entry.method][
+                entry.params.toString()
+            ]
+        );
     }
 
-    get(entry: StoreEntry): any {
+    get(entry: StoreEntry): Entry | undefined {
         if (this.has(entry)) {
             return this.store[entry.contractType][entry.address][entry.method][
                 entry.params.toString()

@@ -5,6 +5,7 @@ import { supportedChainId } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
 import { ContractTypes } from './Provider';
+import blockchainStore from './BlockchainStore';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
@@ -26,7 +27,8 @@ export default class BlockchainFetchStore {
                 configStore,
                 tokenStore,
                 tradingStore,
-                multicallService
+                multicallService,
+                blockchainStore,
             } = this.rootStore;
 
             library.eth
@@ -54,27 +56,51 @@ export default class BlockchainFetchStore {
                         // Set block number
                         providerStore.setCurrentBlockNumber(blockNumber);
 
+                        // Get global blockchain data
                         multicallService.addCall({
                             contractType: ContractTypes.ERC20,
                             address: configStore.activeDatAddress,
                             method: 'totalSupply',
-                            params: []
+                            params: [],
                         });
 
-                        multicallService.executeActiveCalls().then(response => {
-                            console.log('multicallService', response);
-                            const {calls, results, blockNumber} = response;
-                            calls.forEach((call, index) => {
-                                const response = results[index];
-                                console.log(multicallService.decodeCall(call, response).toString());
+                        // Get user-specific blockchain data
+                        if (account) {
+                            multicallService.addCall({
+                                contractType: ContractTypes.ERC20,
+                                address: configStore.activeDatAddress,
+                                method: 'balanceOf',
+                                params: [account],
+                            });
+
+                            multicallService.addCall({
+                                contractType: ContractTypes.ERC20,
+                                address: configStore.activeDatAddress,
+                                method: 'allowance',
+                                params: [account, configStore.activeDatAddress],
+                            });
+                        }
+
+                        multicallService
+                            .executeActiveCalls()
+                            .then((response) => {
+                                const {
+                                    calls,
+                                    results,
+                                    blockNumber,
+                                } = response;
+                                const updates = blockchainStore.reduceMulticall(
+                                    calls,
+                                    results,
+                                    blockNumber
+                                );
+                                blockchainStore.updateStore(updates);
+                                multicallService.resetActiveCalls();
                             })
-                        }).catch(e => {
-                            console.warn(e);
-
-                        });
-
-                        // Get global blockchain data
-                        tokenStore.fetchTotalSupplies(web3React, [configStore.activeDatAddress]);
+                            .catch((e) => {
+                                console.warn(e);
+                                multicallService.resetActiveCalls();
+                            });
 
                         datStore
                             .fetchRecentTrades(configStore.activeDatAddress, 10)
@@ -82,23 +108,43 @@ export default class BlockchainFetchStore {
                                 tradingStore.setRecentTrades(trades);
                             });
 
-                        if (!datStore.areAllStaticParamsLoaded(configStore.activeDatAddress)) {
-                            datStore.fetchStaticParams(configStore.activeDatAddress);
+                        if (
+                            !datStore.areAllStaticParamsLoaded(
+                                configStore.activeDatAddress
+                            )
+                        ) {
+                            datStore.fetchStaticParams(
+                                configStore.activeDatAddress
+                            );
                         }
 
-                        datStore.fetchState(configStore.activeDatAddress).then(state => datStore.setDatInfo(configStore.activeDatAddress, {
-                            state: {
-                                value: state,
-                                blockNumber
-                            }
-                        }));
+                        datStore
+                            .fetchState(configStore.activeDatAddress)
+                            .then((state) =>
+                                datStore.setDatInfo(
+                                    configStore.activeDatAddress,
+                                    {
+                                        state: {
+                                            value: state,
+                                            blockNumber,
+                                        },
+                                    }
+                                )
+                            );
 
-                        datStore.fetchReserveBalance(configStore.activeDatAddress).then(reserveBalance => datStore.setDatInfo(configStore.activeDatAddress, {
-                            reserveBalance: {
-                                value: reserveBalance,
-                                blockNumber
-                            }
-                        }));
+                        datStore
+                            .fetchReserveBalance(configStore.activeDatAddress)
+                            .then((reserveBalance) =>
+                                datStore.setDatInfo(
+                                    configStore.activeDatAddress,
+                                    {
+                                        reserveBalance: {
+                                            value: reserveBalance,
+                                            blockNumber,
+                                        },
+                                    }
+                                )
+                            );
 
                         datStore
                             .fetchMinInvestment(configStore.activeDatAddress)
@@ -109,13 +155,16 @@ export default class BlockchainFetchStore {
                                 );
                             })
                             .then(async () => {
-                                const minValue = normalizeBalance(datStore.getMinInvestment(configStore.activeDatAddress));
+                                const minValue = normalizeBalance(
+                                    datStore.getMinInvestment(
+                                        configStore.activeDatAddress
+                                    )
+                                );
 
                                 if (
-                                    validateTokenValue(
-                                        tradingStore.buyAmount,
-                                        {minValue}
-                                    ) === ValidationStatus.VALID
+                                    validateTokenValue(tradingStore.buyAmount, {
+                                        minValue,
+                                    }) === ValidationStatus.VALID
                                 ) {
                                     const weiValue = denormalizeBalance(
                                         tradingStore.buyAmount
