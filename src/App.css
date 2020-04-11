@@ -2,6 +2,7 @@
     --active-button-border: #304ffe;
     --orange: #f9aa33;
     --blue-text: #536DFE;
+    --red-text: #FF4081;
     --blue-onHover: #4864FE;
     --blue-onHover-border: #2545FE;
     --wrong-network-border: #D81B60;
@@ -25,7 +26,9 @@
     --light-gray: #FAFAFA; /*Site background*/
     --line-gray: rgba(225, 227, 231, 0.4);
     --turquois-text: #2d9cdb;
+    --turquois-text-onHover: #226C96;
     --white: #ffffff;
+    --gridLine: rgba(232, 234, 246, 0.5);
 
     --rewards-text-green: #54ae6f;
     --rewards-background-green: rgba(84, 174, 111, 0.1);
@@ -39,9 +42,6 @@ body {
     justify-content: center;
     font-family: var(--roboto);
     background-color: var(--light-gray);
-    src: url('/public/fonts/Roboto-Regular.ttf');
-    src: url('/public/fonts/Roboto-Medium.ttf');
-    src: url('/public/fonts/Roboto-Bold.ttf');
 }
 
 .app-shell {

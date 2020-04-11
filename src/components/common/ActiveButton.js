@@ -7,6 +7,8 @@ const Button = styled.div`
     border-radius: 4px;
     color: white;
     height: 34px;
+    letter-spacing: 1px;
+    font-weight: 500;
     line-height: 34px;
     text-align: center;
     text-transform: uppercase;

@@ -84,7 +84,7 @@ const SellSign = observer((props) => {
                 Sign Transaction...
                 <PendingCircle />
             </SignTransaction>
-            <Button active={false}>{sellText} DXD</Button>
+            <Button active={false}>{sellText} {sellText  == "Withdraw" ? 'ETH' : 'DXD'}</Button>
         </FormWrapper>
     );
 });

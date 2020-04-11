@@ -11,6 +11,7 @@ const TradingHistoryWrapper = styled.div`
     padding-bottom: 24px;
     border: 1px solid var(--medium-gray);
     margin-top: 24px;
+    font-weight: 400;
     border-radius: 4px;
 `;
 
@@ -30,7 +31,6 @@ const TableHeadersWrapper = styled.div`
     color: var(--light-text-gray);
     padding: 20px 24px 8px;
     font-size: 14px;
-    font-weight: 500;
     text-align: right;
 `;
 
@@ -45,7 +45,6 @@ const TableRowsWrapper = styled.div`
 
 const TableRow = styled.div`
     font-size: 16px;
-    font-weight: 500;
     line-height: 18px;
     display: flex;
     flex-direction: row;
@@ -57,13 +56,22 @@ const TableRow = styled.div`
 `;
 
 const TableCell = styled.div`
-    font-weight: 500;
     a {
         text-decoration: none;
         width: 100%;
+
+        &:hover{
+            color: var(--turquois-text-onHover);
+        }
     }
     color: ${(props) => props.color};
-    width: ${(props) => props.width || '23%'};
+    width: ${(props) => props.width || '23%'}
+    text-align: ${(props) => props.align};
+    font-weight: ${(props) => props.weight};
+`;
+
+const TableCellType = styled(TableCell)`
+    text-align: left;
 `;
 
 const TradingHistory = observer(() => {
@@ -94,7 +102,8 @@ const TradingHistory = observer(() => {
                                 ? 'var(--blue-text)'
                                 : 'var(--red-text)'
                         }
-                        className="blue-text align-left"
+                        align="left"
+                        weight='500'
                     >
                         {trade.type}
                     </TableCell>
