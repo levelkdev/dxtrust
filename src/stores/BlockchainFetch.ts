@@ -6,6 +6,7 @@ import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
 import { ContractType } from './Provider';
 import blockchainStore from './BlockchainStore';
+import { TransactionState } from './TradingForm';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
@@ -102,6 +103,18 @@ export default class BlockchainFetchStore {
                                     blockNumber
                                 );
                                 blockchainStore.updateStore(updates);
+
+                                if (
+                                    tokenStore.hasMaxApproval(
+                                        configStore.activeDatAddress,
+                                        account,
+                                        configStore.activeDatAddress
+                                    )
+                                ) {
+                                    tradingStore.enableDXDState =
+                                        TransactionState.APPROVED;
+                                }
+
                                 multicallService.resetActiveCalls();
                             })
                             .catch((e) => {
@@ -185,16 +198,6 @@ export default class BlockchainFetchStore {
                                     tradingStore.handleBuyReturn(buyReturn);
                                 }
                             });
-
-                        // Get user-specific blockchain data
-                        if (account) {
-                            tokenStore.fetchAccountApprovals(
-                                web3React,
-                                [configStore.getDXDTokenAddress()],
-                                account,
-                                configStore.activeDatAddress
-                            );
-                        }
                     }
                 })
                 .catch((error) => {
