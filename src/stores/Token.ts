@@ -54,16 +54,10 @@ export const EtherKey = 'ether';
 
 export default class TokenStore {
     @observable symbols = {};
-    @observable balances: TokenBalanceMap;
-    @observable allowances: UserAllowanceMap;
-    @observable totalSupplies: TotalSupplyMap;
     rootStore: RootStore;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
-        this.balances = {} as TokenBalanceMap;
-        this.allowances = {} as UserAllowanceMap;
-        this.totalSupplies = {} as TotalSupplyMap;
     }
 
     getTotalSupply(tokenAddress: string): BigNumber | undefined {
