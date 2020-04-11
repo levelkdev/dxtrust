@@ -4,7 +4,7 @@ import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { supportedChainId } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
-import { ContractTypes } from './Provider';
+import { ContractType } from './Provider';
 import blockchainStore from './BlockchainStore';
 
 export default class BlockchainFetchStore {
@@ -58,7 +58,7 @@ export default class BlockchainFetchStore {
 
                         // Get global blockchain data
                         multicallService.addCall({
-                            contractType: ContractTypes.ERC20,
+                            contractType: ContractType.ERC20,
                             address: configStore.activeDatAddress,
                             method: 'totalSupply',
                             params: [],
@@ -67,14 +67,21 @@ export default class BlockchainFetchStore {
                         // Get user-specific blockchain data
                         if (account) {
                             multicallService.addCall({
-                                contractType: ContractTypes.ERC20,
+                                contractType: ContractType.Multicall,
+                                address: configStore.getMulticallAddress(),
+                                method: 'getEthBalance',
+                                params: [account],
+                            });
+
+                            multicallService.addCall({
+                                contractType: ContractType.ERC20,
                                 address: configStore.activeDatAddress,
                                 method: 'balanceOf',
                                 params: [account],
                             });
 
                             multicallService.addCall({
-                                contractType: ContractTypes.ERC20,
+                                contractType: ContractType.ERC20,
                                 address: configStore.activeDatAddress,
                                 method: 'allowance',
                                 params: [account, configStore.activeDatAddress],
@@ -181,11 +188,6 @@ export default class BlockchainFetchStore {
 
                         // Get user-specific blockchain data
                         if (account) {
-                            tokenStore.fetchTokenBalances(web3React, account, [
-                                'ether',
-                                configStore.getDXDTokenAddress(),
-                            ]);
-
                             tokenStore.fetchAccountApprovals(
                                 web3React,
                                 [configStore.getDXDTokenAddress()],

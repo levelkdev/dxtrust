@@ -1,6 +1,6 @@
 import RootStore from 'stores/Root';
 import { BigNumber } from '../utils/bignumber';
-import { ContractTypes } from './Provider';
+import { ContractType } from './Provider';
 import { action, observable } from 'mobx';
 import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
@@ -129,7 +129,7 @@ export default class DatStore {
         const { providerStore } = this.rootStore;
         return providerStore.getContract(
             providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
+            ContractType.DecentralizedAutonomousTrust,
             datAddress
         );
     }
@@ -501,7 +501,7 @@ export default class DatStore {
 
         return providerStore.sendTransaction(
             providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
+            ContractType.DecentralizedAutonomousTrust,
             datAddress,
             'buy',
             [to, currencyValue.toString(), minTokensBought.toString()],
@@ -520,7 +520,7 @@ export default class DatStore {
 
         return providerStore.sendTransaction(
             providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
+            ContractType.DecentralizedAutonomousTrust,
             datAddress,
             'sell',
             [to, quantityToSell.toString(), minCurrencyReturned.toString()]

@@ -10,7 +10,7 @@ import { TXEvents } from '../types';
 import moment from 'moment';
 import { schema } from '../services/ABIService';
 
-export enum ContractTypes {
+export enum ContractType {
     ERC20 = 'ERC20',
     BondedToken = 'BondedToken',
     BondingCurve = 'BondingCurve',
@@ -106,7 +106,7 @@ export default class ProviderStore {
 
     getContract(
         web3React: Web3ReactContextInterface,
-        type: ContractTypes,
+        type: ContractType,
         address: string,
         signerAccount?: string
     ): ethers.Contract {
@@ -165,7 +165,7 @@ export default class ProviderStore {
 
     @action sendTransaction = (
         web3React: Web3ReactContextInterface,
-        contractType: ContractTypes,
+        contractType: ContractType,
         contractAddress: string,
         action: string,
         params: any[],

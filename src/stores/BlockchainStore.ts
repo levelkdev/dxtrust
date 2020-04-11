@@ -31,13 +31,13 @@ export default class BlockchainStore {
         const { multicallService } = this.rootStore;
         console.log(calls, results, blockNumber);
         return calls.map((call, index) => {
-            const value = results[index];
+            const value = multicallService.decodeCall(call, results[index]);
             return {
                 contractType: call.contractType,
                 address: call.address,
                 method: call.method,
                 params: call.params,
-                value: multicallService.decodeCall(call, results[index]),
+                value: value,
                 lastFetched: blockNumber,
             };
         });

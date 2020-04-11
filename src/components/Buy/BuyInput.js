@@ -113,7 +113,7 @@ const BuyInput = observer((props) => {
     };
 
     const validateNumber = async (value) => {
-        const ETHBalance = (account) ? tokenStore.getBalance('ether', account) : 0;
+        const ETHBalance = (account) ? tokenStore.getEtherBalance(account) : 0;
         value = value.replace(/^0+/, '');
         disconnectedError = (account == null) ? true : false;
 

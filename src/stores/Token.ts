@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 import RootStore from 'stores/Root';
-import { ContractTypes } from 'stores/Provider';
+import { ContractType } from 'stores/Provider';
 import * as helpers from 'utils/helpers';
 import { bnum } from 'utils/helpers';
 import { parseEther } from 'ethers/utils';
@@ -64,25 +64,6 @@ export default class TokenStore {
         this.balances = {} as TokenBalanceMap;
         this.allowances = {} as UserAllowanceMap;
         this.totalSupplies = {} as TotalSupplyMap;
-    }
-
-    getAccountBalances(
-        tokenAddresses: string[],
-        account: string
-    ): BigNumberMap {
-        const result: BigNumberMap = {};
-        tokenAddresses.forEach((tokenAddress) => {
-            if (
-                this.balances[tokenAddress] &&
-                this.balances[tokenAddress][account]
-            ) {
-                result[tokenAddress] = this.balances[tokenAddress][
-                    account
-                ].balance;
-            }
-        });
-
-        return result;
     }
 
     areAccountApprovalsLoaded(
@@ -201,30 +182,10 @@ export default class TokenStore {
         this.allowances = chainApprovals;
     }
 
-    private setBalanceProperty(
-        tokenAddress: string,
-        account: string,
-        balance: BigNumber,
-        blockFetched: number
-    ): void {
-        const chainBalances = this.balances;
-
-        if (!chainBalances[tokenAddress]) {
-            chainBalances[tokenAddress] = {};
-        }
-
-        chainBalances[tokenAddress][account] = {
-            balance: balance,
-            lastFetched: blockFetched,
-        };
-
-        this.balances = chainBalances;
-    }
-
     getTotalSupply(tokenAddress: string): BigNumber | undefined {
         const {blockchainStore} = this.rootStore;
         const entry = {
-            contractType: ContractTypes.ERC20,
+            contractType: ContractType.ERC20,
             address: tokenAddress,
             method: 'totalSupply',
             params: []
@@ -237,34 +198,36 @@ export default class TokenStore {
         }
     }
 
-    getBalance(tokenAddress: string, account: string): BigNumber | undefined {
-        const tokenBalances = this.balances[tokenAddress];
-        if (tokenBalances) {
-            const balance = tokenBalances[account];
-            if (balance) {
-                if (balance.balance) {
-                    return balance.balance;
-                }
-            }
-        }
+    getEtherBalance(account: string) {
+        const {blockchainStore, configStore} = this.rootStore;
+        const entry = {
+            contractType: ContractType.Multicall,
+            address: configStore.getMulticallAddress(),
+            method: 'getEthBalance',
+            params: [account]
+        };
 
-        return undefined;
+        if (blockchainStore.has(entry)) {
+            return bnum(blockchainStore.get(entry).value);
+        } else {
+            return undefined;
+        }
     }
 
-    private getBalanceLastFetched(
-        tokenAddress: string,
-        account: string
-    ): number | undefined {
-        const tokenBalances = this.balances[tokenAddress];
-        if (tokenBalances) {
-            const balance = tokenBalances[account];
-            if (balance) {
-                if (balance.lastFetched) {
-                    return balance.lastFetched;
-                }
-            }
+    getBalance(tokenAddress: string, account: string): BigNumber | undefined {
+        const {blockchainStore} = this.rootStore;
+        const entry = {
+            contractType: ContractType.ERC20,
+            address: tokenAddress,
+            method: 'balanceOf',
+            params: [account]
+        };
+
+        if (blockchainStore.has(entry)) {
+            return bnum(blockchainStore.get(entry).value);
+        } else {
+            return undefined;
         }
-        return undefined;
     }
 
     @action approveMax = (
@@ -275,7 +238,7 @@ export default class TokenStore {
         const { providerStore, tradingStore } = this.rootStore;
         return providerStore.sendTransaction(
             web3React,
-            ContractTypes.ERC20,
+            ContractType.ERC20,
             tokenAddress,
             'approve',
             [spender, helpers.MAX_UINT.toString()]
@@ -291,124 +254,11 @@ export default class TokenStore {
         const { providerStore } = this.rootStore;
         return providerStore.sendTransaction(
             web3React,
-            ContractTypes.ERC20,
+            ContractType.ERC20,
             tokenAddress,
             'approve',
             [spender, 0]
         );
-    };
-
-    @action fetchTokenBalances = async (
-        web3React: Web3ReactContextInterface,
-        account: string,
-        tokensToTrack: string[]
-    ): Promise<FetchCode> => {
-        const { providerStore } = this.rootStore;
-        const promises: Promise<any>[] = [];
-        const fetchBlock = providerStore.getCurrentBlockNumber();
-        tokensToTrack.forEach((value, index) => {
-            promises.push(
-                this.fetchBalanceOf(web3React, value, account, fetchBlock)
-            );
-        });
-
-        let allFetchesSuccess = true;
-
-        try {
-            const responses = await Promise.all(promises);
-            responses.forEach((response) => {
-                if (response instanceof TokenBalanceFetch) {
-                    const { status, request, payload } = response;
-                    if (status === AsyncStatus.SUCCESS) {
-                        this.setBalanceProperty(
-                            request.tokenAddress,
-                            request.account,
-                            payload.balance,
-                            payload.lastFetched
-                        );
-                    } else {
-                        allFetchesSuccess = false;
-                    }
-                }
-            });
-
-            if (allFetchesSuccess) {
-                console.debug('[All Fetches Success]');
-            }
-        } catch (e) {
-            console.error('[Fetch] Token Data', { error: e });
-            return FetchCode.FAILURE;
-        }
-        return FetchCode.SUCCESS;
-    };
-
-    @action fetchBalanceOf = async (
-        web3React: Web3ReactContextInterface,
-        tokenAddress: string,
-        account: string,
-        fetchBlock: number
-    ): Promise<TokenBalanceFetch> => {
-        const { providerStore } = this.rootStore;
-
-        /* Before and after the network operation, check for staleness
-            If the fetch is stale, don't do network call
-            If the fetch is stale after network call, don't set DB variable
-        */
-        const stale =
-            fetchBlock <= this.getBalanceLastFetched(tokenAddress, account);
-        if (!stale) {
-            let balance;
-
-            if (tokenAddress === EtherKey) {
-                const { library } = web3React;
-                balance = bnum(await library.eth.getBalance(account));
-            } else {
-                const token = providerStore.getContract(
-                    web3React,
-                    ContractTypes.ERC20,
-                    tokenAddress
-                );
-                balance = bnum(await token.methods.balanceOf(account).call());
-            }
-
-            const stale =
-                fetchBlock <= this.getBalanceLastFetched(tokenAddress, account);
-            if (!stale) {
-                console.debug('[Balance Fetch]', {
-                    tokenAddress,
-                    account,
-                    balance: balance.toString(),
-                    fetchBlock,
-                });
-                return new TokenBalanceFetch({
-                    status: AsyncStatus.SUCCESS,
-                    request: {
-                        tokenAddress,
-                        account,
-                        fetchBlock,
-                    },
-                    payload: {
-                        balance,
-                        lastFetched: fetchBlock,
-                    },
-                });
-            }
-        } else {
-            console.debug('[Balance Fetch] - Stale', {
-                tokenAddress,
-                account,
-                fetchBlock,
-            });
-            return new TokenBalanceFetch({
-                status: AsyncStatus.STALE,
-                request: {
-                    tokenAddress,
-                    account,
-                    fetchBlock,
-                },
-                payload: undefined,
-            });
-        }
     };
 
     @action mint = async (
@@ -419,7 +269,7 @@ export default class TokenStore {
         const { providerStore } = this.rootStore;
         await providerStore.sendTransaction(
             web3React,
-            ContractTypes.ERC20,
+            ContractType.ERC20,
             tokenAddress,
             'mint',
             [parseEther(amount).toString()]
@@ -454,7 +304,7 @@ export default class TokenStore {
 
         const token = providerStore.getContract(
             web3React,
-            ContractTypes.ERC20,
+            ContractType.ERC20,
             tokenAddress
         );
 
