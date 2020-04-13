@@ -385,16 +385,12 @@ export default class DatStore {
     }
 
     async fetchSpotPrice(datAddress: string): Promise<BigNumber> {
-        console.log('spotTokens');
-
         const minInvestment = this.getMinInvestment(datAddress);
         const spotTokens = await this.estimateBuyValue(
             datAddress,
             minInvestment
         );
         const price = minInvestment.div(spotTokens);
-        console.log('spotTokens', spotTokens.toString());
-        console.log('price', price.toString());
         return price;
     }
 

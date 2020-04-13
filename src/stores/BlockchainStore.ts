@@ -75,50 +75,7 @@ export default class BlockchainStore {
         }
     }
 
-    // updateStore(entries: Entry[]) {
-    //     const updated = {};
-    //
-    //     entries.forEach((entry) => {
-    //         const params = entry.params ? entry.params : [];
-    //         if (!updated[entry.contractType]) {
-    //             updated[entry.contractType] = {};
-    //         }
-    //
-    //         if (!updated[entry.contractType][entry.address]) {
-    //             updated[entry.contractType][entry.address] = {};
-    //         }
-    //
-    //         if (!updated[entry.contractType][entry.address][entry.method]) {
-    //             updated[entry.contractType][entry.address][entry.method] = {};
-    //         }
-    //
-    //         if (
-    //             !updated[entry.contractType][entry.address][entry.method][
-    //                 params.toString()
-    //                 ]
-    //         ) {
-    //             updated[entry.contractType][entry.address][entry.method][
-    //                 params.toString()
-    //                 ] = {};
-    //         }
-    //
-    //         updated[entry.contractType][entry.address][entry.method][
-    //             params.toString()
-    //             ] = {
-    //             value: entry.value,
-    //             lastFetched: entry.lastFetched,
-    //         };
-    //     });
-    //
-    //     console.log('prepare for update', {...this.store}, updated);
-    //
-    //     this.store = {
-    //         ...this.store,
-    //         ...updated
-    //     };
-    // }
-
-    @action updateStore(entries: Entry[]) {
+    @action updateStore(entries: Entry[], blockNumber: number) {
         entries.forEach((entry) => {
             const params = entry.params ? entry.params : [];
             if (!this.store[entry.contractType]) {
@@ -143,12 +100,19 @@ export default class BlockchainStore {
                 ] = {};
             }
 
-            this.store[entry.contractType][entry.address][entry.method][
+            const oldEntry = this.store[entry.contractType][entry.address][entry.method][
                 params.toString()
-            ] = {
-                value: entry.value,
-                lastFetched: entry.lastFetched,
-            };
+                ];
+
+            // Set if never fetched, or if the new data isn't stale
+            if (!oldEntry.lastFetched || (oldEntry.lastFetched && oldEntry.lastFetched <= blockNumber)) {
+                this.store[entry.contractType][entry.address][entry.method][
+                    params.toString()
+                    ] = {
+                    value: entry.value,
+                    lastFetched: entry.lastFetched,
+                };
+            }
         });
     }
 }

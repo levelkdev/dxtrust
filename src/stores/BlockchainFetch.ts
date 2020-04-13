@@ -181,9 +181,7 @@ export default class BlockchainFetchStore {
                                     results,
                                     blockNumber
                                 );
-                                console.log('updates', updates, blockNumber);
-                                blockchainStore.updateStore(updates);
-                                console.log('post Updates', updates, blockNumber);
+                                blockchainStore.updateStore(updates, blockNumber);
 
                                 this.refreshDXDApprovalState(account);
                                 this.refreshBuyFormPreview();
