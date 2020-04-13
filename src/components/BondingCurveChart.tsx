@@ -13,7 +13,6 @@ import COrgSim from '../services/contractSimulators/cOrgSim';
 import { BigNumber } from '../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { bnum } from '../utils/helpers';
-import { DatState } from '../stores/datStore';
 import { roundUpToScale } from '../utils/number';
 
 const ChartPanelWrapper = styled.div`
@@ -37,7 +36,8 @@ const ChartBox = styled.div`
 
 const ChartHeaderFullElement = styled.div`
     color: var(--dark-text-gray);
-    padding: 10px;
+    padding: 10px 0px 10px 10px;
+    width:100%;
 `;
 
 const ChartHeaderTopElement = styled.div`
@@ -47,8 +47,9 @@ const ChartHeaderTopElement = styled.div`
 `;
 
 const ChartHeaderBottomElement = styled.div`
-    font-size: 17px;
+    font-size: 18px;
     margin-top: 10px;
+    font-weight: 500;
 `;
 
 const ChartWrapper = styled.div`
@@ -65,9 +66,11 @@ interface ChartPoint {
     y: number;
 }
 
-const chartGreen = 'green';
+
+const chartGreen = '#54AE6F';
 const chartBlue = '#5b76fa';
-const chartGray = 'gray';
+const chartGray = '#9FA8DA';
+const gridLineColor = '#EAECF7';
 
 const BondingCurveChart = observer(({}) => {
     const {
@@ -312,6 +315,7 @@ const BondingCurveChart = observer(({}) => {
 
         const data = {
             datasets,
+            backgroundColor: '#000000',
         };
 
         const options = {
@@ -346,7 +350,7 @@ const BondingCurveChart = observer(({}) => {
                         display: true,
                         gridLines: {
                             display: true,
-                            color: '#E1E3E7',
+                            color: gridLineColor,
                         },
                         position: 'right',
                         ticks: {
@@ -406,8 +410,8 @@ const BondingCurveChart = observer(({}) => {
                             {requiredDataLoaded
                                 ? `${formatNumberValue(
                                       kickstarterPrice
-                                  )} DXD/ETH`
-                                : '- DXD/ETH'}
+                                  )} ETH`
+                                : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
@@ -416,7 +420,7 @@ const BondingCurveChart = observer(({}) => {
                         <ChartHeaderTopElement>
                             DXD Supply
                         </ChartHeaderTopElement>
-                        <ChartHeaderBottomElement className="green-text">
+                        <ChartHeaderBottomElement>
                             {requiredDataLoaded
                                 ? `${formatBalance(
                                       totalSupplyWithoutPremint
@@ -428,7 +432,7 @@ const BondingCurveChart = observer(({}) => {
                 <ChartBox>
                     <ChartHeaderFullElement>
                         <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
+                        <ChartHeaderBottomElement  className="green-text">
                             {requiredDataLoaded
                                 ? `${formatBalance(reserveBalance)} ETH`
                                 : '- ETH'}

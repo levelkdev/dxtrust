@@ -204,7 +204,7 @@ const SellInput = observer((props) => {
                         });
                 }}
             >
-                {sellText} DXD
+                {sellText} {sellText  == "Withdraw" ? 'ETH' : 'DXD'}
             </Button>
         </FormWrapper>
     );

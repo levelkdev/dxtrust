@@ -8,6 +8,7 @@ const Button = styled.div`
     color: var(--pending-text-gray);
     height: 34px;
     line-height: 34px;
+    letter-spacing: 1px;
     text-align: center;
     text-transform: uppercase;
 `;
