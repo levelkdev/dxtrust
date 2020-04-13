@@ -73,7 +73,7 @@ export default class TransactionStore {
                     this.isTxPending(value) &&
                     this.isStale(value, currentBlock)
                 ) {
-                    library
+                    library.eth
                         .getTransactionReceipt(value.hash)
                         .then((receipt) => {
                             value.blockNumberChecked = currentBlock;

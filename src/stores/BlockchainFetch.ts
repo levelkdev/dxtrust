@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, transaction } from 'mobx';
 import RootStore from 'stores/Root';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { supportedChainId } from '../provider/connectors';
@@ -67,6 +67,7 @@ export default class BlockchainFetchStore {
                 tradingStore,
                 multicallService,
                 blockchainStore,
+                transactionStore
             } = this.rootStore;
 
             library.eth
@@ -104,6 +105,8 @@ export default class BlockchainFetchStore {
 
                         // Get user-specific blockchain data
                         if (account) {
+                            transactionStore.checkPendingTransactions(web3React, account);
+
                             multicallService.addCall({
                                 contractType: ContractType.Multicall,
                                 address: configStore.getMulticallAddress(),
