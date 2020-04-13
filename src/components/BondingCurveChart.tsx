@@ -84,7 +84,7 @@ const BondingCurveChart = observer(({}) => {
     );
 
     const requiredDataLoaded =
-        staticParamsLoaded && !!totalSupply && !!datState && !!reserveBalance;
+        staticParamsLoaded && !!totalSupply && datState !== undefined && !!reserveBalance;
 
     let buySlopeNum,
         buySlopeDen,

@@ -6,7 +6,7 @@ export interface Call {
     contractType: string;
     address: string;
     method: string;
-    params: any[];
+    params?: any[];
 }
 
 // contractType-address-function(a,b)-[params]
@@ -41,6 +41,10 @@ export default class MulticallService {
         };
     }
 
+    addCalls(calls: Call[]) {
+        calls.forEach(call => this.addCall(call));
+    }
+
     addCall(call: Call) {
             this.addContractCall(call);
     }
@@ -48,6 +52,9 @@ export default class MulticallService {
     private addContractCall(call: Call) {
         const { abiService } = this.root;
         const iface = new Interface(abiService.getAbi(call.contractType));
+
+        call.params = call.params ? call.params : [];
+
         const encoded = iface.functions[call.method].encode(call.params);
         this.activeCallsRaw.push([call.address, encoded]);
         this.activeCalls.push(call);

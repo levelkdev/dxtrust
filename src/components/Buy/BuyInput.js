@@ -92,7 +92,7 @@ const BuyInput = observer((props) => {
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
     let txFailedError = (tradingStore.buyingState == 5) && (buyInputStatus == "") ? true : false;
     const datState = datStore.getState(configStore.activeDatAddress);
-    const requiredDataLoaded = !!datState;
+    const requiredDataLoaded = datState !== undefined;
     
     if (buyInputStatus == "" && tradingStore.payAmount != 0) {
       tradingStore.setPayAmount(bnum(0));

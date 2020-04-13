@@ -121,7 +121,6 @@ export default class TokenStore {
             'approve',
             [spender, helpers.MAX_UINT.toString()]
         );
-        tradingStore.enableDXDState = TransactionState.APPROVED;
     };
 
     @action revokeApproval = (

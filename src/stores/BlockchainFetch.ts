@@ -16,6 +16,43 @@ export default class BlockchainFetchStore {
         this.rootStore = rootStore;
     }
 
+    @action refreshDXDApprovalState(account) {
+        const { tokenStore, configStore, tradingStore } = this.rootStore;
+        if (
+            tokenStore.hasMaxApproval(
+                configStore.activeDatAddress,
+                account,
+                configStore.activeDatAddress
+            )
+        ) {
+            tradingStore.enableDXDState =
+                TransactionState.APPROVED;
+        }
+
+    }
+
+    @action async refreshBuyFormPreview() {
+        const { datStore, configStore, tradingStore } = this.rootStore;
+        const minValue = normalizeBalance(
+            datStore.getMinInvestment(configStore.activeDatAddress)
+        );
+
+        if (
+            validateTokenValue(tradingStore.buyAmount, {
+                minValue,
+            }) === ValidationStatus.VALID
+        ) {
+            const weiValue = denormalizeBalance(tradingStore.buyAmount);
+
+            const buyReturn = await datStore.fetchBuyReturn(
+                configStore.activeDatAddress,
+                weiValue
+            );
+
+            tradingStore.handleBuyReturn(buyReturn);
+        }
+    }
+
     @action setFetchLoop(
         web3React: Web3ReactContextInterface,
         forceFetch?: boolean
@@ -89,39 +126,6 @@ export default class BlockchainFetchStore {
                             });
                         }
 
-                        multicallService
-                            .executeActiveCalls()
-                            .then((response) => {
-                                const {
-                                    calls,
-                                    results,
-                                    blockNumber,
-                                } = response;
-                                const updates = blockchainStore.reduceMulticall(
-                                    calls,
-                                    results,
-                                    blockNumber
-                                );
-                                blockchainStore.updateStore(updates);
-
-                                if (
-                                    tokenStore.hasMaxApproval(
-                                        configStore.activeDatAddress,
-                                        account,
-                                        configStore.activeDatAddress
-                                    )
-                                ) {
-                                    tradingStore.enableDXDState =
-                                        TransactionState.APPROVED;
-                                }
-
-                                multicallService.resetActiveCalls();
-                            })
-                            .catch((e) => {
-                                console.warn(e);
-                                multicallService.resetActiveCalls();
-                            });
-
                         datStore
                             .fetchRecentTrades(configStore.activeDatAddress, 10)
                             .then((trades) => {
@@ -133,70 +137,60 @@ export default class BlockchainFetchStore {
                                 configStore.activeDatAddress
                             )
                         ) {
-                            datStore.fetchStaticParams(
-                                configStore.activeDatAddress
+                            multicallService.addCalls(
+                                datStore.genStaticParamCalls(
+                                    configStore.activeDatAddress
+                                )
                             );
                         }
 
-                        datStore
-                            .fetchState(configStore.activeDatAddress)
-                            .then((state) =>
-                                datStore.setDatInfo(
-                                    configStore.activeDatAddress,
-                                    {
-                                        state: {
-                                            value: state,
-                                            blockNumber,
-                                        },
-                                    }
-                                )
-                            );
+                        const baseDatCall = {
+                            contractType:
+                                ContractType.DecentralizedAutonomousTrust,
+                            address: configStore.activeDatAddress,
+                        };
 
-                        datStore
-                            .fetchReserveBalance(configStore.activeDatAddress)
-                            .then((reserveBalance) =>
-                                datStore.setDatInfo(
-                                    configStore.activeDatAddress,
-                                    {
-                                        reserveBalance: {
-                                            value: reserveBalance,
-                                            blockNumber,
-                                        },
-                                    }
-                                )
-                            );
+                        multicallService.addCalls([
+                            {
+                                ...baseDatCall,
+                                method: 'state',
+                            },
+                            {
+                                ...baseDatCall,
+                                method: 'buybackReserve',
+                            },
+                            {
+                                ...baseDatCall,
+                                method: 'minInvestment',
+                            },
+                        ]);
 
-                        datStore
-                            .fetchMinInvestment(configStore.activeDatAddress)
-                            .then((minInvestment) => {
-                                datStore.setMinInvestment(
-                                    configStore.activeDatAddress,
-                                    minInvestment
+                        multicallService
+                            .executeActiveCalls()
+                            .then(async (response) => {
+                                const {
+                                    calls,
+                                    results,
+                                    blockNumber,
+                                } = response;
+                                const updates = blockchainStore.reduceMulticall(
+                                    calls,
+                                    results,
+                                    blockNumber
                                 );
+                                console.log('updates', updates, blockNumber);
+                                blockchainStore.updateStore(updates);
+                                console.log('post Updates', updates, blockNumber);
+
+                                this.refreshDXDApprovalState(account);
+                                this.refreshBuyFormPreview();
+
+                                multicallService.resetActiveCalls();
                             })
-                            .then(async () => {
-                                const minValue = normalizeBalance(
-                                    datStore.getMinInvestment(
-                                        configStore.activeDatAddress
-                                    )
-                                );
-
-                                if (
-                                    validateTokenValue(tradingStore.buyAmount, {
-                                        minValue,
-                                    }) === ValidationStatus.VALID
-                                ) {
-                                    const weiValue = denormalizeBalance(
-                                        tradingStore.buyAmount
-                                    );
-
-                                    const buyReturn = await datStore.fetchBuyReturn(
-                                        configStore.activeDatAddress,
-                                        weiValue
-                                    );
-
-                                    tradingStore.handleBuyReturn(buyReturn);
-                                }
+                            .catch((e) => {
+                                // TODO: Retry on failure, unless stale.
+                                console.error(e);
+                                multicallService.resetActiveCalls();
                             });
                     }
                 })
