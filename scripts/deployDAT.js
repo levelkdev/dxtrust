@@ -11,7 +11,8 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
   const ProxyContract = Contracts.getFromLocal("AdminUpgradeabilityProxy");
   const ProxyAdminContract = Contracts.getFromLocal("ProxyAdmin");
   const TokenVestingContract = Contracts.getFromLocal("TokenVesting");
-  
+  const Multicall = Contracts.getFromLocal("Multicall");
+
   const contracts = {};
   const callOptions = Object.assign(
     {
@@ -183,6 +184,8 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
       ).send({ from: callOptions.beneficiary });
     }
   }
+
+  contracts.multicall = await Multicall.new();
 
   console.log(`===============================`);
   return contracts;

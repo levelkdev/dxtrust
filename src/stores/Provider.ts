@@ -8,8 +8,9 @@ import { supportedChainId, web3ContextNames } from '../provider/connectors';
 import PromiEvent from 'promievent';
 import { TXEvents } from '../types';
 import moment from 'moment';
+import { schema } from '../services/ABIService';
 
-export enum ContractTypes {
+export enum ContractType {
     ERC20 = 'ERC20',
     BondedToken = 'BondedToken',
     BondingCurve = 'BondingCurve',
@@ -17,18 +18,8 @@ export enum ContractTypes {
     RewardsDistributor = 'RewardsDistributor',
     StaticCurveLogic = 'StaticCurveLogic',
     DecentralizedAutonomousTrust = 'DecentralizedAutonomousTrust',
+    Multicall = 'Multicall'
 }
-
-export const schema = {
-    ERC20: require('../contracts/ERC20').abi,
-    BondedToken: require('../contracts/ERC20').abi,
-    BondingCurve: require('../contracts/ERC20').abi,
-    BondingCurveEther: require('../contracts/ERC20').abi,
-    RewardsDistributor: require('../contracts/ERC20').abi,
-    StaticCurveLogic: require('../contracts/ERC20').abi,
-    DecentralizedAutonomousTrust: require('../contracts/DecentralizedAutonomousTrust')
-        .abi,
-};
 
 export interface ChainData {
     currentBlockNumber: number;
@@ -115,7 +106,7 @@ export default class ProviderStore {
 
     getContract(
         web3React: Web3ReactContextInterface,
-        type: ContractTypes,
+        type: ContractType,
         address: string,
         signerAccount?: string
     ): ethers.Contract {
@@ -156,6 +147,10 @@ export default class ProviderStore {
             : contextBackup;
     }
 
+    getBackupWeb3React(): Web3ReactContextInterface {
+        return this.web3Contexts[web3ContextNames.backup];;
+    }
+
     getWeb3React(name): Web3ReactContextInterface {
         if (!this.web3Contexts[name]) {
             throw new Error(ERRORS.ContextNotFound);
@@ -170,7 +165,7 @@ export default class ProviderStore {
 
     @action sendTransaction = (
         web3React: Web3ReactContextInterface,
-        contractType: ContractTypes,
+        contractType: ContractType,
         contractAddress: string,
         action: string,
         params: any[],

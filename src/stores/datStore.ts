@@ -1,10 +1,11 @@
 import RootStore from 'stores/Root';
 import { BigNumber } from '../utils/bignumber';
-import { ContractTypes } from './Provider';
+import { ContractType } from './Provider';
 import { action, observable } from 'mobx';
 import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
 import { BigNumberCached } from '../services/blockchainReader';
+import { Call } from '../services/multicall/MulticallService';
 
 export enum EventType {
     Buy = 'Buy',
@@ -35,7 +36,7 @@ export enum DatState {
     STATE_INIT,
     STATE_RUN,
     STATE_CLOSE,
-    STATE_CANCEL
+    STATE_CANCEL,
 }
 
 interface DatStateCached {
@@ -90,69 +91,23 @@ export default class DatStore {
         this.rootStore = rootStore;
         this.datParams = {} as DatInfoMap;
     }
-    @action setDatInfo(datAddress: string, updated: DatInfo) {
-        if (!this.datParams[datAddress]) {
-            this.datParams[datAddress] = {};
-        }
-
-        this.datParams[datAddress] = {
-            ...this.datParams[datAddress],
-            ...updated,
-        };
-    }
-
-    @action updatePrice(datAddress: string, newPrice: BigNumberCached) {
-        const { providerStore } = this.rootStore;
-        const hasExistingValue =
-            this.datParams[datAddress] &&
-            this.datParams[datAddress].currentPrice;
-
-        // Don't update if stale
-        if (
-            hasExistingValue &&
-            providerStore.isFresher(
-                newPrice.blockNumber,
-                this.datParams[datAddress].currentPrice.blockNumber
-            )
-        ) {
-            this.setDatInfo(datAddress, {
-                currentPrice: newPrice,
-            });
-        } else if (!hasExistingValue) {
-            this.setDatInfo(datAddress, {
-                currentPrice: newPrice,
-            });
-        }
-    }
 
     private getDatContract(datAddress: string) {
         const { providerStore } = this.rootStore;
         return providerStore.getContract(
             providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
+            ContractType.DecentralizedAutonomousTrust,
             datAddress
         );
     }
 
-    getMinInvestment(datAddress: string): BigNumber | undefined {
-        if (
-            this.datParams[datAddress] &&
-            this.datParams[datAddress].minInvestment
-        ) {
-            return this.datParams[datAddress].minInvestment;
-        } else {
-            return this.rootStore.configStore.getDATinfo().minInvestment;
-        }
-    }
-
     areAllStaticParamsLoaded(datAddress: string): boolean {
         return (
-            !!this.datParams[datAddress] &&
-            !!this.datParams[datAddress].minInvestment &&
-            !!this.datParams[datAddress].initGoal &&
-            !!this.datParams[datAddress].initReserve &&
-            !!this.datParams[datAddress].buySlopeNum &&
-            !!this.datParams[datAddress].buySlopeDen
+            !!this.getMinInvestment(datAddress) &&
+            !!this.getBuySlopeNum(datAddress) &&
+            !!this.getBuySlopeDen(datAddress) &&
+            !!this.getInitGoal(datAddress) &&
+            !!this.getInitReserve(datAddress)
         );
     }
 
@@ -170,118 +125,94 @@ export default class DatStore {
     }
 
     getState(datAddress: string): DatState | undefined {
-        if (this.datParams[datAddress] && this.datParams[datAddress].state) {
-            return this.datParams[datAddress].state.value as DatState;
-        } else {
-            return undefined;
-        }
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'state',
+        });
+        return value ? (bnum(value).toNumber() as DatState) : undefined;
+    }
+
+    getMinInvestment(datAddress: string): BigNumber | undefined {
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'minInvestment',
+        });
+        return value ? bnum(value) : undefined;
     }
 
     getBuySlopeNum(datAddress: string) {
-        return this.datParams[datAddress].buySlopeNum.value;
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'buySlopeNum',
+        });
+        return value ? bnum(value) : undefined;
     }
 
     getBuySlopeDen(datAddress: string) {
-        return this.datParams[datAddress].buySlopeDen.value;
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'buySlopeDen',
+        });
+        return value ? bnum(value) : undefined;
     }
 
     getInitGoal(datAddress: string) {
-        return this.datParams[datAddress].initGoal.value;
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'initGoal',
+        });
+        return value ? bnum(value) : undefined;
     }
 
     getReserveBalance(datAddress: string): BigNumber | undefined {
-        if (this.datParams[datAddress] && this.datParams[datAddress].reserveBalance) {
-            return this.datParams[datAddress].reserveBalance.value;
-        } else {
-            return undefined;
-        }
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'buybackReserve',
+        });
+        return value ? bnum(value) : undefined;
     }
 
     getInitReserve(datAddress: string) {
-        return this.datParams[datAddress].initReserve.value;
-    }
-
-    async fetchStaticParams(datAddress: string) {
-        const { providerStore } = this.rootStore;
-
-        const fetchBlock = providerStore.getCurrentBlockNumber();
-        this.fetchInitReserve(datAddress).then((initReserve) => {
-            this.setDatInfo(datAddress, {
-                initReserve: {
-                    value: initReserve,
-                    blockNumber: fetchBlock,
-                },
-            });
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+            method: 'initReserve',
         });
-        this.fetchInitGoal(datAddress).then((initGoal) => {
-            this.setDatInfo(datAddress, {
-                initGoal: {
-                    value: initGoal,
-                    blockNumber: fetchBlock,
-                },
-            });
-        });
-        this.fetchBuySlopeNum(datAddress).then((buySlopeNum) => {
-            this.setDatInfo(datAddress, {
-                buySlopeNum: {
-                    value: buySlopeNum,
-                    blockNumber: fetchBlock,
-                },
-            });
-        });
-        this.fetchBuySlopeDen(datAddress).then((buySlopeDen) => {
-            this.setDatInfo(datAddress, {
-                buySlopeDen: {
-                    value: buySlopeDen,
-                    blockNumber: fetchBlock,
-                },
-            });
-        });
+        return value ? bnum(value) : undefined;
     }
 
-    async fetchInitReserve(datAddress: string): Promise<BigNumber> {
-        const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.initReserve().call());
-    }
+    genStaticParamCalls(datAddress: string): Call[] {
+        const baseCall = {
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: datAddress,
+        };
 
-    async fetchInitGoal(datAddress: string): Promise<BigNumber> {
-        const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.initGoal().call());
-    }
+        const calls: Call[] = [
+            {
+                ...baseCall,
+                method: 'initReserve',
+            },
+            {
+                ...baseCall,
+                method: 'initGoal',
+            },
+            {
+                ...baseCall,
+                method: 'buySlopeNum',
+            },
+            {
+                ...baseCall,
+                method: 'buySlopeDen',
+            },
+        ];
 
-    async fetchBuySlopeNum(datAddress: string): Promise<BigNumber> {
-        const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.buySlopeNum().call());
-    }
-
-    async fetchBuySlopeDen(datAddress: string): Promise<BigNumber> {
-        const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.buySlopeDen().call());
-    }
-
-    async fetchMinInvestment(datAddress: string): Promise<BigNumber> {
-        const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.minInvestment().call());
-    }
-
-    async fetchState(datAddress: string): Promise<DatState> {
-        const dat = this.getDatContract(datAddress);
-        return await dat.methods.state().call() as DatState;
-    }
-
-    async fetchReserveBalance(datAddress: string): Promise<BigNumber> {
-        const dat = this.getDatContract(datAddress);
-        return bnum(await dat.methods.buybackReserve().call());
-    }
-
-    @action setMinInvestment(datAddress: string, minInvestment: BigNumber) {
-        if (this.datParams[datAddress]) {
-            this.datParams[datAddress].minInvestment = minInvestment;
-        } else {
-            this.datParams[datAddress] = {
-                minInvestment: minInvestment,
-            };
-        }
+        return calls;
     }
 
     async estimateBuyValue(
@@ -454,16 +385,12 @@ export default class DatStore {
     }
 
     async fetchSpotPrice(datAddress: string): Promise<BigNumber> {
-        console.log('spotTokens');
-
         const minInvestment = this.getMinInvestment(datAddress);
         const spotTokens = await this.estimateBuyValue(
             datAddress,
             minInvestment
         );
         const price = minInvestment.div(spotTokens);
-        console.log('spotTokens', spotTokens.toString());
-        console.log('price', price.toString());
         return price;
     }
 
@@ -501,7 +428,7 @@ export default class DatStore {
 
         return providerStore.sendTransaction(
             providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
+            ContractType.DecentralizedAutonomousTrust,
             datAddress,
             'buy',
             [to, currencyValue.toString(), minTokensBought.toString()],
@@ -520,7 +447,7 @@ export default class DatStore {
 
         return providerStore.sendTransaction(
             providerStore.getActiveWeb3React(),
-            ContractTypes.DecentralizedAutonomousTrust,
+            ContractType.DecentralizedAutonomousTrust,
             datAddress,
             'sell',
             [to, quantityToSell.toString(), minCurrencyReturned.toString()]

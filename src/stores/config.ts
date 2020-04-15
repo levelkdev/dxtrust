@@ -6,6 +6,7 @@ import { ETH_NETWORK } from '../provider/connectors';
 export default class ConfigStore {
     rootStore: RootStore;
     tokens: StringMap;
+    multicall: string;
     activeDatAddress: string;
     network: string;
     DAIinfo: object;
@@ -18,6 +19,10 @@ export default class ConfigStore {
     
     getTokenAddress(tokenType) {
         return this.tokens[tokenType];
+    }
+
+    getMulticallAddress() {
+        return this.multicall;
     }
 
     getDXDTokenAddress() {
@@ -39,6 +44,7 @@ export default class ConfigStore {
     parseMetadataFromJson() {
         this.tokens['DXD'] = contracts[ETH_NETWORK].DAT;
         this.tokens['Collateral'] = contracts[ETH_NETWORK].collateral;
+        this.multicall = contracts[ETH_NETWORK].multicall;
         this.activeDatAddress = contracts[ETH_NETWORK].DAT;
     }
 }
