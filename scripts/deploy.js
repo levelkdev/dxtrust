@@ -42,11 +42,12 @@ async function deployOrgs() {
   const DATInfo = toDeploy.DATinfo;
   let collateralToken = zeroAddress;
 
-  const contracts = await deployDat( web3, DATInfo);
+  const contracts = await deployDat(web3, DATInfo);
   
   let newContractsDeployed = contractsDeployed;
   toDeploy.DATinfo.implementationAddress = contracts.dat.implementation;
   newContractsDeployed.contracts[network] = {
+    multicall: contracts.multicall.address,
     DAT: contracts.dat.address,
     collateral: zeroAddress,
     DATinfo: toDeploy.DATinfo
