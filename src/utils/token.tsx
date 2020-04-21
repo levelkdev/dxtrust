@@ -44,6 +44,9 @@ export const formatBalance = (
     decimals: number = 18,
     precision: number = 4
 ): string => {
+    if (!balance) {
+      balance = new BigNumber(0)
+    } 
     if (balance.eq(0)) {
         return bnum(0).toFixed(precision);
     }

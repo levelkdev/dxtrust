@@ -39,8 +39,8 @@ const BalanceInfo = observer(() => {
     const {
         root: { providerStore, tokenStore, configStore },
     } = useStores();
-
-    const { account } = providerStore.getActiveWeb3React();
+    
+    let { account } = providerStore.getActiveWeb3React();
 
     let ETHBalance,
         DXDBalance = undefined;
@@ -53,27 +53,30 @@ const BalanceInfo = observer(() => {
         );
     }
 
-    const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
-    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance) : '0.000';
-
-	return(
+    window.ethereum.on('accountsChanged', (accounts) => {
+      if (accounts.length > 0) {
+        account = accounts[0];
+      }
+    });
+    
+	  return(
         <CryptoInfoWrapper>
             <InfoRow>
                 <LogoAndText>
                     <ETHLogo src="ether.svg"></ETHLogo>
                     <LogoText>Ether</LogoText>
                 </LogoAndText>
-                <div>{ETHBalanceDisplay} ETH</div>
+                <div>{formatBalance(ETHBalance)} ETH</div>
             </InfoRow>
             <InfoRow>
                 <LogoAndText>
                     <DXDLogo src="dxdao-circle.svg"></DXDLogo>
                     <LogoText>DXdao</LogoText>
                 </LogoAndText>
-                <div>{DXDBalanceDisplay} DXD</div>
+                <div>{formatBalance(DXDBalance)} DXD</div>
             </InfoRow>
         </CryptoInfoWrapper>
-	);
+	  );
 });
 
 export default BalanceInfo;
