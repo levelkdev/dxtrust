@@ -11,6 +11,9 @@
 # production
 /build
 
+# config
+/src/config/contracts.json
+
 # misc
 .DS_Store
 .env
