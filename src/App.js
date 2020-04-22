@@ -6,6 +6,7 @@ import NavBarContainer from './containers/NavBarContainer';
 import FooterContainer from './containers/FooterContainer';
 import ExchangeContainer from './containers/ExchangeContainer';
 import RedeemRewardsContainer from './containers/RedeemRewardsContainer';
+import LandingPage from 'components/LandingPage/LandingPage';
 
 const App = () => {
     return (
@@ -22,6 +23,9 @@ const App = () => {
                         </Route>
                         <Route exact path="/redeem">
                             <RedeemRewardsContainer />
+                        </Route>
+                        <Route exact path="/landing">
+                            <LandingPage />
                         </Route>
                     </Switch>
                     <FooterContainer />
