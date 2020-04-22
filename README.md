@@ -16,6 +16,10 @@ Bonding Curve Dapp, based in the [DXdao Bonding Curve DAPP Proposal doc](https:/
 yarn test
 ```
 
+## Formatting and Linting
+- Husky will automatically format files, using prettier + tslist, before git commits.
+- Manually execute formatting on staged files with ```yarn lint-staged```
+
 ## Build For Production
 - Full dApp build will live in /build folder.
 ```
