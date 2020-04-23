@@ -57,13 +57,16 @@ module.exports = {
   build: {},	
   compilers: {	
     solc: {	
-      version: '0.5.16'	
-    }	
+      version: '0.5.16',
+      settings: {
+        evmVersion: 'constantinople',
+      }
+    }
   },	
   solc: {	
     optimizer: {	
       enabled: true,	
       runs: 10000	
-    }	
+    }
   },	
 }
