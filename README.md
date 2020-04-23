@@ -35,6 +35,12 @@ REACT_APP_KEY_INFURA_API_KEY
 REACT_APP_ETH_NETWORK
 REACT_APP_GIT_SHA
 ```
+## Formatting and Linting
+- Husky will automatically format files, using prettier + tslist, before git commits.
+- Manually execute formatting on staged files with ```yarn lint-staged```
+- Formatting tools can be installed for many editors for issue highlighting and features such as format on save
+    - [Prettier](https://prettier.io/docs/en/editors.html)
+    - [Tslint / Eslint](https://eslint.org/docs/user-guide/integrations)
 
 ### Local Development
 
