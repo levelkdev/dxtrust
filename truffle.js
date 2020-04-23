@@ -1,9 +1,8 @@
-
 const HDWalletProvider = require('truffle-hdwallet-provider')	
-const fs = require('fs')	
+require('dotenv').config();
 
-mnemonic = process.env.BCAPP_KEY_MNEMONIC;
-infuraApiKey = process.env.BCAPP_KEY_INFURA_API_KEY;
+mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
+infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
 
 module.exports = {	
   networks: {	
