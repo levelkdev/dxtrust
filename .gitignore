@@ -10,6 +10,7 @@
 
 # production
 /build
+/contracts/build
 
 # config
 /src/config/contracts.json

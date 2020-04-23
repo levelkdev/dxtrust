@@ -32,7 +32,9 @@ web3 = new Web3(provider)
 ZWeb3.initialize(web3.currentProvider);
 
 // Get configuration file
-const contractsDeployed = JSON.parse(fs.readFileSync("src/config/contracts.json", "utf-8"));
+let contractsDeployed = {"contracts": {}};
+if (fs.existsSync("src/config/contracts.json"))
+  contractsDeployed = JSON.parse(fs.readFileSync("src/config/contracts.json", "utf-8"));
 const toDeploy = JSON.parse(fs.readFileSync("src/config/toDeploy.json", "utf-8"));
 const addresses = toDeploy.addresses || {};
 
@@ -44,16 +46,15 @@ async function deployOrgs() {
 
   const contracts = await deployDat(web3, DATInfo);
   
-  let newContractsDeployed = contractsDeployed;
-  toDeploy.DATinfo.implementationAddress = contracts.dat.implementation;
-  newContractsDeployed.contracts[network] = {
+  contractsDeployed.contracts[network] = {
     multicall: contracts.multicall.address,
     DAT: contracts.dat.address,
     collateral: zeroAddress,
-    DATinfo: toDeploy.DATinfo
+    DATinfo: toDeploy.DATinfo,
+    implementationAddress: contracts.dat.implementation,
   };
   console.log('File contracts.json in src/config updated for network '+network);
-  fs.writeFileSync('src/config/contracts.json', JSON.stringify(newContractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
+  fs.writeFileSync('src/config/contracts.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
 
   return;
 } 

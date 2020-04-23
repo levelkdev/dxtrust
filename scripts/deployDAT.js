@@ -3,7 +3,7 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 module.exports = async function deployDat(web3, options, useProxy = true) {
   
   ZWeb3.initialize(web3.currentProvider);
-  
+  Contracts.setLocalBuildDir("contracts/build/");
   const accounts = await web3.eth.getAccounts();
 
   const DATContract = Contracts.getFromLocal("DecentralizedAutonomousTrust");
