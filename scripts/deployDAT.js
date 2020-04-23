@@ -3,35 +3,33 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 module.exports = async function deployDat(web3, options, useProxy = true) {
   
   ZWeb3.initialize(web3.currentProvider);
-  Contracts.setLocalBuildDir("contracts/build/");
+  Contracts.setLocalBuildDir('contracts/build/');
   const accounts = await web3.eth.getAccounts();
 
-  const DATContract = Contracts.getFromLocal("DecentralizedAutonomousTrust");
-  const WhitelistContract = Contracts.getFromLocal("Whitelist");
-  const ProxyContract = Contracts.getFromLocal("AdminUpgradeabilityProxy");
-  const ProxyAdminContract = Contracts.getFromLocal("ProxyAdmin");
-  const TokenVestingContract = Contracts.getFromLocal("TokenVesting");
-  const Multicall = Contracts.getFromLocal("Multicall");
+  const DATContract = Contracts.getFromLocal('DecentralizedAutonomousTrust');
+  const ProxyContract = Contracts.getFromLocal('AdminUpgradeabilityProxy');
+  const ProxyAdminContract = Contracts.getFromLocal('ProxyAdmin');
+  const Multicall = Contracts.getFromLocal('Multicall');
 
   const contracts = {};
   const callOptions = Object.assign(
     {
-      initReserve: "42000000000000000000",
+      initReserve: '42000000000000000000',
       currency: web3.utils.padLeft(0, 40),
-      initGoal: "0",
-      buySlopeNum: "1",
-      buySlopeDen: "100000000000000000000",
-      investmentReserveBasisPoints: "1000",
-      revenueCommitmentBasisPoints: "1000",
+      initGoal: '0',
+      buySlopeNum: '1',
+      buySlopeDen: '100000000000000000000',
+      investmentReserveBasisPoints: '1000',
+      revenueCommitmentBasisPoints: '1000',
       control: accounts[1],
       beneficiary: accounts[2],
       feeCollector: accounts[3],
-      name: "Test org",
-      symbol: "TFO"
+      name: 'Test org',
+      symbol: 'TFO'
     },
     options
   );
-  // console.log(`Deploy DAT: ${JSON.stringify(callOptions, null, 2)}`);
+  console.log(`Deploy DAT with config: ${JSON.stringify(callOptions, null, 2)}`, ' \n');
 
   if (useProxy) {
     // ProxyAdmin
@@ -75,64 +73,8 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
     callOptions.symbol
   ).send({ from: callOptions.control });
   let promises = [];
-  // Whitelist
-  if (callOptions.whitelistAddress === undefined) {
-    const whitelistContract = await WhitelistContract.new({
-      from: callOptions.control
-    });
-    console.log(`Whitelist template deployed ${whitelistContract.address}`);
-
-    if (useProxy) {
-      const whitelistProxy = await ProxyContract.new(
-        whitelistContract.address, // logic
-        contracts.proxyAdmin.address, // admin
-        [], // data
-        {
-          from: callOptions.control
-        }
-      );
-      console.log(`Whitelist proxy deployed ${whitelistProxy.address}`);
-
-      contracts.whitelist = await WhitelistContract.at(whitelistProxy.address);
-    } else {
-      contracts.whitelist = whitelistContract;
-    }
-    await contracts.whitelist.methods.initialize(contracts.dat.address)
-      .send({ from: callOptions.control });
-    await contracts.whitelist.methods.updateJurisdictionFlows(
-      [1, 4, 4],
-      [4, 1, 4],
-      [1, 1, 1]
-    ).send({ from: callOptions.control });
-    callOptions.whitelistAddress = contracts.whitelist.address;
-    // console.log(`Deployed whitelist: ${contracts.whitelist.address}`);
-
-    promises.push(
-      contracts.whitelist.methods.approveNewUsers([callOptions.control], [4])
-      .send({ from: callOptions.control })
-    );
-    if (callOptions.control != callOptions.beneficiary) {
-      promises.push(
-        contracts.whitelist.methods.approveNewUsers([callOptions.beneficiary], [4])
-        .send({ from: callOptions.control })
-      );
-    }
-    if (
-      callOptions.feeCollector != callOptions.control &&
-      callOptions.feeCollector != callOptions.beneficiary
-    ) {
-      promises.push(
-        contracts.whitelist.methods.approveNewUsers([callOptions.feeCollector], [4])
-        .send({ from: callOptions.control })
-      );
-    }
-    promises.push(
-      contracts.whitelist.methods.approveNewUsers([web3.utils.padLeft(0, 40)], [1])
-      .send({ from: callOptions.control })
-    );
-  }
-
-  //console.log(`Update DAT: ${JSON.stringify(callOptions, null, 2)}`);
+  
+  // Execute updateConfig method to set only the minInvestment variable.
   promises.push(
     await contracts.dat.methods.updateConfig(
       await contracts.dat.methods.whitelist().call(),
@@ -149,44 +91,12 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
   
   await Promise.all(promises);
 
-  // Move the initReserve to vesting contracts
-  if (callOptions.vesting) {
-    contracts.vesting = [];
-    for (let i = 0; i < callOptions.vesting.length; i++) {
-      const vestingBeneficiary = callOptions.vesting[i].address;
-      const contract = await TokenVestingContract.new(
-        vestingBeneficiary, // beneficiary
-        Math.round(Date.now() / 1000) + 100, // startDate is seconds
-        120, // cliffDuration in seconds
-        200, // duration in seconds
-        false, // non-revocable
-        {
-          from: callOptions.control
-        }
-      );
-      console.log(`Vesting contract deployed ${contract.address}`);
-
-      contracts.vesting.push(contract);
-
-      if (contracts.whitelist) {
-        await contracts.whitelist.methods.approveNewUsers(
-          [contracts.vesting[i].address],
-          [4]
-        ).send({ from: callOptions.control });
-        await contracts.whitelist.addApprovedUserWallets(
-          [callOptions.beneficiary],
-          [contracts.vesting[i].address]
-        ).send({ from: callOptions.control });
-      }
-      await contracts.dat.methods.transfer(
-        contract.address,
-        callOptions.vesting[i].value
-      ).send({ from: callOptions.beneficiary });
-    }
-  }
-
   contracts.multicall = await Multicall.new();
 
-  console.log(`===============================`);
+  console.log('DAT control accounts:', accounts[1]);
+  console.log('DAT beneficiary accounts:', accounts[2]);
+  console.log('DAT feeCollector accounts:', accounts[3], ' \n');
+  console.log('Recommended testing accounts:', accounts[4]);
+  console.log('Get your provate keys in https://iancoleman.io/bip39/ \n');
   return contracts;
 };

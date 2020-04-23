@@ -1,7 +1,7 @@
-const deployDat = require("./deployDAT");
-const fs = require("fs");
-const Web3 = require("web3");
-const BN = require("bignumber.js");
+const deployDat = require('./deployDAT');
+const fs = require('fs');
+const Web3 = require('web3');
+const BN = require('bignumber.js');
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const args = process.argv;
@@ -11,7 +11,7 @@ const zeroAddress = '0x0000000000000000000000000000000000000000';
 // Get network to use from arguments
 let network, mnemonic, httpProviderUrl, web3;
 for (var i = 0; i < args.length; i++) {
-  if (args[i] == "--network")
+  if (args[i] == '--network')
     network = args[i+1];
 }
 if (!network) throw('Not network selected, --network parameter missing');
@@ -32,10 +32,10 @@ web3 = new Web3(provider)
 ZWeb3.initialize(web3.currentProvider);
 
 // Get configuration file
-let contractsDeployed = {"contracts": {}};
-if (fs.existsSync("src/config/contracts.json"))
-  contractsDeployed = JSON.parse(fs.readFileSync("src/config/contracts.json", "utf-8"));
-const toDeploy = JSON.parse(fs.readFileSync("src/config/toDeploy.json", "utf-8"));
+let contractsDeployed = {'contracts': {}};
+if (fs.existsSync('src/config/contracts.json'))
+  contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
+const toDeploy = JSON.parse(fs.readFileSync('src/config/toDeploy.json', 'utf-8'));
 const addresses = toDeploy.addresses || {};
 
 async function deployOrgs() {
@@ -55,6 +55,7 @@ async function deployOrgs() {
   };
   console.log('File contracts.json in src/config updated for network '+network);
   fs.writeFileSync('src/config/contracts.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
+  console.log('===============================================');
 
   return;
 } 
