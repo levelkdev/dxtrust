@@ -1,7 +1,8 @@
 {
   "manifestVersion": "2.2",
   "contracts": {
-    "DecentralizedAutonomousTrust": "DecentralizedAutonomousTrust"
+    "DecentralizedAutonomousTrust": "DecentralizedAutonomousTrust",
+    "Multicall": "Multicall"
   },
   "dependencies": {},
   "name": "BC-DAPP",
