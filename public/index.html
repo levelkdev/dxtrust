@@ -16,7 +16,7 @@
               window.location.protocol = 'https'
               return
             }
-      
+
             const ipfsMatch = /.*\/Qm\w{44}/.exec(pathname)
             changeBaseHref(ipfsMatch)
             
@@ -25,10 +25,12 @@
             function changeBaseHref(match) {
               const base = document.querySelector('base')
       
-              let baseHref = match[0]
-              if (!baseHref.endsWith('/')) baseHref += '/'
-      
-              base.href = baseHref
+              if (match && match.length > 0) {
+                let baseHref = match[0]
+                if (!baseHref.endsWith('/')) baseHref += '/'
+        
+                base.href = baseHref
+              }
             }
       
           })();
