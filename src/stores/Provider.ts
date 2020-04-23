@@ -198,7 +198,6 @@ export default class ProviderStore {
             data: params,
             overrides,
         }).on(TXEvents.TX_HASH, (hash) => {
-            console.log('tracking transaction', hash);
             transactionStore.addTransactionRecord(account, hash);
         });
 

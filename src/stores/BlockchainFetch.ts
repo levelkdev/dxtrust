@@ -16,21 +16,6 @@ export default class BlockchainFetchStore {
         this.rootStore = rootStore;
     }
 
-    @action refreshDXDApprovalState(account) {
-        const { tokenStore, configStore, tradingStore } = this.rootStore;
-        if (
-            tokenStore.hasMaxApproval(
-                configStore.activeDatAddress,
-                account,
-                configStore.activeDatAddress
-            )
-        ) {
-            tradingStore.enableDXDState =
-                TransactionState.APPROVED;
-        }
-
-    }
-
     @action async refreshBuyFormPreview() {
         const { datStore, configStore, tradingStore } = this.rootStore;
         const minValue = normalizeBalance(
@@ -55,7 +40,7 @@ export default class BlockchainFetchStore {
 
     @action setFetchLoop(
         web3React: Web3ReactContextInterface,
-        forceFetch?: boolean
+        accountSwitched?: boolean
     ) {
         if (web3React.active && web3React.chainId === supportedChainId) {
             const { library, account, chainId } = web3React;
@@ -84,7 +69,7 @@ export default class BlockchainFetchStore {
                     // });
 
                     const doFetch =
-                        blockNumber !== lastCheckedBlock || forceFetch;
+                        blockNumber !== lastCheckedBlock || accountSwitched;
 
                     if (doFetch) {
                         console.debug('[Fetch Loop] Fetch Blockchain Data', {
@@ -94,6 +79,10 @@ export default class BlockchainFetchStore {
 
                         // Set block number
                         providerStore.setCurrentBlockNumber(blockNumber);
+
+                        if (accountSwitched) {
+                            tradingStore.resetTransactionStates();
+                        }
 
                         // Get global blockchain data
                         multicallService.addCall({
@@ -182,8 +171,6 @@ export default class BlockchainFetchStore {
                                     blockNumber
                                 );
                                 blockchainStore.updateStore(updates, blockNumber);
-
-                                this.refreshDXDApprovalState(account);
                                 this.refreshBuyFormPreview();
 
                                 multicallService.resetActiveCalls();
@@ -199,7 +186,7 @@ export default class BlockchainFetchStore {
                     console.error('[Fetch Loop Failure]', {
                         web3React,
                         providerStore,
-                        forceFetch,
+                        forceFetch: accountSwitched,
                         chainId,
                         account,
                         library,

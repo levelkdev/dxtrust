@@ -21,6 +21,12 @@ export enum TransactionState {
     FAILED
 }
 
+export enum Form {
+    BUY,
+    SELL,
+    ENABLE_DXD
+}
+
 class TradingFormStore {
     @observable reserveBalance = '';
     @observable price: BigNumber = bnum(0);
@@ -50,6 +56,12 @@ class TradingFormStore {
         this.rootStore = rootStore;
     }
 
+    @action resetTransactionStates() {
+        this.buyingState = TransactionState.NONE;
+        this.sellingState = TransactionState.NONE;
+        this.enableDXDState = TransactionState.NONE;
+    }
+
     setPayAmount(amount: BigNumber) {
         this.payAmount = amount;
     }
@@ -69,6 +81,19 @@ class TradingFormStore {
 
     setSellPrice(price: BigNumber) {
         this.sellPrice = price;
+    }
+
+    isDataLoaded(account: string): boolean {
+        const {tokenStore, configStore} = this.rootStore;
+        const allowance = tokenStore.getAllowance(configStore.getDXDTokenAddress(), account, configStore.activeDatAddress);
+        const collateralBalance = tokenStore.getEtherBalance(account);
+        const dxdBalance = tokenStore.getBalance(configStore.getDXDTokenAddress(), account);
+
+        if (!!allowance && !!collateralBalance && !!dxdBalance) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     handleBuyReturn(buyReturn: BuyReturnCached) {

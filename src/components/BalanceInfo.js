@@ -53,10 +53,16 @@ const BalanceInfo = observer(() => {
         );
     }
 
-    const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
-    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance) : '0.000';
+    const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.0000';
+    const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance) : '0.0000';
 
-	return(
+    // window.ethereum.on('accountsChanged', (accounts) => {
+    //   if (accounts.length > 0) {
+    //     account = accounts[0];
+    //   }
+    // });
+    
+	  return(
         <CryptoInfoWrapper>
             <InfoRow>
                 <LogoAndText>
