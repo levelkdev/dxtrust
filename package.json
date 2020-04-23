@@ -206,6 +206,7 @@
         "workbox-webpack-plugin": "4.3.1"
     },
     "devDependencies": {
+        "@openzeppelin/cli": "^2.8.2",
         "@openzeppelin/upgrades": "^2.8.0",
         "eslint": "^6.8.0",
         "eslint-config-react-app": "^5.0.2",
