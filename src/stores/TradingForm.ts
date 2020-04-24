@@ -21,12 +21,6 @@ export enum TransactionState {
     FAILED
 }
 
-export enum Form {
-    BUY,
-    SELL,
-    ENABLE_DXD
-}
-
 class TradingFormStore {
     @observable reserveBalance = '';
     @observable price: BigNumber = bnum(0);
