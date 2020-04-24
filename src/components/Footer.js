@@ -8,14 +8,13 @@ const FooterWrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding: 50px 0px 50px 0px;
+    padding: 24px 0px 32px;
     color: var(--footer-text-gray);
 `;
 
 const LeftFooter = styled.div`
     display: flex;
     flex-direction: row;
-    
 `;
 
 const RighFooter = styled.div`
@@ -50,19 +49,22 @@ const LogoWrapper = styled.div`
 
 const FooterLogo = styled.img`
     :hover {
-        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg) brightness(97%) contrast(86%);
+        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg)
+            brightness(97%) contrast(86%);
     }
 `;
 
 const Footer = ({}) => {
-  console.log(process.env)
-    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0,7);
+    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0, 7);
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
                     <a
-                        href={"https://github.com/levelkdev/BC-DAPP/tree/"+process.env.REACT_APP_GIT_SHA}
+                        href={
+                            'https://github.com/levelkdev/BC-DAPP/tree/' +
+                            process.env.REACT_APP_GIT_SHA
+                        }
                         target="#"
                     >
                         DXdao Version {gitHash} - v0.1.0
@@ -71,7 +73,12 @@ const Footer = ({}) => {
                 <FooterDivider></FooterDivider>
                 <FooterItem>
                     <a
-                        href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DAT}
+                        href={
+                            'https://' +
+                            ETH_NETWORK +
+                            '.etherscan.io/address/' +
+                            contracts[ETH_NETWORK].DAT
+                        }
                         target="#"
                     >
                         Proxy
@@ -80,7 +87,12 @@ const Footer = ({}) => {
                 <FooterDivider></FooterDivider>
                 <FooterItem>
                     <a
-                        href={"https://"+ETH_NETWORK+".etherscan.io/address/"+contracts[ETH_NETWORK].DATinfo.implementationAddress}
+                        href={
+                            'https://' +
+                            ETH_NETWORK +
+                            '.etherscan.io/address/' +
+                            contracts[ETH_NETWORK].DATinfo.implementationAddress
+                        }
                         target="#"
                     >
                         Contract
@@ -105,12 +117,12 @@ const Footer = ({}) => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                    <FooterLogo src="twitter.svg"></FooterLogo>
+                        <FooterLogo src="twitter.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                    <FooterLogo src="reddit.svg"></FooterLogo>
+                        <FooterLogo src="reddit.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
