@@ -111,6 +111,12 @@ const ProductPanelWrapper = styled.div`
 	margin-top: 64px;
 `
 
+const ProductClickable = styled.a`
+	display: block;
+	text-decoration: none;
+	
+`
+
 const ProductPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -121,6 +127,10 @@ const ProductPanel = styled.div`
 	height: 187px;
 	width: 233px;
 	padding: 32px;
+	&:hover {
+		border: 1px solid #ADADAD;
+	}
+	
 `
 
 const ProductNameWrapper = styled.div`
@@ -131,11 +141,15 @@ const ProductLogo = styled.img`
 `
 
 const ProductName = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-family: Raleway;
 	font-style: normal;
 	font-weight: 600;
 	font-size: 22px;
 	line-height: 26px;
+	margin-left:16px;
 	letter-spacing: 0.02em;
 	color: var(--dark-text);
 `
@@ -147,6 +161,7 @@ const ProductDescription = styled.div`
 	font-size: 14px;
 	line-height: 27px;
 	letter-spacing: 0.03em;
+	margin-top: 32px;
 	color: var(--light-body-text);
 `
 
@@ -162,6 +177,7 @@ const AboutUsSection = styled.div`
 const AboutPanelWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
+	margin-top: 64px;
 `
 
 const AboutPanel = styled.div`
@@ -283,19 +299,22 @@ const LandingPage = () => {
 					Pure Dapps powered by Dxdao
 				</Message>
 				<ProductPanelWrapper>
+					<ProductClickable href="https://daotalk.org/t/mix-eth-seeking-feedback-on-proposal/1183" target="_blank">
+						<ProductPanel>
+							<ProductNameWrapper>
+								<ProductLogo src='Mix.svg' />
+								<ProductName>Mix.eth</ProductName>
+							</ProductNameWrapper>
+							<ProductDescription>
+								Mix is a portfolio manager for the Ethereum ecosystem with privacy,
+								security, and a good user experience as core features.
+							</ProductDescription>
+						</ProductPanel>
+					</ProductClickable>
+					<ProductClickable href="https://daotalk.org/t/omen-mvp-overview/1229" target="_blank">
 					<ProductPanel>
 						<ProductNameWrapper>
-							<ProductLogo />
-							<ProductName>Mix.eth</ProductName>
-						</ProductNameWrapper>
-						<ProductDescription>
-							Mix is a portfolio manager for the Ethereum ecosystem with privacy,
-							security, and a good user experience as core features.
-						</ProductDescription>
-					</ProductPanel>
-					<ProductPanel>
-						<ProductNameWrapper>
-							<ProductLogo />
+							<ProductLogo src='Omen.svg' />
 							<ProductName>Omen.eth</ProductName>
 						</ProductNameWrapper>
 						<ProductDescription>
@@ -303,16 +322,19 @@ const LandingPage = () => {
 							built on top of the Gnosis conditional token framework.
 						</ProductDescription>
 					</ProductPanel>
-					<ProductPanel>
-						<ProductNameWrapper>
-							<ProductLogo />
-							<ProductName>Mesa.eth</ProductName>
-						</ProductNameWrapper>
-						<ProductDescription>
-							Mesa is an Open Source interface for the Gnosis Protocol,
-							a fully permissionless DEX that enables ring trades to maximize liquidity.
-						</ProductDescription>
-					</ProductPanel>
+					</ProductClickable>
+					<ProductClickable href="https://mesa.eth.link" target="_blank">
+							<ProductPanel>
+									<ProductNameWrapper>
+										<ProductLogo src='Mesa.svg' />
+										<ProductName>Mesa.eth</ProductName>
+									</ProductNameWrapper>
+									<ProductDescription>
+										Mesa is an Open Source interface for the Gnosis Protocol,
+										a fully permissionless DEX that enables ring trades to maximize liquidity.
+									</ProductDescription>
+							</ProductPanel>
+							</ProductClickable>
 				</ProductPanelWrapper>
 			</ProductSection>
 			<AboutUsSection>
@@ -324,7 +346,7 @@ const LandingPage = () => {
 				</Message>
 				<AboutPanelWrapper>
 					<AboutPanel>
-						<AboutIcon />
+						<AboutIcon src='No-Hierarchy.svg' />
 						<AboutHeader>
 							No Hierarchies
 						</AboutHeader>
