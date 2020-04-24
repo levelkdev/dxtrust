@@ -3,9 +3,9 @@
     "version": "0.1.1",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
+        "start": "./scripts/start.sh",
         "dev": "./scripts/dev.sh",
         "deploy": "node scripts/deploy.js",
-        "start": "yarn run loadDeployments && node scripts/start.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
         "loadDeployments": "node scripts/loadDeployments.js"
