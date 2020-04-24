@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useStores } from '../../contexts/storesContext';
 import { observer } from 'mobx-react';
+import { TXEvents } from 'types';
+import { TransactionState } from 'stores/TradingForm';
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -53,7 +55,7 @@ const EnableButton = styled.div`
 
 const Enable = observer(({ tokenType }) => {
     const {
-        root: { providerStore, configStore, tokenStore },
+        root: { providerStore, configStore, tokenStore, tradingStore },
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
@@ -75,11 +77,23 @@ const Enable = observer(({ tokenType }) => {
             </CircleContainer>
             <EnableButton
                 onClick={() => {
+                    tradingStore.enableDXDState = TransactionState.SIGNING_TX;
                     tokenStore.approveMax(
                         providerStore.getActiveWeb3React(),
                         tokenAddress,
                         configStore.activeDatAddress
-                    );
+                    ).on(TXEvents.TX_HASH, (hash) => {
+                        tradingStore.setEnableDXDState(TransactionState.UNCONFIRMED);
+                    })
+                    .on(TXEvents.RECEIPT, (receipt) => {
+                        tradingStore.setEnableDXDState(TransactionState.CONFIRMED);
+                    })
+                    .on(TXEvents.TX_ERROR, (txerror) => {
+                        tradingStore.setEnableDXDState(TransactionState.FAILED);
+                    })
+                    .on(TXEvents.INVARIANT, (error) => {
+                        tradingStore.setEnableDXDState(TransactionState.FAILED);
+                    });;
                 }}
             >
                 Enable {tokenType}

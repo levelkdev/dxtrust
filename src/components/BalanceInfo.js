@@ -56,7 +56,7 @@ const BalanceInfo = observer(() => {
     const ETHBalanceDisplay = ETHBalance ? formatBalance(ETHBalance) : '0.000';
     const DXDBalanceDisplay = DXDBalance ? formatBalance(DXDBalance) : '0.000';
 
-	return(
+	  return(
         <CryptoInfoWrapper>
             <InfoRow>
                 <LogoAndText>

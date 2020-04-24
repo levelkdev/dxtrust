@@ -417,13 +417,6 @@ export default class DatStore {
         currencyValue: BigNumber,
         minTokensBought: BigNumber
     ): PromiEvent<any> {
-        console.log('buyParams', {
-            datAddress,
-            to,
-            currencyValue: currencyValue.toString(),
-            minTokensBought: minTokensBought.toString(),
-        });
-
         const { providerStore } = this.rootStore;
 
         return providerStore.sendTransaction(

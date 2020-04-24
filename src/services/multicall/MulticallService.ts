@@ -23,7 +23,7 @@ export default class MulticallService {
     }
 
     // Add call additions and removals
-    async executeActiveCalls() {
+    async executeCalls(calls: Call[], rawCalls: any[]) {
         const { abiService, providerStore, configStore } = this.root;
         const multi = providerStore.getContract(
             providerStore.getActiveWeb3React(),
@@ -32,10 +32,10 @@ export default class MulticallService {
         );
 
         const response = await multi.methods
-            .aggregate(this.activeCallsRaw)
+            .aggregate(rawCalls)
             .call();
         return {
-            calls: this.activeCalls,
+            calls: calls,
             results: response.returnData,
             blockNumber: response.blockNumber,
         };

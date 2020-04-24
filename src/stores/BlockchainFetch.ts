@@ -16,21 +16,6 @@ export default class BlockchainFetchStore {
         this.rootStore = rootStore;
     }
 
-    @action refreshDXDApprovalState(account) {
-        const { tokenStore, configStore, tradingStore } = this.rootStore;
-        if (
-            tokenStore.hasMaxApproval(
-                configStore.activeDatAddress,
-                account,
-                configStore.activeDatAddress
-            )
-        ) {
-            tradingStore.enableDXDState =
-                TransactionState.APPROVED;
-        }
-
-    }
-
     @action async refreshBuyFormPreview() {
         const { datStore, configStore, tradingStore } = this.rootStore;
         const minValue = normalizeBalance(
@@ -55,7 +40,7 @@ export default class BlockchainFetchStore {
 
     @action setFetchLoop(
         web3React: Web3ReactContextInterface,
-        forceFetch?: boolean
+        accountSwitched?: boolean
     ) {
         if (web3React.active && web3React.chainId === supportedChainId) {
             const { library, account, chainId } = web3React;
@@ -63,7 +48,6 @@ export default class BlockchainFetchStore {
                 providerStore,
                 datStore,
                 configStore,
-                tokenStore,
                 tradingStore,
                 multicallService,
                 blockchainStore,
@@ -84,7 +68,7 @@ export default class BlockchainFetchStore {
                     // });
 
                     const doFetch =
-                        blockNumber !== lastCheckedBlock || forceFetch;
+                        blockNumber !== lastCheckedBlock || accountSwitched;
 
                     if (doFetch) {
                         console.debug('[Fetch Loop] Fetch Blockchain Data', {
@@ -94,6 +78,10 @@ export default class BlockchainFetchStore {
 
                         // Set block number
                         providerStore.setCurrentBlockNumber(blockNumber);
+
+                        if (accountSwitched) {
+                            tradingStore.resetTransactionStates();
+                        }
 
                         // Get global blockchain data
                         multicallService.addCall({
@@ -168,8 +156,11 @@ export default class BlockchainFetchStore {
                             },
                         ]);
 
+                        const calls = multicallService.activeCalls;
+                        const rawCalls = multicallService.activeCallsRaw;
+
                         multicallService
-                            .executeActiveCalls()
+                            .executeCalls(calls, rawCalls)
                             .then(async (response) => {
                                 const {
                                     calls,
@@ -183,23 +174,23 @@ export default class BlockchainFetchStore {
                                 );
                                 blockchainStore.updateStore(updates, blockNumber);
 
-                                this.refreshDXDApprovalState(account);
-                                this.refreshBuyFormPreview();
-
-                                multicallService.resetActiveCalls();
+                                if (datStore.areAllStaticParamsLoaded(configStore.activeDatAddress)) {
+                                    this.refreshBuyFormPreview();
+                                }
                             })
                             .catch((e) => {
                                 // TODO: Retry on failure, unless stale.
                                 console.error(e);
-                                multicallService.resetActiveCalls();
                             });
+
+                            multicallService.resetActiveCalls();
                     }
                 })
                 .catch((error) => {
                     console.error('[Fetch Loop Failure]', {
                         web3React,
                         providerStore,
-                        forceFetch,
+                        forceFetch: accountSwitched,
                         chainId,
                         account,
                         library,
