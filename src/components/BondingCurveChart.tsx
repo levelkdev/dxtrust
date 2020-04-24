@@ -37,7 +37,7 @@ const ChartBox = styled.div`
 const ChartHeaderFullElement = styled.div`
     color: var(--dark-text-gray);
     padding: 10px 0px 10px 10px;
-    width:100%;
+    width: 100%;
 `;
 
 const ChartHeaderTopElement = styled.div`
@@ -66,13 +66,12 @@ interface ChartPoint {
     y: number;
 }
 
-
 const chartGreen = '#54AE6F';
 const chartBlue = '#5b76fa';
 const chartGray = '#9FA8DA';
 const gridLineColor = '#EAECF7';
 
-const BondingCurveChart = observer(({}) => {
+const BondingCurveChart = observer(() => {
     const {
         root: { tradingStore, tokenStore, configStore, datStore },
     } = useStores();
@@ -87,7 +86,10 @@ const BondingCurveChart = observer(({}) => {
     );
 
     const requiredDataLoaded =
-        staticParamsLoaded && !!totalSupply && datState !== undefined && !!reserveBalance;
+        staticParamsLoaded &&
+        !!totalSupply &&
+        datState !== undefined &&
+        !!reserveBalance;
 
     let buySlopeNum,
         buySlopeDen,
@@ -109,7 +111,7 @@ const BondingCurveChart = observer(({}) => {
             buySlopeDen,
             initGoal,
             initReserve,
-            state: datState
+            state: datState,
         });
 
         if (initGoal && initGoal.gt(0)) {
@@ -122,11 +124,15 @@ const BondingCurveChart = observer(({}) => {
 
     let data, options;
 
-    const generateLine = (data: ChartPoint[], color: string, label: string) => {
+    const generateLine = (
+        chartData: ChartPoint[],
+        color: string,
+        label: string
+    ) => {
         return {
-            label: label,
+            label,
             fill: true,
-            data: data,
+            data: chartData,
             borderWidth: 2,
             pointRadius: 0,
             borderColor: color,
@@ -136,7 +142,7 @@ const BondingCurveChart = observer(({}) => {
 
     const generateSupplyMarker = (point: ChartPoint, label: string) => {
         return {
-            label: label,
+            label,
             fill: false,
             data: [point],
             pointRadius: 7,
@@ -184,14 +190,17 @@ const BondingCurveChart = observer(({}) => {
             };
         }
 
-        let maxSupplyToShow = denormalizeBalance(roundUpToScale(
-            normalizeBalance(totalSupplyWithoutPremint.times(2))
-        ));
+        let maxSupplyToShow = denormalizeBalance(
+            roundUpToScale(normalizeBalance(totalSupplyWithoutPremint.times(2)))
+        );
         if (maxSupplyToShow.lt(initGoal.times(2))) {
-            maxSupplyToShow = denormalizeBalance(roundUpToScale(
-                normalizeBalance(
-                    totalSupplyWithoutPremint.plus(initGoal.times(2))
-                )));
+            maxSupplyToShow = denormalizeBalance(
+                roundUpToScale(
+                    normalizeBalance(
+                        totalSupplyWithoutPremint.plus(initGoal.times(2))
+                    )
+                )
+            );
         }
         const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
 
@@ -220,13 +229,16 @@ const BondingCurveChart = observer(({}) => {
             hasActiveInput = true;
 
             if (futureSupply.gte(maxSupplyToShow)) {
-                const maxSupplyToShow = denormalizeBalance(roundUpToScale(
-                    normalizeBalance(futureSupply.times(1.5))));
-                const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
+                const newMaxSupplyToShow = denormalizeBalance(
+                    roundUpToScale(normalizeBalance(futureSupply.times(1.5)))
+                );
+                const newMaxPriceToShow = cOrg.getPriceAtSupply(
+                    maxSupplyToShow
+                );
 
                 points.maxSupplyToShow = {
-                    x: balanceToNumber(maxSupplyToShow),
-                    y: valueToNumber(maxPriceToShow),
+                    x: balanceToNumber(newMaxSupplyToShow),
+                    y: valueToNumber(newMaxPriceToShow),
                 };
             }
         }
@@ -236,8 +248,6 @@ const BondingCurveChart = observer(({}) => {
         const hasExceededInitGoal = datStore.isRunPhase(
             configStore.activeDatAddress
         );
-        const futureSupplyExceedsInitGoal =
-            hasActiveInput && futureSupply.gt(initGoal);
 
         console.debug('chartParams', {
             datParams: datStore.datParams[configStore.activeDatAddress],
@@ -246,9 +256,9 @@ const BondingCurveChart = observer(({}) => {
             buySlopeNum: buySlopeNum.toString(),
             buySlopeDen: buySlopeDen.toString(),
             currentSupply: totalSupplyWithoutPremint.toString(),
-            hasInitGoal: hasInitGoal,
-            hasExceededInitGoal: hasExceededInitGoal,
-            points: points,
+            hasInitGoal,
+            hasExceededInitGoal,
+            points,
         });
 
         if (hasInitGoal && !hasExceededInitGoal) {
@@ -313,12 +323,15 @@ const BondingCurveChart = observer(({}) => {
             );
         }
 
-        const data = {
+        data = {
             datasets,
             backgroundColor: '#000000',
         };
 
-        const options = {
+        options = {
+            tooltips: {
+                enabled: false,
+            },
             maintainAspectRatio: false,
             legend: {
                 display: false,
@@ -356,7 +369,7 @@ const BondingCurveChart = observer(({}) => {
                         ticks: {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
-                            callback: function (value, index, values) {
+                            callback: (value, index, values) => {
                                 return (
                                     formatNumberValue(bnum(value), 2) + ' ETH'
                                 );
@@ -408,9 +421,7 @@ const BondingCurveChart = observer(({}) => {
                         <ChartHeaderTopElement>Price</ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
-                                ? `${formatNumberValue(
-                                      kickstarterPrice
-                                  )} ETH`
+                                ? `${formatNumberValue(kickstarterPrice)} ETH`
                                 : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
@@ -432,7 +443,7 @@ const BondingCurveChart = observer(({}) => {
                 <ChartBox>
                     <ChartHeaderFullElement>
                         <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement  className="green-text">
+                        <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
                                 ? `${formatBalance(reserveBalance)} ETH`
                                 : '- ETH'}
