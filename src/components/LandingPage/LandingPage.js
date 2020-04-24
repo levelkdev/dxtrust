@@ -228,37 +228,27 @@ const JoinActionWrapper = styled.div`
 	margin-top: 32px;
 `
 
-const JoinAction = styled.div`
+const JoinAction = styled.a`
+	display: flex;
+	flex-direction: row;
 	font-family: Source Sans Pro;
 	font-style: normal;
 	font-weight: bold;
 	font-size: 18px;
-	line-height: 18px;
+	line-height: 32px;
 	align-items: center;
 	letter-spacing: 0.02em;
 	color: #189DDF;
+	margin-top: 8px;
+	text-decoration: none;
 `
 
 const JoinActionText = styled.div`
 `
 
 const JoinActionArrow = styled.img`
+	margin-left: 12px;
 `
-
-const EmailSignUp = styled.div`
-	font-family: Source Sans Pro;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 14px;
-	line-height: 18px;
-	height: 40px;
-	width: 284px;
-	border: 1px solid rgba(51, 51, 51, 0.2);
-	border-radius: 4px;
-	color: var(--light-body-text);
-	margin-top: 32px;
-`
-
 
 const LandingPage = () => {
 	return(
@@ -390,32 +380,31 @@ const LandingPage = () => {
 					Join now
 				</Message>
 				<JoinActionWrapper>
-					<JoinAction>
+					<JoinAction href="https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a" target="_blank">
 						<JoinActionText>
 							Create a proposal
 						</JoinActionText>
-						<JoinActionArrow />
+						<JoinActionArrow src="RightArrow.svg" />
 					</JoinAction>
-					<JoinAction>
+					<JoinAction  href="https://daotalk.org/c/daos/dx-dao/15" target="_blank">
 						<JoinActionText>
 							Start a forum discussion
 						</JoinActionText>
-						<JoinActionArrow />
+						<JoinActionArrow src="RightArrow.svg" />
 					</JoinAction>
-					<JoinAction>
+					<JoinAction href="https://t.me/dxDAO" target="_blank">
 						<JoinActionText>
 							Community chat
 						</JoinActionText>
-						<JoinActionArrow />
+						<JoinActionArrow src="RightArrow.svg" />
 					</JoinAction>
-					<JoinAction>
+					<JoinAction href="https://keybase.io/team/dx_dao" target="_blank">
 						<JoinActionText>
 							Developer chat
 						</JoinActionText>
-						<JoinActionArrow />
+						<JoinActionArrow src="RightArrow.svg" />
 					</JoinAction>
 				</JoinActionWrapper>
-				<EmailSignUp />
 			</JoinSection>
 		</LandingPageWrapper>
 	);
