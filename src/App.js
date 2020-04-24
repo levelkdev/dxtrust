@@ -14,22 +14,28 @@ import LandingPageHeader from 'components/LandingPage/Header';
 const App = () => {
     return (
         <HashRouter>
-            <div className="app-shell">
-                <Switch>
-                    <Route exact path="/">
-                        <Web3ReactManager>
-                            <NavBarContainer />
-                            <ExchangeContainer />
-                            <FooterContainer />
-                        </Web3ReactManager>
-                    </Route>
-                    <Route exact path="/landing">
-                        <LandingPageHeader />
-                        <LandingPage />
-                        <LandingPageFooter />
-                    </Route>
-                </Switch>
-            </div>
+                    <Switch>
+                        <Route exact path="/">
+                            <div className="exchange-body-container">
+                                <div className="app-shell">
+                                    <Web3ReactManager>
+                                        <NavBarContainer />
+                                        <ExchangeContainer />
+                                        <FooterContainer />
+                                    </Web3ReactManager>
+                                </div>
+                            </div>
+                        </Route>
+                        <Route exact path="/landing">
+                            <div className="landing-body-container">
+                                <div className="app-shell">
+                                    <LandingPageHeader />
+                                    <LandingPage />
+                                    <LandingPageFooter />
+                                </div>
+                            </div>
+                        </Route>
+                    </Switch>
         </HashRouter>
     );
 };
