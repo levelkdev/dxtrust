@@ -1,7 +1,6 @@
 const deployDat = require('./deployDAT');
 const fs = require('fs');
 const Web3 = require('web3');
-const BN = require('bignumber.js');
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const args = process.argv;
@@ -36,15 +35,9 @@ let contractsDeployed = {'contracts': {}};
 if (fs.existsSync('src/config/contracts.json'))
   contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
 const toDeploy = JSON.parse(fs.readFileSync('src/config/toDeploy.json', 'utf-8'));
-const addresses = toDeploy.addresses || {};
 
 async function deployOrgs() {
-  const accounts = await web3.eth.getAccounts();
-  console.log('Accounts:',accounts);
-  const DATInfo = toDeploy.DATinfo;
-  let collateralToken = zeroAddress;
-
-  const contracts = await deployDat(web3, DATInfo);
+  const contracts = await deployDat(web3, toDeploy.DATinfo);
   
   contractsDeployed.contracts[network] = {
     multicall: contracts.multicall.address,
@@ -53,11 +46,10 @@ async function deployOrgs() {
     DATinfo: toDeploy.DATinfo,
     implementationAddress: contracts.dat.implementation,
   };
+  
   console.log('File contracts.json in src/config updated for network '+network);
   fs.writeFileSync('src/config/contracts.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
   console.log('===============================================');
-
-  return;
 } 
 
 deployOrgs();

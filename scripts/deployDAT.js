@@ -31,36 +31,28 @@ module.exports = async function deployDat(web3, options, useProxy = true) {
   );
   console.log(`Deploy DAT with config: ${JSON.stringify(callOptions, null, 2)}`, ' \n');
 
-  if (useProxy) {
-    // ProxyAdmin
-    contracts.proxyAdmin = await ProxyAdminContract.new({
-      from: callOptions.control
-    });
-    console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
-  }
+  contracts.proxyAdmin = await ProxyAdminContract.new({
+    from: callOptions.control
+  });
+  console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
-  // DAT
   const datContract = await DATContract.new({
     from: callOptions.control
   });
   console.log(`DAT template deployed ${datContract.address}`);
 
-  if (useProxy) {
-    const datProxy = await ProxyContract.new(
-      datContract.address, // logic
-      contracts.proxyAdmin.address, // admin
-      [], // data
-      {
-        from: callOptions.control
-      }
-    );
-    console.log(`DAT proxy deployed ${datProxy.address}`);
+  const datProxy = await ProxyContract.new(
+    datContract.address, // logic
+    contracts.proxyAdmin.address, // admin
+    [], // data
+    {
+      from: callOptions.control
+    }
+  );
+  console.log(`DAT proxy deployed ${datProxy.address}`);
 
-    contracts.dat = await DATContract.at(datProxy.address);
-    contracts.dat.implementation = datContract.address;
-  } else {
-    contracts.dat = datContract;
-  }
+  contracts.dat = await DATContract.at(datProxy.address);
+  contracts.dat.implementation = datContract.address;
   
   await contracts.dat.methods.initialize(
     callOptions.initReserve,
