@@ -48,7 +48,6 @@ export default class BlockchainFetchStore {
                 providerStore,
                 datStore,
                 configStore,
-                tokenStore,
                 tradingStore,
                 multicallService,
                 blockchainStore,
@@ -157,8 +156,11 @@ export default class BlockchainFetchStore {
                             },
                         ]);
 
+                        const calls = multicallService.activeCalls;
+                        const rawCalls = multicallService.activeCallsRaw;
+
                         multicallService
-                            .executeActiveCalls()
+                            .executeCalls(calls, rawCalls)
                             .then(async (response) => {
                                 const {
                                     calls,
@@ -171,15 +173,17 @@ export default class BlockchainFetchStore {
                                     blockNumber
                                 );
                                 blockchainStore.updateStore(updates, blockNumber);
-                                this.refreshBuyFormPreview();
 
-                                multicallService.resetActiveCalls();
+                                if (datStore.areAllStaticParamsLoaded(configStore.activeDatAddress)) {
+                                    this.refreshBuyFormPreview();
+                                }
                             })
                             .catch((e) => {
                                 // TODO: Retry on failure, unless stale.
                                 console.error(e);
-                                multicallService.resetActiveCalls();
                             });
+
+                            multicallService.resetActiveCalls();
                     }
                 })
                 .catch((error) => {
