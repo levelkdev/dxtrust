@@ -34,6 +34,14 @@
     --rewards-background-green: rgba(84, 174, 111, 0.1);
 
     --roboto: 'Roboto', sans-serif;
+
+    /*Landing Page Styles*/
+    --background: #E4E6F0;
+    --light-header-text: #AAAAAA;
+    --light-body-text: #999999;
+    --dark-text: #333333;
+    --dark-button-background: #189DDF;
+    /*white from above is also used in landing page*/
 }
 
 body {
