@@ -86,3 +86,17 @@ The build can be upload to swarm with the following command:
 ```
 ~/swarm --bzzapi https://swarm-gateways.net/ --defaultpath PATH_TO_BC-DAPP/build/index.html --recursive up PATH_TO_BC-DAPP/BC-DAPP/build
 ```
+
+### Smart Contracts
+
+We use [openzeppelin](https://docs.openzeppelin.com/cli) to have upgradeable proxies of the Decentralized Autonomous Trust contract on kovan and mainnet. You can see the package information in the `.openzeppelin` folder.
+
+The commands we used to deploy and verify the contracts were:
+
+```
+npx oz deploy -n kovan --from ACCOUNT DecentralizedAutonomousTrust
+# It will ask the type of deployment you want to do and select the initialize function to use.
+npx oz deploy -n kovan --from ACCOUNT Multicall
+# It will ask the type of deployment you want to do and select the initialize function to use.
+npx oz verify DAT_ADDRESS --api-key ETHERSCAN_API_KEY --network kovan --remote etherscan --optimizer --optimizer-runs 200 DecentralizedAutonomousTrust
+```

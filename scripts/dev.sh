@@ -43,7 +43,7 @@ else
 fi
 
 npx truffle version
-npx truffle compile
+npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
 node scripts/copyContracts.js
 node scripts/deploy.js -- --network develop &
 sleep 3

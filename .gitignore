@@ -10,6 +10,7 @@
 
 # production
 /build
+/contracts/build
 
 # config
 /src/config/contracts.json
@@ -25,3 +26,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.openzeppelin/.session
