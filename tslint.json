@@ -5,5 +5,7 @@
     "interface-name": false,
     "no-console": false,
     "no-shadowed-variable": false
+    "one-variable-per-declaration": false,
+    "no-string-literal": false
   }
 }
