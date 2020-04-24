@@ -6,32 +6,31 @@ import NavBarContainer from './containers/NavBarContainer';
 import FooterContainer from './containers/FooterContainer';
 import ExchangeContainer from './containers/ExchangeContainer';
 import RedeemRewardsContainer from './containers/RedeemRewardsContainer';
+
 import LandingPage from 'components/LandingPage/LandingPage';
+import LandingPageFooter from 'components/LandingPage/Footer';
+import LandingPageHeader from 'components/LandingPage/Header';
 
 const App = () => {
     return (
-        <Web3ReactManager>
-            <HashRouter>
-                <div className="app-shell">
-                 <NavBarContainer />
-                    <Switch>
-                        <Route exact path="/">
+        <HashRouter>
+            <div className="app-shell">
+                <Switch>
+                    <Route exact path="/">
+                        <Web3ReactManager>
+                            <NavBarContainer />
                             <ExchangeContainer />
-                        </Route>
-                        <Route exact path="/exchange">
-                            <ExchangeContainer />
-                        </Route>
-                        <Route exact path="/redeem">
-                            <RedeemRewardsContainer />
-                        </Route>
-                        <Route exact path="/landing">
-                            <LandingPage />
-                        </Route>
-                    </Switch>
-                    <FooterContainer />
-                </div>
-            </HashRouter>
-        </Web3ReactManager>
+                            <FooterContainer />
+                        </Web3ReactManager>
+                    </Route>
+                    <Route exact path="/landing">
+                        <LandingPageHeader />
+                        <LandingPage />
+                        <LandingPageFooter />
+                    </Route>
+                </Switch>
+            </div>
+        </HashRouter>
     );
 };
 

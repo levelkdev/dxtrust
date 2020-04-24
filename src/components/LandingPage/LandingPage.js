@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 const LandingPageWrapper = styled.div``;
@@ -254,14 +255,6 @@ const JoinAction = styled.a`
     }
 `;
 
-const Divider = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 1px;
-    background-color: #e0e0e0;
-`;
-
 const JoinActionText = styled.div``;
 
 const JoinActionArrow = styled.img`
@@ -269,6 +262,21 @@ const JoinActionArrow = styled.img`
 `;
 
 const LandingPage = () => {
+
+    const NavItem = withRouter(
+        ({ option, route, history, location, children }) => {
+            return (
+                <DarkButton
+                    onClick={() => {
+                        history.push(route);
+                    }}
+                >
+                    {children}
+                </DarkButton>
+            );
+        }
+    );
+
     return (
         <LandingPageWrapper>
             <BannerSection>
@@ -285,7 +293,7 @@ const LandingPage = () => {
                     potential to significantly scale its membership.
                 </Description>
                 <ButtonRow>
-                    <DarkButton>Invest</DarkButton>
+                    <NavItem route="/">Invest</NavItem>
                     <Button
                         onClick={() => {
                             window.open(
@@ -431,7 +439,6 @@ const LandingPage = () => {
                     </JoinAction>
                 </JoinActionWrapper>
             </JoinSection>
-            <Divider />
         </LandingPageWrapper>
     );
 };
