@@ -132,6 +132,10 @@ class TradingFormStore {
         this.payAmount = bnum(0);
     }
 
+    @action setEnableDXDState(newState) {
+        this.enableDXDState = newState;
+    }
+
     @action resetSellForm() {
         this.sellAmount = '';
         this.sellingState = TransactionState.NONE;

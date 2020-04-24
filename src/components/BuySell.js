@@ -3,13 +3,9 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import BuyForm from './Buy/BuyForm';
 import EnableForm from './Enable/EnableForm';
-import EnableContinue from './Enable/EnableContinue';
-import Enable from './Enable/Enable';
-import EnablePending from './Enable/EnablePending';
 import SellForm from './Sell/SellForm';
 import SellDisconnected from './Sell/SellDisconnected';
 import { useStores } from '../contexts/storesContext';
-import { DatState } from '../stores/datStore';
 import BalanceInfo from './BalanceInfo';
 import BuySellTabs from './BuySellTabs';
 import { TransactionState } from 'stores/TradingForm';
@@ -52,7 +48,7 @@ const BuySell = observer(() => {
                 return <SellDisconnected />;
             } else if (!isAccountDataLoaded) {
                 return <div>Loading Account Data...</div>
-            } else if (!hasMaxDXDApproval) {
+            } else if (!hasMaxDXDApproval || tradingStore.enableDXDState === TransactionState.CONFIRMED) {
                 return <EnableForm />;
             } else {
                 return <SellForm />;

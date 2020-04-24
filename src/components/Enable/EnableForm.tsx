@@ -8,15 +8,6 @@ import EnablePending from './EnablePending';
 import { TransactionState } from 'stores/TradingForm';
 import EnableContinue from './EnableContinue';
 
-enum ContentStates {
-    BUY_FORM,
-    SIGN_TRANSACTION,
-    UNCONFIRMED,
-    CONFIRMED,
-    APPROVED,
-    FAILED
-};
-
 const EnableForm = observer(() => {
     const {
         root: { tradingStore },
@@ -44,7 +35,7 @@ const EnableForm = observer(() => {
             />
         ;
     } else if (tradingStore.enableDXDState === TransactionState.CONFIRMED) {
-        return <EnableContinue tokenType="DXD" />;
+        return <EnableContinue />;
     } else if (tradingStore.enableDXDState === TransactionState.FAILED) {
         return <Enable tokenType="DXD" />;
     } 

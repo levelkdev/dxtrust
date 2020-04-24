@@ -32,7 +32,7 @@ export default class MulticallService {
         );
 
         const response = await multi.methods
-            .aggregate(this.activeCallsRaw)
+            .aggregate(rawCalls)
             .call();
         return {
             calls: calls,

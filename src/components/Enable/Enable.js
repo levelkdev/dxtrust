@@ -83,20 +83,16 @@ const Enable = observer(({ tokenType }) => {
                         tokenAddress,
                         configStore.activeDatAddress
                     ).on(TXEvents.TX_HASH, (hash) => {
-                        tradingStore.enableDXDState =
-                            TransactionState.UNCONFIRMED;
+                        tradingStore.setEnableDXDState(TransactionState.UNCONFIRMED);
                     })
                     .on(TXEvents.RECEIPT, (receipt) => {
-                        tradingStore.enableDXDState =
-                            TransactionState.CONFIRMED;
+                        tradingStore.setEnableDXDState(TransactionState.CONFIRMED);
                     })
                     .on(TXEvents.TX_ERROR, (txerror) => {
-                        tradingStore.enableDXDState = 
-                            TransactionState.FAILED;
+                        tradingStore.setEnableDXDState(TransactionState.FAILED);
                     })
                     .on(TXEvents.INVARIANT, (error) => {
-                        tradingStore.enableDXDState = 
-                            TransactionState.FAILED;
+                        tradingStore.setEnableDXDState(TransactionState.FAILED);
                     });;
                 }}
             >

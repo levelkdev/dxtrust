@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import store from '../../stores/Root';
+import { TransactionState } from 'stores/TradingForm';
+import { observer } from 'mobx-react';
+import { useStores } from '../../contexts/storesContext';
 
 const ContentWrapper = styled.div`
     height: 200px;
@@ -69,29 +72,22 @@ const EnableButton = styled.div`
     cursor: pointer;
 `;
 
-const EnableContinue = ({ tokenType }) => {
-    const Button = ({ tokenType }) => {
-        if (tokenType === 'TKN') {
+const EnableContinue = observer(() => {
+    const {
+        root: { tradingStore },
+    } = useStores();
+
+
+    const Button = () => {
             return (
                 <EnableButton
                     onClick={() => {
-                        store.tradingStore.enableTKNState = 4;
+                        tradingStore.setEnableDXDState(TransactionState.APPROVED);
                     }}
                 >
                     Continue
                 </EnableButton>
             );
-        } else if (tokenType === 'DXD') {
-            return (
-                <EnableButton
-                    onClick={() => {
-                        store.tradingStore.enableDXDState = 4;
-                    }}
-                >
-                    Continue
-                </EnableButton>
-            );
-        }
     };
 
     return (
@@ -101,11 +97,11 @@ const EnableContinue = ({ tokenType }) => {
                     <Checkbox src="checkbox_758AFE.svg" />
                 </CheckboxContainer>
             </CircleContainer>
-            <Info>Enable {tokenType} for trading</Info>
+            <Info>Enable DXD for trading</Info>
             <Status>Confirmed</Status>
-            <Button tokenType={tokenType}>Continue</Button>
+            <Button>Continue</Button>
         </ContentWrapper>
     );
-};
+});
 
 export default EnableContinue;
