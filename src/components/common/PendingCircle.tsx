@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SpinningCircle = styled.div`
-    height:16px;
-    width:16px;
+    height: ${(props) => props.height || '16px'};
+    width: ${(props) => props.width || '16px'};
     color: blue;
     top:50%;
     left:50%;
@@ -48,9 +48,9 @@ const SpinningCircle = styled.div`
     }
 `;
 
-const PendingCircle = () => {
+const PendingCircle = ({ height, width }) => {
 	return (
-		<SpinningCircle />
+		<SpinningCircle height={height} width={width} />
 	);
 };
 
