@@ -13,6 +13,7 @@ import LandingPageHeader from 'components/LandingPage/Header';
 
 import FAQPage from 'components/FAQPage';
 
+
 const App = () => {
     return (
         <HashRouter>

@@ -264,17 +264,31 @@ const JoinActionArrow = styled.img`
 
 const LandingPage = () => {
 
-    const NavItem = withRouter(
+    const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
-            return (
-                <DarkButton
-                    onClick={() => {
-                        history.push(route);
-                    }}
-                >
-                    {children}
-                </DarkButton>
-            );
+                return (
+                    <DarkButton
+                        onClick={() => {
+                            history.push(route);
+                        }}
+                    >
+                        {children}
+                    </DarkButton>
+                );
+        }
+    );
+
+    const NormalButton = withRouter(
+        ({ option, route, history, location, children }) => {
+                return (
+                    <Button
+                        onClick={() => {
+                            history.push(route);
+                        }}
+                    >
+                        {children}
+                    </Button>
+                );
         }
     );
 
@@ -294,17 +308,8 @@ const LandingPage = () => {
                     potential to significantly scale its membership.
                 </Description>
                 <ButtonRow>
-                    <NavItem route="/">Invest</NavItem>
-                    <Button
-                        onClick={() => {
-                            window.open(
-                                'https://keybase.io/team/dx_dao',
-                                '_blank'
-                            );
-                        }}
-                    >
-                        Join
-                    </Button>
+                    <BlueButton route="/">Invest</BlueButton>
+                    <NormalButton route="/faq">FAQ</NormalButton>
                     <Button
                         onClick={() => {
                             window.open(
