@@ -68,6 +68,11 @@ const NavBar = ({}) => {
                 </NavItem>
             </LeftNav>
             <RightNav>
+                <NavItem route="/faq">
+                    <MenuItem>
+                        FAQ
+                    </MenuItem>
+                </NavItem>
                 <MenuItem href="https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a" target="_blank">
                     Governance
                 </MenuItem>

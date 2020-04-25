@@ -11,6 +11,8 @@ import LandingPage from 'components/LandingPage/LandingPage';
 import LandingPageFooter from 'components/LandingPage/Footer';
 import LandingPageHeader from 'components/LandingPage/Header';
 
+import FAQPage from 'components/FAQPage';
+
 const App = () => {
     return (
         <HashRouter>
@@ -33,6 +35,15 @@ const App = () => {
                                     <LandingPage />
                                     <LandingPageFooter />
                                 </div>
+                            </div>
+                        </Route>
+                        <Route exact path="/faq">
+                            <div className="landing-body-container">
+                                <div className="app-shell">
+                                    <LandingPageHeader />
+                                    <FAQPage/>
+                                    <LandingPageFooter />
+                                    </div>
                             </div>
                         </Route>
                     </Switch>
