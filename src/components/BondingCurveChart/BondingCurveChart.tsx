@@ -2,18 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { observer } from 'mobx-react';
-import { useStores } from '../contexts/storesContext';
+import { useStores } from '../../contexts/storesContext';
 import {
     denormalizeBalance,
     formatBalance,
     formatNumberValue,
     normalizeBalance,
-} from '../utils/token';
-import COrgSim from '../services/contractSimulators/cOrgSim';
-import { BigNumber } from '../utils/bignumber';
-import { validateTokenValue, ValidationStatus } from '../utils/validators';
-import { bnum } from '../utils/helpers';
-import { roundUpToScale } from '../utils/number';
+} from '../../utils/token';
+import COrgSim from '../../services/contractSimulators/cOrgSim';
+import { BigNumber } from '../../utils/bignumber';
+import { validateTokenValue, ValidationStatus } from '../../utils/validators';
+import { bnum } from '../../utils/helpers';
+import { roundUpToScale } from '../../utils/number';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -133,6 +133,9 @@ const BondingCurveChart = observer(() => {
             label,
             fill: true,
             data: chartData,
+            datalabels: {
+                display: false,
+            },
             borderWidth: 2,
             pointRadius: 0,
             borderColor: color,
@@ -140,15 +143,15 @@ const BondingCurveChart = observer(() => {
         };
     };
 
-    const generateSupplyMarker = (point: ChartPoint, label: string) => {
+    const generateSupplyMarker = (point: ChartPoint, label: string, color) => {
         return {
             label,
             fill: false,
             data: [point],
             pointRadius: 7,
-            pointBackgroundColor: chartBlue,
+            pointBackgroundColor: color,
             borderWidth: 1,
-            pointBorderColor: chartBlue,
+            pointBorderColor: color,
             lineTension: 0,
         };
     };
@@ -313,13 +316,46 @@ const BondingCurveChart = observer(() => {
             );
         }
 
+        const numLines = datasets.length;
+
+        enum PointLabels {
+            CURRENT_SUPPLY = 'Current Supply',
+            KICKSTARTER_END = 'Kickstarter End',
+            CURVE_START = 'Curve Start',
+            FUTURE_SUPPLY = 'Future Supply',
+        }
+
         datasets.push(
-            generateSupplyMarker(points.currentSupply, 'Current Supply')
+            generateSupplyMarker(
+                points.currentSupply,
+                PointLabels.CURRENT_SUPPLY,
+                hasInitGoal && !hasExceededInitGoal ? chartGreen : chartBlue
+            )
+        );
+
+        datasets.push(
+            generateSupplyMarker(
+                points.kickstarterEnd,
+                PointLabels.KICKSTARTER_END,
+                chartGreen
+            )
+        );
+
+        datasets.push(
+            generateSupplyMarker(
+                points.curveStart,
+                PointLabels.CURVE_START,
+                chartBlue
+            )
         );
 
         if (hasActiveInput) {
             datasets.push(
-                generateSupplyMarker(points.futureSupply, 'Future Supply')
+                generateSupplyMarker(
+                    points.futureSupply,
+                    PointLabels.FUTURE_SUPPLY,
+                    chartGray
+                )
             );
         }
 
@@ -330,7 +366,49 @@ const BondingCurveChart = observer(() => {
 
         options = {
             tooltips: {
-                enabled: false,
+                filter: (tooltipItem) => {
+                    console.log(
+                        'filter',
+                        tooltipItem.datasetIndex >= numLines,
+                        numLines
+                    );
+                    return tooltipItem.datasetIndex >= numLines;
+                },
+                callbacks: {
+                    // tslint:disable-next-line: no-shadowed-variable
+                    label: (tooltipItem, data) => {
+                        const label =
+                            data.datasets[tooltipItem.datasetIndex].label;
+
+                        if (label === PointLabels.CURRENT_SUPPLY) {
+                            return 'Currently Funded';
+                        } else if (label === PointLabels.KICKSTARTER_END) {
+                            const kickstarterGoal = requiredDataLoaded
+                                ? `${formatBalance(
+                                      initGoal.times(kickstarterPrice)
+                                  )} ETH`
+                                : '- ETH';
+                            return `Kickstarter ends when funding goal of ${kickstarterGoal} reached`;
+                        } else if (label === PointLabels.CURVE_START) {
+                            return 'After the kickstarter period, sales continue with an initial 2x increase in price';
+                        } else if (label === PointLabels.FUTURE_SUPPLY) {
+                            return `DXD Total After Buy: ${tooltipItem.xLabel} DXD`;
+                        }
+
+                        console.log('label Callback', {
+                            tooltipItem,
+                            data,
+                        });
+                        let toDisplay =
+                            data.datasets[tooltipItem.datasetIndex].label || '';
+
+                        if (toDisplay) {
+                            toDisplay += ': ';
+                        }
+                        toDisplay += tooltipItem.yLabel + ' ETH / DXD';
+                        return toDisplay;
+                    },
+                },
             },
             maintainAspectRatio: false,
             legend: {
