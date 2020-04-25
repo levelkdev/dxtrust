@@ -55,17 +55,16 @@ const FooterLogo = styled.img`
 `;
 
 const Footer = ({}) => {
-  console.log(process.env)
     const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0,7);
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
                     <a
-                        href={"https://github.com/levelkdev/BC-DAPP/tree/"+process.env.REACT_APP_GIT_SHA}
+                        href={"https://github.com/levelkdev/BC-DAPP/tree/v0.1.1"}
                         target="#"
                     >
-                        Website Version 1.0
+                        App Version 0.1.1
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
@@ -75,15 +74,6 @@ const Footer = ({}) => {
                         target="#"
                     >
                         Git Hash
-                    </a>
-                </FooterItem>
-                <FooterDivider></FooterDivider>
-                <FooterItem>
-                    <a
-                        href={"https://github.com/levelkdev/BC-DAPP/tree/"+process.env.REACT_APP_GIT_SHA}
-                        target="#"
-                    >
-                        IPFS Hash
                     </a>
                 </FooterItem>
             </LeftFooter>

@@ -307,7 +307,7 @@ const LandingPage = () => {
                     potential to significantly scale its membership.
                 </Description>
                 <ButtonRow>
-                    <NavItem route="/">Invest</NavItem>
+                    <NavItem route="/exchange">Invest</NavItem>
                     <Button
                         onClick={() => {
                             window.open(
