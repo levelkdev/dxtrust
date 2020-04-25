@@ -1,4 +1,6 @@
 :root {
+    width: 100%;
+
     --active-button-border: #304ffe;
     --orange: #f9aa33;
     --blue-text: #536DFE;
@@ -42,15 +44,24 @@
     --dark-text: #333333;
     --dark-button-background: #189DDF;
     --lp-border-color-onHover: #ADADAD;
+    --footer-divider: #E0E0E0;
     /*white from above is also used in landing page*/
 }
 
-body {
+.exchange-body-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     font-family: var(--roboto);
-    background-color: var(--light-gray);
+    background-color: var(--light-gray);    
+}
+
+.landing-body-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-family: var(--roboto);
+    background-color: var(--white);
 }
 
 .app-shell {
