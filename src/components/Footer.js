@@ -67,7 +67,7 @@ const Footer = ({}) => {
                         }
                         target="#"
                     >
-                        DXdao Version {gitHash} - v0.1.0
+                        Version 0.1.0
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>

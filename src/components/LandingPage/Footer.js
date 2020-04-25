@@ -15,7 +15,6 @@ const FooterWrapper = styled.div`
 const LeftFooter = styled.div`
     display: flex;
     flex-direction: row;
-    
 `;
 
 const RighFooter = styled.div`
@@ -50,27 +49,33 @@ const LogoWrapper = styled.div`
 
 const FooterLogo = styled.img`
     :hover {
-        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg) brightness(97%) contrast(86%);
+        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg)
+            brightness(97%) contrast(86%);
     }
 `;
 
 const Footer = ({}) => {
-    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0,7);
+    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0, 7);
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
                     <a
-                        href={"https://github.com/levelkdev/BC-DAPP/tree/v0.1.1"}
+                        href={
+                            'https://github.com/levelkdev/BC-DAPP/tree/v0.1.1'
+                        }
                         target="#"
                     >
-                        App Version 0.1.1
+                        Version 0.1.1
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
                     <a
-                        href={"https://github.com/levelkdev/BC-DAPP/tree/"+process.env.REACT_APP_GIT_SHA}
+                        href={
+                            'https://github.com/levelkdev/BC-DAPP/tree/' +
+                            process.env.REACT_APP_GIT_SHA
+                        }
                         target="#"
                     >
                         Git Hash
@@ -80,12 +85,12 @@ const Footer = ({}) => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                    <FooterLogo src="twitter_color.svg"></FooterLogo>
+                        <FooterLogo src="twitter_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                    <FooterLogo src="reddit_color.svg"></FooterLogo>
+                        <FooterLogo src="reddit_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
