@@ -1,7 +1,7 @@
 {
     "DATinfo": {
         "collateralType": "ETH",
-        "name": "dxDAO Token",
+        "name": "Dxdao Token",
         "symbol": "DXD",
         "currency": "0x0000000000000000000000000000000000000000",
         "initReserve": "85000000000000000000000",
@@ -11,5 +11,25 @@
         "investmentReserveBasisPoints": "1000",
         "revenueCommitmentBasisPoints": "1000",
         "minInvestment": "100000000000000000"
+    },
+    "DATinfoMainnet": {
+        "collateralType": "ETH",
+        "name": "Dxdao Token",
+        "symbol": "DXD",
+        "currency": "0x0000000000000000000000000000000000000000",
+        "whitelistAddress": "0x0000000000000000000000000000000000000000",
+        "initReserve": "100000000000000000000000",
+        "initGoal": "4800000000000000000000",
+        "buySlopeNum": "1",
+        "buySlopeDen": "36000000000000000000000",
+        "investmentReserveBasisPoints": "1000",
+        "revenueCommitmentBasisPoints": "1000",
+        "minInvestment": "1000000000000000",
+        "beneficiary": "0x519b70055af55A007110B4Ff99b0eA33071c720a",
+        "control": "0x519b70055af55A007110B4Ff99b0eA33071c720a",
+        "feeCollector": "0x519b70055af55A007110B4Ff99b0eA33071c720a",
+        "feeBasisPoints": "0",
+        "autoBurn": "true",
+        "openUntilAtLeast": "0"
     }
 }
