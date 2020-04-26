@@ -29,15 +29,13 @@ const ContentWrapper = styled.div`
 
 const BuySell = observer(() => {
     const {
-        root: { configStore, tokenStore, tradingStore, providerStore },
+        root: { tradingStore, providerStore },
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
     const [currentTab, setCurrentTab] = useState(0);
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-    const hasMaxDXDApproval = account ? tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, configStore.activeDatAddress) : false;
-    const isAccountDataLoaded = tradingStore.isDataLoaded(account);
 
     const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {
         if (currentTab === 0) {
@@ -46,9 +44,7 @@ const BuySell = observer(() => {
 
             if (!account) {
                 return <SellDisconnected />;
-            } else if (!isAccountDataLoaded) {
-                return <div>Loading Account Data...</div>
-            } else if (!hasMaxDXDApproval || tradingStore.enableDXDState === TransactionState.CONFIRMED) {
+            } else if (tradingStore.enableDXDState !== TransactionState.APPROVED) {
                 return <EnableForm />;
             } else {
                 return <SellForm />;
