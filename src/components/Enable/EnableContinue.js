@@ -26,8 +26,8 @@ const CheckboxContainer = styled.div`
     align-items: center;
     height: 48px;
     width: 48px;
-    border-radius: 24px;
-    border: 1px solid var(--panel-icon-2);
+    border-radius: 32px;
+    border: 1.5px solid var(--panel-icon-2);
     margin-bottom: 16px;
 `;
 
@@ -77,17 +77,16 @@ const EnableContinue = observer(() => {
         root: { tradingStore },
     } = useStores();
 
-
     const Button = () => {
-            return (
-                <EnableButton
-                    onClick={() => {
-                        tradingStore.setEnableDXDState(TransactionState.APPROVED);
-                    }}
-                >
-                    Continue
-                </EnableButton>
-            );
+        return (
+            <EnableButton
+                onClick={() => {
+                    tradingStore.setEnableDXDState(TransactionState.APPROVED);
+                }}
+            >
+                Continue
+            </EnableButton>
+        );
     };
 
     return (
