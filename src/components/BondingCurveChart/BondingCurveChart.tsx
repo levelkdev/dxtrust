@@ -140,7 +140,8 @@ const BondingCurveChart = observer(() => {
     const showTooltipForPoint = (pointId: PointLabels) => {
         return (
             pointId !== PointLabels.ZERO &&
-            pointId !== PointLabels.KICKSTARTER_START
+            pointId !== PointLabels.KICKSTARTER_START &&
+            pointId !== PointLabels.MAX_SUPPLY_TO_SHOW
         );
     };
 
