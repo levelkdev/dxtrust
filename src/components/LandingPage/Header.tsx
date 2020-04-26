@@ -63,8 +63,8 @@ const NavBar = ({}) => {
     return (
         <NavWrapper>
             <LeftNav>
-                <NavItem route="/">
-                    <img src="DXdao_Landing.svg"/>
+                <NavItem route="/landing">
+                    <img src="Dxdao_Landing.svg"/>
                 </NavItem>
             </LeftNav>
             <RightNav>

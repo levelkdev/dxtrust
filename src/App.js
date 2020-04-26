@@ -8,29 +8,43 @@ import ExchangeContainer from './containers/ExchangeContainer';
 import LandingPageContainer from './containers/LandingPageContainer';
 
 
+import FAQPage from 'components/FAQPage';
+
+
 const App = () => {
     return (
         <HashRouter>
-          <Switch>
-              <Route exact path="/exchange">
-                  <div className="exchange-body-container">
-                      <div className="app-shell">
-                          <Web3ReactManager>
-                              <NavBarContainer />
-                              <ExchangeContainer />
-                              <FooterContainer />
-                          </Web3ReactManager>
-                      </div>
-                  </div>
-              </Route>
-              <Route exact path="/">
-                  <div className="landing-body-container">
-                      <div className="app-shell">
-                          <LandingPageContainer/>
-                      </div>
-                  </div>
-              </Route>
-          </Switch>
+                    <Switch>
+                        <Route exact path="/">
+                            <div className="exchange-body-container">
+                                <div className="app-shell">
+                                    <Web3ReactManager>
+                                        <NavBarContainer />
+                                        <ExchangeContainer />
+                                        <FooterContainer />
+                                    </Web3ReactManager>
+                                </div>
+                            </div>
+                        </Route>
+                        <Route exact path="/landing">
+                            <div className="landing-body-container">
+                                <div className="app-shell">
+                                    <LandingPageHeader />
+                                    <LandingPage />
+                                    <LandingPageFooter />
+                                </div>
+                            </div>
+                        </Route>
+                        <Route exact path="/faq">
+                            <div className="landing-body-container">
+                                <div className="app-shell">
+                                    <LandingPageHeader />
+                                    <FAQPage/>
+                                    <LandingPageFooter />
+                                    </div>
+                            </div>
+                        </Route>
+                    </Switch>
         </HashRouter>
     );
 };
