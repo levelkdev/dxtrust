@@ -207,9 +207,7 @@ const BondingCurveChart = observer(() => {
             },
             borderWidth: 2,
             pointRadius: (context) => {
-                console.log(context);
                 const point = context.dataset.data[context.dataIndex];
-                console.log(point);
                 const pointId = getPointIdByCoordinates({
                     x: point.x,
                     y: point.y,
@@ -440,16 +438,9 @@ const BondingCurveChart = observer(() => {
 
         options = {
             tooltips: {
+                enabled: false,
                 custom: pointTooltips,
                 filter: (tooltipItem) => {
-                    // Only show tooltips for supply markers
-                    console.log(
-                        'filter',
-                        tooltipItem,
-                        tooltipItem.datasetIndex >= numLines,
-                        numLines
-                    );
-
                     const pointId = getPointIdByCoordinates({
                         x: tooltipItem.xLabel,
                         y: tooltipItem.yLabel,
@@ -460,9 +451,6 @@ const BondingCurveChart = observer(() => {
                 callbacks: {
                     // tslint:disable-next-line: no-shadowed-variable
                     label: (tooltipItem, data) => {
-                        const label =
-                            data.datasets[tooltipItem.datasetIndex].label;
-
                         const pointId = getPointIdByCoordinates({
                             x: tooltipItem.xLabel,
                             y: tooltipItem.yLabel,
@@ -485,11 +473,6 @@ const BondingCurveChart = observer(() => {
                         } else if (pointId === PointLabels.FUTURE_SUPPLY) {
                             return `DXD Total After Buy: ${tooltipItem.xLabel} DXD`;
                         }
-
-                        console.log('label Callback', {
-                            tooltipItem,
-                            data,
-                        });
                         let toDisplay =
                             data.datasets[tooltipItem.datasetIndex].label || '';
 
