@@ -322,7 +322,7 @@ const LandingPage = () => {
                     potential to significantly scale its membership.
                 </Description>
                 <ButtonRow>
-                    <BlueButton route="/">Invest</BlueButton>
+                    <BlueButton route="/exchange">Invest</BlueButton>
                     <NormalButton route="/faq">FAQ</NormalButton>
                     <Button
                         onClick={() => {
