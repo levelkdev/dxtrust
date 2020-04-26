@@ -50,4 +50,8 @@ async function loadDeployment(network) {
   console.log('Deployment configuration loaded for network '+network);
 } 
 
-loadDeployment('kovan');
+async function main() {
+  await loadDeployment(process.env.REACT_APP_ETH_NETWORK);
+};
+
+main();
