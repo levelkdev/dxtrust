@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PendingCircle from '../common/PendingCircle';
 
 const ContentWrapper = styled.div`
     height: 200px;
@@ -10,28 +11,18 @@ const ContentWrapper = styled.div`
 `;
 
 const CircleContainer = styled.div`
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: center;
-`;
-
-const EllipsesContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 48px;
-    width: 48px;
-    color: var(--pending-ellipses-purple);
-    border-radius: 24px;
-    border: 1px solid var(--panel-icon);
-    margin-bottom: 16px;
+    padding-bottom: 16px;
 `;
 
 const Ellipses = styled.div`
-    height: 13px;
-    width: 18px;
-    margin-bottom: 12px;
+    position: absolute;
+    font-size: 25px;
+    top: 5px;
+    color: var(--pending-ellipses-purple);
 `;
 
 const Title = styled.div`
@@ -73,9 +64,8 @@ const EnablePending = ({ tokenType, subtitleText }) => {
     return (
         <ContentWrapper>
             <CircleContainer>
-                <EllipsesContainer>
-                    <Ellipses>...</Ellipses>
-                </EllipsesContainer>
+                <PendingCircle height="48px" width="48px" />
+                <Ellipses>...</Ellipses>
             </CircleContainer>
             <Title>Enable {tokenType} for trading</Title>
             <SubTitle>{subtitleText}</SubTitle>

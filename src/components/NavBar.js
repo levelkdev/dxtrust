@@ -84,7 +84,7 @@ const NavBar = ({}) => {
     return (
         <NavWrapper>
             <LeftNav>
-                <NavItem route="/">
+                <NavItem route="/exchange">
                 <img src="DXdao.svg"/>
                     {/*<DXDLogo src="DXdao.svg"></DXDLogo>*/}
                 </NavItem>

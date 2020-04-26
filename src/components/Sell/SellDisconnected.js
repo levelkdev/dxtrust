@@ -5,7 +5,6 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance } from '../../utils/token';
-import PendingCircle from '../common/PendingCircle';
 import Web3ConnectStatus from '../Web3ConnectStatus';
 
 

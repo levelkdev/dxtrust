@@ -5,6 +5,17 @@ import FAQPage from '../FAQPage';
 
 const LandingPageWrapper = styled.div``;
 
+const DXDLogo = styled.img`
+    margin-bottom: 8px;
+`;
+
+const DXDSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 124px;
+`;
+
 const BannerSection = styled.div`
     display: flex;
     flex-direction: column;
@@ -47,7 +58,7 @@ const Description = styled.div`
     text-align: center;
     letter-spacing: 0.03em;
     color: var(--light-body-text);
-    margin-top: 32px;
+    margin-top: 24px;
     max-width: 614px;
 `;
 
@@ -256,6 +267,10 @@ const JoinAction = styled.a`
     }
 `;
 
+const ReadAction = styled(JoinAction)`
+    margin: 0;
+`;
+
 const JoinActionText = styled.div``;
 
 const JoinActionArrow = styled.img`
@@ -263,7 +278,6 @@ const JoinActionArrow = styled.img`
 `;
 
 const LandingPage = () => {
-
     const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
                 return (
@@ -322,6 +336,24 @@ const LandingPage = () => {
                     </Button>
                 </ButtonRow>
             </BannerSection>
+            <DXDSection>
+                <DXDLogo src="DXD.svg" />
+                <Message>DXD powers the Decentralised Ecosystem</Message>
+                <Description margin="12px">
+                    Contrary to popular belief, Lorem Ipsum is not simply random
+                    text. It has roots in a piece of classical Latin literature
+                    from 45 BC, making it over 2000 years old. Richard
+                    McClintock, a Latin professor at Hampden-Sydney College in
+                    Virginia.
+                </Description>
+                <JoinAction
+                    href="https://keybase.io/team/dx_dao"
+                    target="_blank"
+                >
+                    <JoinActionText>Learn more</JoinActionText>
+                    <JoinActionArrow src="RightArrow.svg" />
+                </JoinAction>
+            </DXDSection>
             <ProductSection>
                 <TagLine>Our collectively owned products</TagLine>
                 <Message>Pure Dapps powered by Dxdao</Message>

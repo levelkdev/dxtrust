@@ -5,11 +5,8 @@ import Web3ReactManager from 'components/Web3ReactManager';
 import NavBarContainer from './containers/NavBarContainer';
 import FooterContainer from './containers/FooterContainer';
 import ExchangeContainer from './containers/ExchangeContainer';
-import RedeemRewardsContainer from './containers/RedeemRewardsContainer';
+import LandingPageContainer from './containers/LandingPageContainer';
 
-import LandingPage from 'components/LandingPage/LandingPage';
-import LandingPageFooter from 'components/LandingPage/Footer';
-import LandingPageHeader from 'components/LandingPage/Header';
 
 import FAQPage from 'components/FAQPage';
 
