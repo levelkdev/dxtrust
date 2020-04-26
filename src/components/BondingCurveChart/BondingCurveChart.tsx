@@ -14,6 +14,7 @@ import { BigNumber } from '../../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 import { bnum } from '../../utils/helpers';
 import { roundUpToScale } from '../../utils/number';
+import { pointTooltips } from './pointTooltips';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -236,7 +237,7 @@ const BondingCurveChart = observer(() => {
                     roundUpToScale(normalizeBalance(futureSupply.times(1.5)))
                 );
                 const newMaxPriceToShow = cOrg.getPriceAtSupply(
-                    maxSupplyToShow
+                    newMaxSupplyToShow
                 );
 
                 points.maxSupplyToShow = {
@@ -366,6 +367,7 @@ const BondingCurveChart = observer(() => {
 
         options = {
             tooltips: {
+                custom: pointTooltips,
                 filter: (tooltipItem) => {
                     console.log(
                         'filter',
@@ -381,7 +383,7 @@ const BondingCurveChart = observer(() => {
                             data.datasets[tooltipItem.datasetIndex].label;
 
                         if (label === PointLabels.CURRENT_SUPPLY) {
-                            return 'Currently Funded';
+                            return `Currently ${1} Funded`;
                         } else if (label === PointLabels.KICKSTARTER_END) {
                             const kickstarterGoal = requiredDataLoaded
                                 ? `${formatBalance(
