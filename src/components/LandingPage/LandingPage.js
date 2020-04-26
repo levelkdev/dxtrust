@@ -280,29 +280,29 @@ const JoinActionArrow = styled.img`
 const LandingPage = () => {
     const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
-                return (
-                    <DarkButton
-                        onClick={() => {
-                            history.push(route);
-                        }}
-                    >
-                        {children}
-                    </DarkButton>
-                );
+            return (
+                <DarkButton
+                    onClick={() => {
+                        history.push(route);
+                    }}
+                >
+                    {children}
+                </DarkButton>
+            );
         }
     );
 
     const NormalButton = withRouter(
         ({ option, route, history, location, children }) => {
-                return (
-                    <Button
-                        onClick={() => {
-                            history.push(route);
-                        }}
-                    >
-                        {children}
-                    </Button>
-                );
+            return (
+                <Button
+                    onClick={() => {
+                        history.push(route);
+                    }}
+                >
+                    {children}
+                </Button>
+            );
         }
     );
 
@@ -340,19 +340,13 @@ const LandingPage = () => {
                 <DXDLogo src="DXD.svg" />
                 <Message>DXD powers the Decentralised Ecosystem</Message>
                 <Description margin="12px">
-                    Contrary to popular belief, Lorem Ipsum is not simply random
-                    text. It has roots in a piece of classical Latin literature
-                    from 45 BC, making it over 2000 years old. Richard
-                    McClintock, a Latin professor at Hampden-Sydney College in
-                    Virginia.
+                    The DXD token is DXdao´s native token. DXD token holders
+                    have an economic claim to the DXdao´s revenue. It also
+                    grants its owners future access to a suite of services and
+                    premium features in decentralised applications, such as
+                    glasless transactions, feeless anonymizing of assets,
+                    reduced trading fees on DEX protocols and more.
                 </Description>
-                <JoinAction
-                    href="https://keybase.io/team/dx_dao"
-                    target="_blank"
-                >
-                    <JoinActionText>Learn more</JoinActionText>
-                    <JoinActionArrow src="RightArrow.svg" />
-                </JoinAction>
             </DXDSection>
             <ProductSection>
                 <TagLine>Our collectively owned products</TagLine>
