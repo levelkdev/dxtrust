@@ -67,6 +67,16 @@ interface ChartPoint {
     y: number;
 }
 
+enum PointLabels {
+    ZERO,
+    KICKSTARTER_START,
+    KICKSTARTER_END,
+    CURRENT_SUPPLY,
+    FUTURE_SUPPLY,
+    CURVE_START,
+    MAX_SUPPLY_TO_SHOW,
+}
+
 const chartGreen = '#54AE6F';
 const chartBlue = '#5b76fa';
 const chartGray = '#9FA8DA';
@@ -125,6 +135,63 @@ const BondingCurveChart = observer(() => {
 
     let data, options;
 
+    let points: ChartPointMap = {};
+
+    const showTooltipForPoint = (pointId: PointLabels) => {
+        return (
+            pointId !== PointLabels.ZERO &&
+            pointId !== PointLabels.KICKSTARTER_START
+        );
+    };
+
+    const getPointIdByCoordinates = (point: ChartPoint) => {
+        if (point.x === points.zero.x && point.y === points.zero.y) {
+            return PointLabels.ZERO;
+        }
+
+        if (
+            point.x === points.maxSupplyToShow.x &&
+            point.y === points.maxSupplyToShow.y
+        ) {
+            return PointLabels.MAX_SUPPLY_TO_SHOW;
+        }
+
+        if (
+            point.x === points.kickStarterStart.x &&
+            point.y === points.kickStarterStart.y
+        ) {
+            return PointLabels.KICKSTARTER_START;
+        }
+
+        if (
+            point.x === points.kickstarterEnd.x &&
+            point.y === points.kickstarterEnd.y
+        ) {
+            return PointLabels.KICKSTARTER_END;
+        }
+
+        if (
+            point.x === points.curveStart.x &&
+            point.y === points.curveStart.y
+        ) {
+            return PointLabels.CURVE_START;
+        }
+
+        if (
+            point.x === points.currentSupply.x &&
+            point.y === points.currentSupply.y
+        ) {
+            return PointLabels.CURRENT_SUPPLY;
+        }
+
+        if (
+            point.x === points.futureSupply.x &&
+            point.y === points.futureSupply.y
+        ) {
+            return PointLabels.FUTURE_SUPPLY;
+        }
+    };
+
     const generateLine = (
         chartData: ChartPoint[],
         color: string,
@@ -138,8 +205,24 @@ const BondingCurveChart = observer(() => {
                 display: false,
             },
             borderWidth: 2,
-            pointRadius: 0,
-            borderColor: color,
+            pointRadius: (context) => {
+                console.log(context);
+                const point = context.dataset.data[context.dataIndex];
+                console.log(point);
+                const pointId = getPointIdByCoordinates({
+                    x: point.x,
+                    y: point.y,
+                });
+
+                if (pointId === PointLabels.CURRENT_SUPPLY) {
+                    return 4;
+                } else {
+                    return 2;
+                }
+            },
+            borderColor: (context) => {
+                return color;
+            },
             lineTension: 0,
         };
     };
@@ -166,7 +249,7 @@ const BondingCurveChart = observer(() => {
     };
 
     const generateChart = () => {
-        const points: ChartPointMap = {
+        points = {
             zero: {
                 x: 0,
                 y: 0,
@@ -268,17 +351,13 @@ const BondingCurveChart = observer(() => {
         if (hasInitGoal && !hasExceededInitGoal) {
             datasets.push(
                 generateLine(
-                    [points.currentSupply, points.kickstarterEnd],
+                    [
+                        points.kickStarterStart,
+                        points.currentSupply,
+                        points.kickstarterEnd,
+                    ],
                     chartGreen,
                     'Kickstarter Funded'
-                )
-            );
-
-            datasets.push(
-                generateLine(
-                    [points.kickStarterStart, points.currentSupply],
-                    chartBlue,
-                    'Kickstarter Unfunded'
                 )
             );
         }
@@ -286,7 +365,7 @@ const BondingCurveChart = observer(() => {
         if (hasExceededInitGoal) {
             datasets.push(
                 generateLine(
-                    [points.zero, points.curveStart, points.currentSupply],
+                    [points.zero, points.currentSupply],
                     chartBlue,
                     'Curve chart funded'
                 )
@@ -319,42 +398,35 @@ const BondingCurveChart = observer(() => {
 
         const numLines = datasets.length;
 
-        enum PointLabels {
-            CURRENT_SUPPLY = 'Current Supply',
-            KICKSTARTER_END = 'Kickstarter End',
-            CURVE_START = 'Curve Start',
-            FUTURE_SUPPLY = 'Future Supply',
-        }
+        // datasets.push(
+        //     generateSupplyMarker(
+        //         points.currentSupply,
+        //         PointLabels.CURRENT_SUPPLY,
+        //         hasInitGoal && !hasExceededInitGoal ? chartGreen : chartBlue
+        //     )
+        // );
 
-        datasets.push(
-            generateSupplyMarker(
-                points.currentSupply,
-                PointLabels.CURRENT_SUPPLY,
-                hasInitGoal && !hasExceededInitGoal ? chartGreen : chartBlue
-            )
-        );
+        // datasets.push(
+        //     generateSupplyMarker(
+        //         points.kickstarterEnd,
+        //         PointLabels.KICKSTARTER_END,
+        //         chartGreen
+        //     )
+        // );
 
-        datasets.push(
-            generateSupplyMarker(
-                points.kickstarterEnd,
-                PointLabels.KICKSTARTER_END,
-                chartGreen
-            )
-        );
-
-        datasets.push(
-            generateSupplyMarker(
-                points.curveStart,
-                PointLabels.CURVE_START,
-                chartBlue
-            )
-        );
+        // datasets.push(
+        //     generateSupplyMarker(
+        //         points.curveStart,
+        //         PointLabels.CURVE_START,
+        //         chartBlue
+        //     )
+        // );
 
         if (hasActiveInput) {
             datasets.push(
                 generateSupplyMarker(
                     points.futureSupply,
-                    PointLabels.FUTURE_SUPPLY,
+                    'Future Supply',
                     chartGray
                 )
             );
@@ -369,12 +441,20 @@ const BondingCurveChart = observer(() => {
             tooltips: {
                 custom: pointTooltips,
                 filter: (tooltipItem) => {
+                    // Only show tooltips for supply markers
                     console.log(
                         'filter',
+                        tooltipItem,
                         tooltipItem.datasetIndex >= numLines,
                         numLines
                     );
-                    return tooltipItem.datasetIndex >= numLines;
+
+                    const pointId = getPointIdByCoordinates({
+                        x: tooltipItem.xLabel,
+                        y: tooltipItem.yLabel,
+                    });
+
+                    return showTooltipForPoint(pointId);
                 },
                 callbacks: {
                     // tslint:disable-next-line: no-shadowed-variable
@@ -382,18 +462,26 @@ const BondingCurveChart = observer(() => {
                         const label =
                             data.datasets[tooltipItem.datasetIndex].label;
 
-                        if (label === PointLabels.CURRENT_SUPPLY) {
-                            return `Currently ${1} Funded`;
-                        } else if (label === PointLabels.KICKSTARTER_END) {
-                            const kickstarterGoal = requiredDataLoaded
+                        const pointId = getPointIdByCoordinates({
+                            x: tooltipItem.xLabel,
+                            y: tooltipItem.yLabel,
+                        });
+
+                        if (pointId === PointLabels.CURRENT_SUPPLY) {
+                            const fundedText = requiredDataLoaded
+                                ? `${formatBalance(reserveBalance)} ETH`
+                                : '- ETH';
+                            return `Currently ${fundedText} Funded`;
+                        } else if (pointId === PointLabels.KICKSTARTER_END) {
+                            const kickstarterGoalText = requiredDataLoaded
                                 ? `${formatBalance(
                                       initGoal.times(kickstarterPrice)
                                   )} ETH`
                                 : '- ETH';
-                            return `Kickstarter ends when funding goal of ${kickstarterGoal} reached`;
-                        } else if (label === PointLabels.CURVE_START) {
+                            return `Kickstarter ends when funding goal of ${kickstarterGoalText} reached`;
+                        } else if (pointId === PointLabels.CURVE_START) {
                             return 'After the kickstarter period, sales continue with an initial 2x increase in price';
-                        } else if (label === PointLabels.FUTURE_SUPPLY) {
+                        } else if (pointId === PointLabels.FUTURE_SUPPLY) {
                             return `DXD Total After Buy: ${tooltipItem.xLabel} DXD`;
                         }
 
