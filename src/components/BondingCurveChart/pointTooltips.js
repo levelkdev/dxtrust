@@ -54,7 +54,7 @@ export var pointTooltips = function (tooltip) {
                 '<span class="chartjs-tooltip-key" style="' +
                 style +
                 '"></span>';
-            innerHtml += '<tr><td>' + span + body + '</td></tr>';
+            innerHtml += span + body ;
         });
         innerHtml += '</tbody>';
 
@@ -72,9 +72,10 @@ export var pointTooltips = function (tooltip) {
     tooltipEl.style.top = positionY + tooltip.caretY + 'px';
     tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
     tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-    tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-    tooltipEl.style.padding =
-        tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+    tooltipEl.style.fontStyle = 'var(--roboto)';
+    tooltipEl.style.fontWeight = '500';
+    tooltipEl.style.color = 'var(--dark-text-tooltip)';
+    tooltipEl.style.padding = '13px ' + '13px';
     tooltipEl.style.background = '#FFFFFF';
     tooltipEl.style.border = '1px solid #E1E3E7';
     tooltipEl.style.boxSizing = 'border-box';
