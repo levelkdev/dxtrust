@@ -1,11 +1,10 @@
-import { action, observable, transaction } from 'mobx';
+import { action, observable } from 'mobx';
 import RootStore from 'stores/Root';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { isChainIdSupported } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
 import { ContractType } from './Provider';
-import blockchainStore from './BlockchainStore';
 import { TransactionState } from './TradingForm';
 
 export default class BlockchainFetchStore {
@@ -98,7 +97,10 @@ export default class BlockchainFetchStore {
 
                         // Get user-specific blockchain data
                         if (account) {
-                            transactionStore.checkPendingTransactions(web3React, account);
+                            transactionStore.checkPendingTransactions(
+                                web3React,
+                                account
+                            );
 
                             multicallService.addCall({
                                 contractType: ContractType.Multicall,
@@ -181,7 +183,10 @@ export default class BlockchainFetchStore {
                                     results,
                                     blockNumber
                                 );
-                                blockchainStore.updateStore(updates, blockNumber);
+                                blockchainStore.updateStore(
+                                    updates,
+                                    blockNumber
+                                );
 
                                 // CHeck max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
                                 const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, activeDATAddress);

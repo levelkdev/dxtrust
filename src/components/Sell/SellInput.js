@@ -191,6 +191,11 @@ const SellInput = observer((props) => {
                                 TransactionState.UNCONFIRMED;
                         })
                         .on(TXEvents.RECEIPT, (receipt) => {
+                            tradingStore.setPreviousSell({
+                                sellPrice: bnum(price),
+                                sellAmount: denormalizeBalance(tradingStore.sellAmount),
+                                rewardForSell: tradingStore.rewardForSell
+                            })
                             tradingStore.sellingState =
                                 TransactionState.CONFIRMED;
                         })
