@@ -32,6 +32,12 @@ export var pointTooltips = function (tooltip) {
         var titleLines = tooltip.title || [];
         var bodyLines = tooltip.body.map(getBody);
 
+        // If there is no content do not display
+        if (bodyLines.length == 0) {
+            tooltipEl.style.opacity = 0;
+            return;        
+        }
+
         var innerHtml = '<thead>';
 
         titleLines.forEach(function (title) {
@@ -74,7 +80,4 @@ export var pointTooltips = function (tooltip) {
     tooltipEl.style.boxSizing = 'border-box';
     tooltipEl.style.boxShadow = '0px 0px 2px rgba(0,0,0,0.12)';
     tooltipEl.style.borderRadius = '4px';
-
-
-
 };
