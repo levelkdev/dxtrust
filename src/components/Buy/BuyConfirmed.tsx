@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import { useStores } from '../../contexts/storesContext';
-import { formatBalance } from '../../utils/token';
+import { formatBalance, formatNumberValue } from '../../utils/token';
 
 const FormWrapper = styled.div`
     padding-top: 24px;
@@ -53,8 +53,7 @@ const BuyConfirmed = observer((props) => {
     } = useStores();
 
     const { infotext } = props;
-    const price = tradingStore.formatPrice();
-    const buyAmount = tradingStore.formatBuyAmount();
+    const {buyAmount, buyPrice, payAmount} = tradingStore.previousBuy;
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -71,13 +70,13 @@ const BuyConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {formatNumberValue(buyPrice)} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>{infotext}</FormInfoText>
                 <div>
-                    {formatBalance(tradingStore.payAmount)} DXD
+                    {formatBalance(payAmount)} DXD
                 </div>
             </InfoRow>
             <InfoRow>
