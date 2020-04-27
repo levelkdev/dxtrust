@@ -2,18 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { observer } from 'mobx-react';
-import { useStores } from '../contexts/storesContext';
+import { useStores } from '../../contexts/storesContext';
 import {
     denormalizeBalance,
     formatBalance,
     formatNumberValue,
     normalizeBalance,
-} from '../utils/token';
-import COrgSim from '../services/contractSimulators/cOrgSim';
-import { BigNumber } from '../utils/bignumber';
-import { validateTokenValue, ValidationStatus } from '../utils/validators';
-import { bnum } from '../utils/helpers';
-import { roundUpToScale } from '../utils/number';
+} from '../../utils/token';
+import COrgSim from '../../services/contractSimulators/cOrgSim';
+import { BigNumber } from '../../utils/bignumber';
+import { validateTokenValue, ValidationStatus } from '../../utils/validators';
+import { bnum } from '../../utils/helpers';
+import { roundUpToScale } from '../../utils/number';
+import { pointTooltips } from './pointTooltips';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -37,7 +38,7 @@ const ChartBox = styled.div`
 const ChartHeaderFullElement = styled.div`
     color: var(--dark-text-gray);
     padding: 10px 0px 10px 10px;
-    width:100%;
+    width: 100%;
 `;
 
 const ChartHeaderTopElement = styled.div`
@@ -66,13 +67,22 @@ interface ChartPoint {
     y: number;
 }
 
+enum PointLabels {
+    ZERO,
+    KICKSTARTER_START,
+    KICKSTARTER_END,
+    CURRENT_SUPPLY,
+    FUTURE_SUPPLY,
+    CURVE_START,
+    MAX_SUPPLY_TO_SHOW,
+}
 
 const chartGreen = '#54AE6F';
 const chartBlue = '#5b76fa';
 const chartGray = '#9FA8DA';
 const gridLineColor = '#EAECF7';
 
-const BondingCurveChart = observer(({}) => {
+const BondingCurveChart = observer(() => {
     const {
         root: { tradingStore, tokenStore, configStore, datStore },
     } = useStores();
@@ -87,7 +97,10 @@ const BondingCurveChart = observer(({}) => {
     );
 
     const requiredDataLoaded =
-        staticParamsLoaded && !!totalSupply && datState !== undefined && !!reserveBalance;
+        staticParamsLoaded &&
+        !!totalSupply &&
+        datState !== undefined &&
+        !!reserveBalance;
 
     let buySlopeNum,
         buySlopeDen,
@@ -109,7 +122,7 @@ const BondingCurveChart = observer(({}) => {
             buySlopeDen,
             initGoal,
             initReserve,
-            state: datState
+            state: datState,
         });
 
         if (initGoal && initGoal.gt(0)) {
@@ -122,27 +135,106 @@ const BondingCurveChart = observer(({}) => {
 
     let data, options;
 
-    const generateLine = (data: ChartPoint[], color: string, label: string) => {
+    let points: ChartPointMap = {};
+
+    const showTooltipForPoint = (pointId: PointLabels) => {
+        return (
+            pointId !== PointLabels.ZERO &&
+            pointId !== PointLabels.KICKSTARTER_START &&
+            pointId !== PointLabels.MAX_SUPPLY_TO_SHOW
+        );
+    };
+
+    const getPointIdByCoordinates = (point: ChartPoint) => {
+        if (point.x === points.zero.x && point.y === points.zero.y) {
+            return PointLabels.ZERO;
+        }
+
+        if (
+            point.x === points.maxSupplyToShow.x &&
+            point.y === points.maxSupplyToShow.y
+        ) {
+            return PointLabels.MAX_SUPPLY_TO_SHOW;
+        }
+
+        if (
+            point.x === points.kickStarterStart.x &&
+            point.y === points.kickStarterStart.y
+        ) {
+            return PointLabels.KICKSTARTER_START;
+        }
+
+        if (
+            point.x === points.kickstarterEnd.x &&
+            point.y === points.kickstarterEnd.y
+        ) {
+            return PointLabels.KICKSTARTER_END;
+        }
+
+        if (
+            point.x === points.curveStart.x &&
+            point.y === points.curveStart.y
+        ) {
+            return PointLabels.CURVE_START;
+        }
+
+        if (
+            point.x === points.currentSupply.x &&
+            point.y === points.currentSupply.y
+        ) {
+            return PointLabels.CURRENT_SUPPLY;
+        }
+
+        if (
+            point.x === points.futureSupply.x &&
+            point.y === points.futureSupply.y
+        ) {
+            return PointLabels.FUTURE_SUPPLY;
+        }
+    };
+
+    const generateLine = (
+        chartData: ChartPoint[],
+        color: string,
+        label: string
+    ) => {
         return {
-            label: label,
+            label,
             fill: true,
-            data: data,
+            data: chartData,
+            datalabels: {
+                display: false,
+            },
             borderWidth: 2,
-            pointRadius: 0,
-            borderColor: color,
+            pointRadius: (context) => {
+                const point = context.dataset.data[context.dataIndex];
+                const pointId = getPointIdByCoordinates({
+                    x: point.x,
+                    y: point.y,
+                });
+
+                if (pointId === PointLabels.CURRENT_SUPPLY) {
+                    return 4;
+                } else {
+                    return 2;
+                }
+            },
+            borderColor: (context) => {
+                return color;
+            },
             lineTension: 0,
         };
     };
 
-    const generateSupplyMarker = (point: ChartPoint, label: string) => {
+    const generateSupplyMarker = (point: ChartPoint, label: string, color) => {
         return {
-            label: label,
+            label,
             fill: false,
             data: [point],
             pointRadius: 7,
-            pointBackgroundColor: chartBlue,
+            pointBackgroundColor: color,
             borderWidth: 1,
-            pointBorderColor: chartBlue,
+            pointBorderColor: color,
             lineTension: 0,
         };
     };
@@ -156,7 +248,7 @@ const BondingCurveChart = observer(({}) => {
     };
 
     const generateChart = () => {
-        const points: ChartPointMap = {
+        points = {
             zero: {
                 x: 0,
                 y: 0,
@@ -184,14 +276,17 @@ const BondingCurveChart = observer(({}) => {
             };
         }
 
-        let maxSupplyToShow = denormalizeBalance(roundUpToScale(
-            normalizeBalance(totalSupplyWithoutPremint.times(2))
-        ));
+        let maxSupplyToShow = denormalizeBalance(
+            roundUpToScale(normalizeBalance(totalSupplyWithoutPremint.times(2)))
+        );
         if (maxSupplyToShow.lt(initGoal.times(2))) {
-            maxSupplyToShow = denormalizeBalance(roundUpToScale(
-                normalizeBalance(
-                    totalSupplyWithoutPremint.plus(initGoal.times(2))
-                )));
+            maxSupplyToShow = denormalizeBalance(
+                roundUpToScale(
+                    normalizeBalance(
+                        totalSupplyWithoutPremint.plus(initGoal.times(2))
+                    )
+                )
+            );
         }
         const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
 
@@ -220,13 +315,16 @@ const BondingCurveChart = observer(({}) => {
             hasActiveInput = true;
 
             if (futureSupply.gte(maxSupplyToShow)) {
-                const maxSupplyToShow = denormalizeBalance(roundUpToScale(
-                    normalizeBalance(futureSupply.times(1.5))));
-                const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
+                const newMaxSupplyToShow = denormalizeBalance(
+                    roundUpToScale(normalizeBalance(futureSupply.times(1.5)))
+                );
+                const newMaxPriceToShow = cOrg.getPriceAtSupply(
+                    newMaxSupplyToShow
+                );
 
                 points.maxSupplyToShow = {
-                    x: balanceToNumber(maxSupplyToShow),
-                    y: valueToNumber(maxPriceToShow),
+                    x: balanceToNumber(newMaxSupplyToShow),
+                    y: valueToNumber(newMaxPriceToShow),
                 };
             }
         }
@@ -236,8 +334,6 @@ const BondingCurveChart = observer(({}) => {
         const hasExceededInitGoal = datStore.isRunPhase(
             configStore.activeDatAddress
         );
-        const futureSupplyExceedsInitGoal =
-            hasActiveInput && futureSupply.gt(initGoal);
 
         console.debug('chartParams', {
             datParams: datStore.datParams[configStore.activeDatAddress],
@@ -246,25 +342,21 @@ const BondingCurveChart = observer(({}) => {
             buySlopeNum: buySlopeNum.toString(),
             buySlopeDen: buySlopeDen.toString(),
             currentSupply: totalSupplyWithoutPremint.toString(),
-            hasInitGoal: hasInitGoal,
-            hasExceededInitGoal: hasExceededInitGoal,
-            points: points,
+            hasInitGoal,
+            hasExceededInitGoal,
+            points,
         });
 
         if (hasInitGoal && !hasExceededInitGoal) {
             datasets.push(
                 generateLine(
-                    [points.currentSupply, points.kickstarterEnd],
+                    [
+                        points.kickStarterStart,
+                        points.currentSupply,
+                        points.kickstarterEnd,
+                    ],
                     chartGreen,
                     'Kickstarter Funded'
-                )
-            );
-
-            datasets.push(
-                generateLine(
-                    [points.kickStarterStart, points.currentSupply],
-                    chartBlue,
-                    'Kickstarter Unfunded'
                 )
             );
         }
@@ -272,7 +364,7 @@ const BondingCurveChart = observer(({}) => {
         if (hasExceededInitGoal) {
             datasets.push(
                 generateLine(
-                    [points.zero, points.curveStart, points.currentSupply],
+                    [points.zero, points.currentSupply],
                     chartBlue,
                     'Curve chart funded'
                 )
@@ -303,22 +395,103 @@ const BondingCurveChart = observer(({}) => {
             );
         }
 
-        datasets.push(
-            generateSupplyMarker(points.currentSupply, 'Current Supply')
-        );
+        const numLines = datasets.length;
+
+        // datasets.push(
+        //     generateSupplyMarker(
+        //         points.currentSupply,
+        //         PointLabels.CURRENT_SUPPLY,
+        //         hasInitGoal && !hasExceededInitGoal ? chartGreen : chartBlue
+        //     )
+        // );
+
+        // datasets.push(
+        //     generateSupplyMarker(
+        //         points.kickstarterEnd,
+        //         PointLabels.KICKSTARTER_END,
+        //         chartGreen
+        //     )
+        // );
+
+        // datasets.push(
+        //     generateSupplyMarker(
+        //         points.curveStart,
+        //         PointLabels.CURVE_START,
+        //         chartBlue
+        //     )
+        // );
 
         if (hasActiveInput) {
             datasets.push(
-                generateSupplyMarker(points.futureSupply, 'Future Supply')
+                generateSupplyMarker(
+                    points.futureSupply,
+                    'Future Supply',
+                    chartGray
+                )
             );
         }
 
-        const data = {
+        data = {
             datasets,
             backgroundColor: '#000000',
         };
 
-        const options = {
+        options = {
+            tooltips: {
+                enabled: false,
+                custom: pointTooltips,
+                filter: (tooltipItem) => {
+                    const pointId = getPointIdByCoordinates({
+                        x: tooltipItem.xLabel,
+                        y: tooltipItem.yLabel,
+                    });
+
+                    return showTooltipForPoint(pointId);
+                },
+                callbacks: {
+                    // tslint:disable-next-line: no-shadowed-variable
+                    label: (tooltipItem, data) => {
+                        const pointId = getPointIdByCoordinates({
+                            x: tooltipItem.xLabel,
+                            y: tooltipItem.yLabel,
+                        });
+
+                        if (pointId === PointLabels.FUTURE_SUPPLY) {
+                            return `DXD Issuance After Your Buy: ${tooltipItem.xLabel}`;
+                        } else if (pointId === PointLabels.CURVE_START && tooltipItem.datasetIndex == 1) {
+                            console.log("data index", tooltipItem.datasetIndex);
+                            return 'After the kickstarter period, sales continue with an initial 2x increase in price';
+                        }
+
+                        if (tooltipItem.datasetIndex != 0) {
+                            return false;
+                        }
+
+                        if (pointId === PointLabels.CURRENT_SUPPLY) {
+                            const fundedText = requiredDataLoaded
+                                ? `${formatBalance(reserveBalance)} ETH`
+                                : '- ETH';
+                            return `Currently ${fundedText} Funded`;
+                        } else if (pointId === PointLabels.KICKSTARTER_END) {
+                            const kickstarterGoalText = requiredDataLoaded
+                                ? `${formatBalance(
+                                      initGoal.times(kickstarterPrice)
+                                  )} ETH`
+                                : '- ETH';
+                            return `Kickstarter ends when funding goal of ${kickstarterGoalText} reached`;
+                        }
+
+                        let toDisplay =
+                            data.datasets[tooltipItem.datasetIndex].label || '';
+
+                        if (toDisplay) {
+                            toDisplay += ': ';
+                        }
+                        toDisplay += tooltipItem.yLabel + ' ETH / DXD';
+                        return toDisplay;
+                    },
+                },
+            },
             maintainAspectRatio: false,
             legend: {
                 display: false,
@@ -356,7 +529,7 @@ const BondingCurveChart = observer(({}) => {
                         ticks: {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
-                            callback: function (value, index, values) {
+                            callback: (value, index, values) => {
                                 return (
                                     formatNumberValue(bnum(value), 2) + ' ETH'
                                 );
@@ -408,9 +581,7 @@ const BondingCurveChart = observer(({}) => {
                         <ChartHeaderTopElement>Price</ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
-                                ? `${formatNumberValue(
-                                      kickstarterPrice
-                                  )} ETH`
+                                ? `${formatNumberValue(kickstarterPrice)} ETH`
                                 : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
@@ -432,7 +603,7 @@ const BondingCurveChart = observer(({}) => {
                 <ChartBox>
                     <ChartHeaderFullElement>
                         <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement  className="green-text">
+                        <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
                                 ? `${formatBalance(reserveBalance)} ETH`
                                 : '- ETH'}
