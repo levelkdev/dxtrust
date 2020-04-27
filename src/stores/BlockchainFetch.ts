@@ -5,6 +5,7 @@ import { supportedChainId } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
 import { ContractType } from './Provider';
+import { TransactionState } from './TradingForm';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
