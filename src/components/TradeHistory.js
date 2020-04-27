@@ -76,10 +76,14 @@ const TableCellType = styled(TableCell)`
 
 const TradingHistory = observer(() => {
     const {
-        root: { tradingStore, providerStore, configStore },
+        root: { tradingStore, configStore },
     } = useStores();
 
-    const recentTrades = tradingStore.recentTrades;
+    let recentTrades = [];
+    if (tradingStore.recentTradesSet) {
+        recentTrades = tradingStore.recentTrades;
+    }
+
     return (
         <TradingHistoryWrapper>
             <TradeHistoryTitle>Trade History</TradeHistoryTitle>
@@ -87,46 +91,58 @@ const TradingHistory = observer(() => {
                 <TableHeader width="15.5%" className="align-left">
                     Type
                 </TableHeader>
-                <TableHeader width="15.5%">Price {configStore.getCollateralType()}</TableHeader>
+                <TableHeader width="15.5%">
+                    Price {configStore.getCollateralType()}
+                </TableHeader>
                 <TableHeader>Amount DXD</TableHeader>
-                <TableHeader>Total {configStore.getCollateralType()}</TableHeader>
+                <TableHeader>
+                    Total {configStore.getCollateralType()}
+                </TableHeader>
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
             <TableRowsWrapper>
-            {recentTrades.map((trade) => (
-                <TableRow>
-                    <TableCell
-                        width="15.5%"
-                        color={
-                            trade.type === EventType.Buy
-                                ? 'var(--blue-text)'
-                                : 'var(--red-text)'
-                        }
-                        align="left"
-                        weight='500'
-                    >
-                        {trade.type}
-                    </TableCell>
-                    <TableCell width="15.5%">
-                        {formatNumberValue(trade.price)}
-                    </TableCell>
-                    <TableCell>{formatBalance(trade.amount)}</TableCell>
-                    <TableCell>
-                        {trade.totalPaid
-                            ? formatBalance(trade.totalPaid)
-                            : formatBalance(trade.totalReceived)}
-                    </TableCell>
-                    <TableCell>
-                        <a
-                            href={trade.hash}
-                            target="#"
-                            className="turquois-text"
-                        >
-                            {trade.blockTime}
-                        </a>
-                    </TableCell>
-                </TableRow>
-            ))}
+                {recentTrades.map((trade) => {
+                    if (trade) {
+                        return (
+                            <TableRow>
+                                <TableCell
+                                    width="15.5%"
+                                    color={
+                                        trade.type === EventType.Buy
+                                            ? 'var(--blue-text)'
+                                            : 'var(--red-text)'
+                                    }
+                                    align="left"
+                                    weight="500"
+                                >
+                                    {trade.type}
+                                </TableCell>
+                                <TableCell width="15.5%">
+                                    {formatNumberValue(trade.price)}
+                                </TableCell>
+                                <TableCell>
+                                    {formatBalance(trade.amount)}
+                                </TableCell>
+                                <TableCell>
+                                    {trade.totalPaid
+                                        ? formatBalance(trade.totalPaid)
+                                        : formatBalance(trade.totalReceived)}
+                                </TableCell>
+                                <TableCell>
+                                    <a
+                                        href={trade.hash}
+                                        target="#"
+                                        className="turquois-text"
+                                    >
+                                        {trade.blockTime}
+                                    </a>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    } else {
+                        return <TableRow></TableRow>;
+                    }
+                })}
             </TableRowsWrapper>
         </TradingHistoryWrapper>
     );
