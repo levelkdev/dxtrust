@@ -456,6 +456,17 @@ const BondingCurveChart = observer(() => {
                             y: tooltipItem.yLabel,
                         });
 
+                        if (pointId === PointLabels.FUTURE_SUPPLY) {
+                            return `DXD Issuance After Your Buy: ${tooltipItem.xLabel}`;
+                        } else if (pointId === PointLabels.CURVE_START && tooltipItem.datasetIndex == 1) {
+                            console.log("data index", tooltipItem.datasetIndex);
+                            return 'After the kickstarter period, sales continue with an initial 2x increase in price';
+                        }
+
+                        if (tooltipItem.datasetIndex != 0) {
+                            return false;
+                        }
+
                         if (pointId === PointLabels.CURRENT_SUPPLY) {
                             const fundedText = requiredDataLoaded
                                 ? `${formatBalance(reserveBalance)} ETH`
@@ -468,11 +479,8 @@ const BondingCurveChart = observer(() => {
                                   )} ETH`
                                 : '- ETH';
                             return `Kickstarter ends when funding goal of ${kickstarterGoalText} reached`;
-                        } else if (pointId === PointLabels.CURVE_START) {
-                            return 'After the kickstarter period, sales continue with an initial 2x increase in price';
-                        } else if (pointId === PointLabels.FUTURE_SUPPLY) {
-                            return `DXD Total After Buy: ${tooltipItem.xLabel} DXD`;
                         }
+
                         let toDisplay =
                             data.datasets[tooltipItem.datasetIndex].label || '';
 

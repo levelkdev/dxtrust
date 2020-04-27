@@ -35,7 +35,7 @@ export var pointTooltips = function (tooltip) {
         var innerHtml = '<thead>';
 
         titleLines.forEach(function (title) {
-            innerHtml += '<tr><th>' + title + '</th></tr>';
+            // innerHtml += '<tr><th>' + title + '</th></tr>';
         });
         innerHtml += '</thead><tbody>';
 
@@ -61,6 +61,7 @@ export var pointTooltips = function (tooltip) {
 
     // Display, position, and set styles for font
     tooltipEl.style.opacity = 1;
+    tooltipEl.style.position = 'absolute';
     tooltipEl.style.left = positionX + tooltip.caretX + 'px';
     tooltipEl.style.top = positionY + tooltip.caretY + 'px';
     tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
@@ -68,4 +69,12 @@ export var pointTooltips = function (tooltip) {
     tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
     tooltipEl.style.padding =
         tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+    tooltipEl.style.background = '#FFFFFF';
+    tooltipEl.style.border = '1px solid #E1E3E7';
+    tooltipEl.style.boxSizing = 'border-box';
+    tooltipEl.style.boxShadow = '0px 0px 2px rgba(0,0,0,0.12)';
+    tooltipEl.style.borderRadius = '4px';
+
+
+
 };
