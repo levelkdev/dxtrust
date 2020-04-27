@@ -52,7 +52,6 @@ export default class BlockchainFetchStore {
                 blockchainStore,
                 tokenStore,
                 transactionStore
-                transactionStore,
             } = this.rootStore;
 
             library.eth
