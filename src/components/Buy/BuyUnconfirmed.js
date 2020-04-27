@@ -45,8 +45,7 @@ const BuyUnconfirmed = observer((props) => {
     } = useStores();
 
     const { infotext } = props;
-    const price = tradingStore.formatPrice();
-    const priceToBuy = tradingStore.formatPriceToBuy();
+    const price = tradingStore.formatBuyPrice();
     const buyAmount = tradingStore.formatBuyAmount();
 
     const Button = ({ active, children, onClick }) => {
