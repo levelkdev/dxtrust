@@ -47,7 +47,7 @@ const SellUnconfirmed = observer((props) => {
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
-    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {

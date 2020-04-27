@@ -36,7 +36,9 @@ const BuySell = observer(() => {
     const [currentTab, setCurrentTab] = useState(0);
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-    const hasMaxDXDApproval = account ? tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, configStore.activeDatAddress) : false;
+    const hasMaxDXDApproval = account ? tokenStore.hasMaxApproval(
+      configStore.getDXDTokenAddress(), account, configStore.getDXDTokenAddress()
+    ) : false;
     const isAccountDataLoaded = tradingStore.isDataLoaded(account);
 
     const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {

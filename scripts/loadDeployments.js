@@ -51,7 +51,10 @@ async function loadDeployment(network) {
 } 
 
 async function main() {
-  await loadDeployment(process.env.REACT_APP_ETH_NETWORK);
+  process.env.REACT_APP_ETH_NETWORKS.split(',').forEach(async (network) => {
+    if (network == 'mainnnet' || network == 'ropsten' || network == 'kovan')
+      await loadDeployment(network);
+  });
 };
 
 main();

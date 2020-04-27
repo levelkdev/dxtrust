@@ -1,11 +1,10 @@
 import RootStore from 'stores/Root';
 import { StringMap } from '../types';
 import { contracts } from '../config/contracts.json';
-import { ETH_NETWORK } from '../provider/connectors';
+import { CHAIN_NAME_BY_ID, DEFAULT_ETH_CHAIN_ID } from '../provider/connectors';
 
 export default class ConfigStore {
     rootStore: RootStore;
-    tokens: StringMap;
     multicall: string;
     activeDatAddress: string;
     network: string;
@@ -13,38 +12,34 @@ export default class ConfigStore {
 
     constructor(rootStore) {
         this.rootStore = rootStore;
-        this.tokens = {} as StringMap;
-        this.parseMetadataFromJson();
+    }
+    
+    getActiveChainName() {
+      const activeWeb3 = this.rootStore.providerStore.getActiveWeb3React();
+      return CHAIN_NAME_BY_ID[(activeWeb3) ? activeWeb3.chainId : DEFAULT_ETH_CHAIN_ID];
     }
     
     getTokenAddress(tokenType) {
-        return this.tokens[tokenType];
+      return contracts[this.getActiveChainName()].DAT;
     }
 
     getMulticallAddress() {
-        return this.multicall;
+      return contracts[this.getActiveChainName()].multicall;
     }
 
     getDXDTokenAddress() {
-        return this.tokens['DXD'];
+      return contracts[this.getActiveChainName()].DAT;
     }
 
     getCollateralTokenAddress() {
-        return this.tokens['Collateral'];
+        return contracts[this.getActiveChainName()].DATinfo.collateralType;
     }
     
     getCollateralType() {
-        return contracts[ETH_NETWORK].DATinfo.collateralType;
+        return contracts[this.getActiveChainName()].DATinfo.collateralType;
     }
     
     getDATinfo() {
-        return contracts[ETH_NETWORK].DATinfo;
-    }
-
-    parseMetadataFromJson() {
-        this.tokens['DXD'] = contracts[ETH_NETWORK].DAT;
-        this.tokens['Collateral'] = contracts[ETH_NETWORK].collateral;
-        this.multicall = contracts[ETH_NETWORK].multicall;
-        this.activeDatAddress = contracts[ETH_NETWORK].DAT;
+        return contracts[this.getActiveChainName()].DATinfo;
     }
 }

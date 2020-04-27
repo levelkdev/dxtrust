@@ -35,7 +35,7 @@ const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
     const {
         root: { configStore, datStore },
     } = useStores();
-	const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
+	const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
 
     const TabButton = ({ currentTab, tabType, left, children }) => {
         if (currentTab === tabType) {

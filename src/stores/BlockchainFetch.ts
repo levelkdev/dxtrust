@@ -1,7 +1,7 @@
 import { action, observable, transaction } from 'mobx';
 import RootStore from 'stores/Root';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
-import { supportedChainId } from '../provider/connectors';
+import { isChainIdSupported } from '../provider/connectors';
 import { validateTokenValue, ValidationStatus } from '../utils/validators';
 import { denormalizeBalance, normalizeBalance } from '../utils/token';
 import { ContractType } from './Provider';
@@ -18,8 +18,9 @@ export default class BlockchainFetchStore {
 
     @action async refreshBuyFormPreview() {
         const { datStore, configStore, tradingStore } = this.rootStore;
+        const activeDATAddress = configStore.getDXDTokenAddress()
         const minValue = normalizeBalance(
-            datStore.getMinInvestment(configStore.activeDatAddress)
+            datStore.getMinInvestment(activeDATAddress)
         );
 
         if (
@@ -30,7 +31,7 @@ export default class BlockchainFetchStore {
             const weiValue = denormalizeBalance(tradingStore.buyAmount);
 
             const buyReturn = await datStore.fetchBuyReturn(
-                configStore.activeDatAddress,
+                activeDATAddress,
                 weiValue
             );
 
@@ -42,7 +43,7 @@ export default class BlockchainFetchStore {
         web3React: Web3ReactContextInterface,
         accountSwitched?: boolean
     ) {
-        if (web3React.active && web3React.chainId === supportedChainId) {
+        if (web3React.active && isChainIdSupported(web3React.chainId)) {
             const { library, account, chainId } = web3React;
             const {
                 providerStore,
@@ -54,6 +55,7 @@ export default class BlockchainFetchStore {
                 transactionStore
             } = this.rootStore;
 
+            const activeDATAddress = configStore.getDXDTokenAddress();
             library.eth
                 .getBlockNumber()
                 .then((blockNumber) => {
@@ -74,6 +76,7 @@ export default class BlockchainFetchStore {
                         console.debug('[Fetch Loop] Fetch Blockchain Data', {
                             blockNumber,
                             account,
+                            chainId
                         });
 
                         // Set block number
@@ -86,7 +89,7 @@ export default class BlockchainFetchStore {
                         // Get global blockchain data
                         multicallService.addCall({
                             contractType: ContractType.ERC20,
-                            address: configStore.activeDatAddress,
+                            address: activeDATAddress,
                             method: 'totalSupply',
                             params: [],
                         });
@@ -104,33 +107,37 @@ export default class BlockchainFetchStore {
 
                             multicallService.addCall({
                                 contractType: ContractType.ERC20,
-                                address: configStore.activeDatAddress,
+                                address: activeDATAddress,
                                 method: 'balanceOf',
                                 params: [account],
                             });
 
                             multicallService.addCall({
                                 contractType: ContractType.ERC20,
-                                address: configStore.activeDatAddress,
+                                address: activeDATAddress,
                                 method: 'allowance',
-                                params: [account, configStore.activeDatAddress],
+                                params: [account, activeDATAddress],
                             });
                         }
 
                         datStore
-                            .fetchRecentTrades(configStore.activeDatAddress, 10)
+                            .fetchRecentTrades(activeDATAddress, 10)
                             .then((trades) => {
                                 tradingStore.setRecentTrades(trades);
+                            })
+                            .catch((e) => {
+                                // TODO: Retry on failure, unless stale.
+                                console.error(e);
                             });
 
                         if (
                             !datStore.areAllStaticParamsLoaded(
-                                configStore.activeDatAddress
+                                activeDATAddress
                             )
                         ) {
                             multicallService.addCalls(
                                 datStore.genStaticParamCalls(
-                                    configStore.activeDatAddress
+                                    activeDATAddress
                                 )
                             );
                         }
@@ -138,7 +145,7 @@ export default class BlockchainFetchStore {
                         const baseDatCall = {
                             contractType:
                                 ContractType.DecentralizedAutonomousTrust,
-                            address: configStore.activeDatAddress,
+                            address: activeDATAddress,
                         };
 
                         multicallService.addCalls([
@@ -174,7 +181,7 @@ export default class BlockchainFetchStore {
                                 );
                                 blockchainStore.updateStore(updates, blockNumber);
 
-                                if (datStore.areAllStaticParamsLoaded(configStore.activeDatAddress)) {
+                                if (datStore.areAllStaticParamsLoaded(activeDATAddress)) {
                                     this.refreshBuyFormPreview();
                                 }
                             })

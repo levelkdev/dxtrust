@@ -47,4 +47,4 @@ npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/bu
 node scripts/copyContracts.js
 node scripts/deploy.js -- --network develop &
 sleep 3
-FORCE_COLOR=true REACT_APP_ETH_NETWORK=develop node scripts/start.js | cat
+FORCE_COLOR=true REACT_APP_ETH_NETWORKS="develop,mainnet,kovan" node scripts/start.js | cat

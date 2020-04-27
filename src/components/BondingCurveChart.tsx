@@ -76,14 +76,16 @@ const BondingCurveChart = observer(({}) => {
     const {
         root: { tradingStore, tokenStore, configStore, datStore },
     } = useStores();
+    
+    const activeDATAddress = configStore.getDXDTokenAddress()
 
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
-        configStore.activeDatAddress
+        activeDATAddress
     );
-    const totalSupply = tokenStore.getTotalSupply(configStore.activeDatAddress);
-    const datState = datStore.getState(configStore.activeDatAddress);
+    const totalSupply = tokenStore.getTotalSupply(activeDATAddress);
+    const datState = datStore.getState(activeDATAddress);
     const reserveBalance = datStore.getReserveBalance(
-        configStore.activeDatAddress
+        activeDATAddress
     );
 
     const requiredDataLoaded =
@@ -99,10 +101,10 @@ const BondingCurveChart = observer(({}) => {
         kickstarterPrice;
 
     if (requiredDataLoaded) {
-        buySlopeNum = datStore.getBuySlopeNum(configStore.activeDatAddress);
-        buySlopeDen = datStore.getBuySlopeDen(configStore.activeDatAddress);
-        initGoal = datStore.getInitGoal(configStore.activeDatAddress);
-        initReserve = datStore.getInitReserve(configStore.activeDatAddress);
+        buySlopeNum = datStore.getBuySlopeNum(activeDATAddress);
+        buySlopeDen = datStore.getBuySlopeDen(activeDATAddress);
+        initGoal = datStore.getInitGoal(activeDATAddress);
+        initReserve = datStore.getInitReserve(activeDATAddress);
 
         cOrg = new COrgSim({
             buySlopeNum,
@@ -234,13 +236,13 @@ const BondingCurveChart = observer(({}) => {
 
         const hasInitGoal = initGoal.gt(0);
         const hasExceededInitGoal = datStore.isRunPhase(
-            configStore.activeDatAddress
+            activeDATAddress
         );
         const futureSupplyExceedsInitGoal =
             hasActiveInput && futureSupply.gt(initGoal);
 
         console.debug('chartParams', {
-            datParams: datStore.datParams[configStore.activeDatAddress],
+            datParams: datStore.datParams[activeDATAddress],
             initReserve: initReserve.toString(),
             initGoal: initGoal.toString(),
             buySlopeNum: buySlopeNum.toString(),
@@ -391,9 +393,9 @@ const BondingCurveChart = observer(({}) => {
      */
 
     const renderChartHeader = () => {
-        if (datStore.isInitPhase(configStore.activeDatAddress)) {
+        if (datStore.isInitPhase(activeDATAddress)) {
             return renderInitPhaseChartHeader();
-        } else if (datStore.isRunPhase(configStore.activeDatAddress)) {
+        } else if (datStore.isRunPhase(activeDATAddress)) {
             return renderRunPhaseChartHeader();
         } else {
             return <React.Fragment />;

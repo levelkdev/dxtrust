@@ -4,9 +4,10 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 export const INFURA_API_KEY = process.env.REACT_APP_KEY_INFURA_API_KEY;
-export const ETH_NETWORK = process.env.REACT_APP_ETH_NETWORK || 'develop';
+export const ETH_NETWORKS = process.env.REACT_APP_ETH_NETWORKS.split(',');
 
-export const chainNameById = {
+
+export const CHAIN_NAME_BY_ID = {
   '1': 'mainnet',
   '3': 'ropsten',
   '4': 'rinkeby',
@@ -14,13 +15,16 @@ export const chainNameById = {
   '66': 'develop',
 };
 
-export const chainIdByName = {
+export const CHAIN_ID_BY_NAME = {
   'mainnet': 1,
   'ropsten': 3,
   'rinkeby': 4,
   'kovan': 42,
   'develop': 66,
 };
+
+export const DEFAULT_ETH_NETWORK = ETH_NETWORKS[0];
+export const DEFAULT_ETH_CHAIN_ID = CHAIN_ID_BY_NAME[ETH_NETWORKS[0]];
 
 export const RPC_URLS = {
   '1': process.env.REACT_APP_SUPPORTED_NETWORK_1 || 'https://mainnet.infura.io/v3/'+INFURA_API_KEY,
@@ -39,32 +43,30 @@ export const web3ContextNames = {
 
 const POLLING_INTERVAL = 5000;
 
-export const supportedChainId = chainIdByName[ETH_NETWORK];
+export const supportedChains = ETH_NETWORKS;
+export const defaultChainId = CHAIN_ID_BY_NAME[ETH_NETWORKS[0]];
+let supportedChainIds = [];
+supportedChains.forEach((network) => supportedChainIds.push(CHAIN_ID_BY_NAME[network]));
 
-export const getSupportedChainName = () => {
-    return ETH_NETWORK;
-};
+// console.log('Supported chains:', supportedChains);
 
 export const isChainIdSupported = (chainId: number): boolean => {
-    return supportedChainId == chainId.toString();
+    return supportedChains.indexOf(CHAIN_NAME_BY_ID[chainId]) >= 0;
 };
 
-const backupUrls = {};
-backupUrls[supportedChainId] = RPC_URLS[supportedChainId];
 export const backup = new NetworkConnector({
-    urls: backupUrls,
-    defaultChainId: supportedChainId,
+    urls: RPC_URLS,
+    defaultChainId: CHAIN_ID_BY_NAME[ETH_NETWORKS[0]],
     pollingInterval: POLLING_INTERVAL,
 });
 
 export const injected = new InjectedConnector({
-    supportedChainIds: [1, 3, 4, 42, 66],
+    supportedChainIds: supportedChainIds,
 });
-
 
 export const walletconnect = new WalletConnectConnector({
   rpc: { 
-    [supportedChainId] : RPC_URLS[supportedChainId.toString()],
+    [defaultChainId] : RPC_URLS[defaultChainId],
   },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: false,

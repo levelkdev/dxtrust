@@ -316,7 +316,6 @@ const WalletModal = observer(
                     </UpperSection>
                 );
             }
-            console.log(account, walletView === WALLET_VIEWS.ACCOUNT)
             if (account && walletView === WALLET_VIEWS.ACCOUNT) {
                 return (
                     <AccountDetails
