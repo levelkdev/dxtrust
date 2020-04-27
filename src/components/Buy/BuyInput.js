@@ -192,7 +192,7 @@ const BuyInput = observer((props) => {
                         })
                         .on(TXEvents.RECEIPT, (receipt) => {
                             tradingStore.setPreviousBuy({
-                                buyAmount: tradingStore.buyAmount,
+                                buyAmount: denormalizeBalance(tradingStore.buyAmount),
                                 payAmount: tradingStore.payAmount,
                                 buyPrice: tradingStore.buyPrice
                             });

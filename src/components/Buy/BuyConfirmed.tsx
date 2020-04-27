@@ -81,7 +81,7 @@ const BuyConfirmed = observer((props) => {
             </InfoRow>
             <InfoRow>
             <FormInfoText>Total cost</FormInfoText>
-                <div>{buyAmount} {configStore.getCollateralType()}</div>
+                <div>{formatBalance(buyAmount)} {configStore.getCollateralType()}</div>
             </InfoRow>
             <Confirmed>
                 Confirmed

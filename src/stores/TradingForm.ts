@@ -22,13 +22,13 @@ export enum TransactionState {
 }
 
 interface Buy {
-    buyAmount: string;
+    buyAmount: BigNumber;
     buyPrice: BigNumber;
     payAmount: BigNumber;
 }
 
 interface Sell {
-    sellAmount: string;
+    sellAmount: BigNumber;
     sellPrice: BigNumber;
     rewardForSell: BigNumber;
 }
