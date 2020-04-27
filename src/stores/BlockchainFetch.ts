@@ -10,6 +10,7 @@ import { TransactionState } from './TradingForm';
 
 export default class BlockchainFetchStore {
     @observable activeFetchLoop: any;
+    @observable initialLoadComplete: boolean;
     rootStore: RootStore;
 
     constructor(rootStore) {
@@ -52,6 +53,7 @@ export default class BlockchainFetchStore {
                 tradingStore,
                 multicallService,
                 blockchainStore,
+                tokenStore,
                 transactionStore
             } = this.rootStore;
 
@@ -181,6 +183,14 @@ export default class BlockchainFetchStore {
                                 );
                                 blockchainStore.updateStore(updates, blockNumber);
 
+                                // CHeck max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
+                                const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, activeDATAddress);
+                                const setEnableDXDState = !this.initialLoadComplete || accountSwitched;
+                                
+                                if (hasMaxApproval && setEnableDXDState) {
+                                    tradingStore.setEnableDXDState(TransactionState.APPROVED);
+                                }
+
                                 if (datStore.areAllStaticParamsLoaded(activeDATAddress)) {
                                     this.refreshBuyFormPreview();
                                 }
@@ -190,6 +200,9 @@ export default class BlockchainFetchStore {
                                 console.error(e);
                             });
 
+                            if (!this.initialLoadComplete) {
+                                this.initialLoadComplete = true;
+                            }
                             multicallService.resetActiveCalls();
                     }
                 })
