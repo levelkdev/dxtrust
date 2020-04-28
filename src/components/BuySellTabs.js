@@ -40,7 +40,6 @@ const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
 
     const TabButton = ({ currentTab, tabType, left, children }) => {
         if (currentTab === tabType) {
-            console.log(tabType);
             return (
                 <ActiveTab
                     onClick={() => {
