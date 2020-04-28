@@ -31,10 +31,7 @@ const Web3ReactManager = ({ children }) => {
         activate: activateNetwork,
     } = web3ContextBackup;
 
-    providerStore.setWeb3Context(
-        web3ContextNames.injected,
-        web3ContextInjected
-    );
+    providerStore.setWeb3Context(web3ContextNames.injected, web3ContextInjected);
     providerStore.setWeb3Context(web3ContextNames.backup, web3ContextBackup);
 
     const web3React = providerStore.getActiveWeb3React();

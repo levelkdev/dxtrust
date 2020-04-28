@@ -64,7 +64,7 @@ const Enable = observer(({ tokenType }) => {
     const hasMaxApproval = tokenStore.hasMaxApproval(
         tokenAddress,
         account,
-        configStore.activeDatAddress
+        configStore.getDXDTokenAddress()
     );
 
     return (
@@ -81,7 +81,7 @@ const Enable = observer(({ tokenType }) => {
                     tokenStore.approveMax(
                         providerStore.getActiveWeb3React(),
                         tokenAddress,
-                        configStore.activeDatAddress
+                        configStore.getDXDTokenAddress()
                     ).on(TXEvents.TX_HASH, (hash) => {
                         tradingStore.setEnableDXDState(TransactionState.UNCONFIRMED);
                     })

@@ -100,7 +100,7 @@ class TradingFormStore {
 
     isDataLoaded(account: string): boolean {
         const {tokenStore, configStore} = this.rootStore;
-        const allowance = tokenStore.getAllowance(configStore.getDXDTokenAddress(), account, configStore.activeDatAddress);
+        const allowance = tokenStore.getAllowance(configStore.getDXDTokenAddress(), account, configStore.getDXDTokenAddress());
         const collateralBalance = tokenStore.getEtherBalance(account);
         const dxdBalance = tokenStore.getBalance(configStore.getDXDTokenAddress(), account);
 

@@ -76,10 +76,14 @@ const TableCellType = styled(TableCell)`
 
 const TradingHistory = observer(() => {
     const {
-        root: { tradingStore, providerStore, configStore },
+        root: { tradingStore, configStore },
     } = useStores();
 
-    const recentTrades = tradingStore.recentTrades;
+    let recentTrades = [];
+    if (tradingStore.recentTradesSet) {
+        recentTrades = tradingStore.recentTrades;
+    }
+
     return (
         <TradingHistoryWrapper>
             <TradeHistoryTitle>Trade History</TradeHistoryTitle>
@@ -87,9 +91,13 @@ const TradingHistory = observer(() => {
                 <TableHeader width="15.5%" className="align-left">
                     Type
                 </TableHeader>
-                <TableHeader width="15.5%">Price {configStore.getCollateralType()}</TableHeader>
+                <TableHeader width="15.5%">
+                    Price {configStore.getCollateralType()}
+                </TableHeader>
                 <TableHeader>Amount DXD</TableHeader>
-                <TableHeader>Total {configStore.getCollateralType()}</TableHeader>
+                <TableHeader>
+                    Total {configStore.getCollateralType()}
+                </TableHeader>
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
             <TableRowsWrapper>

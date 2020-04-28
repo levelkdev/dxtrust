@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import UncheckedJsonRpcSigner from 'provider/UncheckedJsonRpcSigner';
 import { sendAction } from './actions/actions';
-import { supportedChainId, web3ContextNames } from '../provider/connectors';
+import { isChainIdSupported, web3ContextNames } from '../provider/connectors';
 import PromiEvent from 'promievent';
 import { TXEvents } from '../types';
 import moment from 'moment';
@@ -141,8 +141,8 @@ export default class ProviderStore {
         const contextBackup = this.web3Contexts[web3ContextNames.backup];
         const contextInjected = this.web3Contexts[web3ContextNames.injected];
 
-        return contextInjected.active &&
-            contextInjected.chainId === supportedChainId
+        return contextInjected && contextInjected.active &&
+            isChainIdSupported(contextInjected.chainId)
             ? contextInjected
             : contextBackup;
     }

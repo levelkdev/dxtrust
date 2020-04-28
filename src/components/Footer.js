@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { contracts } from '../config/contracts';
-import { ETH_NETWORK } from '../provider/connectors';
+import { DEFAULT_ETH_NETWORK } from '../provider/connectors';
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -75,9 +75,9 @@ const Footer = ({}) => {
                     <a
                         href={
                             'https://' +
-                            ETH_NETWORK +
+                            DEFAULT_ETH_NETWORK +
                             '.etherscan.io/address/' +
-                            contracts[ETH_NETWORK].DAT
+                            contracts[DEFAULT_ETH_NETWORK].DAT
                         }
                         target="#"
                     >
@@ -89,9 +89,9 @@ const Footer = ({}) => {
                     <a
                         href={
                             'https://' +
-                            ETH_NETWORK +
+                            DEFAULT_ETH_NETWORK +
                             '.etherscan.io/address/' +
-                            contracts[ETH_NETWORK].DATinfo.implementationAddress
+                            contracts[DEFAULT_ETH_NETWORK].DATinfo.implementationAddress
                         }
                         target="#"
                     >

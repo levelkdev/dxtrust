@@ -53,7 +53,7 @@ const SellConfirmed = observer((props) => {
         root: { datStore, tradingStore, configStore },
     } = useStores();
 
-    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
 
     const {sellPrice, rewardForSell, sellAmount} = tradingStore.previousSell;
 
