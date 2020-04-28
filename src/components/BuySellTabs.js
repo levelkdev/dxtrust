@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+     import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import { useStores } from '../contexts/storesContext';
@@ -26,7 +26,8 @@ const InactiveTab = styled.div`
     border-left: ${(props) =>
         props.left ? '1px solid var(--medium-gray)' : 'none'};
     border-bottom: 1px solid var(--medium-gray);
-    border-radius: 0px 4px 0px 0px;
+    border-radius: ${(props) => 
+        props.left ? '0px 4px 0px 0px' : '4px 0px 0px 0px'};
     padding: 15px 0px;
     cursor: pointer;
 `;
