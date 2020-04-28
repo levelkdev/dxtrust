@@ -32,46 +32,12 @@ const SelectedMenuItem = styled(MenuItem)`
     cursor: pointer;
 `;
 
-/*
-const MenuItem = styled.div`
-    display: flex;
-    align-items: center;
-    color: var(--nav-text-light);
-    font-size: 16px;
-    line-height: 19px;
-    padding: 0px 12px;
-    cursor: pointer;
-`;
-
-const SelectedMenuItem = styled(MenuItem)`
-    color: var(--nav-text-dark);
-    line-height: 24px;
-    padding: 0px 12px;
-    cursor: pointer;
-`;
-const DXDLogo = styled.img`
-    margin-right: 17px;
-`;
-*/
 const NavBar = ({}) => {
-    const [selected, setSelected] = React.useState(0);
-
     const NavItem = withRouter(
         ({ option, route, history, location, children }) => {
-            // Handle external route navigation
-            if (location.pathname === route) {
-                setSelected(option);
-            } else if (location.pathname === '/') {
-                setSelected(1);
-            }
-
-            if (option === selected) {
-                return <SelectedMenuItem>{children}</SelectedMenuItem>;
-            }
             return (
                 <MenuItem
                     onClick={() => {
-                        setSelected(option);
                         history.push(route);
                     }}
                 >
@@ -84,16 +50,9 @@ const NavBar = ({}) => {
     return (
         <NavWrapper>
             <LeftNav>
-                <NavItem route="/exchange">
-                <img src="DXdao.svg"/>
-                    {/*<DXDLogo src="DXdao.svg"></DXDLogo>*/}
+                <NavItem route="/">
+                    <img src="DXdao.svg"/>
                 </NavItem>
-               {/* <NavItem option={1} route="/exchange">
-                    Exchange
-                </NavItem>
-                <NavItem option={2} route="/redeem">
-                    Rewards
-        </NavItem> */}
             </LeftNav>
             <Web3ConnectStatus text="Connect Wallet" />
         </NavWrapper>
