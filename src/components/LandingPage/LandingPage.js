@@ -226,7 +226,7 @@ const AboutHeader = styled.div`
 const AboutDescription = styled.div`
     font-family: Source Sans Pro;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 16px;
     line-height: 28px;
     text-align: center;
