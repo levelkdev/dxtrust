@@ -140,6 +140,7 @@ const WalletModal = observer(
         useEffect(() => {
             if (walletModalOpen) {
                 setPendingError(false);
+                setConnectionErrorMessage(false);
                 setWalletView(WALLET_VIEWS.ACCOUNT);
             }
         }, [walletModalOpen]);
