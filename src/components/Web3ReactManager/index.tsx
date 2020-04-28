@@ -119,7 +119,7 @@ const Web3ReactManager = ({ children }) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setShowLoader(true);
-        }, 600);
+        }, 3000);
 
         return () => {
             clearTimeout(timeout);

@@ -101,48 +101,40 @@ const TradingHistory = observer(() => {
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
             <TableRowsWrapper>
-                {recentTrades.map((trade) => {
-                    if (trade) {
-                        return (
-                            <TableRow>
-                                <TableCell
-                                    width="15.5%"
-                                    color={
-                                        trade.type === EventType.Buy
-                                            ? 'var(--blue-text)'
-                                            : 'var(--red-text)'
-                                    }
-                                    align="left"
-                                    weight="500"
-                                >
-                                    {trade.type}
-                                </TableCell>
-                                <TableCell width="15.5%">
-                                    {formatNumberValue(trade.price)}
-                                </TableCell>
-                                <TableCell>
-                                    {formatBalance(trade.amount)}
-                                </TableCell>
-                                <TableCell>
-                                    {trade.totalPaid
-                                        ? formatBalance(trade.totalPaid)
-                                        : formatBalance(trade.totalReceived)}
-                                </TableCell>
-                                <TableCell>
-                                    <a
-                                        href={trade.hash}
-                                        target="#"
-                                        className="turquois-text"
-                                    >
-                                        {trade.blockTime}
-                                    </a>
-                                </TableCell>
-                            </TableRow>
-                        );
-                    } else {
-                        return <TableRow></TableRow>;
-                    }
-                })}
+            {recentTrades.map((trade, i) => (
+                <TableRow key={"tradeRow"+i}>
+                    <TableCell
+                        width="15.5%"
+                        color={
+                            trade.type === EventType.Buy
+                                ? 'var(--blue-text)'
+                                : 'var(--red-text)'
+                        }
+                        align="left"
+                        weight='500'
+                    >
+                        {trade.type}
+                    </TableCell>
+                    <TableCell width="15.5%">
+                        {formatNumberValue(trade.price)}
+                    </TableCell>
+                    <TableCell>{formatBalance(trade.amount)}</TableCell>
+                    <TableCell>
+                        {trade.totalPaid
+                            ? formatBalance(trade.totalPaid)
+                            : formatBalance(trade.totalReceived)}
+                    </TableCell>
+                    <TableCell>
+                        <a
+                            href={trade.hash}
+                            target="#"
+                            className="turquois-text"
+                        >
+                            {trade.blockTime}
+                        </a>
+                    </TableCell>
+                </TableRow>
+            ))}
             </TableRowsWrapper>
         </TradingHistoryWrapper>
     );
