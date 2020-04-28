@@ -48,10 +48,6 @@ const LogoWrapper = styled.div`
 `;
 
 const FooterLogo = styled.img`
-    :hover {
-        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg)
-            brightness(97%) contrast(86%);
-    }
 `;
 
 const Footer = ({}) => {
