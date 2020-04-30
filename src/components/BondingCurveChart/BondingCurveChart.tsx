@@ -86,13 +86,9 @@ const BondingCurveChart = observer(() => {
     const {
         root: { tradingStore, tokenStore, configStore, datStore },
     } = useStores();
-<<<<<<< HEAD
     
     const activeDATAddress = configStore.getDXDTokenAddress()
 
-=======
-    const activeDATAddress = configStore.getDXDTokenAddress();
->>>>>>> 144fee40... fix bonding curve chart
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         activeDATAddress
     );
