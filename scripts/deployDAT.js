@@ -47,6 +47,8 @@ module.exports = async function deployDat(web3, options, useProxy = true, saveOz
       investmentReserveBasisPoints: '1000',
       revenueCommitmentBasisPoints: '1000',
       control: accounts[1],
+      beneficiary: accounts[5],
+      feeCollector: accounts[6],
       minInvestment: 100000000000000,
       name: 'Test org',
       symbol: 'TFO'
@@ -117,8 +119,8 @@ module.exports = async function deployDat(web3, options, useProxy = true, saveOz
   }
   
   console.log('DAT control accounts:', accounts[1]);
-  console.log('DAT beneficiary accounts:', accounts[1]);
-  console.log('DAT feeCollector accounts:', accounts[1], ' \n');
+  console.log('DAT beneficiary accounts:', accounts[5]);
+  console.log('DAT feeCollector accounts:', accounts[6], ' \n');
   console.log('Recommended testing accounts:', accounts[4]);
   console.log('Get your provate keys in https://iancoleman.io/bip39/ \n');
   
