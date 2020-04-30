@@ -23,7 +23,7 @@ export const CHAIN_ID_BY_NAME = {
   'develop': 66,
 };
 
-export const DEFAULT_ETH_NETWORK = ETH_NETWORKS[0];
+export const DEFAULT_ETH_NETWORK = ETH_NETWORKS[1];
 export const DEFAULT_ETH_CHAIN_ID = CHAIN_ID_BY_NAME[ETH_NETWORKS[0]];
 
 export const RPC_URLS = {
