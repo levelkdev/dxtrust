@@ -4,10 +4,10 @@
         "name": "Dxdao Token",
         "symbol": "DXD",
         "currency": "0x0000000000000000000000000000000000000000",
-        "initReserve": "85000000000000000000000",
-        "initGoal": "2500000000000000000000",
+        "initReserve": "0",
+        "initGoal": "4800000000000000000000",
         "buySlopeNum": "1",
-        "buySlopeDen": "46641791000000000000000",
+        "buySlopeDen": "36000000000000000000000",
         "investmentReserveBasisPoints": "1000",
         "revenueCommitmentBasisPoints": "1000",
         "minInvestment": "100000000000000000"

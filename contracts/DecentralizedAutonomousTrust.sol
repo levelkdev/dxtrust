@@ -1,4 +1,4 @@
-pragma solidity 0.5.16;
+pragma solidity 0.5.17;
 
 import "./interfaces/IWhitelist.sol";
 import "./math/BigDiv.sol";
@@ -13,13 +13,17 @@ import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
 
 /**
  * @title Decentralized Autonomous Trust
- * This contract is the reference implementation provided by Fairmint for a
+ * This contract is the copy of the implementation provided by Fairmint for a
  * Decentralized Autonomous Trust as described in the continuous
  * organization whitepaper (https://github.com/c-org/whitepaper) and
- * specified here: https://github.com/fairmint/c-org/wiki. Use at your own
- * risk. If you have question or if you're looking for a ready-to-use
- * solution using this contract, you might be interested in Fairmint's
- * offering. Do not hesitate to get in touch with us: https://fairmint.co
+ * specified here: https://github.com/fairmint/c-org/wiki.
+ * Code from : https://github.com/Fairmint/c-org/blob/dfd3129f9bce8717406aba54d1f1888d8e253dbb/contracts/DecentralizedAutonomousTrust.sol
+ * Changes Added: https://github.com/Fairmint/c-org/commit/60bb63b9112a82996f275a75a87c28b1d73e3f11
+ *
+ * The code has been audited, and public audit results where published by Fairmint.
+ * The audit should be available online and in the docs folder of this contract repository.
+ *
+ * Use at your own risk. 
  */
 contract DecentralizedAutonomousTrust
   is ERC20, ERC20Detailed
@@ -106,14 +110,14 @@ contract DecentralizedAutonomousTrust
   /// @notice The contract for transfer authorizations, if any.
   IWhitelist public whitelist;
 
-  /// @notice The total number of burned FAIR tokens, excluding tokens burned from a `Sell` action in the DAT.
+  /// @notice The total number of burned COT tokens, excluding tokens burned from a `Sell` action in the DAT.
   uint public burnedSupply;
 
   /**
    * Data for DAT business logic
    */
 
-  /// @notice Set if the FAIRs minted by the organization when it commits its revenues are
+  /// @notice Set if the COTs minted by the organization when it commits its revenues are
   /// automatically burnt (`true`) or not (`false`). Defaults to `false` meaning that there
   /// is no automatic burn.
   bool public autoBurn;
@@ -123,12 +127,12 @@ contract DecentralizedAutonomousTrust
   address payable public beneficiary;
 
   /// @notice The buy slope of the bonding curve.
-  /// Does not affect the financial model, only the granularity of FAIR.
+  /// Does not affect the financial model, only the granularity of COT.
   /// @dev This is the numerator component of the fractional value.
   uint public buySlopeNum;
 
   /// @notice The buy slope of the bonding curve.
-  /// Does not affect the financial model, only the granularity of FAIR.
+  /// Does not affect the financial model, only the granularity of COT.
   /// @dev This is the denominator component of the fractional value.
   uint public buySlopeDen;
 
@@ -142,10 +146,10 @@ contract DecentralizedAutonomousTrust
   /// @notice The address where fees are sent.
   address payable public feeCollector;
 
-  /// @notice The percent fee collected each time new FAIR are issued expressed in basis points.
+  /// @notice The percent fee collected each time new COT are issued expressed in basis points.
   uint public feeBasisPoints;
 
-  /// @notice The initial fundraising goal (expressed in FAIR) to start the c-org.
+  /// @notice The initial fundraising goal (expressed in COT) to start the c-org.
   /// `0` means that there is no initial fundraising and the c-org immediately moves to run state.
   uint public initGoal;
 
@@ -153,11 +157,11 @@ contract DecentralizedAutonomousTrust
   /// @dev This structure's purpose is to make sure that only investors can withdraw their money if init_goal is not reached.
   mapping(address => uint) public initInvestors;
 
-  /// @notice The initial number of FAIR created at initialization for the beneficiary.
+  /// @notice The initial number of COT created at initialization for the beneficiary.
   /// Technically however, this variable is not a constant as we must always have
   ///`init_reserve>=total_supply+burnt_supply` which means that `init_reserve` will be automatically
   /// decreased to equal `total_supply+burnt_supply` in case `init_reserve>total_supply+burnt_supply`
-  /// after an investor sells his FAIRs.
+  /// after an investor sells his COTs.
   /// @dev Organizations may move these tokens into vesting contract(s)
   uint public initReserve;
 
@@ -411,6 +415,17 @@ contract DecentralizedAutonomousTrust
       initReserve = _initReserve;
       _mint(beneficiary, initReserve);
     }
+
+    // Initialize permit
+    DOMAIN_SEPARATOR = keccak256(
+      abi.encode(
+        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+        keccak256(bytes(name())),
+        keccak256(bytes(version)),
+        getChainId(),
+        address(this)
+      )
+    );
   }
   function getChainId(
   ) private pure
@@ -421,20 +436,6 @@ contract DecentralizedAutonomousTrust
     {
       id := chainid()
     }
-  }
-
-  function initializePermit(
-  ) public
-  {
-    DOMAIN_SEPARATOR = keccak256(
-      abi.encode(
-        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-        keccak256(bytes(name())),
-        keccak256(bytes(version)),
-        getChainId(),
-        address(this)
-      )
-    );
   }
 
   function updateConfig(
@@ -537,8 +538,8 @@ contract DecentralizedAutonomousTrust
     _transferCurrency(feeCollector, fee);
   }
 
-  /// @notice Calculate how many FAIR tokens you would buy with the given amount of currency if `buy` was called now.
-  /// @param _currencyValue How much currency to spend in order to buy FAIR.
+  /// @notice Calculate how many COT tokens you would buy with the given amount of currency if `buy` was called now.
+  /// @param _currencyValue How much currency to spend in order to buy COT.
   function estimateBuyValue(
     uint _currencyValue
   ) public view
@@ -646,10 +647,10 @@ contract DecentralizedAutonomousTrust
     return tokenValue;
   }
 
-  /// @notice Purchase FAIR tokens with the given amount of currency.
-  /// @param _to The account to receive the FAIR tokens from this purchase.
-  /// @param _currencyValue How much currency to spend in order to buy FAIR.
-  /// @param _minTokensBought Buy at least this many FAIR tokens or the transaction reverts.
+  /// @notice Purchase COT tokens with the given amount of currency.
+  /// @param _to The account to receive the COT tokens from this purchase.
+  /// @param _currencyValue How much currency to spend in order to buy COT.
+  /// @param _minTokensBought Buy at least this many COT tokens or the transaction reverts.
   /// @dev _minTokensBought is necessary as the price will change if some elses transaction mines after
   /// yours was submitted.
   function buy(
@@ -730,7 +731,7 @@ contract DecentralizedAutonomousTrust
       // source: (t+b)*a*(2*r)/((t+b)^2)-(((2*r)/((t+b)^2)*a^2)/2)+((2*r)/((t+b)^2)*a*b^2)/(2*(t))
       // imp: (a b^2 r)/(t (b + t)^2) + (2 a r)/(b + t) - (a^2 r)/(b + t)^2
 
-      // Math: burnedSupply is capped in FAIR such that the square will never overflow
+      // Math: burnedSupply is capped in COT such that the square will never overflow
       // Math worst case:
       // MAX * MAX_BEFORE_SQUARE * MAX_BEFORE_SQUARE/2 * MAX_BEFORE_SQUARE/2
       // / MAX_BEFORE_SQUARE/2 * MAX_BEFORE_SQUARE/2 * MAX_BEFORE_SQUARE/2
@@ -772,16 +773,16 @@ contract DecentralizedAutonomousTrust
       // Math worst case:
       // MAX * MAX_BEFORE_SQUARE
       currencyValue = _quantityToSell.mul(reserve);
-      // Math: FAIR blocks initReserve from being burned unless we reach the RUN state which prevents an underflow
+      // Math: COT blocks initReserve from being burned unless we reach the RUN state which prevents an underflow
       currencyValue /= totalSupply() - initReserve;
     }
 
     return currencyValue;
   }
 
-  /// @notice Sell FAIR tokens for at least the given amount of currency.
+  /// @notice Sell COT tokens for at least the given amount of currency.
   /// @param _to The account to receive the currency from this sale.
-  /// @param _quantityToSell How many FAIR tokens to sell for currency value.
+  /// @param _quantityToSell How many COT tokens to sell for currency value.
   /// @param _minCurrencyReturned Get at least this many currency tokens or the transaction reverts.
   /// @dev _minCurrencyReturned is necessary as the price will change if some elses transaction mines after
   /// yours was submitted.
@@ -914,6 +915,13 @@ contract DecentralizedAutonomousTrust
     _pay(_to, _currencyValue);
   }
 
+  /// @notice Pay the organization on-chain without minting any tokens.
+  /// @dev This allows you to add funds directly to the buybackReserve.
+  function () external payable
+  {
+    require(address(currency) == address(0), "ONLY_FOR_CURRENCY_ETH");
+  }
+  
   /// Close
 
   function estimateExitFee(
