@@ -618,9 +618,9 @@ const BondingCurveChart = observer(() => {
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
                                 ? `${formatBalance(
-                                      initGoal.times(kickstarterPrice)
-                                  )} ETH`
-                                : '- ETH'}
+                                      initGoal
+                                  )} DXD`
+                                : '- DXD'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
