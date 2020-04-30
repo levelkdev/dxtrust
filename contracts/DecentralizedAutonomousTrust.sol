@@ -13,15 +13,12 @@ import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
 
 /**
  * @title Decentralized Autonomous Trust
- * This contract is the copy of the implementation provided by Fairmint for a
+ * This contract is a modified version of the implementation provided by Fairmint for a
  * Decentralized Autonomous Trust as described in the continuous
  * organization whitepaper (https://github.com/c-org/whitepaper) and
  * specified here: https://github.com/fairmint/c-org/wiki.
  * Code from : https://github.com/Fairmint/c-org/blob/dfd3129f9bce8717406aba54d1f1888d8e253dbb/contracts/DecentralizedAutonomousTrust.sol
  * Changes Added: https://github.com/Fairmint/c-org/commit/60bb63b9112a82996f275a75a87c28b1d73e3f11
- *
- * The code has been audited, and public audit results where published by Fairmint.
- * The audit should be available online and in the docs folder of this contract repository.
  *
  * Use at your own risk. 
  */
