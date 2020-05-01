@@ -25,7 +25,7 @@ async function saveOzDevelopProxies(proxies) {
 }
 
 
-module.exports = async function deployDat(web3, options, useProxy = true, saveOzProxies = true) {
+module.exports = async function deployDAT(web3, options, useProxy = true, saveOzProxies = true) {
   
   ZWeb3.initialize(web3.currentProvider);
   Contracts.setLocalBuildDir('contracts/build/');
