@@ -83,7 +83,6 @@ const TradingHistory = observer(() => {
     if (tradingStore.recentTradesSet) {
         recentTrades = tradingStore.recentTrades;
     }
-    console.log(recentTrades);
 
     return (
         <TradingHistoryWrapper>
