@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { contracts } from '../config/contracts';
 import { DEFAULT_ETH_NETWORK } from '../provider/connectors';
-import { etherscanAddress } from 'utils/etherscan';
+import { etherscanAddress, etherscanToken } from 'utils/etherscan';
 import { useStores } from '../contexts/storesContext';
-import {CHAIN_NAME_BY_ID} from '../provider/connectors';
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -62,14 +61,9 @@ const Footer = () => {
         root: {providerStore},
     } = useStores();
 
-    console.log(providerStore)
     let chainId = providerStore.getActiveWeb3React().chainId;
-    let backupChainId = providerStore.getBackupWeb3React().chainId;
-
-    console.log(chainId);
-
-    console.log(backupChainId);
-    console.log("NAME: " + CHAIN_NAME_BY_ID[chainId]);
+    let proxyContract = contracts[DEFAULT_ETH_NETWORK].DAT;
+    let contract = contracts[DEFAULT_ETH_NETWORK].implementationAddress;
     return (
         <FooterWrapper>
             <LeftFooter>
@@ -86,20 +80,11 @@ const Footer = () => {
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
+                    {etherscanAddress(chainId,"Proxy",proxyContract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    <a
-                        href={
-                            'https://' +
-                            DEFAULT_ETH_NETWORK +
-                            '.etherscan.io/address/' +
-                            contracts[DEFAULT_ETH_NETWORK].DATinfo.implementationAddress
-                        }
-                        target="#"
-                    >
-                        Contract
-                    </a>
+                    {etherscanAddress(chainId,"Contract",contract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
