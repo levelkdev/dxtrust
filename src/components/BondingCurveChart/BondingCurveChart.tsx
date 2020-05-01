@@ -141,7 +141,11 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
             }
     
         totalSupplyWithoutPremint = totalSupplyWithPremint.minus(initReserve);
-        currentSellPrice = reserveBalance.times(reserveBalance).div(totalSupplyWithPremint);
+        currentSellPrice = reserveBalance.times(2).div(totalSupplyWithPremint);
+        console.log(formatBalance(reserveBalance));
+        console.log(formatBalance(totalSupplyWithPremint));
+        console.log(formatBalance(reserveBalance.times(2)));
+        console.log(formatNumberValue(currentSellPrice));
         currentBuyPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
     }
 
@@ -622,7 +626,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         else{
             return <PriceBottomElement isBuy={isBuy} >
             {requiredDataLoaded
-                ? `${formatBalance(currentSellPrice)} DXD/ETH`
+                ? `${formatNumberValue(currentSellPrice)} DXD/ETH`
                 : '- DXD/ETH'}
                     </PriceBottomElement>
         }
