@@ -64,6 +64,14 @@ REACT_APP_GIT_SHA
 ```
 To make the build of the dapp use the command `yarn run build`. It will create production build that can be hosted anywhere. We host and support the builds in IPFS and Swarm networks.
 
+## Contracts Deployment
+
+Before doing the build make sure to have the `REACT_APP_KEY_INFURA_API_KEY` in the `.env` file with balance in the index 0 account.
+To deploy the contracts for production on live networks we suggest using the script `yarn run deploy-contracts`.
+An example of the script to run for mainnet: `yarn run deploy-contracts --provider https://mainnet.infura.io/v3/xxxxxxxxxxxxxxxxxxxxxxxxx`
+An example of the script to run for kovan: `yarn run deploy-contracts --network kovan --provider https://kovan.infura.io/v3/xxxxxxxxxxxxxxxxxxxxxxxxx`
+The script will deploy everything with the configuration proposed in https://daotalk.org/t/configuration-template-for-fundraising-decentralized-application/1250 and approved in https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a/proposal/0xeb9cf2b3d76664dc1e983137f33b2400ad11966b1d79399d7ca55c25ad6283fa.
+
 
 ### IPFS
 
