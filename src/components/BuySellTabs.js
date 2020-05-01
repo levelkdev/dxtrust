@@ -32,19 +32,16 @@ const InactiveTab = styled.div`
     cursor: pointer;
 `;
 
-const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
+const BuySellTabs = observer(() => {
     const {
-        root: { configStore, datStore },
+        root: { configStore, datStore, tradingStore },
     } = useStores();
-	const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
-
-    const TabButton = ({ currentTab, tabType, left, children }) => {
-        if (currentTab === tabType) {
+    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    let isBuy = tradingStore.activeTab;
+    const TabButton = ({isActive, left, children }) => {
+        if (isActive) {
             return (
                 <ActiveTab
-                    onClick={() => {
-                        setCurrentTab(tabType);
-                    }}
                     left={left}
                 >
                     {children}
@@ -54,7 +51,7 @@ const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
             return (
                 <InactiveTab
                     onClick={() => {
-                        setCurrentTab(tabType);
+                        tradingStore.switchActiveTab();
                     }}
                     left={left}
                 >
@@ -66,10 +63,10 @@ const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
 
 	return(
         <TabWrapper>
-            <TabButton currentTab={currentTab} tabType={0}>
+            <TabButton isActive={isBuy}>
                 Buy
             </TabButton>
-            <TabButton currentTab={currentTab} tabType={1} left={true}>
+            <TabButton isActive={!isBuy} left={true}>
                 {sellText}
             </TabButton>
         </TabWrapper>

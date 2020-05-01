@@ -34,6 +34,7 @@ interface Sell {
 }
 
 class TradingFormStore {
+    @observable activeTab = true;
     @observable previousBuy: Buy;
     @observable previousSell: Sell;
     @observable reserveBalance = '';
@@ -88,6 +89,10 @@ class TradingFormStore {
 
     setSellPrice(price: BigNumber) {
         this.sellPrice = price;
+    }
+
+    @action switchActiveTab(){
+        this.activeTab = !this.activeTab;
     }
 
     @action setPreviousBuy(buy: Buy) {

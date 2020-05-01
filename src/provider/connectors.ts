@@ -48,7 +48,6 @@ export const defaultChainId = CHAIN_ID_BY_NAME[ETH_NETWORKS[0]];
 let supportedChainIds = [];
 supportedChains.forEach((network) => supportedChainIds.push(CHAIN_ID_BY_NAME[network]));
 
-// console.log('Supported chains:', supportedChains);
 
 export const isChainIdSupported = (chainId: number): boolean => {
     return supportedChains.indexOf(CHAIN_NAME_BY_ID[chainId]) >= 0;
