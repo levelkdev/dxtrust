@@ -19,7 +19,7 @@ async function saveOzDevelopProxies(proxies) {
       if (file.indexOf('dev-') >= 0){
         const ozJSON = JSON.parse(fs.readFileSync('.openzeppelin/'+file, 'utf-8'));
         ozJSON.proxies = proxies;
-        fs.writeFileSync('.openzeppelin/'+file, JSON.stringify(ozJSON), null, 2)
+        fs.writeFileSync('.openzeppelin/'+file, JSON.stringify(ozJSON, null, 2))
       }
   });
 }
@@ -109,7 +109,7 @@ module.exports = async function deployDat(web3, options, useProxy = true, saveOz
       ],
       'BC-DAPP/Multicall': [
         {
-          address: contracts.dat.address,
+          address: contracts.multicall.address,
           kind: 'NonProxy',
           bytecodeHash: ozDevelopJSON.contracts.Multicall.bytecodeHash
         }
