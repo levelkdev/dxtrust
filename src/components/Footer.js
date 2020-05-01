@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { contracts } from '../config/contracts';
 import { DEFAULT_ETH_NETWORK } from '../provider/connectors';
+import { etherscanAddress } from 'utils/etherscan';
+import { useStores } from '../contexts/storesContext';
+import {CHAIN_NAME_BY_ID} from '../provider/connectors';
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -54,8 +57,19 @@ const FooterLogo = styled.img`
     }
 `;
 
-const Footer = ({}) => {
-    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0, 7);
+const Footer = () => {
+    const {
+        root: {providerStore},
+    } = useStores();
+
+    console.log(providerStore)
+    let chainId = providerStore.getActiveWeb3React().chainId;
+    let backupChainId = providerStore.getBackupWeb3React().chainId;
+
+    console.log(chainId);
+
+    console.log(backupChainId);
+    console.log("NAME: " + CHAIN_NAME_BY_ID[chainId]);
     return (
         <FooterWrapper>
             <LeftFooter>
@@ -72,17 +86,6 @@ const Footer = ({}) => {
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    <a
-                        href={
-                            'https://' +
-                            DEFAULT_ETH_NETWORK +
-                            '.etherscan.io/address/' +
-                            contracts[DEFAULT_ETH_NETWORK].DAT
-                        }
-                        target="#"
-                    >
-                        Proxy
-                    </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
