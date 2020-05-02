@@ -142,10 +142,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     
         totalSupplyWithoutPremint = totalSupplyWithPremint.minus(initReserve);
         currentSellPrice = reserveBalance.times(2).div(totalSupplyWithPremint);
-        console.log(formatBalance(reserveBalance));
-        console.log(formatBalance(totalSupplyWithPremint));
-        console.log(formatBalance(reserveBalance.times(2)));
-        console.log(formatNumberValue(currentSellPrice));
         currentBuyPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
     }
 
