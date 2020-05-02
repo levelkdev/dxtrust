@@ -36,16 +36,30 @@ const momentNow = moment.utc((new Date()).toUTCString());
 // https://daotalk.org/t/configuration-template-for-fundraising-decentralized-application/1250
 // https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a/proposal/0xeb9cf2b3d76664dc1e983137f33b2400ad11966b1d79399d7ca55c25ad6283fa
 
+const pricePerDXDUSD = 25;
+const pricePerETHUSD = 200;
+const initGoalUSD = 50000;
+const initiGoalDXD = initGoalUSD/pricePerDXDUSD;
+const initGoalETH = initGoalUSD/pricePerETHUSD;
+
+// From DAT conract:
+// tokenValue = BigDiv.bigDiv2x1(
+//   currencyValue,
+//   2 * buySlopeDen,
+//   initGoal * buySlopeNum
+// );
+const buySplopeDen = ((initiGoalDXD * (initiGoalDXD*1)) / initGoalETH) / 2;
+
 const deployOptions = {
   collateralType: 'ETH',
-  name: 'Dxdao Token',
+  name: 'DXdao',
   symbol: 'DXD',
   currency: '0x0000000000000000000000000000000000000000', // Using ETH
   whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
   initReserve: '100000000000000000000000', // 100.000 DXD
-  initGoal: '4800000000000000000000', // 4.800 DXD
+  initGoal: web3.utils.toWei(initiGoalDXD.toString()),
   buySlopeNum: '1',
-  buySlopeDen: '36000000000000000000000',
+  buySlopeDen: web3.utils.toWei(buySplopeDen.toString()),
   investmentReserveBasisPoints: '1000', // 10 %
   revenueCommitmentBasisPoints: '1000', // 10 %
   minInvestment: '1000000000000000',  // 0.001 ETH
