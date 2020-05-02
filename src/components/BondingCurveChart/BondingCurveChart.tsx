@@ -599,11 +599,11 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                     <ChartHeaderFullElement>
                         <ChartHeaderTopElement>Goal</ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
-                            {requiredDataLoaded
+                                {requiredDataLoaded
                                 ? `${formatBalance(
-                                      initGoal
-                                  )} DXD`
-                                : '- DXD'}
+                                      initGoal.times(kickstarterPrice)
+                                  )} ETH`
+                                : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
