@@ -36,7 +36,6 @@ const momentNow = moment.utc((new Date()).toUTCString());
 // https://daotalk.org/t/configuration-template-for-fundraising-decentralized-application/1250
 // https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a/proposal/0xeb9cf2b3d76664dc1e983137f33b2400ad11966b1d79399d7ca55c25ad6283fa
 
-const pricePerDXDUSD = 25;
 const pricePerETHUSD = 200;
 const initGoalUSD = 50000;
 const initGoalETH = initGoalUSD/pricePerETHUSD;
