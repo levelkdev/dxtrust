@@ -39,16 +39,16 @@ const momentNow = moment.utc((new Date()).toUTCString());
 const pricePerDXDUSD = 25;
 const pricePerETHUSD = 200;
 const initGoalUSD = 50000;
-const initiGoalDXD = initGoalUSD/pricePerDXDUSD;
 const initGoalETH = initGoalUSD/pricePerETHUSD;
+const buySlopePointUSD = 300000;
+const buySlopePointDXD = 12000;
+const buySlopePointETH = buySlopePointUSD/pricePerETHUSD;
 
-// From DAT conract:
-// tokenValue = BigDiv.bigDiv2x1(
-//   currencyValue,
-//   2 * buySlopeDen,
-//   initGoal * buySlopeNum
-// );
-const buySplopeDen = ((initiGoalDXD * (initiGoalDXD*1)) / initGoalETH) / 2;
+// Calculates buy slope denominator from an specific point
+const buySlopeDen = parseFloat((2*buySlopePointETH) / (buySlopePointDXD*buySlopePointDXD)).toFixed(18);
+
+// Calculates init goal DXD from the buySlopeDen
+const initGoalDXD = Math.sqrt((2*initGoalETH)/buySlopeDen);
 
 const deployOptions = {
   collateralType: 'ETH',
@@ -57,9 +57,9 @@ const deployOptions = {
   currency: '0x0000000000000000000000000000000000000000', // Using ETH
   whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
   initReserve: '100000000000000000000000', // 100.000 DXD
-  initGoal: web3.utils.toWei(initiGoalDXD.toString()),
+  initGoal: web3.utils.toWei(initGoalDXD.toString()),
   buySlopeNum: '1',
-  buySlopeDen: web3.utils.toWei(buySplopeDen.toString()),
+  buySlopeDen: web3.utils.toWei(buySlopeDen.toString()),
   investmentReserveBasisPoints: '1000', // 10 %
   revenueCommitmentBasisPoints: '1000', // 10 %
   minInvestment: '1000000000000000',  // 0.001 ETH
