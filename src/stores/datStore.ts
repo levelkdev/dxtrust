@@ -6,6 +6,7 @@ import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
 import { BigNumberCached } from '../services/blockchainReader';
 import { Call } from '../services/multicall/MulticallService';
+import { getEtherscanLink } from 'utils/etherscan';
 
 export enum EventType {
     Buy = 'Buy',
@@ -291,6 +292,8 @@ export default class DatStore {
             buyEvent.blockNumber
         );
 
+        const chainId = this.rootStore.providerStore.getActiveWeb3React().chainId;
+        
         const event: BuyEvent = {
             price: totalPrice.div(amount),
             amount: amount,
@@ -298,7 +301,7 @@ export default class DatStore {
             blockNumber: buyEvent.blockNumber,
             blockTime: blockTime,
             type: EventType.Buy,
-            hash: 'https://kovan.etherscan.io/tx/' + buyEvent.transactionHash,
+            hash: getEtherscanLink(chainId, buyEvent.transactionHash, 'transaction' ),
         };
 
         return event;
@@ -312,6 +315,8 @@ export default class DatStore {
         const blockTime = await this.rootStore.providerStore.getBlockTime(
             sellEvent.blockNumber
         );
+        
+        const chainId = this.rootStore.providerStore.getActiveWeb3React().chainId;
 
         const event: SellEvent = {
             price: totalReceived.div(amount),
@@ -320,7 +325,7 @@ export default class DatStore {
             blockNumber: sellEvent.blockNumber,
             blockTime: blockTime,
             type: EventType.Sell,
-            hash: 'https://kovan.etherscan.io/tx/' + sellEvent.transactionHash,
+            hash: getEtherscanLink(chainId, sellEvent.transactionHash, 'transaction' ),
         };
 
         return event;

@@ -15,6 +15,9 @@ import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 import { bnum } from '../../utils/helpers';
 import { roundUpToScale } from '../../utils/number';
 import { pointTooltips } from './pointTooltips';
+import { cssVar } from 'polished';
+import { ThumbsDown } from 'react-feather';
+import { observable } from 'mobx';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -51,7 +54,12 @@ const ChartHeaderBottomElement = styled.div`
     font-size: 18px;
     margin-top: 10px;
     font-weight: 500;
+    color: 1px solid var(--line-gray);
 `;
+
+const PriceBottomElement = styled(ChartHeaderBottomElement)`
+    color: ${(props) => props.isBuy ? '1px solid var(--line-gray)' : 'var(--red-text)'};
+`
 
 const ChartWrapper = styled.div`
     height: 250px;
@@ -82,43 +90,42 @@ const chartBlue = '#5b76fa';
 const chartGray = '#9FA8DA';
 const gridLineColor = '#EAECF7';
 
-const BondingCurveChart = observer(() => {
+
+const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const {
         root: { tradingStore, tokenStore, configStore, datStore },
     } = useStores();
-    
-    const activeDATAddress = configStore.getDXDTokenAddress()
 
+    let buySlopeNum: BigNumber,
+    buySlopeDen: BigNumber,
+    initGoal: BigNumber,
+    initReserve: BigNumber,
+    cOrg: COrgSim,
+    currentBuyPrice: BigNumber,
+    currentSellPrice: BigNumber,
+    kickstarterPrice: BigNumber;
+
+  
+    const activeDATAddress = configStore.getDXDTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         activeDATAddress
     );
-    const totalSupply = tokenStore.getTotalSupply(activeDATAddress);
+    const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
     const datState = datStore.getState(activeDATAddress);
-    const reserveBalance = datStore.getReserveBalance(
-        activeDATAddress
-    );
+    const reserveBalance: BigNumber = datStore.getReserveBalance(activeDATAddress);
+    const isBuy = tradingStore.activeTab;
 
     const requiredDataLoaded =
         staticParamsLoaded &&
-        !!totalSupply &&
+        !!totalSupplyWithPremint &&
         datState !== undefined &&
         !!reserveBalance;
-
-    let buySlopeNum,
-        buySlopeDen,
-        initGoal,
-        initReserve,
-        cOrg,
-        totalSupplyWithoutPremint,
-        currentPrice,
-        kickstarterPrice;
 
     if (requiredDataLoaded) {
         buySlopeNum = datStore.getBuySlopeNum(activeDATAddress);
         buySlopeDen = datStore.getBuySlopeDen(activeDATAddress);
         initGoal = datStore.getInitGoal(activeDATAddress);
         initReserve = datStore.getInitReserve(activeDATAddress);
-
         cOrg = new COrgSim({
             buySlopeNum,
             buySlopeDen,
@@ -127,12 +134,15 @@ const BondingCurveChart = observer(() => {
             state: datState,
         });
 
+        
+
         if (initGoal && initGoal.gt(0)) {
             kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
-        }
-
-        totalSupplyWithoutPremint = totalSupply.minus(initReserve);
-        currentPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
+            }
+    
+        totalSupplyWithoutPremint = totalSupplyWithPremint.minus(initReserve);
+        currentSellPrice = reserveBalance.times(2).div(totalSupplyWithPremint);
+        currentBuyPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
     }
 
     let data, options;
@@ -257,7 +267,7 @@ const BondingCurveChart = observer(() => {
             },
             currentSupply: {
                 x: balanceToNumber(totalSupplyWithoutPremint),
-                y: valueToNumber(currentPrice),
+                y: valueToNumber(currentBuyPrice),
             },
         };
 
@@ -397,32 +407,6 @@ const BondingCurveChart = observer(() => {
             );
         }
 
-        const numLines = datasets.length;
-
-        // datasets.push(
-        //     generateSupplyMarker(
-        //         points.currentSupply,
-        //         PointLabels.CURRENT_SUPPLY,
-        //         hasInitGoal && !hasExceededInitGoal ? chartGreen : chartBlue
-        //     )
-        // );
-
-        // datasets.push(
-        //     generateSupplyMarker(
-        //         points.kickstarterEnd,
-        //         PointLabels.KICKSTARTER_END,
-        //         chartGreen
-        //     )
-        // );
-
-        // datasets.push(
-        //     generateSupplyMarker(
-        //         points.curveStart,
-        //         PointLabels.CURVE_START,
-        //         chartBlue
-        //     )
-        // );
-
         if (hasActiveInput) {
             datasets.push(
                 generateSupplyMarker(
@@ -461,7 +445,6 @@ const BondingCurveChart = observer(() => {
                         if (pointId === PointLabels.FUTURE_SUPPLY) {
                             return `DXD Issuance After Your Buy: ${tooltipItem.xLabel}`;
                         } else if (pointId === PointLabels.CURVE_START && tooltipItem.datasetIndex == 1) {
-                            console.log("data index", tooltipItem.datasetIndex);
                             return 'After the kickstarter period, sales continue with an initial 2x increase in price';
                         }
 
@@ -580,7 +563,7 @@ const BondingCurveChart = observer(() => {
             <ChartHeaderWrapper>
                 <ChartBox>
                     <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Price</ChartHeaderTopElement>
+                        <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
                                 ? `${formatNumberValue(kickstarterPrice)} ETH`
@@ -596,7 +579,7 @@ const BondingCurveChart = observer(() => {
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
                                 ? `${formatBalance(
-                                      totalSupplyWithoutPremint
+                                        totalSupplyWithoutPremint
                                   )} DXD`
                                 : '- DXD'}
                         </ChartHeaderBottomElement>
@@ -628,17 +611,30 @@ const BondingCurveChart = observer(() => {
         );
     };
 
+    const SellBuyPriceBottomElement = () => {
+        if(isBuy){
+            return <PriceBottomElement isBuy={isBuy} >
+            {requiredDataLoaded
+                ? `${formatNumberValue(currentBuyPrice)} DXD/ETH`
+                : '- DXD/ETH'}
+                    </PriceBottomElement>
+        }
+        else{
+            return <PriceBottomElement isBuy={isBuy} >
+            {requiredDataLoaded
+                ? `${formatNumberValue(currentSellPrice)} DXD/ETH`
+                : '- DXD/ETH'}
+                    </PriceBottomElement>
+        }
+    }
+
     const renderRunPhaseChartHeader = () => {
         return (
             <ChartHeaderWrapper>
                 <ChartBox>
                     <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Price</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            {requiredDataLoaded
-                                ? `${formatNumberValue(currentPrice)} DXD/ETH`
-                                : '- DXD/ETH'}
-                        </ChartHeaderBottomElement>
+                        <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
+                        <SellBuyPriceBottomElement/>
                     </ChartHeaderFullElement>
                 </ChartBox>
                 <ChartBox>
@@ -649,7 +645,7 @@ const BondingCurveChart = observer(() => {
                         <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
                                 ? `${formatBalance(
-                                      totalSupplyWithoutPremint
+                                        totalSupplyWithoutPremint
                                   )} DXD`
                                 : '- DXD'}
                         </ChartHeaderBottomElement>

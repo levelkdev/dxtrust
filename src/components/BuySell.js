@@ -33,12 +33,12 @@ const BuySell = observer(() => {
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
-    const [currentTab, setCurrentTab] = useState(0);
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
+    let isBuy = tradingStore.activeTab;
 
-    const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {
-        if (currentTab === 0) {
+    const CurrentForm = ({isBuy}) => {
+        if (isBuy) {
                 return <BuyForm />;
         } else {
 
@@ -54,11 +54,11 @@ const BuySell = observer(() => {
 
     return (
         <BuySellWrapper>
-            <BuySellTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
+            <BuySellTabs isBuy={isBuy} />
             <ContentWrapper>
                 <BalanceInfo />
                 <CurrentForm
-                    currentTab={currentTab}
+                    isBuy={isBuy}
                     incrementTKN={incrementTKN}
                     incrementDXD={incrementDXD}
                 />

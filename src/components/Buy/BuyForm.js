@@ -17,7 +17,7 @@ const ContentStates = {
     FAILED: 'failed'
 };
 
-const BuyForm = observer((props) => {
+const BuyForm = observer(() => {
     const {
         root: { tradingStore },
     } = useStores();

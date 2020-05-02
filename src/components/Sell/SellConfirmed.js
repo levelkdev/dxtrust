@@ -57,10 +57,6 @@ const SellConfirmed = observer((props) => {
 
     const {sellPrice, rewardForSell, sellAmount} = tradingStore.previousSell;
 
-    console.log({
-        sellPrice, rewardForSell, sellAmount
-    })
-
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
             return (

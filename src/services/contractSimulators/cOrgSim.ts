@@ -1,5 +1,4 @@
 import { BigNumber } from '../../utils/bignumber';
-import { bnum } from '../../utils/helpers';
 import BigDivSim from './bigDivSim';
 import { DatState } from '../../stores/datStore';
 
@@ -29,4 +28,5 @@ export default class COrgSim {
 
         return supply.times(buySlopeNum).div(buySlopeDen);
     }
+
 }

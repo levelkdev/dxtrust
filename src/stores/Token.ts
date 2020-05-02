@@ -4,18 +4,9 @@ import { ContractType } from 'stores/Provider';
 import * as helpers from 'utils/helpers';
 import { bnum } from 'utils/helpers';
 import { parseEther } from 'ethers/utils';
-import { FetchCode } from './Transaction';
 import { BigNumber } from 'utils/bignumber';
-import {
-    AsyncStatus,
-    TokenBalanceFetch,
-    TotalSupplyFetch,
-    UserAllowanceFetch,
-} from './actions/fetch';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
-import { BigNumberMap } from '../types';
 import { PromiEvent } from 'web3-core';
-import { TransactionState } from './TradingForm';
 
 export interface TokenBalance {
     balance: BigNumber;
@@ -75,6 +66,7 @@ export default class TokenStore {
             return undefined;
         }
     }
+
 
     getEtherBalance(account: string) {
         const {blockchainStore, configStore} = this.rootStore;
