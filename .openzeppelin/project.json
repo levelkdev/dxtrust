@@ -2,7 +2,8 @@
   "manifestVersion": "2.2",
   "contracts": {
     "DecentralizedAutonomousTrust": "DecentralizedAutonomousTrust",
-    "Multicall": "Multicall"
+    "Multicall": "Multicall",
+    "TokenVesting": "TokenVesting"
   },
   "dependencies": {},
   "name": "BC-DAPP",
@@ -10,7 +11,7 @@
   "compiler": {
     "compilerSettings": {
       "optimizer": {
-        "enabled": false,
+        "enabled": true,
         "runs": "200"
       }
     },
