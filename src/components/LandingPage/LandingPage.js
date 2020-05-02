@@ -311,14 +311,14 @@ const LandingPage = () => {
             <BannerSection>
                 <TagLine>We decentralize DeFi</TagLine>
                 <BannerMessage>
-                    <HeavyMessage>Dxdao </HeavyMessage>is a{' '}
+                    <HeavyMessage>DXdao </HeavyMessage>is a{' '}
                     <HeavyMessage>sovereign collective</HeavyMessage>
                 </BannerMessage>
                 <Description>
-                    The dxDAO is a decentralized organization initialized in May
+                    The DXdao is a decentralized organization initialized in May
                     of 2019 and has over 400 unique stakeholder addresses. It
                     develops, governs, and grows DeFi protocols and products.
-                    Owned and operated by the community, the Dxdao has the
+                    Owned and operated by the community, the DXdao has the
                     potential to significantly scale its membership.
                 </Description>
                 <ButtonRow>
@@ -350,7 +350,7 @@ const LandingPage = () => {
             </DXDSection>
             <ProductSection>
                 <TagLine>Our collectively owned products</TagLine>
-                <Message>Pure Dapps powered by Dxdao</Message>
+                <Message>Pure Dapps powered by DXdao</Message>
                 <ProductPanelWrapper>
                     <ProductClickable
                         href="https://daotalk.org/t/mix-eth-seeking-feedback-on-proposal/1183"
