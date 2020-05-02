@@ -57,8 +57,8 @@ const FAQPage = () => {
             </main>
             <BannerMessage>DXD Distribution and Details</BannerMessage>
             <Description>
-                This is the first Dxdao fundraising round. DXD is a brand new
-                token. Purchasers of DXD are funding the efforts of the Dxdao in
+                This is the first DXdao fundraising round. DXD is a brand new
+                token. Purchasers of DXD are funding the efforts of the DXdao in
                 exchange for a right to future cash flows. DXD tokens will be
                 sold to the public in exchange for ETH according to a bonding
                 curve. The curve slope is linear and positive, so each
@@ -66,10 +66,10 @@ const FAQPage = () => {
                 be sold back into the curve, although at a different, lower rate
                 than purchases. In this fundraising round, our goal is to raise
                 $300,000 USD worth of ETH. This amount raised would equate to
-                12,000 DXD tokens having been sold from the curve. The Dxdao
+                12,000 DXD tokens having been sold from the curve. The DXdao
                 itself will receive an initial pre-mint of 100,000 DXD tokens.
                 Thus, the 12,000 DXD sold in this round represents just under
-                11% of the DXD supply. The 100,000 DXD issued to the Dxdao will
+                11% of the DXD supply. The 100,000 DXD issued to the DXdao will
                 vest monthly over 3 years (i.e. 1/36th = ~2775 DXD will be
                 vested each month for 36 months). Before the curve turns into a
                 positively sloping function, there is a flat section of the
@@ -86,12 +86,12 @@ const FAQPage = () => {
                 into the curve, providing a liquidity guarantee for those who
                 want to sell DXD. The portion of invested capital placed in
                 reserve is set at 10%. This is so because investors in DXD want
-                their money to be used to grow the Dxdao, not sit in reserve.
+                their money to be used to grow the DXdao, not sit in reserve.
                 Thus it is more of a last liquidity backstop.
             </Description>
             <BannerMessage>Dividend percentage</BannerMessage>
             <Description>
-                A portion of Dxdao revenue is allocated to the reserve,
+                A portion of DXdao revenue is allocated to the reserve,
                 increasing the value of all outstanding bonding curve tokens.
                 This is currently set at 10% of revenue, for a minimum of 5
                 years. The revenue allocation here can be increased at a later

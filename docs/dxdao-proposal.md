@@ -1,10 +1,10 @@
 # BC-DAPP Proposal
 
-> A proposal by the BC-DAPP team to build a full DApp which will allow investors to participate in the continuous fundraising efforts of the dxDAO.
+> A proposal by the BC-DAPP team to build a full DApp which will allow investors to participate in the continuous fundraising efforts of the DXdao.
 
 ## Overview
 
-This proposal is to build a DApp that facilitates interaction with the continuous fundraising token deployed by the dxDAO. This includes a full trading interface to buy and sell tokens and an interface to view and claim dividends earned by holding these tokens.
+This proposal is to build a DApp that facilitates interaction with the continuous fundraising token deployed by the DXdao. This includes a full trading interface to buy and sell tokens and an interface to view and claim dividends earned by holding these tokens.
 
 ## Requirements
 
@@ -13,16 +13,16 @@ Here is a high-level overview of the project's requirements:
 1. Full spec and visual mockups of all user flows
 2. Overview of potential curve economics
 3. Trading interface for investors to buy and sell DXD tokens using the bonding curve
-4. Dividend claim interface for token holders to view and claim dividends from dxDAO cash flow
-5. Custom bonding curve to facilitate initial distribution of DXD to dxDAO Rep holders
+4. Dividend claim interface for token holders to view and claim dividends from DXdao cash flow
+5. Custom bonding curve to facilitate initial distribution of DXD to DXdao Rep holders
 6. Improve UX by supporting native ETH as reserve currency in Bonding Curve
-7. Deployment and decentralized hosting support for the DApp (ENS+IPFS, hosted on dxdao.eth)
+7. Deployment and decentralized hosting support for the DApp (ENS+IPFS, hosted on DXdao.eth)
 
 ## Budget
 
 - 70,000 GEN
 - 50 ETH, payable in DAODebt.
-- 94,000 of dxDAO REP (approx. 10% of existing REP)
+- 94,000 of DXdao REP (approx. 10% of existing REP)
 
   - 60% of total to [dOrg](https://dorg.tech/#/) (56,400 Rep)
 
