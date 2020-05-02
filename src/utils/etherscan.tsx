@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ETHERSCAN_PREFIXES = {
+export const ETHERSCAN_PREFIXES = {
     1: '',
     3: 'ropsten.',
     4: 'rinkeby.',
@@ -24,8 +24,8 @@ export function getEtherscanLink(networkId, data, type) {
     }
 }
 
-export const etherscanUrl = (network) => {
-    return `https://${network !== 'main' ? `${network}.` : ''}etherscan.io`;
+export const etherscanUrl = (networkId) => {
+    return "https://" + ETHERSCAN_PREFIXES[networkId] + "etherscan.io";
 };
 
 export const etherscanAddress = (network, text, address) => {

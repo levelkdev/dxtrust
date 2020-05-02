@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { contracts } from '../config/contracts';
 import { DEFAULT_ETH_NETWORK } from '../provider/connectors';
+import { etherscanAddress, etherscanToken } from 'utils/etherscan';
+import { useStores } from '../contexts/storesContext';
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -54,8 +56,14 @@ const FooterLogo = styled.img`
     }
 `;
 
-const Footer = ({}) => {
-    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0, 7);
+const Footer = () => {
+    const {
+        root: {providerStore},
+    } = useStores();
+
+    let chainId = providerStore.getActiveWeb3React().chainId;
+    let proxyContract = contracts[DEFAULT_ETH_NETWORK].DAT;
+    let contract = contracts[DEFAULT_ETH_NETWORK].implementationAddress;
     return (
         <FooterWrapper>
             <LeftFooter>
@@ -72,31 +80,11 @@ const Footer = ({}) => {
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    <a
-                        href={
-                            'https://' +
-                            DEFAULT_ETH_NETWORK +
-                            '.etherscan.io/address/' +
-                            contracts[DEFAULT_ETH_NETWORK].DAT
-                        }
-                        target="#"
-                    >
-                        Proxy
-                    </a>
+                    {etherscanAddress(chainId,"Proxy",proxyContract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    <a
-                        href={
-                            'https://' +
-                            DEFAULT_ETH_NETWORK +
-                            '.etherscan.io/address/' +
-                            contracts[DEFAULT_ETH_NETWORK].DATinfo.implementationAddress
-                        }
-                        target="#"
-                    >
-                        Contract
-                    </a>
+                    {etherscanAddress(chainId,"Contract",contract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>

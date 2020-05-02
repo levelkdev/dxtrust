@@ -50,8 +50,7 @@ const LogoWrapper = styled.div`
 const FooterLogo = styled.img`
 `;
 
-const Footer = ({}) => {
-    const gitHash = process.env.REACT_APP_GIT_SHA.toString().substring(0, 7);
+const Footer = () => {
     return (
         <FooterWrapper>
             <LeftFooter>
