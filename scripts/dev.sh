@@ -44,7 +44,7 @@ fi
 
 npx truffle version
 npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
-rm .openzeppelin/dev-*.json
+rm .openzeppelin/dev-*.json ||:
 npx oz push --network develop
 node scripts/copyContracts.js
 node scripts/deploy.js -- --network develop &
