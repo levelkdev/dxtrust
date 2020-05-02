@@ -43,11 +43,14 @@ const buySlopePointUSD = 300000;
 const buySlopePointDXD = 12000;
 const buySlopePointETH = buySlopePointUSD/pricePerETHUSD;
 
-// Calculates buy slope denominator from an specific point
-const buySlopeDen = parseFloat((2*buySlopePointETH) / (buySlopePointDXD*buySlopePointDXD)).toFixed(18);
+// Calculates buy slope from an specific point
+const buySlope = parseFloat((2*buySlopePointETH) / (buySlopePointDXD*buySlopePointDXD)).toFixed(18);
 
-// Calculates init goal DXD from the buySlopeDen
-const initGoalDXD = Math.sqrt((2*initGoalETH)/buySlopeDen);
+// Calculates the buy slope denominator from the slope
+const buySlopeDen = 1 / buySlope
+
+// Calculates init goal DXD from the initial goal ETH and the slope
+const initGoalDXD = Math.sqrt((2*initGoalETH)/buySlope);
 
 const deployOptions = {
   collateralType: 'ETH',
