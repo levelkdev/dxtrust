@@ -293,7 +293,8 @@ export default class DatStore {
         );
 
         const chainId = this.rootStore.providerStore.getActiveWeb3React().chainId;
-        const event: BuyEvent = {
+
+      const event: BuyEvent = {
             price: totalPrice.div(amount),
             amount: amount,
             totalPaid: totalPrice,

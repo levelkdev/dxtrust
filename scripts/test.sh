@@ -22,7 +22,7 @@ ganache_running() {
 start_ganache() {
 
   # Using 9000000 as gas limit and 10Gwei as gas price
-  npx ganache-cli --gasLimit 0x895440 --gasPrice 0x2540BE400 -d -m "$mnemonic" -e 1000 > /dev/null &
+  npx ganache-cli --gasLimit 9000000 --gasPrice 1 -e 1000 > /dev/null &
 
   ganache_pid=$!
 
@@ -44,9 +44,4 @@ fi
 
 npx truffle version
 npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
-rm .openzeppelin/dev-*.json
-npx oz push --network develop
-node scripts/copyContracts.js
-node scripts/deploy.js -- --network develop &
-sleep 3
-FORCE_COLOR=true REACT_APP_ETH_NETWORKS="develop,mainnet,kovan" node scripts/start.js | cat
+npx truffle test
