@@ -66,6 +66,22 @@ export default class TokenStore {
             return undefined;
         }
     }
+    
+    getBurnedSupply(tokenAddress: string): BigNumber | undefined {
+        const {blockchainStore} = this.rootStore;
+        const entry = {
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: tokenAddress,
+            method: 'burnedSupply',
+            params: []
+        };
+        
+        if (blockchainStore.has(entry)) {
+            return bnum(blockchainStore.get(entry).value);
+        } else {
+            return undefined;
+        }
+    }
 
 
     getEtherBalance(account: string) {
