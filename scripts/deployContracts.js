@@ -72,7 +72,7 @@ const deployOptions = {
   beneficiary: '0x519b70055af55a007110b4ff99b0ea33071c720a',
   feeCollector: '0x519b70055af55a007110b4ff99b0ea33071c720a',
   vestingCliff: '0',
-  vestingDuration: Math.trunc(moment.duration(momentNow.add(3, 'years').unix()).as('seconds'))
+  vestingDuration: Math.trunc(moment.duration(3, 'years').as('seconds'))
 };
 
 async function main() {
@@ -91,23 +91,21 @@ async function main() {
     from: deployer
   });
 
-  const datContract = await DATContract.new({
+  contracts.datImplementation = await DATContract.new({
     from: deployer
   });
-  console.log(`DAT implementation deployed ${datContract.address}`);
+  console.log(`DAT implementation deployed ${contracts.datImplementation.address}`);
 
-  const datProxy = await AdminUpgradeabilityProxy.new(
-    datContract.address, // logic
+  contracts.datProxy = await AdminUpgradeabilityProxy.new(
+    contracts.datImplementation.address, // logic
     contracts.proxyAdmin.address, // admin
     [], // data
     {
       from: deployer
     }
   );
-  contracts.datProxy = await DATContract.at(datProxy.address);
-  contracts.dat = await DATContract.at(datProxy.address);
-  contracts.dat.implementation = datContract.address;
-  console.log(`DAT proxy deployed ${datProxy.address}`);
+  contracts.dat = await DATContract.at(contracts.datProxy.address);
+  console.log(`DAT proxy deployed ${contracts.datProxy.address}`);
 
   // Initialize DAT proxy
   await contracts.dat.methods.initialize(
@@ -146,13 +144,10 @@ async function main() {
     deployOptions.openUntilAtLeast
   ).send({ from: deployer });
   console.log(`DAT config updated`);
-
-  // Transer proxy ownership to controll address
-  const txOnwershipTransfered = await contracts.proxyAdmin.methods
-    .changeProxyAdmin(contracts.dat.address, deployOptions.control)
-    .send({ from: deployer });
-  console.log(`DAT proxy ownerhsip transfered tx: ${JSON.stringify(txOnwershipTransfered, null, 2)}`, ' \n');
-
+  
+  // Transfer ownershiop of proxyAdmin to control address
+  await contracts.proxyAdmin.methods.transferOwnership(deployOptions.control);  
+  
   // Show Token Vetsing values
   console.log('Token vesting contract address:', contracts.tokenVesting.address);
   console.log('Token vesting contract owner:', await contracts.tokenVesting.methods.owner().call());
