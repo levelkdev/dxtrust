@@ -72,6 +72,29 @@ An example of the script to run for mainnet: `yarn run deploy-contracts --provid
 An example of the script to run for kovan: `yarn run deploy-contracts --network kovan --provider https://kovan.infura.io/v3/xxxxxxxxxxxxxxxxxxxxxxxxx`
 The script will deploy everything with the configuration proposed in https://daotalk.org/t/configuration-template-for-fundraising-decentralized-application/1250 and approved in https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a/proposal/0xeb9cf2b3d76664dc1e983137f33b2400ad11966b1d79399d7ca55c25ad6283fa.
 
+## Governance
+
+The DAT contract has two types of ownerships, one is the Proxy ownership and another is Contract ownership.
+
+The proxy owner is called admin in the (openzeppelin contracts we use)[https://docs.openzeppelin.com/upgrades/2.8/proxies], we have to differentiate here form the ProxyAdmin contract and the proxy admin role. The ProxyAdmin contract is an Ownable contract that is owned by the DXdao, which means that the DXdao has control over all proxies administered by the ProxyAdmin contract, each proxy registered in the ProxyAdmin contract as admin address that can execute the upgrade functions.
+
+The contract ownership would be the contract controller, there is a control address in the DAT contract that can execute the "owner" functions, such as updateConfig, where the configuration of the DAT can be changed. The controlller address is the DXdao.
+
+Ownership when upgradeability functions are executed:
+```
+DXdao -> ProxyAdmin -> DATProxy
+```
+Ownserhip when the DAT is running normaly and functions like pay() or burn() are called by DXdao:
+```
+DXdao -> DAT
+```
+
+### Kovan governance
+
+A kovan instance for DAT with the same parameters that will be used by the DAT in mainnet will be provided by developers that are maintaining this repository. The only difference is that instead of DXdao a multisignature wallet with 1 required confirmation integrated by developers will govern the kovan DAT.
+
+(Kovan Developers Multisig)[https://kovan.etherscan.io/address/0x0468eBA33b191C8A3C5eB5d62714fFFa155BCF52]
+
 
 ### IPFS
 
