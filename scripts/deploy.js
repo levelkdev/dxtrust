@@ -1,4 +1,4 @@
-const deployDat = require('./deployDAT');
+const deployDAT = require('./deployDAT');
 const fs = require('fs');
 const Web3 = require('web3');
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
@@ -36,8 +36,8 @@ if (fs.existsSync('src/config/contracts.json'))
   contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
 const toDeploy = JSON.parse(fs.readFileSync('src/config/toDeploy.json', 'utf-8'));
 
-async function deployOrgs() {
-  const contracts = await deployDat(web3, toDeploy.DATinfo);
+async function main() {
+  const contracts = await deployDAT(web3, toDeploy.DATinfo);
   
   contractsDeployed.contracts[network] = {
     multicall: contracts.multicall.address,
@@ -52,4 +52,4 @@ async function deployOrgs() {
   console.log('===============================================');
 } 
 
-deployOrgs();
+Promise.all([main()]).then(process.exit);
