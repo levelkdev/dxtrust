@@ -1,6 +1,6 @@
 {
     "name": "BC-DAPP",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
         "start": "./scripts/start.sh",
