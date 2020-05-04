@@ -94,6 +94,13 @@ export default class BlockchainFetchStore {
                             method: 'totalSupply',
                             params: [],
                         });
+                        
+                        multicallService.addCall({
+                            contractType: ContractType.DecentralizedAutonomousTrust,
+                            address: activeDATAddress,
+                            method: 'burnedSupply',
+                            params: [],
+                        });
 
                         // Get user-specific blockchain data
                         if (account) {

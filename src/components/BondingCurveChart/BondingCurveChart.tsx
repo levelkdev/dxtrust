@@ -111,6 +111,8 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         activeDATAddress
     );
     const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
+    const burnedSupply = tokenStore.getBurnedSupply(activeDATAddress);
+
     const datState = datStore.getState(activeDATAddress);
     const reserveBalance: BigNumber = datStore.getReserveBalance(activeDATAddress);
     const isBuy = tradingStore.activeTab;
@@ -134,14 +136,12 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
             state: datState,
         });
 
-        
-
         if (initGoal && initGoal.gt(0)) {
             kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
-            }
+        }
     
-        totalSupplyWithoutPremint = totalSupplyWithPremint.minus(initReserve);
-        currentSellPrice = reserveBalance.times(2).div(totalSupplyWithPremint);
+        totalSupplyWithoutPremint = totalSupplyWithPremint.minus(initReserve).plus(burnedSupply);
+        currentSellPrice = reserveBalance.times(2).div(totalSupplyWithPremint.plus(burnedSupply));
         currentBuyPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
     }
 
@@ -590,7 +590,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                         <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
                         <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
-                                ? `${formatBalance(reserveBalance)} ETH`
+                                ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice))} ETH`
                                 : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
