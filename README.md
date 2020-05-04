@@ -74,24 +74,24 @@ The script will deploy everything with the configuration proposed in https://dao
 
 ## Governance
 
-The DAT contract has two types of ownerships, one is the Proxy ownership and another is Contract ownership.
+The DAT contract has two types of ownership. One is the Proxy Ownership and another is DAT Contract ownership.
 
-The proxy owner is called admin in the (openzeppelin contracts we use)[https://docs.openzeppelin.com/upgrades/2.8/proxies], we have to differentiate here form the ProxyAdmin contract and the proxy admin role. The ProxyAdmin contract is an Ownable contract that is owned by the DXdao, which means that the DXdao has control over all proxies administered by the ProxyAdmin contract, each proxy registered in the ProxyAdmin contract as admin address that can execute the upgrade functions.
+The proxy owner is called admin in the (openzeppelin contracts that are used here)[https://docs.openzeppelin.com/upgrades/2.8/proxies]. We have to differentiate here from the ProxyAdmin contract and the proxy admin role. The ProxyAdmin contract is an Ownable contract that is owned by the DXdao, meaning the DXdao has control of the ProxyAdmin contract and all proxies administered by the ProxyAdmin contract. Each proxy registered in the ProxyAdmin contract has an admin address that can execute the upgrade functions.
 
-The contract ownership would be the contract controller, there is a control address in the DAT contract that can execute the "owner" functions, such as updateConfig, where the configuration of the DAT can be changed. The controlller address is the DXdao.
+The DAT Contract ownership would be the contract controller, an address set in the DAT contract that can execute the "owner" functions, such as updateConfig, which updates the configuration of the DAT. The controlller address is the DXdao.
 
-Ownership when upgradeability functions are executed:
+Control flow for executing upgrade functions:
 ```
 DXdao -> ProxyAdmin -> DATProxy
 ```
-Ownserhip when the DAT is running normaly and functions like pay() or burn() are called by DXdao:
+Control flow when the DAT is running normally and functions like pay() or burn() are called by DXdao:
 ```
 DXdao -> DAT
 ```
 
 ### Kovan governance
 
-A kovan instance for DAT with the same parameters that will be used by the DAT in mainnet will be provided by developers that are maintaining this repository. The only difference is that instead of DXdao a multisignature wallet with 1 required confirmation integrated by developers will govern the kovan DAT.
+A kovan instance for the DAT with the parameters outlined in the proposal to the DXdao will be provided by developers that are maintaining this repository. The only difference is that instead of DXdao a multisignature wallet with 1 required confirmation integrated by developers will govern the kovan DAT.
 
 (Kovan Developers Multisig)[https://kovan.etherscan.io/address/0x0468eBA33b191C8A3C5eB5d62714fFFa155BCF52]
 
