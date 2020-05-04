@@ -47,7 +47,7 @@ const buySlopePointETH = buySlopePointUSD/pricePerETHUSD;
 const buySlope = parseFloat((2*buySlopePointETH) / (buySlopePointDXD*buySlopePointDXD)).toFixed(18);
 
 // Calculates the buy slope denominator from the slope
-const buySlopeDen = 1 / buySlope
+const buySlopeDen = parseFloat(1 / buySlope).toFixed()
 
 // Calculates init goal DXD from the initial goal ETH and the slope
 const initGoalDXD = Math.sqrt((2*initGoalETH)/buySlope);
