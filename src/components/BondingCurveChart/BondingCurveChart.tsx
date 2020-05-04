@@ -51,7 +51,7 @@ const ChartHeaderTopElement = styled.div`
 `;
 
 const ChartHeaderBottomElement = styled.div`
-    font-size: 18px;
+    font-size: 16px;
     margin-top: 10px;
     font-weight: 500;
     color: 1px solid var(--line-gray);
@@ -573,20 +573,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 </ChartBox>
                 <ChartBox>
                     <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>
-                            DXD Supply
-                        </ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            {requiredDataLoaded
-                                ? `${formatBalance(
-                                        totalSupplyWithoutPremint
-                                  )} DXD`
-                                : '- DXD'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
                         <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
                         <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
@@ -607,6 +593,20 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
+                <ChartBox>
+                    <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>
+                            Curve issuance
+                        </ChartHeaderTopElement>
+                        <ChartHeaderBottomElement>
+                            {requiredDataLoaded
+                                ? `${formatBalance(
+                                        totalSupplyWithoutPremint
+                                  )} DXD`
+                                : '- DXD'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
             </ChartHeaderWrapper>
         );
     };
@@ -615,14 +615,14 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         if(isBuy){
             return <PriceBottomElement isBuy={isBuy} >
             {requiredDataLoaded
-                ? `${formatNumberValue(currentBuyPrice)} DXD/ETH`
+                ? `${formatNumberValue(currentBuyPrice)} ETH`
                 : '- DXD/ETH'}
                     </PriceBottomElement>
         }
         else{
             return <PriceBottomElement isBuy={isBuy} >
             {requiredDataLoaded
-                ? `${formatNumberValue(currentSellPrice)} DXD/ETH`
+                ? `${formatNumberValue(currentSellPrice)} ETH`
                 : '- DXD/ETH'}
                     </PriceBottomElement>
         }
@@ -639,8 +639,18 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 </ChartBox>
                 <ChartBox>
                     <ChartHeaderFullElement>
+                        <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
+                        <ChartHeaderBottomElement>
+                            {requiredDataLoaded
+                                ? `${formatBalance(reserveBalance)} ETH`
+                                : '- ETH'}
+                        </ChartHeaderBottomElement>
+                    </ChartHeaderFullElement>
+                </ChartBox>
+                <ChartBox>
+                    <ChartHeaderFullElement>
                         <ChartHeaderTopElement>
-                            DXD Supply
+                            Curve issuance
                         </ChartHeaderTopElement>
                         <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
@@ -653,11 +663,11 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 </ChartBox>
                 <ChartBox>
                     <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
+                        <ChartHeaderTopElement>Total Supply</ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
-                                ? `${formatBalance(reserveBalance)} ETH`
-                                : '- ETH'}
+                                ? `${formatBalance(totalSupplyWithPremint)} DXD`
+                                : '- DXD'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
                 </ChartBox>
