@@ -6,10 +6,10 @@ The contract used is a modified version of the implementation provided by Fairmi
 Code from : https://github.com/Fairmint/c-org/blob/dfd3129f9bce8717406aba54d1f1888d8e253dbb/contracts/DecentralizedAutonomousTrust.sol
 Changes Added: https://github.com/Fairmint/c-org/commit/60bb63b9112a82996f275a75a87c28b1d73e3f11
 
-The bytecode hash of the contract is `05e44df6d1163a65876953cb9c8885c9ae5730555870773a4f814061f833b206`.
 The implementation deployed to be used for mainnet is in the `.openzeppelin/mainnet.json` file.
-The etherscan link to the verified implementation is https://etherscan.io/address/0x845856776D110a200Cf41f35C9428C938e72E604#code
-The bytecode hash can be verified by copying the bytecode in the input field here https://emn178.github.io/online-tools/sha256.html.
+The implementation deployed to be used for kovan is in the `.openzeppelin/kovan.json` file.
+
+The implementation contracts are verified in etherscan.
 
 ## Application
 
