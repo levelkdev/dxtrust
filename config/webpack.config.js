@@ -30,7 +30,7 @@ const postcssNormalize = require('postcss-normalize');
 const appPackageJson = require(paths.appPackageJson);
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const shouldUseSourceMap = false;
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
@@ -177,13 +177,13 @@ module.exports = function(webpackEnv) {
             // There will be one main bundle, and one file per asynchronous chunk.
             // In development, it does not produce real files.
             filename: isEnvProduction
-                ? 'static/js/[name].[contenthash:8].js'
+                ? 'static/js/[name].js'
                 : isEnvDevelopment && 'static/js/bundle.js',
             // TODO: remove this when upgrading to webpack 5
             futureEmitAssets: true,
             // There are also additional JS chunk files if you use code splitting.
             chunkFilename: isEnvProduction
-                ? 'static/js/[name].[contenthash:8].chunk.js'
+                ? 'static/js/[name].chunk.js'
                 : isEnvDevelopment && 'static/js/[name].chunk.js',
             // We inferred the "public path" (such as / or /my-project) from homepage.
             // We use "/" in development.
@@ -374,7 +374,7 @@ module.exports = function(webpackEnv) {
                             loader: require.resolve('url-loader'),
                             options: {
                                 limit: imageInlineSizeLimit,
-                                name: 'static/media/[name].[hash:8].[ext]',
+                                name: 'static/media/[name].[ext]',
                             },
                         },
                         // Process application JS with Babel.
@@ -526,7 +526,7 @@ module.exports = function(webpackEnv) {
                                 /\.json$/,
                             ],
                             options: {
-                                name: 'static/media/[name].[hash:8].[ext]',
+                                name: 'static/media/[name].[ext]',
                             },
                         },
                         // ** STOP ** Are you adding a new loader?
@@ -602,58 +602,16 @@ module.exports = function(webpackEnv) {
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional
-                    filename: 'static/css/[name].[contenthash:8].css',
+                    filename: 'static/css/[name].css',
                     chunkFilename:
-                        'static/css/[name].[contenthash:8].chunk.css',
+                        'static/css/[name].chunk.css',
                 }),
-            // Generate an asset manifest file with the following content:
-            // - "files" key: Mapping of all asset filenames to their corresponding
-            //   output file so that tools can pick it up without having to parse
-            //   `index.html`
-            // - "entrypoints" key: Array of files which are included in `index.html`,
-            //   can be used to reconstruct the HTML if necessary
-            new ManifestPlugin({
-                fileName: 'asset-manifest.json',
-                publicPath: publicPath,
-                generate: (seed, files, entrypoints) => {
-                    const manifestFiles = files.reduce((manifest, file) => {
-                        manifest[file.name] = file.path;
-                        return manifest;
-                    }, seed);
-                    const entrypointFiles = entrypoints.main.filter(
-                        fileName => !fileName.endsWith('.map')
-                    );
-
-                    return {
-                        files: manifestFiles,
-                        entrypoints: entrypointFiles,
-                    };
-                },
-            }),
             // Moment.js is an extremely popular library that bundles large locale files
             // by default due to how Webpack interprets its code. This is a practical
             // solution that requires the user to opt into importing specific locales.
             // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
             // You can remove this if you don't use Moment.js:
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-            // Generate a service worker script that will precache, and keep up to date,
-            // the HTML & assets that are part of the Webpack build.
-            isEnvProduction &&
-                new WorkboxWebpackPlugin.GenerateSW({
-                    clientsClaim: true,
-                    exclude: [/\.map$/, /asset-manifest\.json$/],
-                    importWorkboxFrom: 'cdn',
-                    navigateFallback: publicUrl + '/index.html',
-                    navigateFallbackBlacklist: [
-                        // Exclude URLs starting with /_, as they're likely an API call
-                        new RegExp('^/_'),
-                        // Exclude any URLs whose last part seems to be a file extension
-                        // as they're likely a resource and not a SPA route.
-                        // URLs containing a "?" character won't be blacklisted as they're likely
-                        // a route with query params (e.g. auth callbacks).
-                        new RegExp('/[^/?]+\\.[^/]+$'),
-                    ],
-                }),
             // TypeScript type checking
             useTypeScript &&
                 new ForkTsCheckerWebpackPlugin({
