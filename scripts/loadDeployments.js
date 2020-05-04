@@ -39,7 +39,7 @@ async function loadDeployment(network) {
       "initReserve": await datContract.methods.initReserve().call(),
       "initGoal": await datContract.methods.initGoal().call(),
       "buySlopeNum": await datContract.methods.buySlopeNum().call(),
-      "buySlopeDen": await datContract.methods.buySlopeNum().call(),
+      "buySlopeDen": await datContract.methods.buySlopeDen().call(),
       "investmentReserveBasisPoints": await datContract.methods.investmentReserveBasisPoints().call(),
       "revenueCommitmentBasisPoints": await datContract.methods.revenueCommitmentBasisPoints().call(),
       "minInvestment": await datContract.methods.minInvestment().call()
