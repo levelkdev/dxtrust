@@ -590,7 +590,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                         <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
                         <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
-                                ? `${formatBalance(reserveBalance)} ETH`
+                                ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice))} ETH`
                                 : '- ETH'}
                         </ChartHeaderBottomElement>
                     </ChartHeaderFullElement>
