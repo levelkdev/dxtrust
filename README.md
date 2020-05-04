@@ -131,3 +131,7 @@ npx oz deploy -n kovan --from ACCOUNT Multicall
 # It will ask the type of deployment you want to do and select the initialize function to use.
 npx oz verify DAT_ADDRESS --api-key ETHERSCAN_API_KEY --network kovan --remote etherscan --optimizer --optimizer-runs 200 DecentralizedAutonomousTrust
 ```
+
+## Code Verification
+
+We provide instructions to verify the smart contracts and dapp deployed in the [docs/CodeVerification.md](docs/CodeVerification.md)
