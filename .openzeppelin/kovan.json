@@ -488,7 +488,34 @@
     }
   },
   "solidityLibs": {},
-  "proxies": {},
+  "proxies": {
+    "BC-DAPP/DecentralizedAutonomousTrust": [
+      {
+        "address": "0xDd25BaE0659fC06a8d00CD06C7f5A98D71bfB715",
+        "version": "0.1.0",
+        "implementation": "0x05a28eE1EeeE05A5ab66E18c08C417860a607d81",
+        "admin": "0xFBD9B2773127Ea0A05509f16FD4AACC84F3b9829",
+        "kind": "Upgradeable"
+      }
+    ],
+    "BC-DAPP/Multicall": [
+      {
+        "address": "0xc58930e7d81E97D3B82B324eF59e8AfF4bD723BB",
+        "kind": "NonProxy",
+        "bytecodeHash": "daa7a021eecb7d6e3a847506aa7589e5a9bbdabd6fe91c538a1d9fb37b7fd577"
+      }
+    ],
+    "BC-DAPP/TokenVesting": [
+      {
+        "address": "0x26A20D2585fbFb8D33c766a0E19555A666D42128",
+        "kind": "NonProxy",
+        "bytecodeHash": "e4bee0a315de0cc8106ca7ec0db7b5f62da96a7d01a624818a748557f73764ff"
+      }
+    ]
+  },
   "manifestVersion": "2.2",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "proxyAdmin": {
+    "address": "0xFBD9B2773127Ea0A05509f16FD4AACC84F3b9829"
+  }
 }
