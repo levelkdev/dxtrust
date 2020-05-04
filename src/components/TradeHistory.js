@@ -101,7 +101,8 @@ const TradingHistory = observer(() => {
                 <TableHeader className="align-right">Time</TableHeader>
             </TableHeadersWrapper>
             <TableRowsWrapper>
-            {recentTrades.map((trade, i) => (
+            {recentTrades.map((trade, i) =>
+              (trade && trade.type) ? (
                 <TableRow key={"tradeRow"+i}>
                     <TableCell
                         width="15.5%"
@@ -133,8 +134,9 @@ const TradingHistory = observer(() => {
                             {trade.blockTime}
                         </a>
                     </TableCell>
-                </TableRow>
-            ))}
+                </TableRow>)
+              : (<div/>)
+            )}
             </TableRowsWrapper>
         </TradingHistoryWrapper>
     );
