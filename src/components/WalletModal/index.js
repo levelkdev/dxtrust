@@ -128,6 +128,7 @@ const WalletModal = observer(
         const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
         const [pendingWallet, setPendingWallet] = useState();
         const [pendingError, setPendingError] = useState();
+        const [connectionErrorMessage, setConnectionErrorMessage] = useState();
 
         const walletModalOpen = modalStore.walletModalVisible;
 
@@ -139,6 +140,7 @@ const WalletModal = observer(
         useEffect(() => {
             if (walletModalOpen) {
                 setPendingError(false);
+                setConnectionErrorMessage(false);
                 setWalletView(WALLET_VIEWS.ACCOUNT);
             }
         }, [walletModalOpen]);
@@ -147,7 +149,7 @@ const WalletModal = observer(
         const [uri, setUri] = useState()
         useEffect(() => {
           const activateWC = uri => {
-            console.log('uri',uri)
+            console.debug('uri',uri)
             setUri(uri)
             setWalletView(WALLET_VIEWS.PENDING)
           }
@@ -182,7 +184,8 @@ const WalletModal = observer(
             setPendingWallet(connector); // set wallet for pending view
             setWalletView(WALLET_VIEWS.PENDING);
             activate(connector, undefined, true).catch((e) => {
-                console.error('[Activation Error]', e);
+                setConnectionErrorMessage(e)
+                console.debug('[Activation Error]', e);
                 setPendingError(true);
             });
         };
@@ -274,19 +277,19 @@ const WalletModal = observer(
         }
 
         function getModalContent() {
-            if (error) {
+            if (connectionErrorMessage) {
                 return (
                     <UpperSection>
                         <CloseIcon onClick={toggleWalletModal}>
                             <CloseColor alt={'close icon'} />
                         </CloseIcon>
                         <HeaderRow>
-                            {error instanceof UnsupportedChainIdError
+                            {connectionErrorMessage.toString().indexOf('UnsupportedChainIdError') >= 0
                                 ? 'Wrong Network'
                                 : 'Error connecting'}
                         </HeaderRow>
                         <ContentWrapper>
-                            {error instanceof UnsupportedChainIdError ? (
+                            {connectionErrorMessage.toString().indexOf('UnsupportedChainIdError') >= 0 ? (
                                 <h5>
                                     Please connect to the main Ethereum network.
                                 </h5>
@@ -316,7 +319,6 @@ const WalletModal = observer(
                     </UpperSection>
                 );
             }
-            console.log(account, walletView === WALLET_VIEWS.ACCOUNT)
             if (account && walletView === WALLET_VIEWS.ACCOUNT) {
                 return (
                     <AccountDetails

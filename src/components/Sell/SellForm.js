@@ -1,7 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import ActiveButton from '../common/ActiveButton';
-import InactiveButton from '../common/InactiveButton';
 import SellInput from '../Sell/SellInput';
 import SellSign from '../Sell/SellSign';
 import SellUnconfirmed from '../Sell/SellUnconfirmed';
@@ -17,23 +15,13 @@ const ContentStates = {
     FAILED: 'failed'
 };
 
-const SellForm = observer((props) => {
+const SellForm = observer(() => {
     const {
         root: { tradingStore },
     } = useStores();
 
-    const infotext = 'Receive Amount';
     const count = tradingStore.sellingState;
 
-    const Button = ({ active, children, onClick }) => {
-        if (active === true) {
-            return (
-                <ActiveButton onClick={onClick}>{children}</ActiveButton>
-            );
-        } else {
-            return <InactiveButton>{children}</InactiveButton>;
-        }
-    };
 
     const Content = ({ contentCount }) => {
         let contentState;

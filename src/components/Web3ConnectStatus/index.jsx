@@ -118,7 +118,7 @@ const Web3ConnectStatus = observer((props) => {
     }
 
     function getWeb3Status() {
-        console.log('[GetWeb3Status]', {
+        console.debug('[GetWeb3Status]', {
             account,
             chainId: chainId,
             error,

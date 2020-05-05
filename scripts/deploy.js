@@ -1,7 +1,6 @@
-const deployDat = require("./deployDAT");
-const fs = require("fs");
-const Web3 = require("web3");
-const BN = require("bignumber.js");
+const deployDAT = require('./deployDAT');
+const fs = require('fs');
+const Web3 = require('web3');
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const args = process.argv;
@@ -11,7 +10,7 @@ const zeroAddress = '0x0000000000000000000000000000000000000000';
 // Get network to use from arguments
 let network, mnemonic, httpProviderUrl, web3;
 for (var i = 0; i < args.length; i++) {
-  if (args[i] == "--network")
+  if (args[i] == '--network')
     network = args[i+1];
 }
 if (!network) throw('Not network selected, --network parameter missing');
@@ -32,29 +31,25 @@ web3 = new Web3(provider)
 ZWeb3.initialize(web3.currentProvider);
 
 // Get configuration file
-const contractsDeployed = JSON.parse(fs.readFileSync("src/config/contracts.json", "utf-8"));
-const toDeploy = JSON.parse(fs.readFileSync("src/config/toDeploy.json", "utf-8"));
-const addresses = toDeploy.addresses || {};
+let contractsDeployed = {'contracts': {}};
+if (fs.existsSync('src/config/contracts.json'))
+  contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
+const toDeploy = JSON.parse(fs.readFileSync('src/config/toDeploy.json', 'utf-8'));
 
-async function deployOrgs() {
-  const accounts = await web3.eth.getAccounts();
-  console.log('Accounts:',accounts);
-  const DATInfo = toDeploy.DATinfo;
-  let collateralToken = zeroAddress;
-
-  const contracts = await deployDat( web3, DATInfo);
+async function main() {
+  const contracts = await deployDAT(web3, toDeploy.DATinfo);
   
-  let newContractsDeployed = contractsDeployed;
-  toDeploy.DATinfo.implementationAddress = contracts.dat.implementation;
-  newContractsDeployed.contracts[network] = {
+  contractsDeployed.contracts[network] = {
+    multicall: contracts.multicall.address,
     DAT: contracts.dat.address,
     collateral: zeroAddress,
-    DATinfo: toDeploy.DATinfo
+    DATinfo: toDeploy.DATinfo,
+    implementationAddress: contracts.dat.implementation,
   };
+  
   console.log('File contracts.json in src/config updated for network '+network);
-  fs.writeFileSync('src/config/contracts.json', JSON.stringify(newContractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
-
-  return;
+  fs.writeFileSync('src/config/contracts.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
+  console.log('===============================================');
 } 
 
-deployOrgs();
+Promise.all([main()]).then(process.exit);

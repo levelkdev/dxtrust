@@ -59,41 +59,41 @@ export const sendAction = (params: ActionRequest): PromiEvent<any> => {
             .send({ from: sender, ...overrides })
             .once('transactionHash', (hash) => {
                 promiEvent.emit(TXEvents.TX_HASH, hash);
-                console.log(TXEvents.TX_HASH, hash);
+                console.debug(TXEvents.TX_HASH, hash);
             })
             .once('receipt', (receipt) => {
                 promiEvent.emit(TXEvents.RECEIPT, receipt);
-                console.log(TXEvents.RECEIPT, receipt);
+                console.debug(TXEvents.RECEIPT, receipt);
             })
             .once('confirmation', (confNumber, receipt) => {
                 promiEvent.emit(TXEvents.CONFIRMATION, {
                     confNumber,
                     receipt,
                 });
-                console.log(TXEvents.CONFIRMATION, {
+                console.debug(TXEvents.CONFIRMATION, {
                     confNumber,
                     receipt,
                 });
             })
             .on('error', (error) => {
-                console.log(error.code);
+                console.debug(error.code);
                 if (error.code && isKnownErrorCode(error.code)) {
                     promiEvent.emit(
                         TXEvents.TX_ERROR,
                         getErrorByCode(error.code)
                     );
-                    console.log(TXEvents.TX_ERROR, getErrorByCode(error.code));
+                    console.debug(TXEvents.TX_ERROR, getErrorByCode(error.code));
                 } else {
                     promiEvent.emit(TXEvents.INVARIANT, error);
-                    console.log(TXEvents.INVARIANT, error);
+                    console.debug(TXEvents.INVARIANT, error);
                 }
             })
             .then((receipt) => {
                 promiEvent.emit(TXEvents.FINALLY, receipt);
-                console.log(TXEvents.FINALLY, receipt);
+                console.debug(TXEvents.FINALLY, receipt);
             })
             .catch((e) => {
-                console.log('rejected, e');
+                console.debug('rejected, e');
             });
     });
 

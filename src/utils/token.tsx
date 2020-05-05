@@ -20,14 +20,15 @@ export const normalizeBalance = (
 export const formatNumberValue = (
     normalizedBalance: BigNumber,
     displayPrecision: number = 4,
-    truncateAt?: number
+    truncateAt?: number,
+    roundDown: boolean = true
 ): string => {
     if (normalizedBalance.eq(0)) {
         return bnum(0).toFixed(displayPrecision);
     }
 
     let result = bnum(normalizedBalance)
-        .decimalPlaces(displayPrecision, BigNumber.ROUND_DOWN)
+        .decimalPlaces(displayPrecision, roundDown ? BigNumber.ROUND_DOWN : BigNumber.ROUND_UP)
         .toString();
 
     result = padToDecimalPlaces(result, displayPrecision);
@@ -42,14 +43,15 @@ export const formatNumberValue = (
 export const formatBalance = (
     balance: BigNumber,
     decimals: number = 18,
-    precision: number = 4
+    precision: number = 4,
+    roundDown: boolean = true
 ): string => {
     if (balance.eq(0)) {
         return bnum(0).toFixed(precision);
     }
 
     const result = scale(balance, -decimals)
-        .decimalPlaces(precision, BigNumber.ROUND_DOWN)
+        .decimalPlaces(precision, roundDown ? BigNumber.ROUND_DOWN : BigNumber.ROUND_UP)
         .toString();
 
     return padToDecimalPlaces(result, precision);

@@ -4,12 +4,13 @@ import { ethers } from 'ethers';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import UncheckedJsonRpcSigner from 'provider/UncheckedJsonRpcSigner';
 import { sendAction } from './actions/actions';
-import { supportedChainId, web3ContextNames } from '../provider/connectors';
+import { isChainIdSupported, web3ContextNames } from '../provider/connectors';
 import PromiEvent from 'promievent';
 import { TXEvents } from '../types';
 import moment from 'moment';
+import { schema } from '../services/ABIService';
 
-export enum ContractTypes {
+export enum ContractType {
     ERC20 = 'ERC20',
     BondedToken = 'BondedToken',
     BondingCurve = 'BondingCurve',
@@ -17,18 +18,8 @@ export enum ContractTypes {
     RewardsDistributor = 'RewardsDistributor',
     StaticCurveLogic = 'StaticCurveLogic',
     DecentralizedAutonomousTrust = 'DecentralizedAutonomousTrust',
+    Multicall = 'Multicall'
 }
-
-export const schema = {
-    ERC20: require('../contracts/ERC20').abi,
-    BondedToken: require('../contracts/ERC20').abi,
-    BondingCurve: require('../contracts/ERC20').abi,
-    BondingCurveEther: require('../contracts/ERC20').abi,
-    RewardsDistributor: require('../contracts/ERC20').abi,
-    StaticCurveLogic: require('../contracts/ERC20').abi,
-    DecentralizedAutonomousTrust: require('../contracts/DecentralizedAutonomousTrust')
-        .abi,
-};
 
 export interface ChainData {
     currentBlockNumber: number;
@@ -115,7 +106,7 @@ export default class ProviderStore {
 
     getContract(
         web3React: Web3ReactContextInterface,
-        type: ContractTypes,
+        type: ContractType,
         address: string,
         signerAccount?: string
     ): ethers.Contract {
@@ -150,10 +141,14 @@ export default class ProviderStore {
         const contextBackup = this.web3Contexts[web3ContextNames.backup];
         const contextInjected = this.web3Contexts[web3ContextNames.injected];
 
-        return contextInjected.active &&
-            contextInjected.chainId === supportedChainId
+        return contextInjected && contextInjected.active &&
+            isChainIdSupported(contextInjected.chainId)
             ? contextInjected
             : contextBackup;
+    }
+
+    getBackupWeb3React(): Web3ReactContextInterface {
+        return this.web3Contexts[web3ContextNames.backup];;
     }
 
     getWeb3React(name): Web3ReactContextInterface {
@@ -170,7 +165,7 @@ export default class ProviderStore {
 
     @action sendTransaction = (
         web3React: Web3ReactContextInterface,
-        contractType: ContractTypes,
+        contractType: ContractType,
         contractAddress: string,
         action: string,
         params: any[],
@@ -203,7 +198,6 @@ export default class ProviderStore {
             data: params,
             overrides,
         }).on(TXEvents.TX_HASH, (hash) => {
-            console.log('tracking transaction', hash);
             transactionStore.addTransactionRecord(account, hash);
         });
 

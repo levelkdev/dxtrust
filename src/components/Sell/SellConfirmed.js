@@ -5,7 +5,7 @@ import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
 import store from '../../stores/Root';
 import { useStores } from '../../contexts/storesContext';
-import { formatBalance } from '../../utils/token';
+import { formatBalance, formatNumberValue } from '../../utils/token';
 
 const FormWrapper = styled.div`
     padding-top: 24px;
@@ -53,10 +53,9 @@ const SellConfirmed = observer((props) => {
         root: { datStore, tradingStore, configStore },
     } = useStores();
 
-    const price = tradingStore.formatSellPrice();
-    const rewardForSell = tradingStore.rewardForSell;
-    const sellAmount = tradingStore.formatSellAmount();
-    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+
+    const {sellPrice, rewardForSell, sellAmount} = tradingStore.previousSell;
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -75,7 +74,7 @@ const SellConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {formatNumberValue(sellPrice)} {configStore.getCollateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
@@ -86,7 +85,7 @@ const SellConfirmed = observer((props) => {
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Sell Amount</FormInfoText>
-                <div>{sellAmount} DXD</div>
+                <div>{formatBalance(sellAmount)} DXD</div>
             </InfoRow>
             <Confirmed>
                 Confirmed

@@ -21,15 +21,29 @@ export enum TransactionState {
     FAILED
 }
 
+interface Buy {
+    buyAmount: BigNumber;
+    buyPrice: BigNumber;
+    payAmount: BigNumber;
+}
+
+interface Sell {
+    sellAmount: BigNumber;
+    sellPrice: BigNumber;
+    rewardForSell: BigNumber;
+}
+
 class TradingFormStore {
+    @observable activeTab = true;
+    @observable previousBuy: Buy;
+    @observable previousSell: Sell;
     @observable reserveBalance = '';
-    @observable price: BigNumber = bnum(0);
+    @observable buyPrice: BigNumber = bnum(0);
     @observable sellPrice: BigNumber = bnum(0);
 
     @observable enableTKNState = 4;
     @observable buyingState = TransactionState.NONE;
     @observable buyAmount = '';
-    @observable priceToBuy: BigNumber = bnum(0);
 
     @observable enableDXDState = TransactionState.NONE;
     @observable sellingState = TransactionState.NONE;
@@ -50,6 +64,12 @@ class TradingFormStore {
         this.rootStore = rootStore;
     }
 
+    @action resetTransactionStates() {
+        this.buyingState = TransactionState.NONE;
+        this.sellingState = TransactionState.NONE;
+        this.enableDXDState = TransactionState.NONE;
+    }
+
     setPayAmount(amount: BigNumber) {
         this.payAmount = amount;
     }
@@ -63,12 +83,37 @@ class TradingFormStore {
     }
 
     // setPrice()
-    setPrice(price: BigNumber) {
-        this.price = price;
+    setBuyPrice(price: BigNumber) {
+        this.buyPrice = price;
     }
 
     setSellPrice(price: BigNumber) {
         this.sellPrice = price;
+    }
+
+    @action switchActiveTab(){
+        this.activeTab = !this.activeTab;
+    }
+
+    @action setPreviousBuy(buy: Buy) {
+        this.previousBuy = buy;
+    }
+
+    @action setPreviousSell(sell: Sell) {
+        this.previousSell = sell;
+    }
+
+    isDataLoaded(account: string): boolean {
+        const {tokenStore, configStore} = this.rootStore;
+        const allowance = tokenStore.getAllowance(configStore.getDXDTokenAddress(), account, configStore.getDXDTokenAddress());
+        const collateralBalance = tokenStore.getEtherBalance(account);
+        const dxdBalance = tokenStore.getBalance(configStore.getDXDTokenAddress(), account);
+
+        if (!!allowance && !!collateralBalance && !!dxdBalance) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     handleBuyReturn(buyReturn: BuyReturnCached) {
@@ -78,7 +123,7 @@ class TradingFormStore {
             this.rootStore.providerStore.isFresh(buyReturn.blockNumber) &&
             inputValueFresh
         ) {
-            this.setPrice(buyReturn.value.pricePerToken);
+            this.setBuyPrice(buyReturn.value.pricePerToken);
             this.setPayAmount(buyReturn.value.tokensIssued);
         }
     }
@@ -102,9 +147,12 @@ class TradingFormStore {
     @action resetBuyForm() {
         this.resetBuyAmount();
         this.buyingState = TransactionState.NONE;
-        this.price = bnum(0);
-        this.priceToBuy = bnum(0);
+        this.buyPrice = bnum(0);
         this.payAmount = bnum(0);
+    }
+
+    @action setEnableDXDState(newState) {
+        this.enableDXDState = newState;
     }
 
     @action resetSellForm() {
@@ -127,16 +175,12 @@ class TradingFormStore {
         return Number(number).toFixed(4);
     }
 
-    formatPrice() {
-        return this.formatNumber(this.price);
+    formatBuyPrice() {
+        return this.formatNumber(this.buyPrice);
     }
 
     formatSellPrice() {
         return this.formatNumber(this.sellPrice);
-    }
-
-    formatPriceToBuy() {
-        return this.formatNumber(this.priceToBuy);
     }
 
     formatRewardForSell() {

@@ -1,9 +1,8 @@
-
 const HDWalletProvider = require('truffle-hdwallet-provider')	
-const fs = require('fs')	
+require('dotenv').config();
 
-mnemonic = process.env.BCAPP_KEY_MNEMONIC;
-infuraApiKey = process.env.BCAPP_KEY_INFURA_API_KEY;
+mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
+infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
 
 module.exports = {	
   networks: {	
@@ -42,7 +41,7 @@ module.exports = {
         return new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/${infuraApiKey}`)	
       },	
       network_id: '3',	
-      gas: 9000000,	
+      gas: 8000000,	
       gasPrice: 10000000000 //10 Gwei	
     },	
     kovan: {	
@@ -57,13 +56,16 @@ module.exports = {
   build: {},	
   compilers: {	
     solc: {	
-      version: '0.5.16'	
-    }	
+      version: '0.5.17',
+      settings: {
+        evmVersion: 'constantinople',
+      }
+    }
   },	
   solc: {	
     optimizer: {	
       enabled: true,	
-      runs: 10000	
-    }	
+      runs: 200	
+    }
   },	
 }

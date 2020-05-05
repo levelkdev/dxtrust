@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import BuyForm from './Buy/BuyForm';
-import EnableContinue from './common/EnableContinue';
-import Enable from './common/Enable';
-import EnablePending from './common/EnablePending';
+import EnableForm from './Enable/EnableForm';
 import SellForm from './Sell/SellForm';
 import SellDisconnected from './Sell/SellDisconnected';
 import { useStores } from '../contexts/storesContext';
-import { DatState } from '../stores/datStore';
 import BalanceInfo from './BalanceInfo';
 import BuySellTabs from './BuySellTabs';
+import { TransactionState } from 'stores/TradingForm';
 
 const BuySellWrapper = styled.div`
     display: flex;
@@ -35,54 +33,19 @@ const BuySell = observer(() => {
     } = useStores();
 
     const { account } = providerStore.getActiveWeb3React();
-    const [currentTab, setCurrentTab] = useState(0);
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
+    let isBuy = tradingStore.activeTab;
 
-    const CurrentForm = ({ currentTab, incrementTKN, incrementDXD }) => {
-        if (currentTab === 0) {
-            if (incrementTKN === 0) {
-                return <Enable tokenType="TKN" />;
-            } else if (incrementTKN === 1) {
-                return (
-                    <EnablePending
-                        tokenType="TKN"
-                        subtitleText="Sign Transaction..."
-                    />
-                );
-            } else if (incrementTKN === 2) {
-                return (
-                    <EnablePending
-                        tokenType="TKN"
-                        subtitleText="Awaiting Confirmation..."
-                    />
-                );
-            } else if (incrementTKN === 3) {
-                return <EnableContinue tokenType="TKN" />;
-            } else {
+    const CurrentForm = ({isBuy}) => {
+        if (isBuy) {
                 return <BuyForm />;
-            }
         } else {
+
             if (!account) {
                 return <SellDisconnected />;
-            } else if (incrementDXD === 0) {
-                return <Enable tokenType="DXD" />;
-            } else if (incrementDXD === 1) {
-                return (
-                    <EnablePending
-                        tokenType="DXD"
-                        subtitleText="Sign Transaction..."
-                    />
-                );
-            } else if (incrementDXD === 2) {
-                return (
-                    <EnablePending
-                        tokenType="DXD"
-                        subtitleText="Awaiting Confirmation..."
-                    />
-                );
-            } else if (incrementDXD === 3) {
-                return <EnableContinue tokenType="DXD" />;
+            } else if (tradingStore.enableDXDState !== TransactionState.APPROVED) {
+                return <EnableForm />;
             } else {
                 return <SellForm />;
             }
@@ -91,11 +54,11 @@ const BuySell = observer(() => {
 
     return (
         <BuySellWrapper>
-            <BuySellTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
+            <BuySellTabs isBuy={isBuy} />
             <ContentWrapper>
                 <BalanceInfo />
                 <CurrentForm
-                    currentTab={currentTab}
+                    isBuy={isBuy}
                     incrementTKN={incrementTKN}
                     incrementDXD={incrementDXD}
                 />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+     import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import { useStores } from '../contexts/storesContext';
@@ -26,24 +26,22 @@ const InactiveTab = styled.div`
     border-left: ${(props) =>
         props.left ? '1px solid var(--medium-gray)' : 'none'};
     border-bottom: 1px solid var(--medium-gray);
-    border-radius: 0px 4px 0px 0px;
+    border-radius: ${(props) => 
+        props.left ? '0px 4px 0px 0px' : '4px 0px 0px 0px'};
     padding: 15px 0px;
     cursor: pointer;
 `;
 
-const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
+const BuySellTabs = observer(() => {
     const {
-        root: { configStore, datStore },
+        root: { configStore, datStore, tradingStore },
     } = useStores();
-	const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
-
-    const TabButton = ({ currentTab, tabType, left, children }) => {
-        if (currentTab === tabType) {
+    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    let isBuy = tradingStore.activeTab;
+    const TabButton = ({isActive, left, children }) => {
+        if (isActive) {
             return (
                 <ActiveTab
-                    onClick={() => {
-                        setCurrentTab(tabType);
-                    }}
                     left={left}
                 >
                     {children}
@@ -53,7 +51,7 @@ const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
             return (
                 <InactiveTab
                     onClick={() => {
-                        setCurrentTab(tabType);
+                        tradingStore.switchActiveTab();
                     }}
                     left={left}
                 >
@@ -65,10 +63,10 @@ const BuySellTabs = observer(({currentTab, setCurrentTab}) => {
 
 	return(
         <TabWrapper>
-            <TabButton currentTab={currentTab} tabType={0}>
+            <TabButton isActive={isBuy}>
                 Buy
             </TabButton>
-            <TabButton currentTab={currentTab} tabType={1} left={true}>
+            <TabButton isActive={!isBuy} left={true}>
                 {sellText}
             </TabButton>
         </TabWrapper>

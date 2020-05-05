@@ -89,7 +89,7 @@ const SellInput = observer((props) => {
     const price = (sellInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
     const rewardForSell = (sellInputStatus == "") ? bnum(0) : tradingStore.rewardForSell;
     let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
-    const sellText = datStore.isInitPhase(configStore.activeDatAddress) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
@@ -110,7 +110,7 @@ const SellInput = observer((props) => {
         if (sellInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
             const sellReturn = await datStore.fetchSellReturn(
-              configStore.activeDatAddress,
+              configStore.getDXDTokenAddress(),
               denormalizeBalance(value)
             );
             tradingStore.handleSellReturn(sellReturn);
@@ -181,7 +181,7 @@ const SellInput = observer((props) => {
                     // TODO What should last argument be set to?  (the minCurrencyReturned) 
                     datStore
                         .sell(
-                            configStore.activeDatAddress,
+                            configStore.getDXDTokenAddress(),
                             account,
                             denormalizeBalance(str(tradingStore.sellAmount)),
                             bnum(1)
@@ -191,6 +191,11 @@ const SellInput = observer((props) => {
                                 TransactionState.UNCONFIRMED;
                         })
                         .on(TXEvents.RECEIPT, (receipt) => {
+                            tradingStore.setPreviousSell({
+                                sellPrice: bnum(price),
+                                sellAmount: denormalizeBalance(tradingStore.sellAmount),
+                                rewardForSell: tradingStore.rewardForSell
+                            })
                             tradingStore.sellingState =
                                 TransactionState.CONFIRMED;
                         })

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-fs.readdir('build/contracts', function (err, files) {
+fs.readdir('contracts/build', function (err, files) {
     if (err)
       throw('No contracts compiled in build')
     
@@ -10,8 +10,14 @@ fs.readdir('build/contracts', function (err, files) {
 
     files.forEach(function (file) {
         const contractABI = {
-          abi: JSON.parse(fs.readFileSync('build/contracts/'+file)).abi
+          abi: JSON.parse(fs.readFileSync('contracts/build/'+file)).abi
         };
-        fs.writeFileSync('src/contracts/'+file, JSON.stringify(contractABI), null, 2);
+        const files = [
+          'DecentralizedAutonomousTrust.json',
+          'Multicall.json',
+          'ERC20.json'
+        ];
+        if (files.indexOf(file) >= 0)
+          fs.writeFileSync('src/contracts/'+file, JSON.stringify(contractABI), null, 2);
     });
 });

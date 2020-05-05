@@ -1,8 +1,12 @@
 {
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-  "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
     "prettier": true,
-    "interface-name": false
+    "interface-name": false,
+    "no-console": false,
+    "no-shadowed-variable": false
+    "one-variable-per-declaration": false,
+    "no-string-literal": false,
+    "no-shadowed-variable": false
   }
 }

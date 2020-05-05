@@ -374,17 +374,6 @@ export default function AccountDetails(props: Props) {
                     )}
                 </AccountSection>
             </UpperSection>
-            {hasTx ? (
-                <LowerSection>
-                    <h5>Recent Transactions</h5>
-                    {renderTransactions(pendingTransactions, true)}
-                    {renderTransactions(confirmedTransactions, false)}
-                </LowerSection>
-            ) : (
-                <LowerSection>
-                    <h5>Your transactions will appear here...</h5>
-                </LowerSection>
-            )}
         </>
     );
 }
