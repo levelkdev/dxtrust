@@ -18,6 +18,7 @@ import { pointTooltips } from './pointTooltips';
 import { cssVar } from 'polished';
 import { ThumbsDown } from 'react-feather';
 import { observable } from 'mobx';
+import { DatState } from '../../stores/datStore';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -113,14 +114,14 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
     const burnedSupply = tokenStore.getBurnedSupply(activeDATAddress);
 
-    const datState = datStore.getState(activeDATAddress);
+    const currrentDatState = datStore.getState(activeDATAddress);
     const reserveBalance: BigNumber = datStore.getReserveBalance(activeDATAddress);
     const isBuy = tradingStore.activeTab;
 
     const requiredDataLoaded =
         staticParamsLoaded &&
         !!totalSupplyWithPremint &&
-        datState !== undefined &&
+        currrentDatState !== undefined &&
         !!reserveBalance;
 
     if (requiredDataLoaded) {
@@ -133,7 +134,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
             buySlopeDen,
             initGoal,
             initReserve,
-            state: datState,
+            state: currrentDatState,
         });
 
         if (initGoal && initGoal.gt(0)) {
@@ -453,10 +454,17 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                         }
 
                         if (pointId === PointLabels.CURRENT_SUPPLY) {
-                            const fundedText = requiredDataLoaded
-                                ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH`
-                                : '- ETH';
-                            return `Currently ${fundedText} Funded`;
+                            let currentSupplyText;
+                            if (currrentDatState == DatState.STATE_INIT) {
+                                currentSupplyText = requiredDataLoaded
+                                    ? `Currently ${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH invested`
+                                    : 'Currently - ETH invested';
+                            } else {
+                                currentSupplyText = requiredDataLoaded
+                                    ? `Current DXD issuance is ${formatBalance(totalSupplyWithoutPremint)}`
+                                    : 'Current DXD issuance is -';
+                            }
+                            return currentSupplyText;
                         } else if (pointId === PointLabels.KICKSTARTER_END) {
                             const kickstarterGoalText = requiredDataLoaded
                                 ? `${formatBalance(
@@ -596,7 +604,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 <ChartBox>
                     <ChartHeaderFullElement>
                         <ChartHeaderTopElement>
-                            Curve issuance
+                            Curve Issuance
                         </ChartHeaderTopElement>
                         <ChartHeaderBottomElement>
                             {requiredDataLoaded
@@ -650,7 +658,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 <ChartBox>
                     <ChartHeaderFullElement>
                         <ChartHeaderTopElement>
-                            Curve issuance
+                            Curve Issuance
                         </ChartHeaderTopElement>
                         <ChartHeaderBottomElement className="green-text">
                             {requiredDataLoaded
