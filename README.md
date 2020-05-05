@@ -134,4 +134,4 @@ npx oz verify DAT_ADDRESS --api-key ETHERSCAN_API_KEY --network kovan --remote e
 
 ## Code Verification
 
-We provide instructions to verify the smart contracts and dapp deployed in the [docs/CodeVerification.md](docs/CodeVerification.md)
+We provide instructions to verify the smart contracts and dapp deployed in the [docs/VerificationInstructions.md](docs/VerificationInstructions.md)
