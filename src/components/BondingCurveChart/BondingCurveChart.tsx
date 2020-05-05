@@ -454,7 +454,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
 
                         if (pointId === PointLabels.CURRENT_SUPPLY) {
                             const fundedText = requiredDataLoaded
-                                ? `${formatBalance(reserveBalance)} ETH`
+                                ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH`
                                 : '- ETH';
                             return `Currently ${fundedText} Funded`;
                         } else if (pointId === PointLabels.KICKSTARTER_END) {
