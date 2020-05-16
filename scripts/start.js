@@ -32,15 +32,6 @@ const createDevServerConfig = require('../config/webpackDevServer.config');
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
-var web3reactFileToEdit = fs.readFileSync('node_modules/@web3-react/core/dist/core.esm.js', 'utf8');
-
-// Patch web3 react module to use network id 66 when is in development
-web3reactFileToEdit = web3reactFileToEdit.replace(
-  "!!Number.isNaN(parsedChainId) ? process.env.NODE_ENV !== \"production\" ? invariant(false, \"chainId \" + chainId + \" is not an integer\") : invariant(false) : void 0;",
-  "!!Number.isNaN(parsedChainId) ? process.env.NODE_ENV !== \"production\" ? parsedChainId = 66 : invariant(false) : void 0;");
-
-fs.writeFileSync('node_modules/@web3-react/core/dist/core.esm.js', web3reactFileToEdit, 'utf8')
-
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
     process.exit(1);
