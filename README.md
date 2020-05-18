@@ -1,6 +1,6 @@
 # Landing-Page
 
-This is the **Landing page** of the [DXdao](https://dxdao.daostack.io/).
+This is the **Landing page** of the [DXdao](dxdao.eth.link).
 
 ## Technical Description
 
