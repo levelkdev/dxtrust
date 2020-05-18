@@ -365,6 +365,7 @@ const LandingPage = () => {
                                 ecosystem with privacy, security, and a good
                                 user experience as core features.
                             </ProductDescription>
+
                         </ProductPanel>
                     </ProductClickable>
                     <ProductClickable
@@ -396,6 +397,21 @@ const LandingPage = () => {
                                 Mesa is an Open Source interface for the Gnosis
                                 Protocol, a fully permissionless DEX that
                                 enables ring trades to maximize liquidity.
+                            </ProductDescription>
+                        </ProductPanel>
+                    </ProductClickable>
+                    <ProductClickable
+                        href="https://mesa.eth.link"
+                        target="_blank"
+                    >
+                        <ProductPanel>
+                            <ProductNameWrapper>
+                                <ProductLogo src="Dxswap.svg" />
+                                <ProductName>Dxswap.eth</ProductName>
+                            </ProductNameWrapper>
+                            <ProductDescription>
+                                Dxswap is a protocol for exchanging ERC-20 
+                                tokens.
                             </ProductDescription>
                         </ProductPanel>
                     </ProductClickable>
