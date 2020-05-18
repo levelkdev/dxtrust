@@ -1,4 +1,4 @@
-# BC-DAPP
+# Landing-Page
 
 The **Bonding Curve Decentralized Application** will be used to raise funds to support the development of decentralized finance focused applications governed and maintained by the [DXdao](https://dxdao.daostack.io/).
 
