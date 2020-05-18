@@ -147,8 +147,8 @@ const ProductPanel = styled.div`
     border: 1px solid rgba(51, 51, 51, 0.2);
     border-radius: 3px;
     margin: 0px 10px;
-    height: 187px;
-    width: 233px;
+    height: 198px;
+    width: 456px;
     padding: 32px;
     &:hover {
         border: 1px solid var(--lp-border-color-onHover);
@@ -246,6 +246,7 @@ const JoinActionWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 32px;
+    
 `;
 
 const JoinAction = styled.a`
@@ -280,21 +281,37 @@ const NewsLetterWrapper = styled.div`
     border: 1px solid rgba(51, 51, 51, 0.2);
     box-sizing: border-box;
     border-radius: 4px;
+
+    width: 284px;
+    height: 40px;
+    left: 1579px;
+    top: 2436px;
 `;
 
-const NewsLetterArrowWrapper = styled.div``;
+const NewsLetterArrowWrapper = styled.div`
+    width: 46px;
+    height: 40px;
+    left: 817px;
+    top: 2436px;
+    border: 1px solid #D6D6D6;
+    box-sizing: border-box;
+    border-radius: 4px;
+`;
 
 const NewsLetterText = styled.div`
     font-size: 14px;
+    color: #D6D6D6;
     line-height: 18px;
     display: flex;
     align-items: center;
-    color: #999999;
 `;
 
 const NewsLetterArrow = styled.img`
     margin-left: 12px;
-    background: #D6D6D6;
+    width: 24px;
+    height: 24px;
+    left: 852px;
+    top: 2468px;
 `;
 
 const LandingPage = () => {
@@ -516,9 +533,11 @@ const LandingPage = () => {
 
                         <NewsLetterWrapper>
                             <NewsLetterText>Sign up for our newsletter</NewsLetterText>
+                            
                             <NewsLetterArrowWrapper>
-                                <NewsLetterArrow src="RightArrow.svg" />
+                                <NewsLetterArrow src="RightGreyArrow.svg" />
                             </NewsLetterArrowWrapper>
+                            
                         </NewsLetterWrapper>
 
 
