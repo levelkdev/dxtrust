@@ -276,6 +276,27 @@ const JoinActionArrow = styled.img`
     margin-left: 12px;
 `;
 
+const NewsLetterWrapper = styled.div`
+    border: 1px solid rgba(51, 51, 51, 0.2);
+    box-sizing: border-box;
+    border-radius: 4px;
+`;
+
+const NewsLetterArrowWrapper = styled.div``;
+
+const NewsLetterText = styled.div`
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #999999;
+`;
+
+const NewsLetterArrow = styled.img`
+    margin-left: 12px;
+    background: #D6D6D6;
+`;
+
 const LandingPage = () => {
     const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
@@ -487,6 +508,22 @@ const LandingPage = () => {
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
+
+                    <JoinAction
+                        href="https://"
+                        target="_blank"
+                    >
+
+                        <NewsLetterWrapper>
+                            <NewsLetterText>Sign up for our newsletter</NewsLetterText>
+                            <NewsLetterArrowWrapper>
+                                <NewsLetterArrow src="RightArrow.svg" />
+                            </NewsLetterArrowWrapper>
+                        </NewsLetterWrapper>
+
+
+                    </JoinAction>
+
                 </JoinActionWrapper>
             </JoinSection>
         </LandingPageWrapper>
