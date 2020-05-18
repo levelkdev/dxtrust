@@ -185,7 +185,6 @@ const ProductDescription = styled.div`
     margin-top: 32px;
     color: var(--light-body-text);
 `;
-
 ///////
 
 const AboutUsSection = styled.div`
@@ -241,6 +240,7 @@ const JoinSection = styled.div`
     align-items: center;
     margin: 124px 0px;
 `;
+
 const JoinActionWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -384,6 +384,9 @@ const LandingPage = () => {
                             </ProductDescription>
                         </ProductPanel>
                     </ProductClickable>
+                </ProductPanelWrapper>
+                <ProductPanelWrapper>
+
                     <ProductClickable
                         href="https://mesa.eth.link"
                         target="_blank"
@@ -401,7 +404,7 @@ const LandingPage = () => {
                         </ProductPanel>
                     </ProductClickable>
                     <ProductClickable
-                        href="https://mesa.eth.link"
+                        href="https://swap.dxdao.eth.link"
                         target="_blank"
                     >
                         <ProductPanel>
