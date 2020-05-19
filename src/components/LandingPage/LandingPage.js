@@ -173,7 +173,6 @@ const ProductPanel = styled.div`
     &:hover {
         border: 1px solid var(--lp-border-color-onHover);
     }
-
 `;
 
 const ProductNameWrapper = styled.div`
@@ -369,19 +368,12 @@ const LandingPage = () => {
     return (
         
         <LandingPageWrapper>
-
                 <BannerSection>
-
                         <TagLine>We decentralize DeFi</TagLine>
-
                     <BannerMessage>
-
                         <HeavyMessage>DXdao </HeavyMessage>is a{' '}
-
                         <HeavyMessage>sovereign collective</HeavyMessage>
-
                     </BannerMessage>
-
                     <Description>
                         The DXdao is a decentralized organization initialized in May
                         of 2019 and has over 400 unique stakeholder addresses. It
@@ -389,13 +381,9 @@ const LandingPage = () => {
                         Owned and operated by the community, the DXdao has the
                         potential to significantly scale its membership.
                     </Description>
-
                     <ButtonRow>
-
                             <BlueButton route={links.landing_invest}>Invest</BlueButton>
-
                             <NormalButton route={links.landing_faq}>FAQ</NormalButton>
-
                             <Button
                                 onClick={() => {
                                     window.open(
@@ -406,19 +394,11 @@ const LandingPage = () => {
                             >
                                 Whitepaper
                             </Button>
-
                     </ButtonRow>
-
                 </BannerSection>
-
-
-
                 <DXDSection>
-
                     <DXDLogo src="DXD.svg" />
-                    
                     <Message>DXD powers the Decentralised Ecosystem</Message>
-                    
                     <Description margin="12px">
                         The DXD token is DXdao´s native token. DXD token holders
                         have an economic claim to the DXdao´s revenue. It also
@@ -427,19 +407,11 @@ const LandingPage = () => {
                         glasless transactions, feeless anonymizing of assets,
                         reduced trading fees on DEX protocols and more.
                     </Description>
-
                 </DXDSection>
-
-
                 <ProductSection>
-
                     <TagLine>Our collectively owned products</TagLine>
-
                     <Message>Pure Dapps powered by DXdao</Message>
-                    
-
                     <ProductPanelWrapper>
-
                         <ProductClickable
                             href={links.landing_mixeth}
                             target="_blank"
@@ -456,8 +428,6 @@ const LandingPage = () => {
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
-
-
                         <ProductClickable
                             href={links.landing_omeneth}
                             target="_blank"
@@ -474,13 +444,8 @@ const LandingPage = () => {
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
-    
                     </ProductPanelWrapper>
-    
-
                     <ProductPanelWrapper>
-
-
                         <ProductClickable
                             href={links.landing_mesaeth}
                             target="_blank"
@@ -497,8 +462,6 @@ const LandingPage = () => {
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
-
-
                         <ProductClickable
                             href={links.landing_dxswapeth}
                             target="_blank"
@@ -514,21 +477,12 @@ const LandingPage = () => {
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
-
-
                     </ProductPanelWrapper>
-
                 </ProductSection>
-
-
                 <AboutUsSection>
-
                     <TagLine>About us</TagLine>
-
                     <Message>The first super-scalable collective</Message>
-
                     <AboutPanelWrapper>
-                        
                         <AboutPanel>
                             <AboutIcon src="No-Hierarchy.svg" />
                             <AboutHeader>No Hierarchies</AboutHeader>
@@ -537,7 +491,6 @@ const LandingPage = () => {
                                 voting.
                             </AboutDescription>
                         </AboutPanel>
-                        
                         <AboutPanel>
                             <AboutIcon src="Symmetry.svg" />
                             <AboutHeader>Symmetry of Information</AboutHeader>
@@ -545,7 +498,6 @@ const LandingPage = () => {
                                 Equal access to information for all members.
                             </AboutDescription>
                         </AboutPanel>
-                        
                         <AboutPanel>
                             <AboutIcon src="Swarm.svg" />
                             <AboutHeader>Swarm Knowledge</AboutHeader>
@@ -554,7 +506,6 @@ const LandingPage = () => {
                                 making with a high degree of success.
                             </AboutDescription>
                         </AboutPanel>
-                        
                         <AboutPanel>
                             <AboutIcon src="Open.svg" />
                             <AboutHeader>Open for Everyone</AboutHeader>
@@ -563,17 +514,11 @@ const LandingPage = () => {
                                 effectiveness of the collective.
                             </AboutDescription>
                         </AboutPanel>
-                    
                     </AboutPanelWrapper>
                 </AboutUsSection>
-
-
                 <JoinSection>
-
                 <Message>Join now</Message>
-                
                 <JoinActionWrapper>
-                    
                     <JoinAction
                         href={links.landing_create_proposal}
                         target="_blank"
@@ -581,7 +526,6 @@ const LandingPage = () => {
                         <JoinActionText>Create a proposal</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    
                     <JoinAction
                         href={links.landing_start_forum_discussion}
                         target="_blank"
@@ -591,14 +535,12 @@ const LandingPage = () => {
                         </JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    
                     <JoinAction 
                         href={links.landing_community_chat} 
                         target="_blank">
                         <JoinActionText>Community chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    
                     <JoinAction
                         href={links.landing_developer_chat}
                         target="_blank"
@@ -606,7 +548,6 @@ const LandingPage = () => {
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-
                     <JoinAction
                         href={links.landing_newsletter}
                         target="_blank"
@@ -616,12 +557,9 @@ const LandingPage = () => {
                                 <NewsLetterArrow src="RightGreyArrow.svg" />
                             </NewsLetterText>       
                         </NewsLetterWrapper>
-            
                     </JoinAction>
-                    
                 </JoinActionWrapper>
             </JoinSection>
-    
         </LandingPageWrapper>
     );
 };
