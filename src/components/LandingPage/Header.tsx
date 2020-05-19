@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import links from '../../links'
+
 
 const NavWrapper = styled.div`
     display: flex;
@@ -68,13 +70,13 @@ const NavBar = ({}) => {
                 </NavItem>
             </LeftNav>
             <RightNav>
-                <MenuItem href="https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a" target="_blank">
+                <MenuItem href={links.header_governance} target="_blank">
                     Governance
                 </MenuItem>
-                <MenuItem href="https://keybase.io/team/dx_dao" target="_blank">
+                <MenuItem href={links.header_chat} target="_blank">
                     Chat
                 </MenuItem>
-                <MenuItem href="https://daotalk.org/c/daos/dx-dao/15" target="_blank">
+                <MenuItem href={links.header_forum} target="_blank">
                     Forum
                 </MenuItem>
             </RightNav>
