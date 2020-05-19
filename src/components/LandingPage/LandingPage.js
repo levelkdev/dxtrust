@@ -301,20 +301,18 @@ const NewsLetterText = styled.div`
     color: #999999;
 `;
 
+
 const NewsLetterArrow = styled.img`
     margin-left: 17px;
     width: 46px;
-    height: 40px;
+    height: 39px;
     left: 817px;
     top: 2436px;
 
-    border: 1px solid #D6D6D6;
+    border-left: 1px solid #D6D6D6;
     box-sizing: border-box;
-    border-radius: 4px;
 
 `;
-
-
 //////
 const LandingPage = () => {
     const BlueButton = withRouter(
@@ -450,10 +448,10 @@ const LandingPage = () => {
                         <ProductPanel>
                             <ProductNameWrapper>
                                 <ProductLogo src="Dxswap.svg" />
-                                <ProductName>Dxswap.eth</ProductName>
+                                <ProductName>DXswap.eth</ProductName>
                             </ProductNameWrapper>
                             <ProductDescription>
-                                Dxswap is a protocol for exchanging ERC-20 
+                                DXswap is a protocol for exchanging ERC-20 
                                 tokens.
                             </ProductDescription>
                         </ProductPanel>
