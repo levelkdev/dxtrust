@@ -442,7 +442,7 @@ const LandingPage = () => {
                         </ProductPanel>
                     </ProductClickable>
                     <ProductClickable
-                        href="https://swap.dxdao.eth.link"
+                        href="https://trade.dxdao.eth.link"
                         target="_blank"
                     >
                         <ProductPanel>
