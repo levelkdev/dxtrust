@@ -147,8 +147,8 @@ const ProductPanel = styled.div`
     border: 1px solid rgba(51, 51, 51, 0.2);
     border-radius: 3px;
     margin: 0px 10px;
-    height: 187px;
-    width: 233px;
+    height: 198px;
+    width: 456px;
     padding: 32px;
     &:hover {
         border: 1px solid var(--lp-border-color-onHover);
@@ -185,7 +185,6 @@ const ProductDescription = styled.div`
     margin-top: 32px;
     color: var(--light-body-text);
 `;
-
 ///////
 
 const AboutUsSection = styled.div`
@@ -241,11 +240,13 @@ const JoinSection = styled.div`
     align-items: center;
     margin: 124px 0px;
 `;
+
 const JoinActionWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 32px;
+    
 `;
 
 const JoinAction = styled.a`
@@ -276,6 +277,43 @@ const JoinActionArrow = styled.img`
     margin-left: 12px;
 `;
 
+////////
+const NewsLetterWrapper = styled.div`
+    border: 1px solid rgba(51, 51, 51, 0.2);
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    width: 284px;
+    height: 40px;
+    left: 579px;
+    top: 2436px;
+`;
+
+const NewsLetterText = styled.div`
+    margin-left: 9px;
+    font - family: Source Sans Pro;
+    font - style: normal;
+    font - weight: normal;
+    font - size: 14px;
+    line - height: 18px;
+    display: flex;
+    align - items: center;
+    color: #999999;
+`;
+
+
+const NewsLetterArrow = styled.img`
+    margin-left: 17px;
+    width: 46px;
+    height: 39px;
+    left: 817px;
+    top: 2436px;
+
+    border-left: 1px solid #D6D6D6;
+    box-sizing: border-box;
+
+`;
+//////
 const LandingPage = () => {
     const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
@@ -365,6 +403,7 @@ const LandingPage = () => {
                                 ecosystem with privacy, security, and a good
                                 user experience as core features.
                             </ProductDescription>
+
                         </ProductPanel>
                     </ProductClickable>
                     <ProductClickable
@@ -383,6 +422,9 @@ const LandingPage = () => {
                             </ProductDescription>
                         </ProductPanel>
                     </ProductClickable>
+                </ProductPanelWrapper>
+                <ProductPanelWrapper>
+
                     <ProductClickable
                         href="https://mesa.eth.link"
                         target="_blank"
@@ -396,6 +438,21 @@ const LandingPage = () => {
                                 Mesa is an Open Source interface for the Gnosis
                                 Protocol, a fully permissionless DEX that
                                 enables ring trades to maximize liquidity.
+                            </ProductDescription>
+                        </ProductPanel>
+                    </ProductClickable>
+                    <ProductClickable
+                        href="https://swap.dxdao.eth.link"
+                        target="_blank"
+                    >
+                        <ProductPanel>
+                            <ProductNameWrapper>
+                                <ProductLogo src="Dxswap.svg" />
+                                <ProductName>DXswap.eth</ProductName>
+                            </ProductNameWrapper>
+                            <ProductDescription>
+                                DXswap is a protocol for exchanging ERC-20 
+                                tokens.
                             </ProductDescription>
                         </ProductPanel>
                     </ProductClickable>
@@ -468,8 +525,23 @@ const LandingPage = () => {
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
+
+                    <JoinAction
+                        href="https://"
+                        target="_blank"
+                    >
+                        <NewsLetterWrapper>
+                            <NewsLetterText>Sign up for our newsletter                             
+                                <NewsLetterArrow src="RightGreyArrow.svg" />
+                            </NewsLetterText>       
+                        </NewsLetterWrapper>
+             
+                    </JoinAction>
+                    
                 </JoinActionWrapper>
             </JoinSection>
+
+
         </LandingPageWrapper>
     );
 };
