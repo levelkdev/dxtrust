@@ -152,18 +152,6 @@ const ProductPanelWrapper = styled.div`
     flex-direction: row;
     justify-content: center;
     margin-top: 64px;
-    //display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr ;
-
-    // @media only screen and (min-width: 768px){
-    //     ${() => `grid-template-columns: 1fr 1fr;`};
-    // }
-
-    // @media only screen and (min-width: 768px){
-    //     flex-direction: row;
-    //   }
-
 
 `;
 
