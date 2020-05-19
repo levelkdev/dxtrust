@@ -14,7 +14,6 @@ const ExchangeWrapper = styled.div`
 const AlertWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: start;
     width: 100%;
     background: white;
@@ -33,10 +32,10 @@ const AlertText = styled.div`
 const Exchange = ({}) => {
     return (
             <ExchangeWrapper>
-            <AlertWrapper>
-            <img src="dangerous.svg"/>
-                    <AlertText>Secondary Markets may have better offers!</AlertText>
-            </AlertWrapper>
+                <AlertWrapper>
+                    <img src="dangerous.svg"/>
+                        <AlertText>Secondary Markets may have better offers!</AlertText>
+                </AlertWrapper>
                 <ChartContainer />
                 <BuySellContainer />
                 <TradeHistoryContainer />
