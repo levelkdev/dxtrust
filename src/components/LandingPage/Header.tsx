@@ -10,6 +10,9 @@ const NavWrapper = styled.div`
     justify-content: space-between;
     width: 100%;
     padding: 50px 0px 40px 0px;
+    @media(max-width: 768px) {
+        padding: 25px 0px 20px 0px
+    }
 `;
 
 const LeftNav = styled.div`
