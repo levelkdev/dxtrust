@@ -277,6 +277,7 @@ const JoinActionArrow = styled.img`
     margin-left: 12px;
 `;
 
+////////
 const NewsLetterWrapper = styled.div`
     border: 1px solid rgba(51, 51, 51, 0.2);
     box-sizing: border-box;
@@ -284,36 +285,37 @@ const NewsLetterWrapper = styled.div`
 
     width: 284px;
     height: 40px;
-    left: 1579px;
+    left: 579px;
     top: 2436px;
 `;
 
-const NewsLetterArrowWrapper = styled.div`
+const NewsLetterText = styled.div`
+    margin-left: 9px;
+    font - family: Source Sans Pro;
+    font - style: normal;
+    font - weight: normal;
+    font - size: 14px;
+    line - height: 18px;
+    display: flex;
+    align - items: center;
+    color: #999999;
+`;
+
+const NewsLetterArrow = styled.img`
+    margin-left: 17px;
     width: 46px;
     height: 40px;
     left: 817px;
     top: 2436px;
+
     border: 1px solid #D6D6D6;
     box-sizing: border-box;
     border-radius: 4px;
+
 `;
 
-const NewsLetterText = styled.div`
-    font-size: 14px;
-    color: #D6D6D6;
-    line-height: 18px;
-    display: flex;
-    align-items: center;
-`;
 
-const NewsLetterArrow = styled.img`
-    margin-left: 12px;
-    width: 24px;
-    height: 24px;
-    left: 852px;
-    top: 2468px;
-`;
-
+//////
 const LandingPage = () => {
     const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
@@ -530,21 +532,18 @@ const LandingPage = () => {
                         href="https://"
                         target="_blank"
                     >
-
                         <NewsLetterWrapper>
-                            <NewsLetterText>Sign up for our newsletter</NewsLetterText>
-                            
-                            <NewsLetterArrowWrapper>
+                            <NewsLetterText>Sign up for our newsletter                             
                                 <NewsLetterArrow src="RightGreyArrow.svg" />
-                            </NewsLetterArrowWrapper>
-                            
+                            </NewsLetterText>       
                         </NewsLetterWrapper>
-
-
+             
                     </JoinAction>
-
+                    
                 </JoinActionWrapper>
             </JoinSection>
+
+
         </LandingPageWrapper>
     );
 };
