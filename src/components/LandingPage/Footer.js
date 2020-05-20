@@ -11,6 +11,9 @@ const FooterWrapper = styled.div`
     color: var(--footer-text-gray);
     border-top: 1px solid var(--footer-divider);
     margin-top: 124px;
+    @media (max-width: 768px) {
+        padding: 20px 0px;
+    }
 `;
 
 const LeftFooter = styled.div`
@@ -48,8 +51,7 @@ const LogoWrapper = styled.div`
     padding-left: 8px;
 `;
 
-const FooterLogo = styled.img`
-`;
+const FooterLogo = styled.img``;
 
 const Footer = () => {
     return (

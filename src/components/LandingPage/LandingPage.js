@@ -55,6 +55,9 @@ const BannerMessage = styled.div`
     @media (max-width: 768px) {
         font-size: 32px;
     }
+    @media (max-width: 330px) {
+        font-size: 24px;
+    }
 `;
 
 const HeavyMessage = styled.span`
@@ -78,9 +81,13 @@ const Description = styled.div`
 const ButtonRow = styled.div`
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     margin-top: 32px;
+    @media (max-width: 460px) {
+        justify-content: center;
+    }
 `;
 
 const Button = styled.div`
@@ -105,6 +112,9 @@ const Button = styled.div`
         border: 1px solid var(--lp-border-color-onHover);
         cursor: pointer;
     }
+    @media (max-width: 460px) {
+        flex-basis: 42%;
+    }
 `;
 
 const DarkButton = styled(Button)`
@@ -118,6 +128,10 @@ const DarkButton = styled(Button)`
         background: #1799d9;
         border: 1px solid #158ec9;
         cursor: pointer;
+    }
+    @media(max-width: 460px) {
+        flex-basis: 100%
+        margin-bottom: 16px
     }
 `;
 
@@ -173,6 +187,8 @@ const ProductPanel = styled.div`
     border-radius: 3px;
     margin: 0px 10px;
     width: 424px;
+    height: 198px;
+    max-width: 95vw;
     padding: 32px;
 
     &:hover {
@@ -180,7 +196,10 @@ const ProductPanel = styled.div`
     }
     @media(max-width: 1024px) {
         margin-top: 24px
-        align-items: center
+    }
+    @media(max-width: 460px) {
+        height: auto
+        min-height: 225px
     }
 `;
 
@@ -243,6 +262,10 @@ const AboutPanel = styled.div`
         &:nth-of-type(3), &:nth-of-type(4) {
             margin-top: 32px
         }
+    }
+    @media(max-width: 460px) {
+        width: 100%
+        margin-top: 32px
     }
 `;
 
