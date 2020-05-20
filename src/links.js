@@ -10,7 +10,7 @@ landing_whitepaper : 'https://github.com/gnosis/dx-daostack/blob/master/dxdao_wh
 
 landing_mixeth : "https://daotalk.org/t/mix-eth-seeking-feedback-on-proposal/1183",
 
-landing_omeneth : "https://daotalk.org/t/omen-mvp-overview/1229",
+    landing_omeneth: "https://omen.eth.link",
 
 landing_mesaeth : "https://mesa.eth.link",
 

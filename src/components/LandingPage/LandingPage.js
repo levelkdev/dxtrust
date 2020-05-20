@@ -404,7 +404,7 @@ const LandingPage = () => {
                         have an economic claim to the DXdao´s revenue. It also
                         grants its owners future access to a suite of services and
                         premium features in decentralised applications, such as
-                        glasless transactions, feeless anonymizing of assets,
+                        gasless transactions, feeless anonymizing of assets,
                         reduced trading fees on DEX protocols and more.
                     </Description>
                 </DXDSection>
