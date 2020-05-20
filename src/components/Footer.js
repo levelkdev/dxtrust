@@ -75,16 +75,16 @@ const Footer = () => {
                         }
                         target="#"
                     >
-                        Version 0.2.0
+                        Version 0.2.1
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanAddress(chainId,"Proxy",proxyContract)}
+                    {etherscanToken(chainId,"Token Contract",proxyContract, false)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanAddress(chainId,"Contract",contract)}
+                    {etherscanAddress(chainId,"Logic Contract",contract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>

@@ -84,6 +84,8 @@ export interface SellReturn {
 
 export type TradeEvent = BuyEvent | SellEvent;
 
+export const TRADES_FROM_LAST_BLOCKS = 1000;
+
 export default class DatStore {
     @observable datParams: DatInfoMap;
     rootStore: RootStore;
@@ -240,12 +242,12 @@ export default class DatStore {
 
     async fetchBuyEvents(
         datAddress: string,
-        numToGet: number
+        numToGet: number,
+        fromBlock: number
     ): Promise<TradeEvent[]> {
         const dat = this.getDatContract(datAddress);
-
         let buyEvents = await dat.getPastEvents('Buy', {
-            fromBlock: 0,
+            fromBlock: fromBlock,
             toBlock: 'latest',
         });
 
@@ -263,12 +265,12 @@ export default class DatStore {
 
     async fetchSellEvents(
         datAddress: string,
-        numToGet: number
+        numToGet: number,
+        fromBlock: number
     ): Promise<TradeEvent[]> {
         const dat = this.getDatContract(datAddress);
-
         let sellEvents = await dat.getPastEvents('Sell', {
-            fromBlock: 0,
+            fromBlock: fromBlock,
             toBlock: 'latest',
         });
 
@@ -404,8 +406,13 @@ export default class DatStore {
         datAddress: string,
         numToGet: number
     ): Promise<TradeEvent[]> {
-        const buyEvents = await this.fetchBuyEvents(datAddress, numToGet);
-        const sellEvents = await this.fetchSellEvents(datAddress, numToGet);
+        const { library } = this.rootStore.providerStore.getActiveWeb3React();
+        let fromBlock = (this.rootStore.configStore.getDATinfo()).fromBlock;
+        if (fromBlock > TRADES_FROM_LAST_BLOCKS)
+          fromBlock = (await library.eth.getBlockNumber()) - TRADES_FROM_LAST_BLOCKS;
+          
+        const buyEvents = await this.fetchBuyEvents(datAddress, numToGet, fromBlock);
+        const sellEvents = await this.fetchSellEvents(datAddress, numToGet, fromBlock);
 
         let combinedTrades: any[] = buyEvents.concat(sellEvents);
         combinedTrades = combinedTrades.sort(function (a, b) {
