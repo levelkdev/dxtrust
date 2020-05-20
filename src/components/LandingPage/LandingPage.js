@@ -16,6 +16,9 @@ const DXDSection = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 124px;
+    @media (max-width: 460px) {
+        margin-top: 84px;
+    }
 `;
 
 const BannerSection = styled.div`
@@ -24,6 +27,9 @@ const BannerSection = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 84px;
+    @media (max-width: 460px) {
+        margin-top: 64px;
+    }
 `;
 
 const TagLine = styled.div`
@@ -142,6 +148,9 @@ const ProductSection = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-top: 124px;
+    @media (max-width: 460px) {
+        margin-top: 84px;
+    }
 `;
 
 const Message = styled.div`
@@ -169,7 +178,7 @@ const ProductPanelWrapper = styled.div`
         align-items: center;
         margin-top: 0
         &:nth-of-type(odd) {
-            margin-top: 48px
+            margin-top: 32px
         }
     }
 `;
@@ -242,6 +251,9 @@ const AboutUsSection = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-top: 124px;
+    @media (max-width: 460px) {
+        margin-top: 84px;
+    }
 `;
 
 const AboutPanelWrapper = styled.div`
@@ -249,6 +261,9 @@ const AboutPanelWrapper = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 64px;
+    @media (max-width: 460px) {
+        margin-top: 32px;
+    }
 `;
 
 const AboutPanel = styled.div`
@@ -280,6 +295,9 @@ const AboutHeader = styled.div`
     letter-spacing: 0.03em;
     text-align: center;
     margin-top: 32px;
+    @media (max-width: 460px) {
+        margin-top: 24px;
+    }
 `;
 
 const AboutDescription = styled.div`
@@ -291,6 +309,9 @@ const AboutDescription = styled.div`
     text-align: center;
     color: var(--light-body-text);
     margin-top: 24px;
+    @media (max-width: 460px) {
+        margin-top: 16px;
+    }
 `;
 
 ///////
@@ -300,6 +321,9 @@ const JoinSection = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 124px 0px;
+    @media (max-width: 460px) {
+        margin: 84px 0px;
+    }
 `;
 
 const JoinActionWrapper = styled.div`
