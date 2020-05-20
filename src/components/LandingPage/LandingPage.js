@@ -344,7 +344,7 @@ const LandingPage = () => {
                     have an economic claim to the DXdao´s revenue. It also
                     grants its owners future access to a suite of services and
                     premium features in decentralised applications, such as
-                    glasless transactions, feeless anonymizing of assets,
+                    gasless transactions, feeless anonymizing of assets,
                     reduced trading fees on DEX protocols and more.
                 </Description>
             </DXDSection>
@@ -369,7 +369,7 @@ const LandingPage = () => {
                         </ProductPanel>
                     </ProductClickable>
                     <ProductClickable
-                        href="https://daotalk.org/t/omen-mvp-overview/1229"
+                        href="https://omen.eth.link"
                         target="_blank"
                     >
                         <ProductPanel>
