@@ -34,11 +34,11 @@ ZWeb3.initialize(web3.currentProvider);
 let contractsDeployed = {'contracts': {}};
 if (fs.existsSync('src/config/contracts.json'))
   contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
-const toDeploy = JSON.parse(fs.readFileSync('src/config/toDeploy.json', 'utf-8'));
+let toDeploy = JSON.parse(fs.readFileSync('src/config/toDeploy.json', 'utf-8'));
 
 async function main() {
   const contracts = await deployDAT(web3, toDeploy.DATinfo);
-  
+  toDeploy.DATinfo.fromBlock = (await web3.eth.getBlock('latest')).number;
   contractsDeployed.contracts[network] = {
     multicall: contracts.multicall.address,
     DAT: contracts.dat.address,
