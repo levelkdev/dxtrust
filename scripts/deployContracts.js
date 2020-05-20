@@ -81,23 +81,16 @@ async function main() {
 
   console.log(`Using account: ${deployer}`, ' \n');
   console.log(`Deploy DAT with config: ${JSON.stringify(deployOptions, null, 2)}`, ' \n');
-    
+  
   contracts.proxyAdmin = await ProxyAdmin.new({
     from: deployer
   });
   console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
-  contracts.tokenVesting = await TokenVesting.new({
-    from: deployer
-  });
-
-  contracts.datImplementation = await DATContract.new({
-    from: deployer
-  });
-  console.log(`DAT implementation deployed ${contracts.datImplementation.address}`);
+  console.log(`Using DAT implementation 0x845856776D110a200Cf41f35C9428C938e72E604`);
 
   contracts.datProxy = await AdminUpgradeabilityProxy.new(
-    contracts.datImplementation.address, // logic
+    "0x845856776D110a200Cf41f35C9428C938e72E604", // logic
     contracts.proxyAdmin.address, // admin
     [], // data
     {
@@ -120,6 +113,9 @@ async function main() {
   ).send({ from: deployer });
 
   // Deploy token vesting
+  contracts.tokenVesting = await TokenVesting.new({
+    from: deployer
+  });
   await contracts.tokenVesting.methods.initialize(
     deployOptions.control, new moment().unix(), deployOptions.vestingCliff, 
     deployOptions.vestingDuration, false, deployOptions.control
