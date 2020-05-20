@@ -1,8 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import links from '../../links'
 
-const LandingPageWrapper = styled.div``;
+//////
+const LandingPageWrapper = styled.div`
+`;
 
 const DXDLogo = styled.img`
     margin-bottom: 8px;
@@ -32,6 +35,12 @@ const TagLine = styled.div`
     text-align: center;
     text-transform: uppercase;
     color: var(--light-header-text);
+    
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
+    
+
 `;
 
 const BannerMessage = styled.div`
@@ -43,7 +52,12 @@ const BannerMessage = styled.div`
     text-align: center;
     color: var(--dark-text);
     margin-top: 12px;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
 `;
+
 const HeavyMessage = styled.span`
     font-weight: 600;
 `;
@@ -51,7 +65,7 @@ const HeavyMessage = styled.span`
 const Description = styled.div`
     font-family: Source Sans Pro;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 200;
     font-size: 16px;
     line-height: 31px;
     text-align: center;
@@ -59,6 +73,7 @@ const Description = styled.div`
     color: var(--light-body-text);
     margin-top: 24px;
     max-width: 614px;
+    
 `;
 
 const ButtonRow = styled.div`
@@ -126,6 +141,10 @@ const Message = styled.div`
     letter-spacing: 0.02em;
     color: var(--dark-text);
     margin-top: 16px;
+    
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
 `;
 
 const ProductPanelWrapper = styled.div`
@@ -133,6 +152,7 @@ const ProductPanelWrapper = styled.div`
     flex-direction: row;
     justify-content: center;
     margin-top: 64px;
+
 `;
 
 const ProductClickable = styled.a`
@@ -185,6 +205,7 @@ const ProductDescription = styled.div`
     margin-top: 32px;
     color: var(--light-body-text);
 `;
+
 ///////
 
 const AboutUsSection = styled.div`
@@ -278,6 +299,7 @@ const JoinActionArrow = styled.img`
 `;
 
 ////////
+
 const NewsLetterWrapper = styled.div`
     border: 1px solid rgba(51, 51, 51, 0.2);
     box-sizing: border-box;
@@ -301,7 +323,6 @@ const NewsLetterText = styled.div`
     color: #999999;
 `;
 
-
 const NewsLetterArrow = styled.img`
     margin-left: 17px;
     width: 46px;
@@ -313,6 +334,7 @@ const NewsLetterArrow = styled.img`
     box-sizing: border-box;
 
 `;
+
 //////
 const LandingPage = () => {
     const BlueButton = withRouter(
@@ -344,169 +366,168 @@ const LandingPage = () => {
     );
 
     return (
+        
         <LandingPageWrapper>
-            <BannerSection>
-                <TagLine>We decentralize DeFi</TagLine>
-                <BannerMessage>
-                    <HeavyMessage>DXdao </HeavyMessage>is a{' '}
-                    <HeavyMessage>sovereign collective</HeavyMessage>
-                </BannerMessage>
-                <Description>
-                    The DXdao is a decentralized organization initialized in May
-                    of 2019 and has over 400 unique stakeholder addresses. It
-                    develops, governs, and grows DeFi protocols and products.
-                    Owned and operated by the community, the DXdao has the
-                    potential to significantly scale its membership.
-                </Description>
-                <ButtonRow>
-                    <BlueButton route="/exchange">Invest</BlueButton>
-                    <NormalButton route="/faq">FAQ</NormalButton>
-                    <Button
-                        onClick={() => {
-                            window.open(
-                                'https://github.com/gnosis/dx-daostack/blob/master/dxdao_whitepaper_v1.pdf',
-                                '_blank'
-                            );
-                        }}
-                    >
-                        Whitepaper
-                    </Button>
-                </ButtonRow>
-            </BannerSection>
-            <DXDSection>
-                <DXDLogo src="DXD.svg" />
-                <Message>DXD powers the Decentralised Ecosystem</Message>
-                <Description margin="12px">
-                    The DXD token is DXdao´s native token. DXD token holders
-                    have an economic claim to the DXdao´s revenue. It also
-                    grants its owners future access to a suite of services and
-                    premium features in decentralised applications, such as
-                    glasless transactions, feeless anonymizing of assets,
-                    reduced trading fees on DEX protocols and more.
-                </Description>
-            </DXDSection>
-            <ProductSection>
-                <TagLine>Our collectively owned products</TagLine>
-                <Message>Pure Dapps powered by DXdao</Message>
-                <ProductPanelWrapper>
-                    <ProductClickable
-                        href="https://daotalk.org/t/mix-eth-seeking-feedback-on-proposal/1183"
-                        target="_blank"
-                    >
-                        <ProductPanel>
-                            <ProductNameWrapper>
-                                <ProductLogo src="Mix.svg" />
-                                <ProductName>Mix.eth</ProductName>
-                            </ProductNameWrapper>
-                            <ProductDescription>
-                                Mix is a portfolio manager for the Ethereum
-                                ecosystem with privacy, security, and a good
-                                user experience as core features.
-                            </ProductDescription>
-
-                        </ProductPanel>
-                    </ProductClickable>
-                    <ProductClickable
-                        href="https://daotalk.org/t/omen-mvp-overview/1229"
-                        target="_blank"
-                    >
-                        <ProductPanel>
-                            <ProductNameWrapper>
-                                <ProductLogo src="Omen.svg" />
-                                <ProductName>Omen.eth</ProductName>
-                            </ProductNameWrapper>
-                            <ProductDescription>
-                                Omen is a fully decentralized prediction market
-                                platform built on top of the Gnosis conditional
-                                token framework.
-                            </ProductDescription>
-                        </ProductPanel>
-                    </ProductClickable>
-                </ProductPanelWrapper>
-                <ProductPanelWrapper>
-
-                    <ProductClickable
-                        href="https://mesa.eth.link"
-                        target="_blank"
-                    >
-                        <ProductPanel>
-                            <ProductNameWrapper>
-                                <ProductLogo src="Mesa.svg" />
-                                <ProductName>Mesa.eth</ProductName>
-                            </ProductNameWrapper>
-                            <ProductDescription>
-                                Mesa is an Open Source interface for the Gnosis
-                                Protocol, a fully permissionless DEX that
-                                enables ring trades to maximize liquidity.
-                            </ProductDescription>
-                        </ProductPanel>
-                    </ProductClickable>
-                    <ProductClickable
-                        href="https://trade.dxdao.eth.link"
-                        target="_blank"
-                    >
-                        <ProductPanel>
-                            <ProductNameWrapper>
-                                <ProductLogo src="Dxswap.svg" />
-                                <ProductName>DXswap.eth</ProductName>
-                            </ProductNameWrapper>
-                            <ProductDescription>
-                                DXswap is a protocol for exchanging ERC-20 
-                                tokens.
-                            </ProductDescription>
-                        </ProductPanel>
-                    </ProductClickable>
-                </ProductPanelWrapper>
-            </ProductSection>
-            <AboutUsSection>
-                <TagLine>About us</TagLine>
-                <Message>The first super-scalable collective</Message>
-                <AboutPanelWrapper>
-                    <AboutPanel>
-                        <AboutIcon src="No-Hierarchy.svg" />
-                        <AboutHeader>No Hierarchies</AboutHeader>
-                        <AboutDescription>
-                            There is no boss. Members find consensus through
-                            voting.
-                        </AboutDescription>
-                    </AboutPanel>
-                    <AboutPanel>
-                        <AboutIcon src="Symmetry.svg" />
-                        <AboutHeader>Symmetry of Information</AboutHeader>
-                        <AboutDescription>
-                            Equal access to information for all members.
-                        </AboutDescription>
-                    </AboutPanel>
-                    <AboutPanel>
-                        <AboutIcon src="Swarm.svg" />
-                        <AboutHeader>Swarm Knowledge</AboutHeader>
-                        <AboutDescription>
-                            The transparent feedback system enables decision
-                            making with a high degree of success.
-                        </AboutDescription>
-                    </AboutPanel>
-                    <AboutPanel>
-                        <AboutIcon src="Open.svg" />
-                        <AboutHeader>Open for Everyone</AboutHeader>
-                        <AboutDescription>
-                            Permissionless access increases the knowledge and
-                            effectiveness of the collective.
-                        </AboutDescription>
-                    </AboutPanel>
-                </AboutPanelWrapper>
-            </AboutUsSection>
-            <JoinSection>
+                <BannerSection>
+                        <TagLine>We decentralize DeFi</TagLine>
+                    <BannerMessage>
+                        <HeavyMessage>DXdao </HeavyMessage>is a{' '}
+                        <HeavyMessage>sovereign collective</HeavyMessage>
+                    </BannerMessage>
+                    <Description>
+                        The DXdao is a decentralized organization initialized in May
+                        of 2019 and has over 400 unique stakeholder addresses. It
+                        develops, governs, and grows DeFi protocols and products.
+                        Owned and operated by the community, the DXdao has the
+                        potential to significantly scale its membership.
+                    </Description>
+                    <ButtonRow>
+                            <BlueButton route={links.landing_invest}>Invest</BlueButton>
+                            <NormalButton route={links.landing_faq}>FAQ</NormalButton>
+                            <Button
+                                onClick={() => {
+                                    window.open(
+                                        `${links.landing_whitepaper}`,
+                                        '_blank'
+                                    );
+                                }}
+                            >
+                                Whitepaper
+                            </Button>
+                    </ButtonRow>
+                </BannerSection>
+                <DXDSection>
+                    <DXDLogo src="DXD.svg" />
+                    <Message>DXD powers the Decentralised Ecosystem</Message>
+                    <Description margin="12px">
+                        The DXD token is DXdao´s native token. DXD token holders
+                        have an economic claim to the DXdao´s revenue. It also
+                        grants its owners future access to a suite of services and
+                        premium features in decentralised applications, such as
+                        gasless transactions, feeless anonymizing of assets,
+                        reduced trading fees on DEX protocols and more.
+                    </Description>
+                </DXDSection>
+                <ProductSection>
+                    <TagLine>Our collectively owned products</TagLine>
+                    <Message>Pure Dapps powered by DXdao</Message>
+                    <ProductPanelWrapper>
+                        <ProductClickable
+                            href={links.landing_mixeth}
+                            target="_blank"
+                        >
+                            <ProductPanel>
+                                <ProductNameWrapper>
+                                    <ProductLogo src="Mix.svg" />
+                                    <ProductName>Mix.eth</ProductName>
+                                </ProductNameWrapper>
+                                <ProductDescription>
+                                    Mix is a portfolio manager for the Ethereum
+                                    ecosystem with privacy, security, and a good
+                                    user experience as core features.
+                                </ProductDescription>
+                            </ProductPanel>
+                        </ProductClickable>
+                        <ProductClickable
+                            href={links.landing_omeneth}
+                            target="_blank"
+                        >
+                            <ProductPanel>
+                                <ProductNameWrapper>
+                                    <ProductLogo src="Omen.svg" />
+                                    <ProductName>Omen.eth</ProductName>
+                                </ProductNameWrapper>
+                                <ProductDescription>
+                                    Omen is a fully decentralized prediction market
+                                    platform built on top of the Gnosis conditional
+                                    token framework.
+                                </ProductDescription>
+                            </ProductPanel>
+                        </ProductClickable>
+                    </ProductPanelWrapper>
+                    <ProductPanelWrapper>
+                        <ProductClickable
+                            href={links.landing_mesaeth}
+                            target="_blank"
+                        >
+                            <ProductPanel>
+                                <ProductNameWrapper>
+                                    <ProductLogo src="Mesa.svg" />
+                                    <ProductName>Mesa.eth</ProductName>
+                                </ProductNameWrapper>
+                                <ProductDescription>
+                                    Mesa is an Open Source interface for the Gnosis
+                                    Protocol, a fully permissionless DEX that
+                                    enables ring trades to maximize liquidity.
+                                </ProductDescription>
+                            </ProductPanel>
+                        </ProductClickable>
+                        <ProductClickable
+                            href={links.landing_dxswapeth}
+                            target="_blank"
+                        >
+                            <ProductPanel>
+                                <ProductNameWrapper>
+                                    <ProductLogo src="Dxswap.svg" />
+                                    <ProductName>DXswap.eth</ProductName>
+                                </ProductNameWrapper>
+                                <ProductDescription>
+                                    DXswap is a protocol for exchanging ERC-20 
+                                    tokens.
+                                </ProductDescription>
+                            </ProductPanel>
+                        </ProductClickable>
+                    </ProductPanelWrapper>
+                </ProductSection>
+                <AboutUsSection>
+                    <TagLine>About us</TagLine>
+                    <Message>The first super-scalable collective</Message>
+                    <AboutPanelWrapper>
+                        <AboutPanel>
+                            <AboutIcon src="No-Hierarchy.svg" />
+                            <AboutHeader>No Hierarchies</AboutHeader>
+                            <AboutDescription>
+                                There is no boss. Members find consensus through
+                                voting.
+                            </AboutDescription>
+                        </AboutPanel>
+                        <AboutPanel>
+                            <AboutIcon src="Symmetry.svg" />
+                            <AboutHeader>Symmetry of Information</AboutHeader>
+                            <AboutDescription>
+                                Equal access to information for all members.
+                            </AboutDescription>
+                        </AboutPanel>
+                        <AboutPanel>
+                            <AboutIcon src="Swarm.svg" />
+                            <AboutHeader>Swarm Knowledge</AboutHeader>
+                            <AboutDescription>
+                                The transparent feedback system enables decision
+                                making with a high degree of success.
+                            </AboutDescription>
+                        </AboutPanel>
+                        <AboutPanel>
+                            <AboutIcon src="Open.svg" />
+                            <AboutHeader>Open for Everyone</AboutHeader>
+                            <AboutDescription>
+                                Permissionless access increases the knowledge and
+                                effectiveness of the collective.
+                            </AboutDescription>
+                        </AboutPanel>
+                    </AboutPanelWrapper>
+                </AboutUsSection>
+                <JoinSection>
                 <Message>Join now</Message>
                 <JoinActionWrapper>
                     <JoinAction
-                        href="https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a"
+                        href={links.landing_create_proposal}
                         target="_blank"
                     >
                         <JoinActionText>Create a proposal</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
                     <JoinAction
-                        href="https://daotalk.org/c/daos/dx-dao/15"
+                        href={links.landing_start_forum_discussion}
                         target="_blank"
                     >
                         <JoinActionText>
@@ -514,20 +535,21 @@ const LandingPage = () => {
                         </JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    <JoinAction href="https://t.me/dxDAO" target="_blank">
+                    <JoinAction 
+                        href={links.landing_community_chat} 
+                        target="_blank">
                         <JoinActionText>Community chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
                     <JoinAction
-                        href="https://keybase.io/team/dx_dao"
+                        href={links.landing_developer_chat}
                         target="_blank"
                     >
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-
                     <JoinAction
-                        href="https://"
+                        href={links.landing_newsletter}
                         target="_blank"
                     >
                         <NewsLetterWrapper>
@@ -535,13 +557,9 @@ const LandingPage = () => {
                                 <NewsLetterArrow src="RightGreyArrow.svg" />
                             </NewsLetterText>       
                         </NewsLetterWrapper>
-             
                     </JoinAction>
-                    
                 </JoinActionWrapper>
             </JoinSection>
-
-
         </LandingPageWrapper>
     );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import links from '../../links'
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -57,7 +58,7 @@ const Footer = () => {
                 <FooterItem>
                     <a
                         href={
-                            'https://github.com/levelkdev/BC-DAPP/tree/v0.2.0'
+                            links.footer_version 
                         }
                         target="#"
                     >
@@ -68,8 +69,7 @@ const Footer = () => {
                 <FooterItem>
                     <a
                         href={
-                            'https://github.com/levelkdev/BC-DAPP/tree/' +
-                            process.env.REACT_APP_GIT_SHA
+                            links.footer_git_hash
                         }
                         target="#"
                     >
@@ -79,17 +79,17 @@ const Footer = () => {
             </LeftFooter>
             <RighFooter>
                 <LogoWrapper>
-                    <a href="https://twitter.com/dxdao_" target="#">
+                    <a href={links.footer_twitter} target="#">
                         <FooterLogo src="twitter_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
-                    <a href="https://www.reddit.com/r/dxdao/" target="#">
+                    <a href={links.footer_reddit} target="#">
                         <FooterLogo src="reddit_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
-                    <a href="https://t.me/dxDAO" target="#">
+                    <a href={links.footer_telegram} target="#">
                         <FooterLogo src="telegram_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
