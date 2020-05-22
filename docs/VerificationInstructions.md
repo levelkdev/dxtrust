@@ -8,13 +8,13 @@ Now with the build at your disposal you can calculate the hash of the folder by 
 
 For example with the git commit:
 ```
-
+9dda3a6812f87c4490acb129343a7982b1fe4489
 ```
 And ONLY this ENV varibales enabled:
 ```
-REACT_APP_GIT_SHA=
+REACT_APP_GIT_SHA="9dda3a6812f87c4490acb129343a7982b1fe4489"
 REACT_APP_VERSION=0.1.0
 NODE_ENV=production
 ```
 
-The build hash ipfs of the entire build folder will be ``
+The build hash ipfs of the entire build folder will be `QmawVUphuESr6AbQzCS4D9HVcUKmFRVZhgfLbWtDbEGwtE`
