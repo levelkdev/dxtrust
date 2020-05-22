@@ -141,7 +141,6 @@ const Message = styled.div`
     letter-spacing: 0.02em;
     color: var(--dark-text);
     margin-top: 16px;
-    
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: pre;
@@ -151,7 +150,7 @@ const ProductPanelWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 64px;
+    margin: 36px 0px -16px 0px;
 
 `;
 
@@ -168,8 +167,10 @@ const ProductPanel = styled.div`
     border-radius: 3px;
     margin: 0px 10px;
     height: 198px;
-    width: 456px;
-    padding: 32px;
+    width: 424px;
+    padding-top: 36px;
+    padding-left 32px;
+
     &:hover {
         border: 1px solid var(--lp-border-color-onHover);
     }
@@ -177,6 +178,9 @@ const ProductPanel = styled.div`
 
 const ProductNameWrapper = styled.div`
     display: flex;
+    height: 54px;
+    width: 392px;
+
 `;
 
 const ProductLogo = styled.img``;
@@ -204,6 +208,10 @@ const ProductDescription = styled.div`
     letter-spacing: 0.03em;
     margin-top: 32px;
     color: var(--light-body-text);
+    height: 54px;
+    width: 392px;
+
+
 `;
 
 ///////
@@ -300,42 +308,6 @@ const JoinActionArrow = styled.img`
 
 ////////
 
-const NewsLetterWrapper = styled.div`
-    border: 1px solid rgba(51, 51, 51, 0.2);
-    box-sizing: border-box;
-    border-radius: 4px;
-
-    width: 284px;
-    height: 40px;
-    left: 579px;
-    top: 2436px;
-`;
-
-const NewsLetterText = styled.div`
-    margin-left: 9px;
-    font - family: Source Sans Pro;
-    font - style: normal;
-    font - weight: normal;
-    font - size: 14px;
-    line - height: 18px;
-    display: flex;
-    align - items: center;
-    color: #999999;
-`;
-
-const NewsLetterArrow = styled.img`
-    margin-left: 17px;
-    width: 46px;
-    height: 39px;
-    left: 817px;
-    top: 2436px;
-
-    border-left: 1px solid #D6D6D6;
-    box-sizing: border-box;
-
-`;
-
-//////
 const LandingPage = () => {
     const BlueButton = withRouter(
         ({ option, route, history, location, children }) => {
@@ -548,16 +520,7 @@ const LandingPage = () => {
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    <JoinAction
-                        href={links.landing_newsletter}
-                        target="_blank"
-                    >
-                        <NewsLetterWrapper>
-                            <NewsLetterText>Sign up for our newsletter                             
-                                <NewsLetterArrow src="RightGreyArrow.svg" />
-                            </NewsLetterText>       
-                        </NewsLetterWrapper>
-                    </JoinAction>
+
                 </JoinActionWrapper>
             </JoinSection>
         </LandingPageWrapper>
