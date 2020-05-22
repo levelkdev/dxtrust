@@ -520,7 +520,6 @@ const LandingPage = () => {
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-
                 </JoinActionWrapper>
             </JoinSection>
         </LandingPageWrapper>

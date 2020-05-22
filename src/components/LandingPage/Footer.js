@@ -73,7 +73,7 @@ const Footer = () => {
                         }
                         target="#"
                     >
-                        Git Hash
+                        Git Hash 
                     </a>
                 </FooterItem>
             </LeftFooter>
