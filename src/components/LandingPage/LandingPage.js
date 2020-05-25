@@ -166,10 +166,8 @@ const ProductPanel = styled.div`
     border: 1px solid rgba(51, 51, 51, 0.2);
     border-radius: 3px;
     margin: 0px 10px;
-    height: 198px;
     width: 424px;
-    padding-top: 36px;
-    padding-left 32px;
+    padding: 32px;
 
     &:hover {
         border: 1px solid var(--lp-border-color-onHover);
@@ -178,9 +176,6 @@ const ProductPanel = styled.div`
 
 const ProductNameWrapper = styled.div`
     display: flex;
-    height: 54px;
-    width: 392px;
-
 `;
 
 const ProductLogo = styled.img``;
@@ -203,15 +198,12 @@ const ProductDescription = styled.div`
     font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 27px;
     letter-spacing: 0.03em;
-    margin-top: 32px;
-    color: var(--light-body-text);
+    margin-top: 24px;
     height: 54px;
-    width: 392px;
-
-
+    color: var(--light-body-text);
 `;
 
 ///////
@@ -394,9 +386,7 @@ const LandingPage = () => {
                                     <ProductName>Mix.eth</ProductName>
                                 </ProductNameWrapper>
                                 <ProductDescription>
-                                    Mix is a portfolio manager for the Ethereum
-                                    ecosystem with privacy, security, and a good
-                                    user experience as core features.
+                                    Mix is a portfolio manager with privacy, security and a good user experience as a core feature.
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
@@ -428,9 +418,7 @@ const LandingPage = () => {
                                     <ProductName>Mesa.eth</ProductName>
                                 </ProductNameWrapper>
                                 <ProductDescription>
-                                    Mesa is an Open Source interface for the Gnosis
-                                    Protocol, a fully permissionless DEX that
-                                    enables ring trades to maximize liquidity.
+                                    An interface for the Gnosis Protocol, a fully permissionless decentralised Exchange on Ethereum.
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
@@ -444,8 +432,7 @@ const LandingPage = () => {
                                     <ProductName>DXswap.eth</ProductName>
                                 </ProductNameWrapper>
                                 <ProductDescription>
-                                    DXswap is a protocol for exchanging ERC-20 
-                                    tokens.
+                                    A decentralised governed automatic liquidity protocol.
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
