@@ -348,14 +348,7 @@ const LandingPage = () => {
                     <ButtonRow>
                             <BlueButton route={links.landing_invest}>Invest</BlueButton>
                             <NormalButton route={links.landing_faq}>FAQ</NormalButton>
-                            <Button
-                                onClick={() => {
-                                    window.open(
-                                        `${links.landing_whitepaper}`,
-                                        '_blank'
-                                    );
-                                }}
-                            >
+                            <Button onClick={() => { window.open( `${links.landing_whitepaper}`, '_blank' ); }} >
                                 Whitepaper
                             </Button>
                     </ButtonRow>
@@ -376,10 +369,7 @@ const LandingPage = () => {
                     <TagLine>Our collectively owned products</TagLine>
                     <Message>Pure Dapps powered by DXdao</Message>
                     <ProductPanelWrapper>
-                        <ProductClickable
-                            href={links.landing_mixeth}
-                            target="_blank"
-                        >
+                        <ProductClickable href={links.landing_mixeth} arget="_blank" >
                             <ProductPanel>
                                 <ProductNameWrapper>
                                     <ProductLogo src="Mix.svg" />
@@ -390,10 +380,7 @@ const LandingPage = () => {
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
-                        <ProductClickable
-                            href={links.landing_omeneth}
-                            target="_blank"
-                        >
+                        <ProductClickable href={links.landing_omeneth} target="_blank" >
                             <ProductPanel>
                                 <ProductNameWrapper>
                                     <ProductLogo src="Omen.svg" />
@@ -408,10 +395,7 @@ const LandingPage = () => {
                         </ProductClickable>
                     </ProductPanelWrapper>
                     <ProductPanelWrapper>
-                        <ProductClickable
-                            href={links.landing_mesaeth}
-                            target="_blank"
-                        >
+                        <ProductClickable href={links.landing_mesaeth} target="_blank" >
                             <ProductPanel>
                                 <ProductNameWrapper>
                                     <ProductLogo src="Mesa.svg" />
@@ -422,10 +406,7 @@ const LandingPage = () => {
                                 </ProductDescription>
                             </ProductPanel>
                         </ProductClickable>
-                        <ProductClickable
-                            href={links.landing_dxswapeth}
-                            target="_blank"
-                        >
+                        <ProductClickable href={links.landing_dxswapeth} target="_blank" >
                             <ProductPanel>
                                 <ProductNameWrapper>
                                     <ProductLogo src="Dxswap.svg" />
@@ -500,14 +481,10 @@ const LandingPage = () => {
                         <JoinActionText>Community chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    <JoinAction
-                        href={links.landing_developer_chat}
-                        target="_blank"
-                    >
+                    <JoinAction href={links.landing_developer_chat} target="_blank" >
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-
                 </JoinActionWrapper>
             </JoinSection>
         </LandingPageWrapper>
