@@ -28,7 +28,7 @@ const BannerSection = styled.div`
     align-items: center;
     margin-top: 84px;
     @media (max-width: 460px) {
-        margin-top: 64px;
+        margin-top: 24px;
     }
 `;
 
@@ -60,9 +60,11 @@ const BannerMessage = styled.div`
     margin-top: 12px;
     @media (max-width: 768px) {
         font-size: 32px;
+        line-height: 46px;
     }
     @media (max-width: 330px) {
         font-size: 24px;
+        line-height: 36px;
     }
 `;
 
