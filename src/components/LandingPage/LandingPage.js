@@ -1,11 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import links from '../../links'
+import links from '../../links';
 
 //////
-const LandingPageWrapper = styled.div`
-`;
+const LandingPageWrapper = styled.div``;
 
 const DXDLogo = styled.img`
     margin-bottom: 8px;
@@ -41,12 +40,10 @@ const TagLine = styled.div`
     text-align: center;
     text-transform: uppercase;
     color: var(--light-header-text);
-    
+
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: pre;
-    
-
 `;
 
 const BannerMessage = styled.div`
@@ -83,7 +80,6 @@ const Description = styled.div`
     color: var(--light-body-text);
     margin-top: 24px;
     max-width: 614px;
-    
 `;
 
 const ButtonRow = styled.div`
@@ -165,9 +161,6 @@ const Message = styled.div`
     letter-spacing: 0.02em;
     color: var(--dark-text);
     margin-top: 16px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: pre;
 `;
 
 const ProductPanelWrapper = styled.div`
@@ -393,7 +386,6 @@ const LandingPage = () => {
     );
 
     return (
-        
         <LandingPageWrapper>
             <BannerSection>
                 <TagLine>We decentralize DeFi</TagLine>
@@ -562,13 +554,17 @@ const LandingPage = () => {
                         </JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    <JoinAction 
-                        href={links.landing_community_chat} 
-                        target="_blank">
+                    <JoinAction
+                        href={links.landing_community_chat}
+                        target="_blank"
+                    >
                         <JoinActionText>Community chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
-                    <JoinAction href={links.landing_developer_chat} target="_blank" >
+                    <JoinAction
+                        href={links.landing_developer_chat}
+                        target="_blank"
+                    >
                         <JoinActionText>Developer chat</JoinActionText>
                         <JoinActionArrow src="RightArrow.svg" />
                     </JoinAction>
