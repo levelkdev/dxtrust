@@ -43,7 +43,7 @@ export default class BlockchainFetchStore {
         web3React: Web3ReactContextInterface,
         accountSwitched?: boolean
     ) {
-        if (web3React.active && isChainIdSupported(web3React.chainId)) {
+        if (web3React && web3React.active && isChainIdSupported(web3React.chainId)) {
             const { library, account, chainId } = web3React;
             const {
                 providerStore,

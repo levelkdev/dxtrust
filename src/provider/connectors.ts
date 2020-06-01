@@ -35,7 +35,6 @@ export const RPC_URLS = {
 };
 
 export const web3ContextNames = {
-  backup: 'BACKUP',
   injected: 'INJECTED',
   metamask: 'METAMASK',
   walletconnect: 'WALLETCONNECT',
@@ -53,12 +52,6 @@ export const isChainIdSupported = (chainId: number): boolean => {
     return supportedChains.indexOf(CHAIN_NAME_BY_ID[chainId]) >= 0;
 };
 
-export const backup = new NetworkConnector({
-    urls: RPC_URLS,
-    defaultChainId: CHAIN_ID_BY_NAME[ETH_NETWORKS[0]],
-    pollingInterval: POLLING_INTERVAL,
-});
-
 export const injected = new InjectedConnector({
     supportedChainIds: supportedChainIds,
 });
@@ -73,7 +66,6 @@ export const walletconnect = new WalletConnectConnector({
 })
 
 export default {
-    backup,
     injected,
     walletconnect
 };

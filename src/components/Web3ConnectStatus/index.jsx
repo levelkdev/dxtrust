@@ -89,16 +89,12 @@ const Web3ConnectStatus = observer((props) => {
         connector,
         error,
     } = providerStore.getActiveWeb3React();
-
-    if (!chainId) {
-        throw new Error('No chain ID specified');
-    }
-  
+    
     let pending = undefined;
     let confirmed = undefined;
     let hasPendingTransactions = false;
 
-    if (account && isChainIdSupported(chainId)) {
+    if (chainId && account && isChainIdSupported(chainId)) {
         pending = transactionStore.getPendingTransactions(account);
         confirmed = transactionStore.getConfirmedTransactions(account);
         hasPendingTransactions = !!pending.length;
@@ -124,7 +120,7 @@ const Web3ConnectStatus = observer((props) => {
             error,
         });
         // Wrong network
-        if (account && !isChainIdSupported(chainId)) {
+        if (account && chainId && !isChainIdSupported(chainId)) {
             return (
                 <WrongNetworkButton onClick={toggleWalletModal}>
                     Wrong Network
