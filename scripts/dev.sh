@@ -49,6 +49,6 @@ npx oz push --network develop
 node scripts/copyContracts.js
 rm src/config/contracts.json ||:
 node scripts/deploy.js -- --network develop
-node scripts/loadDeployments.js
-sleep 3
+REACT_APP_ETH_NETWORKS=develop,mainnet,kovan node scripts/loadDeployments.js
+sleep 1
 FORCE_COLOR=true REACT_APP_ETH_NETWORKS="develop,mainnet,kovan" node scripts/start.js | cat
