@@ -167,7 +167,7 @@ const ProductPanelWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 36px 0px -16px 0px;
+    margin: 36px 0 0 0;
     @media(max-width: 1024px) {
         flex-direction: column;
         align-items: center;
@@ -191,19 +191,18 @@ const ProductPanel = styled.div`
     border-radius: 3px;
     margin: 0px 10px;
     width: 424px;
-    height: 198px;
+    height: 218px;
     max-width: 95vw;
     padding: 32px;
 
     &:hover {
         border: 1px solid var(--lp-border-color-onHover);
     }
-    @media(max-width: 1024px) {
-        margin-top: 24px
+    @media (max-width: 1024px) {
+        margin: 24px 0 0 0;
     }
-    @media(max-width: 460px) {
-        height: auto
-        min-height: 225px
+    @media (max-width: 460px) {
+        height: auto;
     }
 `;
 
@@ -235,7 +234,6 @@ const ProductDescription = styled.div`
     line-height: 27px;
     letter-spacing: 0.03em;
     margin-top: 24px;
-    height: 54px;
     color: var(--light-body-text);
 `;
 
