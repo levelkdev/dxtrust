@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import links from '../../links'
+import links from '../../links';
 
 const FooterWrapper = styled.div`
     display: flex;
@@ -11,6 +11,9 @@ const FooterWrapper = styled.div`
     color: var(--footer-text-gray);
     border-top: 1px solid var(--footer-divider);
     margin-top: 124px;
+    @media (max-width: 768px) {
+        padding: 20px 0px;
+    }
 `;
 
 const LeftFooter = styled.div`
@@ -44,32 +47,30 @@ const FooterDivider = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-    width: 20px;
     padding-left: 8px;
 `;
 
-const FooterLogo = styled.img`
-`;
+const FooterLogo = styled.img``;
 
 const Footer = () => {
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
-                    <a href={ links.footer_version } target="#" > 
-                        Version: { process.env.REACT_APP_VERSION } 
+                    <a href={links.footer_version} target="#">
+                        Version: {process.env.REACT_APP_VERSION}
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    <a href={ links.footer_git_hash} target="#">
-                        Git Hash: { process.env.REACT_APP_GIT_SHA }                     
+                    <a href={links.footer_git_hash} target="#">
+                        Git Hash: {process.env.REACT_APP_GIT_SHA}
                     </a>
                 </FooterItem>
             </LeftFooter>
             <RighFooter>
                 <LogoWrapper>
-                    <a href={ links.footer_twitter } target="#">
+                    <a href={links.footer_twitter} target="#">
                         <FooterLogo src="twitter_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
