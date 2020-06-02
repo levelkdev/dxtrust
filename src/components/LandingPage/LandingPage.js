@@ -89,9 +89,6 @@ const ButtonRow = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 32px;
-    @media (max-width: 460px) {
-        justify-content: center;
-    }
 `;
 
 const Button = styled.div`
@@ -117,7 +114,8 @@ const Button = styled.div`
         cursor: pointer;
     }
     @media (max-width: 460px) {
-        flex-basis: 42%;
+        flex-basis: 47%;
+        margin: 0;
     }
 `;
 
