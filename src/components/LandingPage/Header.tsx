@@ -102,6 +102,7 @@ const MobileMenuItem = styled.a`
     display: flex;
     align-items: center;
     text-decoration: none;
+    font-family: Source Sans Pro;
 `;
 
 const NavBar = ({}) => {
