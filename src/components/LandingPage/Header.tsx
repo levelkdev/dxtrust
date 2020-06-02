@@ -57,7 +57,6 @@ const MenuItem = styled.a`
 `;
 
 const MobileMenu = styled.div`
-    padding: 25px 10px 20px;
     width: 52px;
     height: 42px;
     border: 1px solid rgba(51, 51, 51, 0.2);
