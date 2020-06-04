@@ -169,7 +169,7 @@ const ProductPanelWrapper = styled.div`
     @media(max-width: 1024px) {
         flex-direction: column;
         align-items: center;
-        margin-top: 0
+        margin-top: 0;
         &:nth-of-type(odd) {
             margin-top: 32px
         }
@@ -201,6 +201,7 @@ const ProductPanel = styled.div`
     }
     @media (max-width: 460px) {
         height: auto;
+        margin: 16px 0 0 0;
     }
 `;
 

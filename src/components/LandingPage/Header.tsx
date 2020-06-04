@@ -31,6 +31,15 @@ const RightNav = styled.div`
     align-items: center;
 `;
 
+const DXdaoLogo = styled.img`
+    height: 32px;
+    width: 32px;
+    @media(max-width: 460px) {
+        height: 40px;
+        width: 40px;
+    }
+`;
+
 const LogoContainer = styled.div`
     display: flex;
     align-items: center;
@@ -82,6 +91,7 @@ const MobileNav = styled.div`
     align-items: center;
     justify-content: center;
     height: 180px;
+    border-bottom: 1px solid var(--footer-divider);
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
     ${props => {
         if(props.active) {
@@ -90,6 +100,7 @@ const MobileNav = styled.div`
             return `display: none`;
         }
     }}
+    z-index: 1;
 `;
 
 const MobileMenuItem = styled.a`
@@ -134,7 +145,7 @@ const NavBar = ({}) => {
         <NavWrapper>
             <LeftNav>
                 <NavItem route="/">
-                    <img src="Dxdao_Landing.svg"/>
+                    <DXdaoLogo src="Dxdao_Landing.svg"/>
                 </NavItem>
             </LeftNav>
             <RightNav>
