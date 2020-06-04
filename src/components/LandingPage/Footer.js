@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import links from '../../links';
 
@@ -64,8 +65,12 @@ const Footer = () => {
                 <FooterDivider></FooterDivider>
                 <FooterItem>
                     <a href={links.footer_git_hash} target="#">
-                        Git Hash: {process.env.REACT_APP_GIT_SHA}
+                        Git Hash
                     </a>
+                </FooterItem>
+                <FooterDivider></FooterDivider>
+                <FooterItem>
+                    <Link to="/brand-assets">Brand Assets</Link>
                 </FooterItem>
             </LeftFooter>
             <RighFooter>
