@@ -415,9 +415,9 @@ export default class DatStore {
         let blockLimit = (this.rootStore.configStore.getDATinfo()).fromBlock;
         let tradesToReturn = [];
         
-        if (toBlock > BLOCK_PER_TRADES_FETCH) {
-          blockLimit = toBlock - TRADES_FROM_LAST_BLOCKS;
-          fromBlock = toBlock - BLOCK_PER_TRADES_FETCH;
+        if (toBlock > BLOCKS_PER_TRADES_FETCH) {
+          blockLimit = toBlock - MAX_BLOCKS_FOR_FETCHING_TRADES;
+          fromBlock = toBlock - BLOCKS_PER_TRADES_FETCH;
         }
         
         const self = this;
@@ -431,13 +431,13 @@ export default class DatStore {
           console.debug('Getting events between blocks', fromBlock, toBlock, tradesToReturn.length);
 
           if ((tradesToReturn.length < numToGet) && (fromBlock > blockLimit))
-            if ((fromBlock - BLOCK_PER_TRADES_FETCH) < blockLimit) {
+            if ((fromBlock - BLOCKS_PER_TRADES_FETCH) < blockLimit) {
               fromBlock = blockLimit;
               toBlock = fromBlock;
               await getEventsBetweenBlocks();
             } else {
-              fromBlock = fromBlock - BLOCK_PER_TRADES_FETCH;
-              toBlock = toBlock - BLOCK_PER_TRADES_FETCH;
+              fromBlock = fromBlock - BLOCKS_PER_TRADES_FETCH;
+              toBlock = toBlock - BLOCKS_PER_TRADES_FETCH;
               await getEventsBetweenBlocks();
             }
         }
