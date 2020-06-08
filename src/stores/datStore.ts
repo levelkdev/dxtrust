@@ -84,7 +84,7 @@ export interface SellReturn {
 
 export type TradeEvent = BuyEvent | SellEvent;
 
-export const MAX_BLOCKS_FOR_FETCHING_TRADES = 50000;
+export const MAX_BLOCKS_FOR_FETCHING_TRADES = 200000;
 export const BLOCKS_PER_TRADES_FETCH = 5000;
 
 export default class DatStore {
