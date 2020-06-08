@@ -84,8 +84,8 @@ export interface SellReturn {
 
 export type TradeEvent = BuyEvent | SellEvent;
 
-export const TRADES_FROM_LAST_BLOCKS = 50000;
-export const BLOCK_PER_TRADES_FETCH = 5000;
+export const MAX_BLOCKS_FOR_FETCHING_TRADES = 50000;
+export const BLOCKS_PER_TRADES_FETCH = 5000;
 
 export default class DatStore {
     @observable datParams: DatInfoMap;
@@ -416,10 +416,8 @@ export default class DatStore {
         let tradesToReturn = [];
         
         if (toBlock > BLOCK_PER_TRADES_FETCH) {
-          blockLimit = toBlock - TRADES_FROM_LAST_BLOCKS;     
-        }
-        if (toBlock > BLOCK_PER_TRADES_FETCH) {
-          fromBlock = toBlock - BLOCK_PER_TRADES_FETCH;     
+          blockLimit = toBlock - TRADES_FROM_LAST_BLOCKS;
+          fromBlock = toBlock - BLOCK_PER_TRADES_FETCH;
         }
         
         const self = this;
