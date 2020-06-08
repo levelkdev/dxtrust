@@ -195,7 +195,7 @@ export default class BlockchainFetchStore {
                                     blockNumber
                                 );
 
-                                // CHeck max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
+                                // Check max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
                                 const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, activeDATAddress);
                                 const setEnableDXDState = !this.initialLoadComplete || accountSwitched;
                                 

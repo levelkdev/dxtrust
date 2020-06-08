@@ -347,7 +347,7 @@ const WalletModal = observer(
                         </HeaderRow>
                     ) : (
                         <HeaderRow>
-                            <HoverText>Connect To A Wallet</HoverText>
+                            <HoverText>Connect to a wallet</HoverText>
                         </HeaderRow>
                     )}
                     <ContentWrapper>

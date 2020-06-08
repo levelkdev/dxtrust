@@ -25,6 +25,13 @@ const ChartPanelWrapper = styled.div`
     background-color: white;
     border: 1px solid var(--medium-gray);
     border-radius: 4px;
+    
+    .loader {
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      padding-top:30%;
+    }
 `;
 
 const ChartHeaderWrapper = styled.div`
@@ -106,7 +113,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
 
-  
     const activeDATAddress = configStore.getDXDTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         activeDATAddress
@@ -683,23 +689,31 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         );
     };
 
-    return (
-        <ChartPanelWrapper>
-            {renderChartHeader()}
-            <ChartWrapper>
-                {requiredDataLoaded ? (
-                    <Line
-                        data={data}
-                        options={options}
-                        // width={1000}
-                        // height={250}
-                    />
-                ) : (
-                    <React.Fragment />
-                )}
-            </ChartWrapper>
-        </ChartPanelWrapper>
-    );
+    if (requiredDataLoaded)
+      return (
+          <ChartPanelWrapper>
+              {renderChartHeader()}
+              <ChartWrapper>
+                  {requiredDataLoaded ? (
+                      <Line
+                          data={data}
+                          options={options}
+                          // width={1000}
+                          // height={250}
+                      />
+                  ) : (
+                      <React.Fragment />
+                  )}
+              </ChartWrapper>
+          </ChartPanelWrapper>
+      );
+    else return(
+      <ChartPanelWrapper>
+          <div className="loader">
+              Loading...
+          </div>
+      </ChartPanelWrapper>
+    )
 });
 
 export default BondingCurveChart;
