@@ -6,6 +6,8 @@ import { useEagerConnect, useInactiveListener } from 'provider/providerHooks';
 import { useStores } from 'contexts/storesContext';
 import { useInterval } from 'utils/helperHooks';
 
+const BLOKCHAIN_FETCH_INTERVAL = 3000;
+
 const MessageWrapper = styled.div`
     display: flex;
     align-items: center;
@@ -41,71 +43,16 @@ const Web3ReactManager = ({ children }) => {
     // try to eagerly connect to an injected provider, if it exists and has granted access already
     const triedEager = useEagerConnect();
 
-    // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
-    // TODO think about not doing this at all
-    useEffect(() => {
-        console.debug(
-            '[Web3ReactManager] Activate injected if conditions are met',
-            {
-                triedEager,
-                networkActive,
-                networkError,
-                activate:
-                    triedEager &&
-                    !networkActive &&
-                    !networkError
-            }
-        );
-        if (!networkActive && !networkError) {
-            // activateNetwork(injected);
-            console.debug('[Web3ReactManager] Backup activation started');
-        }
-    }, [
-        triedEager,
-        networkActive,
-        networkError,
-        activateNetwork
-    ]);
-
-    // 'pause' the network connector if we're ever connected to an account and it's active
-    useEffect(() => {
-        console.debug(
-            '[Web3ReactManager] Pause injected if injected & injected both active',
-            {
-                networkActive,
-                pause: networkActive,
-            }
-        );
-        if (networkActive) {
-            console.debug('[Web3ReactManager] Pause injected provider');
-            // injected.pause();
-        }
-    }, [networkActive]);
-
-    // 'resume' the network connector if we're ever not connected to an account and it's active
-    useEffect(() => {
-        console.debug(
-            '[Web3ReactManager] Resume injected if injected not active & injected is active',
-            {
-                networkActive,
-                resume: networkActive,
-            }
-        );
-        if (networkActive) {
-            console.debug('[Web3ReactManager] Resume injected provider');
-            // injected.resume();
-        }
-    }, [networkActive]);
-
     // when there's no account connected, react to logins (broadly speaking) on the injected provider, if it exists
     useInactiveListener(!triedEager);
 
-    //Fetch user blockchain data on an interval using current params
+    // Fetch user blockchain data on an interval using current params
+    blockchainFetchStore.setFetchLoop(web3React, true)
     useInterval(
         () => blockchainFetchStore.setFetchLoop(web3React, false),
-        1000
+        BLOKCHAIN_FETCH_INTERVAL
     );
-
+    // Fetch when account or web3Provider changes
     useEffect(() => {
         if (
             web3React.account &&
@@ -118,12 +65,6 @@ const Web3ReactManager = ({ children }) => {
             blockchainFetchStore.setFetchLoop(web3React, true);
         }
     }, [web3React, providerStore.activeAccount, blockchainFetchStore]);
-
-    // on page load, do nothing until we've tried to connect to the injected connector
-    if (!triedEager) {
-        console.debug('[Web3ReactManager] Render: Eager load not tried');
-        return null;
-    }
 
     const BlurWrapper = styled.div`
         filter: blur(1px);
@@ -150,6 +91,12 @@ const Web3ReactManager = ({ children }) => {
       }
     `;
 
+    // on page load, do nothing until we've tried to connect to the injected connector
+    if (!triedEager) {
+        console.debug('[Web3ReactManager] Render: Eager load not tried');
+        return null;
+    }
+
     if (networkError) {
       console.debug('[Web3ReactManager] Render: Network error, showing modal error.');
       return (
@@ -162,12 +109,15 @@ const Web3ReactManager = ({ children }) => {
             </BlurWrapper>
           </div>
         );
-    } else if(!networkActive) {
-        console.debug('[Web3ReactManager] Render: No active network, showing connect modal');
-        return <div>{children[0]} <BlurWrapper> {children[1]} {children[2 ]} </BlurWrapper></div>; }
+    // If network is not active show blur content
+  } else if(!networkActive) {
+        console.debug('[Web3ReactManager] Render: No active network');
+        return children;
+    } else {
+      console.debug( '[Web3ReactManager] Render: Active network, render children', { networkActive } );
+      return children;
+    }
 
-    console.debug( '[Web3ReactManager] Render: Active network, render children', { networkActive } );
-    return children;
 };
 
 export default Web3ReactManager;

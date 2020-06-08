@@ -8,11 +8,28 @@ import { formatBalance, formatNumberValue } from '../utils/token';
 const TradingHistoryWrapper = styled.div`
     width: 100%;
     background: white;
-    padding-bottom: 24px;
+    padding: 20px 0px;
     border: 1px solid var(--medium-gray);
     margin-top: 24px;
     font-weight: 400;
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    
+    .loader {
+      text-align: center;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 18px;
+      color: #BDBDBD;
+      
+      img {
+        margin-bottom: 10px;
+      }
+    }
 `;
 
 const TradeHistoryTitle = styled.div`
@@ -84,62 +101,74 @@ const TradingHistory = observer(() => {
         recentTrades = tradingStore.recentTrades;
     }
 
-    return (
-        <TradingHistoryWrapper>
-            <TradeHistoryTitle>Trade History</TradeHistoryTitle>
-            <TableHeadersWrapper>
-                <TableHeader width="15.5%" className="align-left">
-                    Type
-                </TableHeader>
-                <TableHeader width="15.5%">
-                    Price {configStore.getCollateralType()}
-                </TableHeader>
-                <TableHeader>Amount DXD</TableHeader>
-                <TableHeader>
-                    Total {configStore.getCollateralType()}
-                </TableHeader>
-                <TableHeader className="align-right">Time</TableHeader>
-            </TableHeadersWrapper>
-            <TableRowsWrapper>
-            {recentTrades.map((trade, i) =>
-              (trade && trade.type) ? (
-                <TableRow key={"tradeRow"+i}>
-                    <TableCell
-                        width="15.5%"
-                        color={
-                            trade.type === EventType.Buy
-                                ? 'var(--blue-text)'
-                                : 'var(--red-text)'
-                        }
-                        align="left"
-                        weight='500'
-                    >
-                        {trade.type}
-                    </TableCell>
-                    <TableCell width="15.5%">
-                        {formatNumberValue(trade.price)}
-                    </TableCell>
-                    <TableCell>{formatBalance(trade.amount)}</TableCell>
-                    <TableCell>
-                        {trade.totalPaid
-                            ? formatBalance(trade.totalPaid)
-                            : formatBalance(trade.totalReceived)}
-                    </TableCell>
-                    <TableCell>
-                        <a
-                            href={trade.hash}
-                            target="#"
-                            className="turquois-text"
-                        >
-                            {trade.blockTime}
-                        </a>
-                    </TableCell>
-                </TableRow>)
-              : (<div/>)
-            )}
-            </TableRowsWrapper>
-        </TradingHistoryWrapper>
-    );
+    if (recentTrades.length == 0) {
+      return (
+          <TradingHistoryWrapper>
+            <div className="loader">
+            <img src={require("../assets/images/bolt.svg")} />
+                <br/>
+                Connect to view Trade History
+            </div>
+          </TradingHistoryWrapper>
+      )
+    } else {
+      return (
+          <TradingHistoryWrapper>
+              <TradeHistoryTitle>Trade History</TradeHistoryTitle>
+              <TableHeadersWrapper>
+                  <TableHeader width="15.5%" className="align-left">
+                      Type
+                  </TableHeader>
+                  <TableHeader width="15.5%">
+                      Price {configStore.getCollateralType()}
+                  </TableHeader>
+                  <TableHeader>Amount DXD</TableHeader>
+                  <TableHeader>
+                      Total {configStore.getCollateralType()}
+                  </TableHeader>
+                  <TableHeader className="align-right">Time</TableHeader>
+              </TableHeadersWrapper>
+              <TableRowsWrapper>
+              {recentTrades.map((trade, i) =>
+                (trade && trade.type) ? (
+                  <TableRow key={"tradeRow"+i}>
+                      <TableCell
+                          width="15.5%"
+                          color={
+                              trade.type === EventType.Buy
+                                  ? 'var(--blue-text)'
+                                  : 'var(--red-text)'
+                          }
+                          align="left"
+                          weight='500'
+                      >
+                          {trade.type}
+                      </TableCell>
+                      <TableCell width="15.5%">
+                          {formatNumberValue(trade.price)}
+                      </TableCell>
+                      <TableCell>{formatBalance(trade.amount)}</TableCell>
+                      <TableCell>
+                          {trade.totalPaid
+                              ? formatBalance(trade.totalPaid)
+                              : formatBalance(trade.totalReceived)}
+                      </TableCell>
+                      <TableCell>
+                          <a
+                              href={trade.hash}
+                              target="#"
+                              className="turquois-text"
+                          >
+                              {trade.blockTime}
+                          </a>
+                      </TableCell>
+                  </TableRow>)
+                : (<div/>)
+              )}
+              </TableRowsWrapper>
+          </TradingHistoryWrapper>
+      );
+    }
 });
 
 export default TradingHistory;
