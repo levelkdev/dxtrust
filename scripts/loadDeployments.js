@@ -51,10 +51,11 @@ async function loadDeployment(network) {
 } 
 
 async function main() {
-  process.env.REACT_APP_ETH_NETWORKS.split(',').forEach(async (network) => {
-    if (network == 'mainnet' || network == 'ropsten' || network == 'kovan')
-      await loadDeployment(network);
-  });
+  const networks = process.env.REACT_APP_ETH_NETWORKS.split(',');
+  for (var i = 0; i < networks.length; i++) {
+    if (networks[i] == 'mainnet' || networks[i] == 'ropsten' || networks[i] == 'kovan')
+      await loadDeployment(networks[i]);
+  }
 };
 
 main();

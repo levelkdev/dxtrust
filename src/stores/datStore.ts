@@ -84,7 +84,8 @@ export interface SellReturn {
 
 export type TradeEvent = BuyEvent | SellEvent;
 
-export const TRADES_FROM_LAST_BLOCKS = 1000;
+export const MAX_BLOCKS_FOR_FETCHING_TRADES = 200000;
+export const BLOCKS_PER_TRADES_FETCH = 5000;
 
 export default class DatStore {
     @observable datParams: DatInfoMap;
@@ -243,12 +244,13 @@ export default class DatStore {
     async fetchBuyEvents(
         datAddress: string,
         numToGet: number,
-        fromBlock: number
+        fromBlock: number,
+        toBlock: number = 0
     ): Promise<TradeEvent[]> {
         const dat = this.getDatContract(datAddress);
         let buyEvents = await dat.getPastEvents('Buy', {
             fromBlock: fromBlock,
-            toBlock: 'latest',
+            toBlock: toBlock == 0 ? 'latest' : toBlock
         });
 
         buyEvents.reverse();
@@ -266,12 +268,13 @@ export default class DatStore {
     async fetchSellEvents(
         datAddress: string,
         numToGet: number,
-        fromBlock: number
+        fromBlock: number,
+        toBlock: number = 0
     ): Promise<TradeEvent[]> {
         const dat = this.getDatContract(datAddress);
         let sellEvents = await dat.getPastEvents('Sell', {
             fromBlock: fromBlock,
-            toBlock: 'latest',
+            toBlock: toBlock == 0 ? 'latest' : toBlock
         });
 
         sellEvents.reverse();
@@ -407,19 +410,48 @@ export default class DatStore {
         numToGet: number
     ): Promise<TradeEvent[]> {
         const { library } = this.rootStore.providerStore.getActiveWeb3React();
+        let toBlock = await library.eth.getBlockNumber();
         let fromBlock = (this.rootStore.configStore.getDATinfo()).fromBlock;
-        if (fromBlock > TRADES_FROM_LAST_BLOCKS)
-          fromBlock = (await library.eth.getBlockNumber()) - TRADES_FROM_LAST_BLOCKS;
-          
-        const buyEvents = await this.fetchBuyEvents(datAddress, numToGet, fromBlock);
-        const sellEvents = await this.fetchSellEvents(datAddress, numToGet, fromBlock);
+        let blockLimit = (this.rootStore.configStore.getDATinfo()).fromBlock;
+        let tradesToReturn = [];
+        
+        if (toBlock > BLOCKS_PER_TRADES_FETCH) {
+          blockLimit = toBlock - MAX_BLOCKS_FOR_FETCHING_TRADES;
+          fromBlock = toBlock - BLOCKS_PER_TRADES_FETCH;
+        }
+        
+        const self = this;
+        async function getEventsBetweenBlocks() {
+          const buyEvents = await self.fetchBuyEvents(datAddress, numToGet, fromBlock, toBlock);
+          const sellEvents = await self.fetchSellEvents(datAddress, numToGet, fromBlock, toBlock);
+          let combinedTrades: any[] = buyEvents.concat(sellEvents);
+        
+          tradesToReturn = tradesToReturn.concat(combinedTrades);
 
-        let combinedTrades: any[] = buyEvents.concat(sellEvents);
-        combinedTrades = combinedTrades.sort(function (a, b) {
-            return b.blockNumber - a.blockNumber;
+          console.debug('Getting events between blocks', fromBlock, toBlock, tradesToReturn.length);
+
+          if ((tradesToReturn.length < numToGet) && (fromBlock > blockLimit))
+            if ((fromBlock - BLOCKS_PER_TRADES_FETCH) < blockLimit) {
+              fromBlock = blockLimit;
+              toBlock = fromBlock;
+              await getEventsBetweenBlocks();
+            } else {
+              fromBlock = fromBlock - BLOCKS_PER_TRADES_FETCH;
+              toBlock = toBlock - BLOCKS_PER_TRADES_FETCH;
+              await getEventsBetweenBlocks();
+            }
+        }
+        
+        await getEventsBetweenBlocks();
+        
+        if (tradesToReturn.length >= numToGet) 
+          tradesToReturn.slice(0, numToGet);
+        
+        tradesToReturn = tradesToReturn.sort(function (a, b) {
+          return b.blockNumber - a.blockNumber;
         });
-
-        return combinedTrades.slice(0, numToGet);
+        
+        return tradesToReturn;
     }
 
     // TODO: Return status on failure
