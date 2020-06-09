@@ -25,6 +25,7 @@ const TradingHistoryWrapper = styled.div`
       font-size: 15px;
       line-height: 18px;
       color: #BDBDBD;
+      padding: 44px 0px;
       
       img {
         margin-bottom: 10px;
