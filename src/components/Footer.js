@@ -70,12 +70,11 @@ const Footer = () => {
                 <FooterItem>
                     <a
                         href={
-                            'https://github.com/levelkdev/BC-DAPP/tree/' +
-                            process.env.REACT_APP_GIT_SHA
+                          'https://github.com/levelkdev/BC-DAPP/tree/v0.2.2'
                         }
                         target="#"
                     >
-                        Version 0.2.1
+                        Version 0.2.2
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
