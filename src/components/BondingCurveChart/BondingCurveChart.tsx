@@ -25,6 +25,23 @@ const ChartPanelWrapper = styled.div`
     background-color: white;
     border: 1px solid var(--medium-gray);
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    
+    .loader {
+      text-align: center;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 18px;
+      color: #BDBDBD;
+      
+      img {
+        margin-bottom: 10px;
+      }
+    }
 `;
 
 const ChartHeaderWrapper = styled.div`
@@ -106,7 +123,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
 
-  
     const activeDATAddress = configStore.getDXDTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         activeDATAddress
@@ -683,23 +699,33 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         );
     };
 
-    return (
-        <ChartPanelWrapper>
-            {renderChartHeader()}
-            <ChartWrapper>
-                {requiredDataLoaded ? (
-                    <Line
-                        data={data}
-                        options={options}
-                        // width={1000}
-                        // height={250}
-                    />
-                ) : (
-                    <React.Fragment />
-                )}
-            </ChartWrapper>
-        </ChartPanelWrapper>
-    );
+    if (requiredDataLoaded)
+      return (
+          <ChartPanelWrapper>
+              {renderChartHeader()}
+              <ChartWrapper>
+                  {requiredDataLoaded ? (
+                      <Line
+                          data={data}
+                          options={options}
+                          // width={1000}
+                          // height={250}
+                      />
+                  ) : (
+                      <React.Fragment />
+                  )}
+              </ChartWrapper>
+          </ChartPanelWrapper>
+      );
+    else return(
+      <ChartPanelWrapper>
+          <div className="loader">
+          <img src={require("../../assets/images/bolt.svg")} />
+              <br/>
+              Connect to view Price Chart
+          </div>
+      </ChartPanelWrapper>
+    )
 });
 
 export default BondingCurveChart;

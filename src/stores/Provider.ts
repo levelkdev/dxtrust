@@ -138,17 +138,9 @@ export default class ProviderStore {
     }
 
     getActiveWeb3React(): Web3ReactContextInterface {
-        const contextBackup = this.web3Contexts[web3ContextNames.backup];
         const contextInjected = this.web3Contexts[web3ContextNames.injected];
 
-        return contextInjected && contextInjected.active &&
-            isChainIdSupported(contextInjected.chainId)
-            ? contextInjected
-            : contextBackup;
-    }
-
-    getBackupWeb3React(): Web3ReactContextInterface {
-        return this.web3Contexts[web3ContextNames.backup];;
+        return contextInjected;
     }
 
     getWeb3React(name): Web3ReactContextInterface {
