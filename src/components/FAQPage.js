@@ -58,25 +58,20 @@ const FAQPage = () => {
             <BannerMessage>DXD Distribution and Details</BannerMessage>
             <Description>
                 <pre>
-                The DXdao is issuing DXD token through a continuous fundraiser. The DXD token is a brand new token. Purchasers of DXD are funding the efforts of the DXdao in exchange for a right to future cash flows.
-                DXD tokens will be sold to the public in exchange for ETH according to a bonding curve. The curve slope is linear and positive, so each successive DXD is sold for more than the previous. DXD can also be sold back into the curve, although at a lower rate than purchased. The slope of the bonding curve was specified such that $300,000 USD worth of ETH would be invested once 12,000 DXD was issued.
+                The DXdao is issuing DXD token through a continuous fundraiser. The DXD token is a brand new token. Purchasers of DXD are funding the efforts of the DXdao and receiving a stake in its future success.
+                DXD tokens will be sold to the public in exchange for ETH according to a bonding curve. The curve slope is linear and positive, so each successive DXD is sold for more than the previous. DXD can also be sold back into the curve, although at a lower rate than purchased.
                 <br/>
                 <br/>
-                The DXdao itself will receive an initial pre-mint of 100,000 DXD tokens. Thus, 12,000 DXD sold would represent just under 11% of the DXD supply. The 100,000 DXD issued to the DXdao will vest monthly over 3 years (i.e. 1/36th = ~2775 DXD will be vested each month for 36 months).
-                Before the curve turns into a positively sloping function, there is a flat section of the curve where the first $50,000 raised will be for DXD sold at a lower, constant price. This $50,000 period also acts as a 'kickstarter', wherein any amount invested can be withdrawn before the $50,000 is reached.
-                (All USD denominations above are in ETH terms using current prices.)
+                The DXdao itself received an initial pre-mint of 100,000 DXD tokens. The 100,000 DXD issued to the DXdao is vesting continuously over 3 years (i.e. 1/36th = ~2775 DXD will be vested each month for 36 months).
                 </pre>
             </Description>
             <BannerMessage>Reserve percentage</BannerMessage>
             <Description>
-                A portion of the ETH used to buy DXD is held in reserve to facilitate sell orders of DXD. The ETH is effectively placed into the curve, providing a liquidity guarantee for those who want to sell DXD.
-                The portion of invested capital placed in reserve is set at 10%. This is because investors in DXD want their money to be used to grow the DXdao, not sit in reserve. Thus it is more of a liquidity backstop.
-
+                90% of funds invested is sent to the DXdao and used to grow its ventures.  The rest is deposited into the bonding curve's buyback reserve.  The buyback reserve supports redemption of DXD for ETH, but initially is a very small percentage of the buy price, and so it is unlikely to make sense to sell into the bonding curve for some time.
             </Description>
-            <BannerMessage>Dividend percentage</BannerMessage>
+            <BannerMessage>How DXdao's revenues are connected with the bonding curve</BannerMessage>
             <Description>
-                A portion of DXdao revenue is allocated to the reserve, increasing the value of all outstanding bonding curve tokens.
-                This is currently set at 10% of revenue, for a minimum of 5 years. The revenue allocation here can be increased at a later date, but never decreased.
+                Revenues generated from the Dxdao’s product will be routed to the curve. The curve is programmed to split the revenues such that 10% goes towards the buyback reserve to incentivize token burn, and 90% goes to the treasury.
             </Description>
         </section>
     );
