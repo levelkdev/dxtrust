@@ -11,6 +11,9 @@
         "test": "node scripts/test.js",
         "loadDeployments": "node scripts/loadDeployments.js"
     },
+    "engines": {
+        "node": "10.16.3"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/levelkdev/BC-DAPP.git"
