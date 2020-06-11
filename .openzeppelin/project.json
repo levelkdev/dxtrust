@@ -6,7 +6,7 @@
     "TokenVesting": "TokenVesting"
   },
   "dependencies": {},
-  "name": "BC-DAPP",
+  "name": "openraise-dapp",
   "version": "0.1.0",
   "compiler": {
     "compilerSettings": {

@@ -1,5 +1,5 @@
 {
-    "name": "BC-DAPP",
+    "name": "openraise-dapp",
     "version": "0.2.2",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
@@ -13,10 +13,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/levelkdev/BC-DAPP.git"
+        "url": "git+https://github.com/levelkdev/openraise-dapp.git"
     },
     "bugs": {
-        "url": "https://github.com/levelkdev/BC-DAPP/issues"
+        "url": "https://github.com/levelkdev/openraise-dapp/issues"
     },
     "homepage": "./",
     "eslintConfig": {

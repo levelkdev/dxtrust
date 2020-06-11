@@ -23,12 +23,12 @@ async function loadDeployment(network) {
   let contractsDeployed = {'contracts': {}};
   if (fs.existsSync('src/config/contracts.json'))
     contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
-  const datContract = DATContract.at(proxies['BC-DAPP/DecentralizedAutonomousTrust'][0].address);
+  const datContract = DATContract.at(proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address);
   const fromBlock = (network == 'mainnet') ? 10012634 : (network == 'kovan') ? 18000000 : 0;
   contractsDeployed.contracts[network] = {
-    multicall: proxies['BC-DAPP/Multicall'][0].address,
-    DAT: proxies['BC-DAPP/DecentralizedAutonomousTrust'][0].address,
-    implementationAddress: proxies['BC-DAPP/DecentralizedAutonomousTrust'][0].implementation,
+    multicall: proxies['openraise-dapp/Multicall'][0].address,
+    DAT: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address,
+    implementationAddress: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].implementation,
     collateral: zeroAddress,
     DATinfo: {
       fromBlock: fromBlock,
