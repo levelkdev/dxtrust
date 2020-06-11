@@ -94,21 +94,33 @@ const TableCellType = styled(TableCell)`
 
 const TradingHistory = observer(() => {
     const {
-        root: { tradingStore, configStore },
+        root: { tradingStore, configStore, providerStore },
     } = useStores();
 
     let recentTrades = [];
     if (tradingStore.recentTradesSet) {
         recentTrades = tradingStore.recentTrades;
     }
+    
+    const providerActive = providerStore.getActiveWeb3React().active;
 
-    if (recentTrades.length == 0) {
+    if (!providerActive) {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
             <img src={require("../assets/images/bolt.svg")} />
                 <br/>
                 Connect to view Trade History
+            </div>
+          </TradingHistoryWrapper>
+      )
+    } else if (recentTrades.length == 0) {
+      return (
+          <TradingHistoryWrapper>
+            <div className="loader">
+            <img src={require("../assets/images/bolt.svg")} />
+                <br/>
+                Loading for last trades..
             </div>
           </TradingHistoryWrapper>
       )

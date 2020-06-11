@@ -111,7 +111,7 @@ const gridLineColor = '#EAECF7';
 
 const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const {
-        root: { tradingStore, tokenStore, configStore, datStore },
+        root: { tradingStore, tokenStore, configStore, datStore, providerStore },
     } = useStores();
 
     let buySlopeNum: BigNumber,
@@ -122,7 +122,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     currentBuyPrice: BigNumber,
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
-
+    
     const activeDATAddress = configStore.getDXDTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         activeDATAddress
@@ -133,6 +133,8 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const currrentDatState = datStore.getState(activeDATAddress);
     const reserveBalance: BigNumber = datStore.getReserveBalance(activeDATAddress);
     const isBuy = tradingStore.activeTab;
+    
+    const providerActive = providerStore.getActiveWeb3React().active;
 
     const requiredDataLoaded =
         staticParamsLoaded &&
@@ -717,12 +719,22 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
               </ChartWrapper>
           </ChartPanelWrapper>
       );
-    else return(
+    else if (!providerActive) {
+    return(
       <ChartPanelWrapper>
           <div className="loader">
           <img src={require("../../assets/images/bolt.svg")} />
               <br/>
               Connect to view Price Chart
+          </div>
+      </ChartPanelWrapper>
+    )
+    } else return(
+      <ChartPanelWrapper>
+          <div className="loader">
+          <img src={require("../../assets/images/bolt.svg")} />
+              <br/>
+              Loading chart..
           </div>
       </ChartPanelWrapper>
     )
