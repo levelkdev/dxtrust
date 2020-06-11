@@ -1,6 +1,6 @@
 {
     "name": "BC-DAPP",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
         "start": "./scripts/start.sh",
@@ -15,7 +15,6 @@
         "type": "git",
         "url": "git+https://github.com/levelkdev/BC-DAPP.git"
     },
-    "authors": "John Kelleher <john.kelleher@levelk.io>, Thomas Pulber <corkus@pm.me>, Thomas Spofford <tspofford@pm.me>, Augusto Lemble <me@augustol.com>",
     "bugs": {
         "url": "https://github.com/levelkdev/BC-DAPP/issues"
     },
