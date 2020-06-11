@@ -489,7 +489,7 @@
   },
   "solidityLibs": {},
   "proxies": {
-    "BC-DAPP/DecentralizedAutonomousTrust": [
+    "openraise-dapp/DecentralizedAutonomousTrust": [
       {
         "address": "0xDd25BaE0659fC06a8d00CD06C7f5A98D71bfB715",
         "version": "0.1.0",
@@ -498,14 +498,14 @@
         "kind": "Upgradeable"
       }
     ],
-    "BC-DAPP/Multicall": [
+    "openraise-dapp/Multicall": [
       {
         "address": "0xc58930e7d81E97D3B82B324eF59e8AfF4bD723BB",
         "kind": "NonProxy",
         "bytecodeHash": "daa7a021eecb7d6e3a847506aa7589e5a9bbdabd6fe91c538a1d9fb37b7fd577"
       }
     ],
-    "BC-DAPP/TokenVesting": [
+    "openraise-dapp/TokenVesting": [
       {
         "address": "0x26A20D2585fbFb8D33c766a0E19555A666D42128",
         "kind": "NonProxy",
