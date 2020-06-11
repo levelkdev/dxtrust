@@ -7,7 +7,7 @@
         "dev": "./scripts/dev.sh",
         "deploy": "node scripts/deploy.js",
         "deploy-contracts": "node scripts/deployContracts.js",
-        "build": "node scripts/build.js",
+        "build": "rm -rif build && node scripts/build.js",
         "test": "node scripts/test.js",
         "loadDeployments": "node scripts/loadDeployments.js"
     },
@@ -148,6 +148,7 @@
         "ethereumjs-util": "^7.0.2",
         "ethers": "^4.0.45",
         "file-loader": "6.0.0",
+        "git-revision-webpack-plugin": "^3.0.6",
         "hdkey": "^2.0.1",
         "html-webpack-plugin": "4.3.0",
         "identity-obj-proxy": "3.0.0",
