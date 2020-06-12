@@ -39,6 +39,11 @@ const imageInlineSizeLimit = parseInt(
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
 
+// Get short commit hash from git
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const gitRevisionPlugin = new GitRevisionPlugin()
+const shortCommitHash = gitRevisionPlugin.commithash().substring(0,8);
+
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
@@ -177,13 +182,13 @@ module.exports = function(webpackEnv) {
             // There will be one main bundle, and one file per asynchronous chunk.
             // In development, it does not produce real files.
             filename: isEnvProduction
-                ? 'static/js/[name].js'
+                ? 'static/js/[name].'+shortCommitHash+'.js'
                 : isEnvDevelopment && 'static/js/bundle.js',
             // TODO: remove this when upgrading to webpack 5
             futureEmitAssets: true,
             // There are also additional JS chunk files if you use code splitting.
             chunkFilename: isEnvProduction
-                ? 'static/js/[name].chunk.js'
+                ? 'static/js/[name].'+shortCommitHash+'.chunk.js'
                 : isEnvDevelopment && 'static/js/[name].chunk.js',
             // We inferred the "public path" (such as / or /my-project) from homepage.
             // We use "/" in development.
@@ -208,6 +213,7 @@ module.exports = function(webpackEnv) {
         },
         optimization: {
             minimize: isEnvProduction,
+            moduleIds: 'hashed',
             minimizer: [
                 // This is only used in production mode
                 new TerserPlugin({
@@ -602,7 +608,7 @@ module.exports = function(webpackEnv) {
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional
-                    filename: 'static/css/[name].css',
+                    filename: 'static/css/[name].'+shortCommitHash+'.css',
                     chunkFilename:
                         'static/css/[name].chunk.css',
                 }),

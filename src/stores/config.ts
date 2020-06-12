@@ -16,7 +16,7 @@ export default class ConfigStore {
     
     getActiveChainName() {
       const activeWeb3 = this.rootStore.providerStore.getActiveWeb3React();
-      return CHAIN_NAME_BY_ID[(activeWeb3) ? activeWeb3.chainId : DEFAULT_ETH_CHAIN_ID];
+      return CHAIN_NAME_BY_ID[(activeWeb3 && activeWeb3.chainId) ? activeWeb3.chainId : DEFAULT_ETH_CHAIN_ID];
     }
     
     getTokenAddress(tokenType) {

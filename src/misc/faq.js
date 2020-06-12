@@ -3,11 +3,11 @@ import React from "react";
 const FAQ = [
   {
     question: "What revenues does the DXdao have?",
-    answer: "The DXdao recently launched Mesa.eth.link, a front end to the Gnosis Protocol DEX, has plans to imminently launch a prediction market platform, and has started work on a privacy-centric DeFi dashboard. All of these DeFi products offer the potential for fee-based revenue to the DXdao. Its treasury holds various capital assets, some of which garner revenues or rewards from other projects or DAOs."
+    answer: "The DXdao recently launched Mesa.eth.link, a front end to the Gnosis Protocol DEX, has plans to imminently launch a prediction market platform, and has started work on a privacy-centric DeFi dashboard. All of these DeFi products offer the potential for fee-based revenue to the DXdao. Its treasury holds various assets, some of which garner revenues or rewards from other projects or DAOs."
   },
   {
     question: "What does the DXdao currently own or operate?",
-    answer: "The DXdao is owner of 8 ENS domains (Mesa.eth, DXdao.eth, DXoasis.eth, DutchX.eth, DXinsurance.eth, DXoracle.eth, DXwallet.eth, DXfeeds.eth). It also holds cryptocurrencies worth more than $10,000 USD, including GEN (DAOstack’s native token), ETH, DMM and more. The DXdao is operating the open source trading interface https://Mesa.eth.link for the Gnosis Protocol." 
+    answer: "The DXdao is owner of 8 ENS domains (Mesa.eth, DXdao.eth, DXoasis.eth, DutchX.eth, DXinsurance.eth, DXoracle.eth, DXwallet.eth, DXfeeds.eth). It also holds cryptocurrencies worth in total more than $1,000,000 USD, including ETH, DXD, GEN (DAOstack’s native token), DMM and more. The DXdao is operating the open source trading interface https://Mesa.eth.link for the Gnosis Protocol." 
   },
   {
     question: "Who owns the DXdao?",
@@ -19,7 +19,7 @@ const FAQ = [
   },
   {
     question: "How does one become a member of the DXdao?",
-    answer: "Becoming a member of the DXdao requires having reputation granted to you by the DXdao itself. This is done by a proposal which is put to a vote. For example: a potential member requests 1% of reputation (to their Ethereum address) for work completed, or value added in any way. DXdao members can then cast on-chain votes weighted by reputation. If the proposal passes, the new member is automatically granted their reputation."
+    answer: "Becoming a member of the DXdao requires having reputation granted to you by the DXdao itself. This is done by a proposal which is put to a vote. For example: a potential member requests 0.25% of reputation (to their Ethereum address) for work completed, or value added in some way. DXdao members can then cast on-chain votes weighted by reputation. If the proposal passes, the new member is automatically granted their reputation."
   },
   {
     question: "How does decision making happen in the DXdao?",
@@ -27,7 +27,7 @@ const FAQ = [
   },
   {
     question: "What is the difference between DXD and reputation?",
-    answer: <pre>DXD is the economic token of the DXdao. It is a transferable erc-20 token which grants its holders a right to the revenue of the DXdao, as well as certain privileges or premier services on DXdao-owned products. Reputation is the governance mechanism that controls the DXdao. It is non-transferrable and holders have a right - and implicit duty - to govern and direct the collective.
+    answer: <pre>DXD is a transferable erc-20 token issued by the DXdao. It can appreciate in value through the continuous token model as a portion of revenues get deposited into the bonding curve's buyback reserve.
       <br/>
       <br/>
       DXD and reputation holders need not overlap, but it is likely some part of each stakeholder group will hold both to more tightly couple their interests. As holding DXD is the more passive path - and the one tied to economic success - it will likely be the more widely owned stake in the system.

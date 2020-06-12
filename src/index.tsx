@@ -9,23 +9,20 @@ import ThemeProvider, { GlobalStyle } from './theme';
 import Web3 from 'web3';
 
 const Web3ProviderInjected = createWeb3ReactRoot(web3ContextNames.injected);
-const Web3ProviderBackup = createWeb3ReactRoot(web3ContextNames.backup);
 
 function getLibrary(provider) {
     return new Web3(provider);
 }
 
 const Root = (
-    <Web3ProviderBackup getLibrary={getLibrary}>
-        <Web3ProviderInjected getLibrary={getLibrary}>
-            <ThemeProvider>
-                <>
-                    <GlobalStyle />
-                    <App />
-                </>
-            </ThemeProvider>
-        </Web3ProviderInjected>
-    </Web3ProviderBackup>
+      <Web3ProviderInjected getLibrary={getLibrary}>
+          <ThemeProvider>
+              <>
+                  <GlobalStyle />
+                  <App />
+              </>
+          </ThemeProvider>
+      </Web3ProviderInjected>
 );
 ReactDOM.render(Root, document.getElementById('root'));
 

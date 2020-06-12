@@ -98,7 +98,7 @@ module.exports = async function deployDAT(web3, options, useProxy = true, saveOz
   if (saveOzProxies) {
     const ozDevelopJSON = await getOzDevelopJSON();
     const proxies = { 
-      'BC-DAPP/DecentralizedAutonomousTrust': [ 
+      'openraise-dapp/DecentralizedAutonomousTrust': [ 
         { 
           address: contracts.dat.address,
           version: ozDevelopJSON.version,
@@ -107,7 +107,7 @@ module.exports = async function deployDAT(web3, options, useProxy = true, saveOz
           kind: 'Upgradeable'
         }
       ],
-      'BC-DAPP/Multicall': [
+      'openraise-dapp/Multicall': [
         {
           address: contracts.multicall.address,
           kind: 'NonProxy',

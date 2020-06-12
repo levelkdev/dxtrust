@@ -1,14 +1,11 @@
-# BC-DAPP
+# OpenRaise
 
-The **Bonding Curve Decentralized Application** will be used to raise funds to support the development of decentralized finance focused applications governed and maintained by the [DXdao](https://dxdao.daostack.io/).
+The **OpenRaise Dapp** is used to raise funds for decentralized organizations.
 
-## Project Status
-
-The project development can be followed in the milestones section https://github.com/levelkdev/BC-DAPP/milestones.
 
 ## Technical Description
 
-The Bonding Curve Dapp is designed to be completely client side, which means that it runs entirely on the browser of the user and only consumes necessary information and interacts when needed with the Ethereum blockchain.
+The OpenRaise Dapp is designed to be completely client side, which means that it runs entirely on the browser of the user and only consumes necessary information and interacts when needed with the Ethereum blockchain.
 The dapp is written in javascript and typescrypt, it uses ReactJS and Webapack.
 The contracts used in the dapp are the c-org contracts from fairmint. https://github.com/Fairmint/c-org.
 
@@ -115,7 +112,7 @@ Executable can be downloaded from https://swarm-gateways.net/bzz:/swarm.eth/down
 
 The build can be upload to swarm with the following command:
 ```
-~/swarm --bzzapi https://swarm-gateways.net/ --defaultpath PATH_TO_BC-DAPP/build/index.html --recursive up PATH_TO_BC-DAPP/BC-DAPP/build
+~/swarm --bzzapi https://swarm-gateways.net/ --defaultpath PATH_TO_OPENRAISE-DAPP/build/index.html --recursive up PATH_TO_OPENRAISE-DAPP/OPENRAISE-DAPP/build
 ```
 
 ### Smart Contracts
