@@ -108,7 +108,7 @@ const TradingHistory = observer(() => {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
-            <img src={require("../assets/images/bolt.svg")} />
+            <img src="bolt.svg" />
                 <br/>
                 Connect to view Trade History
             </div>
@@ -118,9 +118,9 @@ const TradingHistory = observer(() => {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
-            <img src={require("../assets/images/bolt.svg")} />
+            <img src="bolt.svg" />
                 <br/>
-                Loading for last trades..
+                Searching for last trades..
             </div>
           </TradingHistoryWrapper>
       )
