@@ -100,6 +100,15 @@ const Footer = () => {
                         Alchemy
                     </a>
                 </FooterItem>
+                <FooterDivider></FooterDivider>
+                <FooterItem>
+                    <a
+                        href="https://dxdao.eth.link/#/faq"
+                        target="#"
+                    >
+                        FAQ
+                    </a>
+                </FooterItem>
             </LeftFooter>
             <RighFooter>
                 <LogoWrapper>
