@@ -9,7 +9,7 @@ const App = () => {
     <HashRouter>
       <Switch>
         <Route exact path="/">
-          <div className="exchange-body-container">
+          <div className="invest-body-container">
             <div className="app-shell">
               <Web3ReactManager>
                 <BondingCurveContainer />
