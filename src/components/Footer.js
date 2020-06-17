@@ -70,11 +70,11 @@ const Footer = () => {
                 <FooterItem>
                     <a
                         href={
-                          'https://github.com/levelkdev/openraise-dapp/tree/v0.2.2'
+                          'https://github.com/levelkdev/openraise-dapp/tree/v0.2.3'
                         }
                         target="#"
                     >
-                        Version 0.2.2
+                        Version 0.2.3
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
@@ -98,6 +98,15 @@ const Footer = () => {
                         target="#"
                     >
                         Alchemy
+                    </a>
+                </FooterItem>
+                <FooterDivider></FooterDivider>
+                <FooterItem>
+                    <a
+                        href="https://dxdao.eth.link/#/faq"
+                        target="#"
+                    >
+                        FAQ
                     </a>
                 </FooterItem>
             </LeftFooter>
