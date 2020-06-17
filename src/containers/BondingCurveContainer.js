@@ -1,10 +1,13 @@
 import React from 'react';
-import ChartContainer from './ChartContainer';
-import TradeHistoryContainer from './TradeHistoryContainer';
-import BuySellContainer from './BuySellContainer';
+import BondingCurveChart from '../components/BondingCurveChart/BondingCurveChart';
+import TradeHistory from '../components/TradeHistory';
+import BuySell from '../components/BuySell';
 import styled from 'styled-components';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
 
-const ExchangeWrapper = styled.div`
+
+const BondingCurveWrapper = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -34,22 +37,24 @@ const DangerIcon = styled.img`
     filter: invert(36%) sepia(43%) saturate(2590%) hue-rotate(336deg) brightness(82%) contrast(102%);
 `;
 
-const Exchange = ({}) => {
+const BondingCurve = ({}) => {
     return (
-            <ExchangeWrapper>
-                <AlertWrapper>
-                    <img src="dangerous.svg"/>
-                        <AlertText>Secondary Markets may have better offers!</AlertText>
-                </AlertWrapper>
-                <AlertWrapper red="true">
-                    <DangerIcon src="dangerous.svg"/>
-                        <AlertText red="true">Warning! The buyback reserve is low which results in a very low DXD sell price.</AlertText>
-                </AlertWrapper>
-                <ChartContainer />
-                <BuySellContainer />
-                <TradeHistoryContainer />
-            </ExchangeWrapper>
+      <BondingCurveWrapper>
+        <NavBar />
+        <AlertWrapper>
+          <img src="dangerous.svg"/>
+          <AlertText>Secondary Markets may have better offers!</AlertText>
+        </AlertWrapper>
+        <AlertWrapper red="true">
+          <DangerIcon src="dangerous.svg"/>
+          <AlertText red="true">Warning! The buyback reserve is low which results in a very low DXD sell price.</AlertText>
+        </AlertWrapper>
+        <BondingCurveChart />
+        <BuySell />
+        <TradeHistory />
+        <Footer />
+      </BondingCurveWrapper>
     );
 };
 
-export default Exchange;
+export default BondingCurve;
