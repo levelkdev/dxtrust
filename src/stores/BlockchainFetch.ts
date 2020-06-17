@@ -43,7 +43,7 @@ export default class BlockchainFetchStore {
         web3React: Web3ReactContextInterface,
         accountSwitched?: boolean
     ) {
-        if (web3React.active && isChainIdSupported(web3React.chainId)) {
+        if (web3React && web3React.active && isChainIdSupported(web3React.chainId)) {
             const { library, account, chainId } = web3React;
             const {
                 providerStore,
@@ -195,7 +195,7 @@ export default class BlockchainFetchStore {
                                     blockNumber
                                 );
 
-                                // CHeck max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
+                                // Check max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
                                 const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, activeDATAddress);
                                 const setEnableDXDState = !this.initialLoadComplete || accountSwitched;
                                 

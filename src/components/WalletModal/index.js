@@ -11,7 +11,6 @@ import PendingView from './PendingView';
 import Option from './Option';
 import { usePrevious } from 'utils/helperHooks';
 import { Link } from '../../theme';
-import MetamaskIcon from 'assets/images/metamask.png';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { injected, walletconnect, SUPPORTED_WALLETS } from 'provider/connectors';
 import { useStores } from 'contexts/storesContext';
@@ -214,8 +213,7 @@ const WalletModal = observer(
                                 link={option.href}
                                 header={option.name}
                                 subheader={null}
-                                icon={require('../../assets/images/' +
-                                    option.iconName)}
+                                icon={option.iconName}
                             />
                         );
                     }
@@ -234,7 +232,7 @@ const WalletModal = observer(
                                     header={'Install Metamask'}
                                     subheader={null}
                                     link={'https://metamask.io/'}
-                                    icon={MetamaskIcon}
+                                    icon="metamask.png"
                                 />
                             );
                         } else {
@@ -268,8 +266,7 @@ const WalletModal = observer(
                             link={option.href}
                             header={option.name}
                             subheader={null} //use option.descriptio to bring back multi-line
-                            icon={require('../../assets/images/' +
-                                option.iconName)}
+                            icon={option.iconName}
                         />
                     )
                 );
@@ -347,7 +344,7 @@ const WalletModal = observer(
                         </HeaderRow>
                     ) : (
                         <HeaderRow>
-                            <HoverText>Connect To A Wallet</HoverText>
+                            <HoverText>Connect to a wallet</HoverText>
                         </HeaderRow>
                     )}
                     <ContentWrapper>

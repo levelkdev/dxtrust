@@ -9,13 +9,7 @@ import { isChainIdSupported } from './connectors';
     If we tried to connect, or it's active, return true;
  */
 export function useActiveWeb3React() {
-    const contextBackup = useWeb3ReactCore(web3ContextNames.backup);
-    const contextInjected = useWeb3ReactCore(web3ContextNames.injected);
-
-    return contextInjected.active &&
-        isChainIdSupported(contextInjected.chainId)
-        ? contextInjected
-        : contextBackup;
+    return useWeb3ReactCore(web3ContextNames.injected);
 }
 
 export function useEagerConnect() {

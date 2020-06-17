@@ -1,17 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { contracts } from '../config/contracts';
-import { DEFAULT_ETH_NETWORK } from '../provider/connectors';
-import { etherscanAddress, etherscanToken } from 'utils/etherscan';
-import { useStores } from '../contexts/storesContext';
 
 const FooterWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding: 24px 0px 32px;
+    padding: 20px 0px 50px 0px;
     color: var(--footer-text-gray);
+    border-top: 1px solid var(--footer-divider);
+    margin-top: 124px;
 `;
 
 const LeftFooter = styled.div`
@@ -50,27 +48,16 @@ const LogoWrapper = styled.div`
 `;
 
 const FooterLogo = styled.img`
-    :hover {
-        filter: invert(48%) sepia(13%) saturate(281%) hue-rotate(154deg)
-            brightness(97%) contrast(86%);
-    }
 `;
 
 const Footer = () => {
-    const {
-        root: {providerStore},
-    } = useStores();
-
-    let chainId = providerStore.getActiveWeb3React().chainId;
-    let proxyContract = contracts[DEFAULT_ETH_NETWORK].DAT;
-    let contract = contracts[DEFAULT_ETH_NETWORK].implementationAddress;
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
                     <a
                         href={
-                          'https://github.com/levelkdev/openraise-dapp/tree/v0.2.2'
+                            'https://github.com/levelkdev/openraise-dapp/tree/v0.2.2'
                         }
                         target="#"
                     >
@@ -79,42 +66,31 @@ const Footer = () => {
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanToken(chainId,"Token Contract",proxyContract, false)}
-                </FooterItem>
-                <FooterDivider></FooterDivider>
-                <FooterItem>
-                    {etherscanAddress(chainId,"Logic Contract",contract)}
-                </FooterItem>
-                <FooterDivider></FooterDivider>
-                <FooterItem>
-                    <a href="https://daotalk.org/c/daos/dx-dao" target="#">
-                        Forum
-                    </a>
-                </FooterItem>
-                <FooterDivider></FooterDivider>
-                <FooterItem>
                     <a
-                        href="https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a"
+                        href={
+                            'https://github.com/levelkdev/openraise-dapp/tree/' +
+                            process.env.REACT_APP_GIT_SHA
+                        }
                         target="#"
                     >
-                        Alchemy
+                        Git Hash
                     </a>
                 </FooterItem>
             </LeftFooter>
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <FooterLogo src="twitter.svg"></FooterLogo>
+                        <FooterLogo src="twitter_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <FooterLogo src="reddit.svg"></FooterLogo>
+                        <FooterLogo src="reddit_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <FooterLogo src="telegram.svg"></FooterLogo>
+                        <FooterLogo src="telegram_color.svg"></FooterLogo>
                     </a>
                 </LogoWrapper>
             </RighFooter>
