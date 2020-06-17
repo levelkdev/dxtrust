@@ -1,6 +1,6 @@
 {
     "name": "openraise-dapp",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Decentralized app for fundraising in DXdao.",
     "scripts": {
         "start": "./scripts/start.sh",
