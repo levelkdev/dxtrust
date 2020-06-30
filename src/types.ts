@@ -75,3 +75,35 @@ export interface TransactionEvent {
     type: TXEvents;
     data: any;
 }
+
+export interface TokenInfo {
+    address: string;
+    decimals: string;
+    name: string;
+    owner: string;
+    symbol: string;
+    totalSupply: string;
+    transfersCount: number;
+    lastUpdated: number;
+    issuancesCount: number;
+    holdersCount: number;
+    ethTransfersCount: number;
+    price: {
+        rate: number;
+        diff: number;
+        diff7d: number;
+        ts: number;
+        marketCapUsd: number;
+        availableSupply: number;
+        volume24h: number;
+        diff30d: number;
+        currency: string;
+    };
+    countOps: number;
+}
+
+export interface Holder {
+    address: string;
+    balance: number;
+    share: number;
+}

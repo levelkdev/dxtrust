@@ -11,6 +11,7 @@ import ConfigStore from './config';
 import ABIService from '../services/ABIService';
 import MulticallService from '../services/multicall/MulticallService';
 import BlockchainStore from './BlockchainStore';
+import EthplorerStore from './Ethplorer';
 
 export default class RootStore {
     providerStore: ProviderStore;
@@ -23,6 +24,7 @@ export default class RootStore {
     datStore: DatStore;
     configStore: ConfigStore;
     blockchainStore: BlockchainStore;
+    ethplorerStore: EthplorerStore;
 
     abiService: ABIService;
     multicallService: MulticallService;
@@ -41,10 +43,10 @@ export default class RootStore {
         this.tradingStore = new TradingFormStore(this);
         this.datStore = new DatStore(this);
         this.configStore = new ConfigStore(this);
-
+        this.ethplorerStore = new EthplorerStore(this);
 
         this.asyncSetup().catch((e) => {
-            //TODO: Add retry on these fetches
+            // TODO: Add retry on these fetches
             throw new Error('Async Setup Failed ' + e);
         });
     }
