@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
+import Holders from '../components/Holders';
 
 const DashboardWrapper = styled.div`
     display: flex;
@@ -15,6 +16,7 @@ const Dashboard = () => {
     return (
         <DashboardWrapper>
             <NavBar />
+            <Holders />
             <Footer />
         </DashboardWrapper>
     );
