@@ -9,6 +9,7 @@
         "deploy-contracts": "node scripts/deployContracts.js",
         "build": "rm -rif build && node scripts/build.js",
         "test": "node scripts/test.js",
+        "test-contracts": "./scripts/test-contracts.sh",
         "loadDeployments": "node scripts/loadDeployments.js"
     },
     "engines": {

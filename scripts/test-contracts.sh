@@ -42,4 +42,5 @@ else
 fi
 
 npx truffle version
-npx truffle test
+npx truffle compile --network development
+npx truffle test --network development

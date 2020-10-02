@@ -5,6 +5,8 @@ mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
 infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
 
 module.exports = {	
+  contracts_directory: "./contracts",
+  contracts_build_directory: "./contracts/build",
   networks: {	
     development: {	
       network_id: '*',	

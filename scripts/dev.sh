@@ -43,7 +43,7 @@ else
 fi
 
 npx truffle version
-npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
+npx truffle compile --network development
 rm .openzeppelin/dev-*.json ||:
 npx oz push --network development
 node scripts/copyContracts.js
