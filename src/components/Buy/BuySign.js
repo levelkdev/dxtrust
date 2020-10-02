@@ -62,7 +62,7 @@ const BuySign = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
@@ -73,7 +73,7 @@ const BuySign = observer((props) => {
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Total cost</FormInfoText>
-                <div>{buyAmount} {configStore.getCollateralType()}</div>
+                <div>{buyAmount} {configStore.getDATinfo().collateralType()}</div>
             </InfoRow>
             <SignTransaction>
                 Sign Transaction...

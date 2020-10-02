@@ -13,7 +13,7 @@
 /contracts/build
 
 # config
-/src/config/contracts.json
+/src/config/contracts/development.json
 
 # misc
 .DS_Store

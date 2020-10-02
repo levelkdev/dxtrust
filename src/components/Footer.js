@@ -58,12 +58,12 @@ const FooterLogo = styled.img`
 
 const Footer = () => {
     const {
-        root: {providerStore},
+        root: {providerStore, configStore},
     } = useStores();
 
     let chainId = providerStore.getActiveWeb3React().chainId;
-    let proxyContract = contracts[DEFAULT_ETH_NETWORK].DAT;
-    let contract = contracts[DEFAULT_ETH_NETWORK].implementationAddress;
+    let proxyContract = configStore.getNetworkConfig().DAT;
+    let contract = configStore.getNetworkConfig().implementationAddress;
     return (
         <FooterWrapper>
             <LeftFooter>

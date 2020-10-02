@@ -36,7 +36,7 @@ const BuySellTabs = observer(() => {
     const {
         root: { configStore, datStore, tradingStore },
     } = useStores();
-    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getTokenAddress()) ? "Withdraw" : "Sell";
     let isBuy = tradingStore.activeTab;
     const TabButton = ({isActive, left, children }) => {
         if (isActive) {

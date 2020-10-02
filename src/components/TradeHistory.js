@@ -133,11 +133,11 @@ const TradingHistory = observer(() => {
                       Type
                   </TableHeader>
                   <TableHeader width="15.5%">
-                      Price {configStore.getCollateralType()}
+                      Price {configStore.getDATinfo().collateralType}
                   </TableHeader>
                   <TableHeader>Amount DXD</TableHeader>
                   <TableHeader>
-                      Total {configStore.getCollateralType()}
+                      Total {configStore.getDATinfo().collateralType}
                   </TableHeader>
                   <TableHeader className="align-right">Time</TableHeader>
               </TableHeadersWrapper>

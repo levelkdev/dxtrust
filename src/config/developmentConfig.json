@@ -1,0 +1,18 @@
+{
+  "collateralType": "ETH",
+  "name": "DXdao",
+  "symbol": "DXD",
+  "fromBlock": 1,
+  "currency": "0x0000000000000000000000000000000000000000",
+  "whitelistAddress": "0x0000000000000000000000000000000000000000",
+  "initReserve": "100000000000000000000000",
+  "initGoal": "4898979485566395000000",
+  "buySlopeNum": "1",
+  "buySlopeDen": "48000000000000000000000",
+  "investmentReserveBasisPoints": "1000",
+  "revenueCommitmentBasisPoints": "1000",
+  "minInvestment": "1000000000000000",
+  "feeBasisPoints": "0",
+  "autoBurn": "true",
+  "openUntilAtLeast": "0"
+}

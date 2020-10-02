@@ -53,7 +53,7 @@ const SellConfirmed = observer((props) => {
         root: { datStore, tradingStore, configStore },
     } = useStores();
 
-    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getTokenAddress()) ? "Withdraw" : "Sell";
 
     const {sellPrice, rewardForSell, sellAmount} = tradingStore.previousSell;
 
@@ -74,13 +74,13 @@ const SellConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {formatNumberValue(sellPrice)} {configStore.getCollateralType()}
+                    {formatNumberValue(sellPrice)} {configStore.getDATinfo().collateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {configStore.getCollateralType()}
+                    {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType()}
                 </div>
             </InfoRow>
             <InfoRow>

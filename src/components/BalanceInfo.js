@@ -48,7 +48,7 @@ const BalanceInfo = observer(() => {
     if (account) {
         ETHBalance = tokenStore.getEtherBalance(account);
         DXDBalance = tokenStore.getBalance(
-            configStore.getDXDTokenAddress(),
+            configStore.getTokenAddress(),
             account
         );
     }

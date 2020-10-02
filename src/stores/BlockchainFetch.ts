@@ -18,7 +18,7 @@ export default class BlockchainFetchStore {
 
     @action async refreshBuyFormPreview() {
         const { datStore, configStore, tradingStore } = this.rootStore;
-        const activeDATAddress = configStore.getDXDTokenAddress()
+        const activeDATAddress = configStore.getTokenAddress()
         const minValue = normalizeBalance(
             datStore.getMinInvestment(activeDATAddress)
         );
@@ -56,7 +56,7 @@ export default class BlockchainFetchStore {
                 transactionStore
             } = this.rootStore;
 
-            const activeDATAddress = configStore.getDXDTokenAddress();
+            const activeDATAddress = configStore.getTokenAddress();
             library.eth
                 .getBlockNumber()
                 .then((blockNumber) => {
@@ -196,7 +196,7 @@ export default class BlockchainFetchStore {
                                 );
 
                                 // Check max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
-                                const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, activeDATAddress);
+                                const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getTokenAddress(), account, activeDATAddress);
                                 const setEnableDXDState = !this.initialLoadComplete || accountSwitched;
                                 
                                 if (hasMaxApproval && setEnableDXDState) {

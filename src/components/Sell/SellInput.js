@@ -89,7 +89,7 @@ const SellInput = observer((props) => {
     const price = (sellInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
     const rewardForSell = (sellInputStatus == "") ? bnum(0) : tradingStore.rewardForSell;
     let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
-    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getTokenAddress()) ? "Withdraw" : "Sell";
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
@@ -101,7 +101,7 @@ const SellInput = observer((props) => {
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
-        const DXDBalance =  (account) ? tokenStore.getBalance(configStore.getDXDTokenAddress(), account) : 0;
+        const DXDBalance =  (account) ? tokenStore.getBalance(configStore.getTokenAddress(), account) : 0;
         const sellInputStatusFetch = validateTokenValue(value, {
           maxBalance: (account) ? normalizeBalance(DXDBalance) : null,
         });
@@ -110,7 +110,7 @@ const SellInput = observer((props) => {
         if (sellInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
             const sellReturn = await datStore.fetchSellReturn(
-              configStore.getDXDTokenAddress(),
+              configStore.getTokenAddress(),
               denormalizeBalance(value)
             );
             tradingStore.handleSellReturn(sellReturn);
@@ -139,13 +139,13 @@ const SellInput = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType()}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {configStore.getCollateralType()}
+                    {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType()}
                 </div>
             </InfoRow>
             <InputColumn>
@@ -181,7 +181,7 @@ const SellInput = observer((props) => {
                     // TODO What should last argument be set to?  (the minCurrencyReturned) 
                     datStore
                         .sell(
-                            configStore.getDXDTokenAddress(),
+                            configStore.getTokenAddress(),
                             account,
                             denormalizeBalance(str(tradingStore.sellAmount)),
                             bnum(1)

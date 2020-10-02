@@ -5,7 +5,6 @@
     "scripts": {
         "start": "./scripts/start.sh",
         "dev": "./scripts/dev.sh",
-        "deploy": "node scripts/deploy.js",
         "deploy-contracts": "node scripts/deployContracts.js",
         "build": "rm -rif build && node scripts/build.js",
         "test": "node scripts/test.js",

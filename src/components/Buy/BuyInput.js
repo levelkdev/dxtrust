@@ -91,7 +91,7 @@ const BuyInput = observer((props) => {
     const price = (buyInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatBuyPrice();
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
     let txFailedError = (tradingStore.buyingState == 5) && (buyInputStatus == "") ? true : false;
-    const datState = datStore.getState(configStore.getDXDTokenAddress());
+    const datState = datStore.getState(configStore.getTokenAddress());
     const requiredDataLoaded = datState !== undefined;
     
     if (buyInputStatus == "" && tradingStore.payAmount != 0) {
@@ -119,7 +119,7 @@ const BuyInput = observer((props) => {
 
         const buyInputStatusFetch = validateTokenValue(value, {
           minValue: normalizeBalance(
-              datStore.getMinInvestment(configStore.getDXDTokenAddress())
+              datStore.getMinInvestment(configStore.getTokenAddress())
           ),
           maxBalance: (account) ? normalizeBalance(ETHBalance) : null,
         });
@@ -128,7 +128,7 @@ const BuyInput = observer((props) => {
         if (buyInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setBuyAmount(value);
             const buyReturn = await datStore.fetchBuyReturn(
-              configStore.getDXDTokenAddress(),
+              configStore.getTokenAddress(),
               denormalizeBalance(value)
             );
             tradingStore.handleBuyReturn(buyReturn);
@@ -142,7 +142,7 @@ const BuyInput = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
@@ -181,7 +181,7 @@ const BuyInput = observer((props) => {
                     tradingStore.buyingState = TransactionState.SIGNING_TX;
                     datStore
                         .buy(
-                            configStore.getDXDTokenAddress(),
+                            configStore.getTokenAddress(),
                             account,
                             denormalizeBalance(str(tradingStore.buyAmount)),
                             bnum(1)

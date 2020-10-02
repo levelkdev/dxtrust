@@ -123,7 +123,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
     
-    const activeDATAddress = configStore.getDXDTokenAddress();
+    const activeDATAddress = configStore.getTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
         activeDATAddress
     );
