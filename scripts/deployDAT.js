@@ -24,8 +24,7 @@ async function saveOzDevelopProxies(proxies) {
   });
 }
 
-
-module.exports = async function deployDAT(web3, options, useProxy = true, saveOzProxies = true) {
+module.exports = async function deployDAT(web3, options = {}, useProxy = true, saveOzProxies = true) {
   
   ZWeb3.initialize(web3.currentProvider);
   Contracts.setLocalBuildDir('contracts/build/');
@@ -39,7 +38,7 @@ module.exports = async function deployDAT(web3, options, useProxy = true, saveOz
   const contracts = {};
   const callOptions = Object.assign(
     {
-      initReserve: '42000000000000000000',
+      initReserve: web3.utils.toWei("42", "ether"),
       currency: zeroAddress,
       initGoal: '0',
       buySlopeNum: '1',
@@ -49,33 +48,37 @@ module.exports = async function deployDAT(web3, options, useProxy = true, saveOz
       control: accounts[1],
       beneficiary: accounts[5],
       feeCollector: accounts[6],
-      minInvestment: 100000000000000,
+      minInvestment: web3.utils.toWei("0.0001", "ether"),
       name: 'Test org',
       symbol: 'TFO'
     },
     options
   );
-  console.log(`Deploy DAT with config: ${JSON.stringify(callOptions, null, 2)}`, ' \n');
+  if (options.log)
+    console.log(`Deploy DAT with config: ${JSON.stringify(callOptions, null, 2)}`, ' \n');
     
   contracts.proxyAdmin = await ProxyAdminContract.new({
-    from: callOptions.control
+    from: callOptions.control, gas: 9000000
   });
-  console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
+  if (options.log)
+    console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
   const datContract = await DATContract.new({
-    from: callOptions.control
+    from: callOptions.control, gas: 9000000
   });
-  console.log(`DAT template deployed ${datContract.address}`);
+  if (options.log)
+    console.log(`DAT template deployed ${datContract.address}`);
 
   const datProxy = await ProxyContract.new(
     datContract.address, // logic
     contracts.proxyAdmin.address, // admin
     [], // data
     {
-      from: callOptions.control
+      from: callOptions.control, gas: 9000000
     }
   );
-  console.log(`DAT proxy deployed ${datProxy.address}`);
+  if (options.log)
+    console.log(`DAT proxy deployed ${datProxy.address}`);
 
   contracts.dat = await DATContract.at(datProxy.address);
   contracts.dat.implementation = datContract.address;
@@ -89,11 +92,11 @@ module.exports = async function deployDAT(web3, options, useProxy = true, saveOz
     callOptions.investmentReserveBasisPoints,
     callOptions.name,
     callOptions.symbol
-  ).send({ from: callOptions.control });
+  ).send({ from: callOptions.control, gas: 9000000 });
   
   await updateDATConfig(contracts, web3, callOptions);
 
-  contracts.multicall = await Multicall.new();
+  contracts.multicall = await Multicall.new({ gas: 9000000});
   
   if (saveOzProxies) {
     const ozDevelopJSON = await getOzDevelopJSON();
@@ -117,12 +120,13 @@ module.exports = async function deployDAT(web3, options, useProxy = true, saveOz
     };
     saveOzDevelopProxies(proxies);
   }
-  
-  console.log('DAT control accounts:', accounts[1]);
-  console.log('DAT beneficiary accounts:', accounts[5]);
-  console.log('DAT feeCollector accounts:', accounts[6], ' \n');
-  console.log('Recommended testing accounts:', accounts[4]);
-  console.log('Get your provate keys in https://iancoleman.io/bip39/ \n');
+  if (options.log){
+    console.log('DAT control accounts:', accounts[1]);
+    console.log('DAT beneficiary accounts:', accounts[5]);
+    console.log('DAT feeCollector accounts:', accounts[6], ' \n');
+    console.log('Recommended testing accounts:', accounts[4]);
+    console.log('Get your provate keys in https://iancoleman.io/bip39/ \n');
+  }
   
   return contracts;
 };

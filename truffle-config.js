@@ -6,15 +6,8 @@ infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
 
 module.exports = {	
   networks: {	
-    rpc: {	
+    development: {	
       network_id: '*',	
-      host: 'localhost',	
-      port: 8545,	
-      gas: 9000000,	
-      gasPrice: 10000000000 //10 Gwei	
-    },	
-    develop: {	
-      network_id: '66',	
       host: 'localhost',	
       port: 8545,	
       gas: 9000000,	

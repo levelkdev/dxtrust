@@ -1,10 +1,6 @@
-const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
-const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 module.exports = async function deployDat(contracts, web3, options) {
   
-  ZWeb3.initialize(web3.currentProvider);
-  Contracts.setLocalBuildDir('contracts/build/');
   const accounts = await web3.eth.getAccounts();
 
   const datContract = contracts.dat;
@@ -25,7 +21,7 @@ module.exports = async function deployDat(contracts, web3, options) {
 
   //console.log(`Update DAT: ${JSON.stringify(callOptions, null, 2)}`);
   const result = await datContract.methods.updateConfig(
-    zeroAddress,
+    '0x0000000000000000000000000000000000000000',
     callOptions.beneficiary,
     callOptions.control,
     callOptions.feeCollector,
@@ -35,7 +31,7 @@ module.exports = async function deployDat(contracts, web3, options) {
     callOptions.minInvestment,
     callOptions.openUntilAtLeast
   ).send(
-    { from: await contracts.dat.methods.control().call() }
+    { from: await contracts.dat.methods.control().call(), gas: 9000000 }
   );
   return result;
 };

@@ -13,7 +13,6 @@ cleanup() {
   fi
 }
 set -o allexport; source .env; set +o allexport
-mnemonic="$REACT_APP_KEY_MNEMONIC"
 
 ganache_running() {
   nc -z localhost 8545
@@ -43,5 +42,4 @@ else
 fi
 
 npx truffle version
-npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
 npx truffle test

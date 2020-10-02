@@ -45,10 +45,10 @@ fi
 npx truffle version
 npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
 rm .openzeppelin/dev-*.json ||:
-npx oz push --network develop
+npx oz push --network development
 node scripts/copyContracts.js
 rm src/config/contracts.json ||:
-node scripts/deploy.js -- --network develop
-REACT_APP_ETH_NETWORKS=develop,mainnet,kovan node scripts/loadDeployments.js
+node scripts/deploy.js -- --network development
+REACT_APP_ETH_NETWORKS=development,mainnet,kovan node scripts/loadDeployments.js
 sleep 1
-FORCE_COLOR=true REACT_APP_ETH_NETWORKS="develop,mainnet,kovan" node scripts/start.js | cat
+FORCE_COLOR=true REACT_APP_ETH_NETWORKS="development,mainnet,kovan" node scripts/start.js | cat

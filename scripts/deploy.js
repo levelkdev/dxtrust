@@ -19,7 +19,7 @@ mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
 httpProviderUrl = 'http://localhost:8545';
 
 // Get development keys
-if (network != 'develop') {
+if (network != 'development') {
   infuraApiKey = process.env.REACT_APP_KEY_INFURA_API_KEY;
   httpProviderUrl = `https://${network}.infura.io/v3/${infuraApiKey }`
 } 
