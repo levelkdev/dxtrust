@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "noImplicitAny": false,
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
     "jsx": "react",
@@ -12,7 +12,17 @@
     "allowJs": true,
     "experimentalDecorators": true,
     "strictNullChecks": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "include": [
     "src/*"
@@ -21,6 +31,6 @@
     "node_modules",
     "./node_modules",
     "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts",
+    "./node_modules/@types/node/index.d.ts"
   ]
 }
