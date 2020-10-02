@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { reverts } = require("truffle-assertions");
 const { constants } = require("hardlydifficult-eth");
@@ -7,7 +7,7 @@ contract("initializers", (accounts) => {
   let contracts;
 
   before(async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
   });
 
   it("There are 2 public initializers", async () => {

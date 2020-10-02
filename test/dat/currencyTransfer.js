@@ -1,5 +1,5 @@
 const BigNumber = require("bignumber.js");
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { tokens } = require("hardlydifficult-eth");
 const { reverts } = require("truffle-assertions");
@@ -14,7 +14,7 @@ contract("dat / collectInvestment", (accounts) => {
 
     beforeEach(async () => {
       token = await tokens.dai.deploy(web3, accounts[0]);
-      contracts = await deployDat(web3, { currency: token.address });
+      contracts = await deployDAT(web3, { currency: token.address });
       initialTokenBalance = web3.utils.toWei("42", "ether");
       await token.mint(user, initialTokenBalance, {
         from: accounts[0],
@@ -85,7 +85,7 @@ contract("dat / collectInvestment", (accounts) => {
     let initialETHBalance;
 
     beforeEach(async () => {
-      contracts = await deployDat(web3);
+      contracts = await deployDAT(web3);
       initialETHBalance = await web3.eth.getBalance(user);
     });
 

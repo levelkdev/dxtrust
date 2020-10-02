@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { getDomainSeparator } = require("../helpers");
 
@@ -6,7 +6,7 @@ contract("dat / domainSeparator", (accounts) => {
   let contracts;
 
   beforeEach(async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
   });
 
   it("has the correct domain separator", async () => {

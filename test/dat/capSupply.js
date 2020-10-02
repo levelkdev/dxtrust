@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { tokens } = require("hardlydifficult-eth");
 const { constants } = require("../helpers");
@@ -11,7 +11,7 @@ contract("dat / capSupply", (accounts) => {
 
   before(async () => {
     token = await tokens.sai.deploy(web3, accounts[0]);
-    contracts = await deployDat(web3, { currency: token.address });
+    contracts = await deployDAT(web3, { currency: token.address });
     await token.mint(buyer, constants.MAX_UINT, {
       from: accounts[0],
     });

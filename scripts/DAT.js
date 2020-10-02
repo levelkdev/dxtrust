@@ -1,6 +1,5 @@
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const zeroAddress = '0x0000000000000000000000000000000000000000';
-const updateDATConfig = require('./updateDATConfig');
 const fs = require('fs');
 
 async function getOzDevelopJSON() {
@@ -24,7 +23,7 @@ async function saveOzDevelopProxies(proxies) {
   });
 }
 
-module.exports = async function deployDAT(web3, options = {}, useProxy = true, saveOzProxies = true) {
+async function deployDAT(web3, options = {}, useProxy = true, saveOzProxies = true) {
   
   ZWeb3.initialize(web3.currentProvider);
   Contracts.setLocalBuildDir('contracts/build/');
@@ -94,7 +93,7 @@ module.exports = async function deployDAT(web3, options = {}, useProxy = true, s
     callOptions.symbol
   ).send({ from: callOptions.control, gas: 9000000 });
   
-  await updateDATConfig(contracts, web3, callOptions);
+  await updateDAT(contracts, web3, callOptions);
 
   contracts.multicall = await Multicall.new({ gas: 9000000});
   
@@ -130,3 +129,38 @@ module.exports = async function deployDAT(web3, options = {}, useProxy = true, s
   
   return contracts;
 };
+
+async function updateDAT(contracts, web3, options) {
+  
+  const datContract = contracts.dat;
+
+  const callOptions = Object.assign(
+    {
+      beneficiary: await datContract.methods.beneficiary().call(),
+      control: await datContract.methods.control().call(),
+      feeCollector: await datContract.methods.feeCollector().call(),
+      feeBasisPoints: await datContract.methods.feeBasisPoints().call(),
+      autoBurn: await datContract.methods.autoBurn().call(),
+      revenueCommitmentBasisPoints: await datContract.methods.revenueCommitmentBasisPoints().call(),
+      minInvestment: await datContract.methods.minInvestment().call(),
+      openUntilAtLeast: await datContract.methods.openUntilAtLeast().call(),
+    },
+    options
+  );
+
+  return await datContract.methods.updateConfig(
+    '0x0000000000000000000000000000000000000000',
+    callOptions.beneficiary,
+    callOptions.control,
+    callOptions.feeCollector,
+    callOptions.feeBasisPoints,
+    callOptions.autoBurn,
+    callOptions.revenueCommitmentBasisPoints,
+    callOptions.minInvestment,
+    callOptions.openUntilAtLeast
+  ).send(
+    { from: await contracts.dat.methods.control().call(), gas: 9000000 }
+  );
+};
+
+module.exports = {deployDAT, updateDAT};

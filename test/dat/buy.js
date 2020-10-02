@@ -2,7 +2,7 @@
  * Tests the ability to buy dat tokens
  */
 
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 const { reverts } = require("truffle-assertions");
 
 contract("dat / buy", (accounts) => {
@@ -10,7 +10,7 @@ contract("dat / buy", (accounts) => {
   const buyer = accounts[4];
 
   before(async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
   });
 
   it("balanceOf should be 0 by default", async () => {

@@ -1,4 +1,4 @@
-const deployDAT = require('./deployDAT');
+const { deployDAT } = require('./DAT');
 const fs = require('fs');
 const Web3 = require('web3');
 const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');

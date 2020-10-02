@@ -1,5 +1,5 @@
 const BigNumber = require("bignumber.js");
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 
 contract("dat / sellPremint", (accounts) => {
@@ -10,7 +10,7 @@ contract("dat / sellPremint", (accounts) => {
   let contracts;
 
   before(async () => {
-    contracts = await deployDat(web3, { beneficiary, initReserve });
+    contracts = await deployDAT(web3, { beneficiary, initReserve });
     await contracts.dat.methods.transfer(other, initReserve).send({ from: beneficiary, gas: 9000000 });
 
     const value = web3.utils.toWei("100", "ether");

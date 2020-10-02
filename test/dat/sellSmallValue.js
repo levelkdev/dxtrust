@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 
 /*
@@ -14,7 +14,7 @@ contract("dat / sellSmallValue", (accounts) => {
   let contracts;
 
   before(async () => {
-    contracts = await deployDat(web3, {
+    contracts = await deployDAT(web3, {
       initReserve: "317046271116763072800229",
       buySlopeNum: "1",
       buySlopeDen: "100000000000000000000000",

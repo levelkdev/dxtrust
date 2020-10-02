@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { tokens } = require("hardlydifficult-eth");
 const { constants } = require("../helpers");
@@ -7,7 +7,7 @@ const { reverts } = require("truffle-assertions");
 contract("dat / collectInvestment", (accounts) => {
   it("shouldFail with DO_NOT_SEND_ETH", async () => {
     const token = await tokens.sai.deploy(web3, accounts[0]);
-    const contracts = await deployDat(web3, { currency: token.address });
+    const contracts = await deployDAT(web3, { currency: token.address });
     await token.mint(accounts[1], constants.MAX_UINT, {
       from: accounts[0],
     });

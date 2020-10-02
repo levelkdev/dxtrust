@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { constants } = require("../helpers");
 const { reverts } = require("truffle-assertions");
@@ -8,7 +8,7 @@ contract("dat / initialize", (accounts) => {
   let contracts;
 
   it("shouldFail to init twice", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.initialize(
         await contracts.dat.methods.initReserve().call(),
@@ -27,47 +27,47 @@ contract("dat / initialize", (accounts) => {
   });
 
   it("can deploy without any initReserve", async () => {
-    await deployDat(web3, { initReserve: 0 }, true, false);
+    await deployDAT(web3, { initReserve: 0 }, true, false);
   });
 
   it("shouldFail with EXCESSIVE_GOAL", async () => {
     await reverts(
-      deployDat(web3, { initGoal: constants.MAX_UINT }, true, false),
+      deployDAT(web3, { initGoal: constants.MAX_UINT }, true, false),
       "EXCESSIVE_GOAL"
     );
   });
 
   it("shouldFail with INVALID_SLOPE_NUM", async () => {
     await reverts(
-      deployDat(web3, { buySlopeNum: "0" }, true, false),
+      deployDAT(web3, { buySlopeNum: "0" }, true, false),
       "INVALID_SLOPE_NUM"
     );
   });
 
   it("shouldFail with INVALID_SLOPE_DEN", async () => {
     await reverts(
-      deployDat(web3, { buySlopeDen: "0" }, true, false),
+      deployDAT(web3, { buySlopeDen: "0" }, true, false),
       "INVALID_SLOPE_DEN"
     );
   });
 
   it("shouldFail with EXCESSIVE_SLOPE_NUM", async () => {
     await reverts(
-      deployDat(web3, { buySlopeNum: constants.MAX_UINT }, true, false),
+      deployDAT(web3, { buySlopeNum: constants.MAX_UINT }, true, false),
       "EXCESSIVE_SLOPE_NUM"
     );
   });
 
   it("shouldFail with EXCESSIVE_SLOPE_DEN", async () => {
     await reverts(
-      deployDat(web3, { buySlopeDen: constants.MAX_UINT }, true, false),
+      deployDAT(web3, { buySlopeDen: constants.MAX_UINT }, true, false),
       "EXCESSIVE_SLOPE_DEN"
     );
   });
 
   it("shouldFail with INVALID_RESERVE", async () => {
     await reverts(
-      deployDat(
+      deployDAT(
         web3,
         { investmentReserveBasisPoints: "100000" },
         true,

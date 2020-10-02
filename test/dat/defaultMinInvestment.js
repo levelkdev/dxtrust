@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { tokens } = require("hardlydifficult-eth");
 const BigNumber = require("bignumber.js");
@@ -8,7 +8,7 @@ contract("dat / defaultMinInvestment", (accounts) => {
 
   describe("ETH", () => {
     beforeEach(async () => {
-      contracts = await deployDat(web3);
+      contracts = await deployDAT(web3);
     });
 
     it("should default to 100 ETH min investment", async () => {

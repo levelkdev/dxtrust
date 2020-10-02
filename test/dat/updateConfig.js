@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { constants } = require("../helpers");
 const { reverts } = require("truffle-assertions");
@@ -7,7 +7,7 @@ contract("dat / updateConfig", (accounts) => {
   let contracts;
 
   it("shouldFail with CONTROL_ONLY", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -25,7 +25,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("can remove the whitelist", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await contracts.dat.methods.updateConfig(
       constants.ZERO_ADDRESS,
       await contracts.dat.methods.beneficiary().call(),
@@ -40,7 +40,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_ADDRESS if control is missing", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -58,7 +58,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_ADDRESS if feeCollector is missing", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -76,7 +76,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_COMMITMENT", async () => {
-    contracts = await deployDat(web3, {
+    contracts = await deployDAT(web3, {
       revenueCommitmentBasisPoints: 0,
     });
     contracts.dat.methods.updateConfig(
@@ -107,7 +107,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_COMMITMENT", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -125,7 +125,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_FEE", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -143,7 +143,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_MIN_INVESTMENT", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -161,7 +161,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with INVALID_ADDRESS when missing the beneficiary", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await reverts(
       contracts.dat.methods.updateConfig(
         await contracts.dat.methods.whitelist().call(),
@@ -179,7 +179,7 @@ contract("dat / updateConfig", (accounts) => {
   });
 
   it("shouldFail with OPEN_UNTIL_MAY_NOT_BE_REDUCED", async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
     await contracts.dat.methods.updateConfig(
       await contracts.dat.methods.whitelist().call(),
       await contracts.dat.methods.beneficiary().call(),

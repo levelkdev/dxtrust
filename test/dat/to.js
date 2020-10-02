@@ -1,5 +1,5 @@
 const BigNumber = require("bignumber.js");
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { getGasCost } = require("../helpers");
 
@@ -9,7 +9,7 @@ contract("dat / to", (accounts) => {
   const dxdHolder = accounts[3];
 
   beforeEach(async () => {
-    contracts = await deployDat(web3);
+    contracts = await deployDAT(web3);
   });
 
   describe("buy", () => {

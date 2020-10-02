@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { tokens } = require("hardlydifficult-eth");
 const { constants } = require("../helpers");
@@ -9,7 +9,7 @@ contract("dat / buybackReserve", (accounts) => {
 
   before(async () => {
     token = await tokens.sai.deploy(web3, accounts[0]);
-    contracts = await deployDat(web3, { currency: token.address });
+    contracts = await deployDAT(web3, { currency: token.address });
   });
 
   it("buybackReserve should be 0 by default", async () => {

@@ -1,4 +1,4 @@
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { constants } = require("../helpers");
 
@@ -8,7 +8,7 @@ contract("dat / noWhitelist", (accounts) => {
   const investor = accounts[7];
 
   before(async () => {
-    contracts = await deployDat(web3, {
+    contracts = await deployDAT(web3, {
       initGoal: 0,
       whitelistAddress: constants.ZERO_ADDRESS,
     });

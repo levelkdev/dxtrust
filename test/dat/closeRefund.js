@@ -1,4 +1,4 @@
-// const { deployDat } = require("../../scripts/deployDAT");
+// const { deployDAT } = require("../../scripts/deployDAT");
 // 
 // const { reverts } = require("truffle-assertions");
 // const noFallbackProxyArtifact = artifacts.require("NoFallbackProxy");
@@ -8,7 +8,7 @@
 //   let proxy;
 // 
 //   beforeEach(async () => {
-//     contracts = await deployDat(accounts);
+//     contracts = await deployDAT(accounts);
 //     proxy = await noFallbackProxyArtifact.new();
 // 
 //     // Buy tokens for various accounts

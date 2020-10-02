@@ -55,4 +55,4 @@ REACT_APP_MULTICALL_ADDRESS=`jq .multicall src/config/contracts/development.json
 REACT_APP_DAT_ADDRESS=`jq .DAT src/config/contracts/development.json` \
 REACT_APP_DAT_IMPLEMENTATION_ADDRESS=`jq .implementationAddress src/config/contracts/development.json` \
 REACT_APP_ETH_NETWORKS="development,mainnet,kovan" \
-SKIP_PREFLIGHT_CHECK=true npx react-scripts start
+SKIP_PREFLIGHT_CHECK=true FORCE_COLOR=true npx react-scripts start | cat

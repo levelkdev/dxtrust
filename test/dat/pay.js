@@ -1,7 +1,7 @@
 const { tokens } = require("hardlydifficult-eth");
 
 const BigNumber = require("bignumber.js");
-const deployDat = require("../../scripts/deployDAT");
+const { deployDAT } = require("../../scripts/DAT");
 
 const { constants, getGasCost } = require("../helpers");
 const { reverts } = require("truffle-assertions");
@@ -13,7 +13,7 @@ contract("dat / pay", (accounts) => {
   const payAmount = "42000000000000000000";
 
   beforeEach(async () => {
-    contracts = await deployDat(web3, {});
+    contracts = await deployDAT(web3, {});
 
     await contracts.dat.methods.buy(buyer, "100000000000000000000", 1).send({
       value: "100000000000000000000",
@@ -57,7 +57,7 @@ contract("dat / pay", (accounts) => {
     // Redeploy with an erc-20
     const token = await tokens.sai.deploy(web3, accounts[0]);
     await token.mint(accounts[0], constants.MAX_UINT, { from: accounts[0] });
-    const contracts = await deployDat(
+    const contracts = await deployDAT(
       web3,
       {
         initGoal: "0", // Start in the run state
