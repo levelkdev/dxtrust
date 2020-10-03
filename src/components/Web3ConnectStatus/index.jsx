@@ -109,7 +109,7 @@ const Web3ConnectStatus = observer((props) => {
         if (connector === injected) {
             return <Identicon />;
         } else if (connector === walletconnect) {
-            return <img src="walletConnectIcon.svg" />;
+            return <img src={require("assets/images/walletConnectIcon.svg")} />;
         }
     }
 

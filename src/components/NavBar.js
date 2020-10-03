@@ -51,7 +51,7 @@ const NavBar = ({}) => {
         <NavWrapper>
             <LeftNav>
                 <NavItem route="/">
-                    <img src="DXdao.svg"/>
+                    <img src={require("assets/images/DXdao.svg")}/>
                 </NavItem>
             </LeftNav>
             <Web3ConnectStatus text="Connect Wallet" />

@@ -60,14 +60,14 @@ const BalanceInfo = observer(() => {
         <CryptoInfoWrapper>
             <InfoRow>
                 <LogoAndText>
-                    <ETHLogo src="ether.svg"></ETHLogo>
+                    <ETHLogo src={require('assets/images/ether.svg')}></ETHLogo>
                     <LogoText>Ether</LogoText>
                 </LogoAndText>
                 <div>{ETHBalanceDisplay} ETH</div>
             </InfoRow>
             <InfoRow>
                 <LogoAndText>
-                    <DXDLogo src="dxdao-circle.svg"></DXDLogo>
+                    <DXDLogo src={require('assets/images/dxdao-circle.svg')}></DXDLogo>
                     <LogoText>DXdao</LogoText>
                 </LogoAndText>
                 <div>{DXDBalanceDisplay} DXD</div>

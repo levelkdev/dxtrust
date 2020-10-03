@@ -93,7 +93,7 @@ const EnableContinue = observer(() => {
         <ContentWrapper>
             <CircleContainer>
                 <CheckboxContainer>
-                    <Checkbox src="checkbox_758AFE.svg" />
+                    <Checkbox src={require("assets/images/checkbox_758AFE.svg")} />
                 </CheckboxContainer>
             </CircleContainer>
             <Info>Enable DXD for trading</Info>

@@ -42,11 +42,11 @@ const BondingCurve = ({}) => {
       <BondingCurveWrapper>
         <NavBar />
         <AlertWrapper>
-          <img src="dangerous.svg"/>
+          <img src={require("assets/images/dangerous.svg")}/>
           <AlertText>Secondary Markets may have better offers!</AlertText>
         </AlertWrapper>
         <AlertWrapper red="true">
-          <DangerIcon src="dangerous.svg"/>
+          <DangerIcon src={require("assets/images/dangerous.svg")}/>
           <AlertText red="true">Warning! The buyback reserve is low which results in a very low DXD sell price.</AlertText>
         </AlertWrapper>
         <BondingCurveChart />

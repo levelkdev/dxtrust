@@ -113,17 +113,17 @@ const Footer = () => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <FooterLogo src="twitter.svg"></FooterLogo>
+                        <FooterLogo src={require('assets/images/twitter.svg')}></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <FooterLogo src="reddit.svg"></FooterLogo>
+                        <FooterLogo src={require('assets/images/reddit.svg')}></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <FooterLogo src="telegram.svg"></FooterLogo>
+                        <FooterLogo src={require('assets/images/telegram.svg')}></FooterLogo>
                     </a>
                 </LogoWrapper>
             </RighFooter>

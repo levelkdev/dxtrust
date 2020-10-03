@@ -71,7 +71,7 @@ const Enable = observer(({ tokenType }) => {
         <ContentWrapper>
             <CircleContainer>
                 <CheckboxContainer>
-                    <img src="checkbox-circle.svg" />
+                    <img src={require("assets/images/checkbox-circle.svg")} />
                 </CheckboxContainer>
                 <Info>Enable {tokenType} for trading</Info>
             </CircleContainer>
