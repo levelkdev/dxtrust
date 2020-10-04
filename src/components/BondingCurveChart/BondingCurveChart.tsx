@@ -723,7 +723,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     return(
       <ChartPanelWrapper>
           <div className="loader">
-          <img src="bolt.svg" />
+          <img src={require("assets/images/bolt.svg")} />
               <br/>
               Connect to view Price Chart
           </div>
@@ -732,7 +732,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     } else return(
       <ChartPanelWrapper>
           <div className="loader">
-          <img src="bolt.svg" />
+          <img src={require("assets/images/bolt.svg")} />
               <br/>
               Loading chart..
           </div>

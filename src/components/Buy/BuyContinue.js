@@ -72,7 +72,7 @@ const BuyContinue = ({}) => {
         <ContentWrapper>
             <CircleContainer>
                 <CheckboxContainer>
-                    <Checkbox src={require("checkbox_758AFE.svg")} />
+                    <Checkbox src={require("assets/images/checkbox_758AFE.svg")} />
                 </CheckboxContainer>
             </CircleContainer>
             <Info>Enable TKN for trading</Info>
