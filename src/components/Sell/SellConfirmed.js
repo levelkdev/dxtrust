@@ -74,13 +74,13 @@ const SellConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {formatNumberValue(sellPrice)} {configStore.getDATinfo().collateralType()}
+                    {formatNumberValue(sellPrice)} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Receive Amount</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType()}
+                    {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
