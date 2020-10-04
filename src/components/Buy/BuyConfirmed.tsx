@@ -86,7 +86,7 @@ const BuyConfirmed = observer((props) => {
             <Confirmed>
                 Confirmed
                 <CheckboxContainer>
-                    <img src="tick.svg"/>
+                    <img src={require("assets/images/tick.svg")}/>
                 </CheckboxContainer>
             </Confirmed>
             <Button
