@@ -27,10 +27,10 @@ module.exports = (config, env) => {
         })
     );
     config.module.rules[2].oneOf.find(
-        (rule) => rule.loader === require.resolve("file-loader")
+        (rule) => rule.loader === process.cwd()+"/node_modules/react-scripts/node_modules/file-loader/dist/cjs.js"
     ).options.name = "static/media/[name].[ext]";
     config.module.rules[2].oneOf.find(
-        (rule) => rule.loader === require.resolve("url-loader")
+        (rule) => rule.loader === process.cwd()+"/node_modules/react-scripts/node_modules/url-loader/dist/cjs.js"
     ).options.name = "static/media/[name].[ext]";
     config.optimization.moduleIds = "hashed";
     return config;
