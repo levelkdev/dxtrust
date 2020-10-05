@@ -15,9 +15,6 @@ import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 import { bnum } from '../../utils/helpers';
 import { roundUpToScale } from '../../utils/number';
 import { pointTooltips } from './pointTooltips';
-import { cssVar } from 'polished';
-import { ThumbsDown } from 'react-feather';
-import { observable } from 'mobx';
 import { DatState } from '../../stores/datStore';
 
 const ChartPanelWrapper = styled.div`
@@ -179,48 +176,38 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const getPointIdByCoordinates = (point: ChartPoint) => {
         if (point.x === points.zero.x && point.y === points.zero.y) {
             return PointLabels.ZERO;
-        }
-
-        if (
+        } else if (
             point.x === points.maxSupplyToShow.x &&
             point.y === points.maxSupplyToShow.y
         ) {
             return PointLabels.MAX_SUPPLY_TO_SHOW;
-        }
-
-        if (
+        } else if (
             point.x === points.kickStarterStart.x &&
             point.y === points.kickStarterStart.y
         ) {
             return PointLabels.KICKSTARTER_START;
-        }
-
-        if (
+        } else if (
             point.x === points.kickstarterEnd.x &&
             point.y === points.kickstarterEnd.y
         ) {
             return PointLabels.KICKSTARTER_END;
-        }
-
-        if (
+        } else if (
             point.x === points.curveStart.x &&
             point.y === points.curveStart.y
         ) {
             return PointLabels.CURVE_START;
-        }
-
-        if (
+        } else if (
             point.x === points.currentSupply.x &&
             point.y === points.currentSupply.y
         ) {
             return PointLabels.CURRENT_SUPPLY;
-        }
-
-        if (
+        } else if (
             point.x === points.futureSupply.x &&
             point.y === points.futureSupply.y
         ) {
             return PointLabels.FUTURE_SUPPLY;
+        } else {
+          return PointLabels.ZERO;
         }
     };
 
@@ -250,7 +237,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                     return 2;
                 }
             },
-            borderColor: (context) => {
+            borderColor: () => {
                 return color;
             },
             lineTension: 0,
@@ -540,7 +527,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                         ticks: {
                             beginAtZero: true,
                             suggestedMax: points.maxSupplyToShow.y,
-                            callback: (value, index, values) => {
+                            callback: (value) => {
                                 return (
                                     formatNumberValue(bnum(value), 2) + ' ETH'
                                 );

@@ -1,5 +1,4 @@
 // Libraries
-import React from 'react';
 import jazzicon from 'jazzicon';
 import { ethers, utils } from 'ethers';
 import { BigNumber } from 'utils/bignumber';

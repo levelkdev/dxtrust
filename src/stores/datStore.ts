@@ -260,6 +260,8 @@ export default class DatStore {
             buyEvents.map((buyEvent) => {
                 if (this.isBuyEventValid(buyEvent)) {
                     return this.parseBuyEvent(buyEvent);
+                } else {
+                  return null;
                 }
             })
         );
@@ -284,6 +286,8 @@ export default class DatStore {
             sellEvents.map((sellEvent) => {
                 if (this.isSellEventValid(sellEvent)) {
                     return this.parseSellEvent(sellEvent);
+                } else {
+                  return null;
                 }
             })
         );

@@ -1,5 +1,4 @@
 import RootStore from 'stores/Root';
-import { StringMap } from '../types';
 import { getConfig } from '../config/contracts';
 import { CHAIN_NAME_BY_ID, DEFAULT_ETH_CHAIN_ID } from '../provider/connectors';
 

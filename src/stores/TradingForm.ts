@@ -206,6 +206,8 @@ class TradingFormStore {
             return (this.enableDXDState = 3);
         } else if (confirmationFlag === ConfirmationFlags.SELL_DXD) {
             return (this.sellingState = 3);
+        } else {
+          return (this.sellingState = 3);
         }
     }
 

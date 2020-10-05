@@ -1,5 +1,4 @@
 import { BigNumber } from '../../utils/bignumber';
-import BigDivSim from './bigDivSim';
 import { DatState } from '../../stores/datStore';
 
 export interface COrgSimParams {
@@ -13,7 +12,6 @@ export interface COrgSimParams {
 
 export default class COrgSim {
     params: COrgSimParams;
-    BigDiv: BigDivSim;
 
     constructor(params: COrgSimParams) {
         this.params = params;
