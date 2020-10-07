@@ -30,7 +30,6 @@ async function loadDeployment(network) {
       multicall: proxies['openraise-dapp/Multicall'][0].address,
       DAT: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address,
       implementationAddress: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].implementation,
-      collateral: zeroAddress,
       DATinfo: {
         fromBlock: fromBlock,
         "collateralType": "ETH",
@@ -54,10 +53,8 @@ async function loadDeployment(network) {
 
 async function main() {
   const networks = process.env.REACT_APP_ETH_NETWORKS.split(',');
-  for (var i = 0; i < networks.length; i++) {
-    if (networks[i] == 'mainnet' || networks[i] == 'ropsten' || networks[i] == 'kovan')
-      await loadDeployment(networks[i]);
-  }
+  for (var i = 0; i < networks.length; i++)
+    await loadDeployment(networks[i]);
 };
 
 main();

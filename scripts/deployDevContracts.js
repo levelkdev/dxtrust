@@ -31,13 +31,12 @@ web3 = new Web3(provider)
 ZWeb3.initialize(web3.currentProvider);
 
 // Get deployment parameters
-let contractsDeployed = {};
-let developmentConfig = JSON.parse(fs.readFileSync('src/config/developmentConfig.json', 'utf-8'));
+const developmentConfig = JSON.parse(fs.readFileSync('src/config/developmentConfig.json', 'utf-8'));
 
 async function main() {
   const contracts = await deployDAT(web3, developmentConfig);
   developmentConfig.fromBlock = (await web3.eth.getBlock('latest')).number;
-  contractsDeployed = {
+  const contractsDeployed = {
     multicall: contracts.multicall.address,
     DAT: contracts.dat.address,
     collateral: zeroAddress,
@@ -46,8 +45,11 @@ async function main() {
   };
   
   console.log('File src/config/contracts/'+network+'.json in src/config updated for network '+network);
-  fs.writeFileSync('src/config/contracts/'+network+'.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
-  console.log('===============================================');
+  fs.writeFileSync(
+    'src/config/contracts/'+network+'.json',
+    JSON.stringify(contractsDeployed, null, 2),
+    {encoding:'utf8',flag:'w'}
+  )
 } 
 
 Promise.all([main()]).then(process.exit);

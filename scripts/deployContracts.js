@@ -2,6 +2,7 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const Web3 = require('web3');
 const moment = require('moment');
+const fs = require('fs');
 const args = process.argv;
 require('dotenv').config();
 
@@ -52,32 +53,32 @@ const buySlopeDen = parseFloat(1 / buySlope).toFixed()
 // Calculates init goal DXD from the initial goal ETH and the slope
 const initGoalDXD = Math.sqrt((2*initGoalETH)/buySlope);
 
-const deployOptions = {
-  collateralType: 'ETH',
-  name: 'DXdao',
-  symbol: 'DXD',
-  currency: '0x0000000000000000000000000000000000000000', // Using ETH
-  whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
-  initReserve: '100000000000000000000000', // 100.000 DXD
-  initGoal: web3.utils.toWei(initGoalDXD.toString()),
-  buySlopeNum: '1',
-  buySlopeDen: web3.utils.toWei(buySlopeDen.toString()),
-  investmentReserveBasisPoints: '1000', // 10 %
-  revenueCommitmentBasisPoints: '1000', // 10 %
-  minInvestment: '1000000000000000',  // 0.001 ETH
-  feeBasisPoints: '0', // No fee for operations
-  autoBurn: true, // Burn when org sell and pay
-  openUntilAtLeast: momentNow.add(5, 'years').unix(), // Open for 5 years
-  control: '0x519b70055af55a007110b4ff99b0ea33071c720a',
-  beneficiary: '0x519b70055af55a007110b4ff99b0ea33071c720a',
-  feeCollector: '0x519b70055af55a007110b4ff99b0ea33071c720a',
-  vestingCliff: '0',
-  vestingDuration: Math.trunc(moment.duration(3, 'years').as('seconds'))
-};
-
 async function main() {
   
   const deployer = (await web3.eth.getAccounts())[0];
+  
+  const deployOptions = {
+    collateralType: 'ETH',
+    name: 'DXdao',
+    symbol: 'DXD',
+    currency: '0x0000000000000000000000000000000000000000', // Using ETH
+    whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
+    initReserve: '100000000000000000000000', // 100.000 DXD
+    initGoal: web3.utils.toWei(initGoalDXD.toString()),
+    buySlopeNum: '1',
+    buySlopeDen: web3.utils.toWei(buySlopeDen.toString()),
+    investmentReserveBasisPoints: '1000', // 10 %
+    revenueCommitmentBasisPoints: '1000', // 10 %
+    minInvestment: '1000000000000000',  // 0.001 ETH
+    feeBasisPoints: '0', // No fee for operations
+    autoBurn: true, // Burn when org sell and pay
+    openUntilAtLeast: momentNow.add(5, 'years').unix(), // Open for 5 years
+    control: deployer,
+    beneficiary: deployer,
+    feeCollector: deployer,
+    vestingCliff: '0',
+    vestingDuration: Math.trunc(moment.duration(3, 'years').as('seconds'))
+  };
 
   console.log(`Using account: ${deployer}`, ' \n');
   console.log(`Deploy DAT with config: ${JSON.stringify(deployOptions, null, 2)}`, ' \n');
@@ -87,10 +88,12 @@ async function main() {
   });
   console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
-  console.log(`Using DAT implementation 0x845856776D110a200Cf41f35C9428C938e72E604`);
+  const OZcontracts = JSON.parse(fs.readFileSync('.openzeppelin/'+network+'.json', 'utf-8')).contracts;
+
+  console.log(`Using DAT implementation `, OZcontracts.DecentralizedAutonomousTrust.address);
 
   contracts.datProxy = await AdminUpgradeabilityProxy.new(
-    "0x845856776D110a200Cf41f35C9428C938e72E604", // logic
+    OZcontracts.DecentralizedAutonomousTrust.address, // logic
     contracts.proxyAdmin.address, // admin
     [], // data
     {
