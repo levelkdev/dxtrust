@@ -1,8 +1,8 @@
 {
-  "multicall": "0x1C469EDDcd7d058be7195B2b321675bd1521AECf",
-  "DAT": "0xdCE7d7E97F9587d4a03C17Da39513EB567a89aA1",
+  "multicall": "0x61a4Cb0f4d82933B1B168AC2581EcA3999d7F1B0",
+  "DAT": "0x3bf3bA8634a4A2e42479098A2c76a803B963D3E5",
   "collateral": "0x0000000000000000000000000000000000000000",
-  "implementationAddress": "0x18FC8F3B0222627fF1Bb240E310344C0EB72c285",
+  "implementationAddress": "0x1d6e8C9fC9bf7B24Ad33EBb149b05e2c20c8a224",
   "DATinfo": {
     "collateralType": "ETH",
     "name": "DXdao",

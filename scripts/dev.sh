@@ -48,11 +48,11 @@ rm .openzeppelin/dev-*.json ||:
 npx oz push --network development
 rm src/config/contracts/development.json ||:
 node scripts/deployDevContracts.js -- --network development
-REACT_APP_ETH_NETWORKS=development,mainnet,kovan node scripts/loadDeployments.js
+REACT_APP_ETH_NETWORKS=mainnet,rinkeby,kovan node scripts/loadDeployments.js
 sleep 1
 FORCE_COLOR=true \
 REACT_APP_MULTICALL_ADDRESS=`jq .multicall src/config/contracts/development.json` \
 REACT_APP_DAT_ADDRESS=`jq .DAT src/config/contracts/development.json` \
 REACT_APP_DAT_IMPLEMENTATION_ADDRESS=`jq .implementationAddress src/config/contracts/development.json` \
-REACT_APP_ETH_NETWORKS="development,mainnet,kovan" \
+REACT_APP_ETH_NETWORKS="development,mainnet,rinkeby,kovan" \
 SKIP_PREFLIGHT_CHECK=true FORCE_COLOR=true npx react-app-rewired start | cat

@@ -24,7 +24,10 @@ async function loadDeployment(network) {
     const proxies = JSON.parse(fs.readFileSync('.openzeppelin/'+network+'.json', 'utf-8')).proxies;
     
     const datContract = DATContract.at(proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address);
-    const fromBlock = (network == 'mainnet') ? 10012634 : (network == 'kovan') ? 18000000 : 0;
+    const fromBlock = (network == 'mainnet') ? 10012634
+    : (network == 'kovan') ? 18000000
+    : (network == 'rinkeby') ? 7329821
+    : 0;
     
     const contractsDeployed = {
       multicall: proxies['openraise-dapp/Multicall'][0].address,
