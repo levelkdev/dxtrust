@@ -7,12 +7,14 @@ const args = process.argv;
 require('dotenv').config();
 
 // Get network to use from arguments
-let network = 'mainnet', mnemonic, provider, web3;
+let network = 'mainnet', mnemonic, provider,controllerAccount, web3;
 for (var i = 0; i < args.length; i++) {
   if (args[i] == '--network')
     network = args[i+1];
   if (args[i] == '--provider')
     provider = args[i+1];
+  if (args[i] == '--controller')
+    controllerAccount = args[i+1];
 }
 if (!provider) throw('Not provider selected, --provider parameter missing');
 
@@ -73,9 +75,9 @@ async function main() {
     feeBasisPoints: '0', // No fee for operations
     autoBurn: true, // Burn when org sell and pay
     openUntilAtLeast: momentNow.add(5, 'years').unix(), // Open for 5 years
-    control: deployer,
-    beneficiary: deployer,
-    feeCollector: deployer,
+    control: controllerAccount,
+    beneficiary: controllerAccount,
+    feeCollector: controllerAccount,
     vestingCliff: '0',
     vestingDuration: Math.trunc(moment.duration(3, 'years').as('seconds'))
   };
