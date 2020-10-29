@@ -88,13 +88,13 @@ const BuyInput = observer((props) => {
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     
-    const price = (buyInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatBuyPrice();
-    let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
-    let txFailedError = (tradingStore.buyingState == 5) && (buyInputStatus == "") ? true : false;
+    const price = (buyInputStatus === "") ? tradingStore.formatNumber(0) : tradingStore.formatBuyPrice();
+    let disconnectedError = (tradingStore.buyAmount > 0) ? (account === null) ? true : false : false;
+    let txFailedError = (tradingStore.buyingState === 5) && (buyInputStatus === "") ? true : false;
     const datState = datStore.getState(configStore.getTokenAddress());
     const requiredDataLoaded = datState !== undefined;
     
-    if (buyInputStatus == "" && tradingStore.payAmount != 0) {
+    if (buyInputStatus === "" && tradingStore.payAmount !== 0) {
       tradingStore.setPayAmount(bnum(0));
     }
 
@@ -115,7 +115,7 @@ const BuyInput = observer((props) => {
     const validateNumber = async (value) => {
         const ETHBalance = (account) ? tokenStore.getEtherBalance(account) : 0;
         value = value.replace(/^0+/, '');
-        disconnectedError = (account == null) ? true : false;
+        disconnectedError = (account === null) ? true : false;
 
         const buyInputStatusFetch = validateTokenValue(value, {
           minValue: normalizeBalance(
@@ -164,10 +164,10 @@ const BuyInput = observer((props) => {
                   :
                     <></>
                 }
-                {(disconnectedError || (buyInputStatus != ValidationStatus.VALID)) ? (
+                {(disconnectedError || (buyInputStatus !== ValidationStatus.VALID)) ? (
                     <MessageError>
                         { 
-                          (buyInputStatus != ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
+                          (buyInputStatus !== ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
                           disconnectedError ? <p>Connect Wallet to proceed with order</p> : <></>
                         }
                     </MessageError>

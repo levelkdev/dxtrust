@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import store from '../../stores/Root';
 import { TransactionState } from 'stores/TradingForm';
 import { observer } from 'mobx-react';
 import { useStores } from '../../contexts/storesContext';

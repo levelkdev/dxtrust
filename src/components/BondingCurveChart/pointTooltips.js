@@ -33,7 +33,7 @@ export var pointTooltips = function (tooltip) {
         var bodyLines = tooltip.body.map(getBody);
 
         // If there is no content do not display
-        if (bodyLines.length == 0) {
+        if (bodyLines.length === 0) {
             tooltipEl.style.opacity = 0;
             return;        
         }
@@ -75,7 +75,7 @@ export var pointTooltips = function (tooltip) {
     tooltipEl.style.fontStyle = 'var(--roboto)';
     tooltipEl.style.fontWeight = '500';
     tooltipEl.style.color = 'var(--dark-text-tooltip)';
-    tooltipEl.style.padding = '13px ' + '13px';
+    tooltipEl.style.padding = '13px 13px';
     tooltipEl.style.background = '#FFFFFF';
     tooltipEl.style.border = '1px solid #E1E3E7';
     tooltipEl.style.boxSizing = 'border-box';

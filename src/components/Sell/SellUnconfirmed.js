@@ -83,7 +83,7 @@ const SellUnconfirmed = observer((props) => {
                 Unconfirmed...
                 <PendingCircle />
             </Unconfirmed>
-            <Button active={false}>{sellText} {sellText  == "Withdraw" ? 'ETH' : 'DXD'}</Button>
+            <Button active={false}>{sellText} {sellText  === "Withdraw" ? 'ETH' : 'DXD'}</Button>
         </FormWrapper>
     );
 });

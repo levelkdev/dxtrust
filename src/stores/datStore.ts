@@ -116,16 +116,16 @@ export default class DatStore {
     }
 
     isInitPhase(datAddress: string) {
-        return this.getState(datAddress) == DatState.STATE_INIT;
+        return this.getState(datAddress) === DatState.STATE_INIT;
     }
     isRunPhase(datAddress: string) {
-        return this.getState(datAddress) == DatState.STATE_RUN;
+        return this.getState(datAddress) === DatState.STATE_RUN;
     }
     isCancelled(datAddress: string) {
-        return this.getState(datAddress) == DatState.STATE_CANCEL;
+        return this.getState(datAddress) === DatState.STATE_CANCEL;
     }
     isClosed(datAddress: string) {
-        return this.getState(datAddress) == DatState.STATE_CLOSE;
+        return this.getState(datAddress) === DatState.STATE_CLOSE;
     }
 
     getState(datAddress: string): DatState | undefined {
@@ -250,7 +250,7 @@ export default class DatStore {
         const dat = this.getDatContract(datAddress);
         let buyEvents = await dat.getPastEvents('Buy', {
             fromBlock: fromBlock,
-            toBlock: toBlock == 0 ? 'latest' : toBlock
+            toBlock: toBlock === 0 ? 'latest' : toBlock
         });
 
         buyEvents.reverse();
@@ -276,7 +276,7 @@ export default class DatStore {
         const dat = this.getDatContract(datAddress);
         let sellEvents = await dat.getPastEvents('Sell', {
             fromBlock: fromBlock,
-            toBlock: toBlock == 0 ? 'latest' : toBlock
+            toBlock: toBlock === 0 ? 'latest' : toBlock
         });
 
         sellEvents.reverse();

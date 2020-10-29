@@ -450,17 +450,17 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
 
                         if (pointId === PointLabels.FUTURE_SUPPLY) {
                             return `DXD Issuance After Your Buy: ${tooltipItem.xLabel}`;
-                        } else if (pointId === PointLabels.CURVE_START && tooltipItem.datasetIndex == 1) {
+                        } else if (pointId === PointLabels.CURVE_START && tooltipItem.datasetIndex === 1) {
                             return 'After the kickstarter period, sales continue with an initial 2x increase in price';
                         }
 
-                        if (tooltipItem.datasetIndex != 0) {
+                        if (tooltipItem.datasetIndex !== 0) {
                             return false;
                         }
 
                         if (pointId === PointLabels.CURRENT_SUPPLY) {
                             let currentSupplyText;
-                            if (currrentDatState == DatState.STATE_INIT) {
+                            if (currrentDatState === DatState.STATE_INIT) {
                                 currentSupplyText = requiredDataLoaded
                                     ? `Currently ${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH invested`
                                     : 'Currently - ETH invested';
@@ -710,7 +710,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     return(
       <ChartPanelWrapper>
           <div className="loader">
-          <img src={require("assets/images/bolt.svg")} />
+          <img alt="bolt" src={require("assets/images/bolt.svg")} />
               <br/>
               Connect to view Price Chart
           </div>
@@ -719,7 +719,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     } else return(
       <ChartPanelWrapper>
           <div className="loader">
-          <img src={require("assets/images/bolt.svg")} />
+          <img alt="bolt" src={require("assets/images/bolt.svg")} />
               <br/>
               Loading chart..
           </div>

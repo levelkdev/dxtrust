@@ -86,16 +86,16 @@ const SellInput = observer((props) => {
     const [sellInputStatus, setSellInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
-    const price = (sellInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
-    const rewardForSell = (sellInputStatus == "") ? bnum(0) : tradingStore.rewardForSell;
-    let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
+    const price = (sellInputStatus === "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
+    const rewardForSell = (sellInputStatus === "") ? bnum(0) : tradingStore.rewardForSell;
+    let txFailedError = (tradingStore.sellingState === 5) && (sellInputStatus === "") ? true : false;
     const sellText = datStore.isInitPhase(configStore.getTokenAddress()) ? "Withdraw" : "Sell";
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
     }
     
-    if (sellInputStatus == "" && tradingStore.sellAmount != 0) {
+    if (sellInputStatus === "" && tradingStore.sellAmount !== 0) {
       tradingStore.setSellAmount(bnum(0));
     }
 
@@ -165,7 +165,7 @@ const SellInput = observer((props) => {
                   :
                     <></>
                 }
-                {sellInputStatus != ValidationStatus.VALID ? (
+                {sellInputStatus !== ValidationStatus.VALID ? (
                     <MessageError>
                       {sellInputStatus}
                     </MessageError>
@@ -209,7 +209,7 @@ const SellInput = observer((props) => {
                         });
                 }}
             >
-                {sellText} {sellText  == "Withdraw" ? 'ETH' : 'DXD'}
+                {sellText} {sellText  === "Withdraw" ? 'ETH' : 'DXD'}
             </Button>
         </FormWrapper>
     );

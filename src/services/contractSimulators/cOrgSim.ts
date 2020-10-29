@@ -20,7 +20,7 @@ export default class COrgSim {
     getPriceAtSupply(supply: BigNumber) {
         const {buySlopeNum, buySlopeDen, initGoal, state} = this.params;
 
-        if (initGoal.gt(0) && supply.lte(initGoal) && state == DatState.STATE_INIT) {
+        if (initGoal.gt(0) && supply.lte(initGoal) && state === DatState.STATE_INIT) {
             return initGoal.div(2).times(buySlopeNum).div(buySlopeDen);
         }
 

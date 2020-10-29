@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import ActiveButton from '../common/ActiveButton';
 import InactiveButton from '../common/InactiveButton';
-import store from '../../stores/Root';
 import { useStores } from '../../contexts/storesContext';
 import { formatBalance, formatNumberValue } from '../../utils/token';
 
@@ -90,7 +89,7 @@ const SellConfirmed = observer((props) => {
             <Confirmed>
                 Confirmed
                 <CheckboxContainer>
-                    <img src={require("assets/images/tick.svg")}/>
+                    <img alt="bolt" src={require("assets/images/tick.svg")}/>
                 </CheckboxContainer>
             </Confirmed>
             <Button

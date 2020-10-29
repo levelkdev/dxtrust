@@ -58,20 +58,13 @@ const Enable = observer(({ tokenType }) => {
         root: { providerStore, configStore, tokenStore, tradingStore },
     } = useStores();
 
-    const { account } = providerStore.getActiveWeb3React();
     const tokenAddress = configStore.getTokenAddress(tokenType);
-
-    const hasMaxApproval = tokenStore.hasMaxApproval(
-        tokenAddress,
-        account,
-        configStore.getTokenAddress()
-    );
 
     return (
         <ContentWrapper>
             <CircleContainer>
                 <CheckboxContainer>
-                    <img src={require("assets/images/checkbox-circle.svg")} />
+                    <img alt="checkbox-circle" src={require("assets/images/checkbox-circle.svg")} />
                 </CheckboxContainer>
                 <Info>Enable {tokenType} for trading</Info>
             </CircleContainer>
