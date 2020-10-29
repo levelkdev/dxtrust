@@ -93,8 +93,8 @@ const BuyInput = observer((props) => {
     let txFailedError = (tradingStore.buyingState === 5) && (buyInputStatus === "") ? true : false;
     const datState = datStore.getState(configStore.getTokenAddress());
     const requiredDataLoaded = datState !== undefined;
-    
-    if (buyInputStatus === "" && tradingStore.payAmount !== 0) {
+
+    if (buyInputStatus === "" && !tradingStore.payAmount.eq(0)) {
       tradingStore.setPayAmount(bnum(0));
     }
 
