@@ -35,7 +35,7 @@ const BuySell = observer(() => {
     const { account } = providerStore.getActiveWeb3React();
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-    let isBuy = tradingStore.activeTab;
+    let isBuy = tradingStore.activeTab === 'buy';
 
     const CurrentForm = ({isBuy}) => {
         if (isBuy) {
