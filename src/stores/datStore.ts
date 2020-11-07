@@ -84,8 +84,7 @@ export interface SellReturn {
 
 export type TradeEvent = BuyEvent | SellEvent;
 
-export const MAX_BLOCKS_FOR_FETCHING_TRADES = 200000;
-export const BLOCKS_PER_TRADES_FETCH = 5000;
+export const BLOCKS_PER_TRADES_FETCH = 100000;
 
 export default class DatStore {
     @observable datParams: DatInfoMap;
@@ -414,18 +413,12 @@ export default class DatStore {
         numToGet: number
     ): Promise<TradeEvent[]> {
         const { library } = this.rootStore.providerStore.getActiveWeb3React();
-        let toBlock = await library.eth.getBlockNumber();
-        let fromBlock = (this.rootStore.configStore.getDATinfo()).fromBlock;
-        let blockLimit = (this.rootStore.configStore.getDATinfo()).fromBlock;
+        let latestBlock = await library.eth.getBlockNumber();
+        let startBlock = (this.rootStore.configStore.getDATinfo()).fromBlock;
         let tradesToReturn = [];
         
-        if (toBlock > BLOCKS_PER_TRADES_FETCH) {
-          blockLimit = toBlock - MAX_BLOCKS_FOR_FETCHING_TRADES;
-          fromBlock = toBlock - BLOCKS_PER_TRADES_FETCH;
-        }
-        
         const self = this;
-        async function getEventsBetweenBlocks() {
+        async function getEventsBetweenBlocks(fromBlock, toBlock) {
           const buyEvents = await self.fetchBuyEvents(datAddress, numToGet, fromBlock, toBlock);
           const sellEvents = await self.fetchSellEvents(datAddress, numToGet, fromBlock, toBlock);
           let combinedTrades: any[] = buyEvents.concat(sellEvents);
@@ -434,19 +427,21 @@ export default class DatStore {
 
           console.debug('Getting events between blocks', fromBlock, toBlock, tradesToReturn.length);
 
-          if ((tradesToReturn.length < numToGet) && (fromBlock > blockLimit))
-            if ((fromBlock - BLOCKS_PER_TRADES_FETCH) < blockLimit) {
-              fromBlock = blockLimit;
-              toBlock = fromBlock;
-              await getEventsBetweenBlocks();
-            } else {
-              fromBlock = fromBlock - BLOCKS_PER_TRADES_FETCH;
-              toBlock = toBlock - BLOCKS_PER_TRADES_FETCH;
-              await getEventsBetweenBlocks();
-            }
+          if (tradesToReturn.length < numToGet)
+            await getEventsBetweenBlocks(
+              fromBlock - BLOCKS_PER_TRADES_FETCH > startBlock
+                ? fromBlock - BLOCKS_PER_TRADES_FETCH
+                : startBlock,
+              fromBlock
+            );
         }
         
-        await getEventsBetweenBlocks();
+        await getEventsBetweenBlocks(
+          latestBlock - BLOCKS_PER_TRADES_FETCH > startBlock
+            ? latestBlock - BLOCKS_PER_TRADES_FETCH
+            : startBlock,
+          latestBlock
+        );
         
         if (tradesToReturn.length >= numToGet) 
           tradesToReturn.slice(0, numToGet);
