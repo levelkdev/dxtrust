@@ -380,17 +380,47 @@ export default class DatStore {
         );
     }
     
-    getSellPriceAtSupply(tokenSupply: BigNumber) {
+    getSellPriceAtSupplyWithReserve(tokenSupply: BigNumber, reserveBalance: BigNumber) {
         const initGoal = this.getInitGoal(),
-        reserveBalance = this.getReserveBalance(),
         burnedSupply = this.getBurnedSupply(),
-        preMintedTokens  = this.getPreMintedTokens(),
-        state = this.getState();
+        preMintedTokens  = this.getPreMintedTokens();
 
-        if (initGoal.gt(0) && tokenSupply.lte(initGoal) && state === DatState.STATE_INIT) {
+        if (initGoal.gt(0) && tokenSupply.lte(initGoal)) {
             return this.getKickstarterPrice();
         }
         return reserveBalance.times(2).div(tokenSupply.plus(preMintedTokens).minus(burnedSupply));
+    }
+    
+    getSellPriceAtSupply(tokenSupply: BigNumber) {
+        const reserveBalance = this.getReserveBalance();
+        return this.getSellPriceAtSupplyWithReserve(tokenSupply, reserveBalance);
+    }
+    
+    getSellPrice() {
+        const { tokenStore, configStore } = this.rootStore;
+        const totalSupply = tokenStore.getTotalSupply(configStore.getTokenAddress());
+        const preMintedTokens  = this.getPreMintedTokens();
+        return this.getSellPriceAtSupply(totalSupply.minus(preMintedTokens));
+    }
+    
+    getBuyPriceAtSupply(supply: BigNumber) {
+        const initGoal = this.getInitGoal(),
+        buySlopeNum = this.getBuySlopeNum(),
+        buySlopeDen  = this.getBuySlopeDen();
+
+        if (initGoal.gt(0) && supply.lte(initGoal)) {
+            return initGoal.div(2).times(buySlopeNum).div(buySlopeDen);
+        }
+
+        return supply.times(buySlopeNum).div(buySlopeDen);
+    }
+    
+    getBuyPrice() {
+        const { tokenStore, configStore } = this.rootStore;
+        const totalSupply = tokenStore.getTotalSupply(configStore.getTokenAddress());
+        const preMintedTokens  = this.getPreMintedTokens();
+        const burnedSupply  = this.getBurnedSupply();
+        return this.getBuyPriceAtSupply(totalSupply.minus(preMintedTokens).plus(burnedSupply));
     }
 
     fetchBuyReturn(totalPaid: BigNumber): BuyReturnCached { const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();

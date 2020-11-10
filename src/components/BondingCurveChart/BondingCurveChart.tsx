@@ -9,7 +9,6 @@ import {
     formatNumberValue,
     normalizeBalance,
 } from '../../utils/token';
-import COrgSim from '../../services/contractSimulators/cOrgSim';
 import { BigNumber } from '../../utils/bignumber';
 import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 import { bnum } from '../../utils/helpers';
@@ -112,11 +111,8 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         root: { tradingStore, tokenStore, configStore, datStore, providerStore },
     } = useStores();
 
-    let buySlopeNum: BigNumber,
-    buySlopeDen: BigNumber,
-    initGoal: BigNumber,
+    let initGoal: BigNumber,
     preMintedTokens: BigNumber,
-    cOrg: COrgSim,
     currentBuyPrice: BigNumber,
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
@@ -139,27 +135,16 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         !!reserveBalance;
 
     if (requiredDataLoaded) {
-        buySlopeNum = datStore.getBuySlopeNum();
-        buySlopeDen = datStore.getBuySlopeDen();
         initGoal = datStore.getInitGoal();
         preMintedTokens = datStore.getPreMintedTokens();
-        cOrg = new COrgSim({
-            buySlopeNum,
-            buySlopeDen,
-            initGoal,
-            preMintedTokens,
-            reserveBalance,
-            burnedSupply,
-            state: currrentDatState,
-        });
 
         if (initGoal && initGoal.gt(0)) {
-            kickstarterPrice = cOrg.getBuyPriceAtSupply(initGoal.div(2));
+            kickstarterPrice = datStore.getBuyPriceAtSupply(initGoal.div(2));
         }
     
         totalSupplyWithoutPremint = totalSupplyWithPremint.minus(preMintedTokens).plus(burnedSupply);
-        currentSellPrice = cOrg.getSellPriceAtSupply(totalSupplyWithoutPremint);
-        currentBuyPrice = cOrg.getBuyPriceAtSupply(totalSupplyWithoutPremint);
+        currentSellPrice = datStore.getSellPrice();
+        currentBuyPrice = datStore.getBuyPrice();
     }
 
     let chartData, chartOptions;
@@ -223,8 +208,8 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
           roundUpToScale( normalizeBalance( maxBuySupplyToShow ) )
         );
       }
-      const maxBuyPriceToShow = cOrg.getBuyPriceAtSupply(maxSupplyToShow);
-      const maxSellPriceToShow = cOrg.getSellPriceAt(maxBuySupplyToShow, bnum(560));
+      const maxBuyPriceToShow = datStore.getBuyPriceAtSupply(maxSupplyToShow);
+      const maxSellPriceToShow = datStore.getSellPriceAtSupply(maxBuySupplyToShow);
 
       let points: ChartPointMap = {
         zero: {
@@ -282,7 +267,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
       ) {
         supplyIncrease = tradingStore.payAmount;
         futureSupply = totalSupplyWithoutPremint.plus(supplyIncrease);
-        futurePrice = cOrg.getBuyPriceAtSupply(futureSupply);
+        futurePrice = datStore.getBuyPriceAtSupply(futureSupply);
         points['futureSupply'] = {
           x: balanceToNumber(futureSupply),
           y: valueToNumber(futurePrice),
@@ -295,7 +280,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
           const newMaxSupplyToShow = denormalizeBalance(
             roundUpToScale(normalizeBalance(futureSupply.times(1.5)))
           );
-          const newMaxPriceToShow = cOrg.getBuyPriceAtSupply(
+          const newMaxPriceToShow = datStore.getBuyPriceAtSupply(
             newMaxSupplyToShow
           );
 
