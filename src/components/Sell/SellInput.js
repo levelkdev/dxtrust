@@ -109,7 +109,7 @@ const SellInput = observer((props) => {
 
         if (sellInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
-            const sellReturn = await datStore.fetchSellReturn(denormalizeBalance(value));
+            const sellReturn = datStore.fetchSellReturn(denormalizeBalance(value));
             tradingStore.handleSellReturn(sellReturn);
         }   else {
             tradingStore.setSellAmount(bnum(0));

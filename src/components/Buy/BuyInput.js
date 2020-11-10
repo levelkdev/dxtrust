@@ -127,7 +127,7 @@ const BuyInput = observer((props) => {
 
         if (buyInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setBuyAmount(value);
-            const buyReturn = await datStore.fetchBuyReturn(denormalizeBalance(value));
+            const buyReturn = datStore.fetchBuyReturn(denormalizeBalance(value));
             tradingStore.handleBuyReturn(buyReturn);
         }   else {
             tradingStore.setPayAmount(bnum(0));

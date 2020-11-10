@@ -111,6 +111,7 @@ export default class DatStore {
             !!this.getBuySlopeDen() &&
             !!this.getInitGoal() &&
             !!this.getPreMintedTokens() &&
+            !!this.getBurnedSupply() &&
             !!this.getInvestmentReserveBasisPoints()
         );
     }
@@ -196,6 +197,23 @@ export default class DatStore {
             method: 'initReserve',
         });
         return value ? bnum(value) : undefined;
+    }
+    
+    getBurnedSupply() {
+        const { configStore } = this.rootStore;
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.DecentralizedAutonomousTrust,
+            address: configStore.getTokenAddress(),
+            method: 'burnedSupply',
+        });
+        return value ? bnum(value) : undefined;
+    }
+    
+    getKickstarterPrice() {
+      const buySlopeNum = this.getBuySlopeNum(),
+      buySlopeDen = this.getBuySlopeDen(),
+      initGoal = this.getInitGoal();
+      return initGoal.div(2).times(buySlopeNum).div(buySlopeDen);
     }
     
     getInvestmentReserveBasisPoints() {
@@ -361,11 +379,59 @@ export default class DatStore {
             !!sellEvent.returnValues._currencyValue
         );
     }
+    
+    getSellPriceAtSupply(tokenSupply: BigNumber) {
+        const initGoal = this.getInitGoal(),
+        reserveBalance = this.getReserveBalance(),
+        burnedSupply = this.getBurnedSupply(),
+        preMintedTokens  = this.getPreMintedTokens(),
+        state = this.getState();
 
-    async fetchBuyReturn(totalPaid: BigNumber): Promise<BuyReturnCached> { const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+        if (initGoal.gt(0) && tokenSupply.lte(initGoal) && state === DatState.STATE_INIT) {
+            return this.getKickstarterPrice();
+        }
+        return reserveBalance.times(2).div(tokenSupply.plus(preMintedTokens).minus(burnedSupply));
+    }
 
-        const tokensIssued = await this.estimateBuyValue(totalPaid);
-        const pricePerToken = totalPaid.div(tokensIssued);
+    fetchBuyReturn(totalPaid: BigNumber): BuyReturnCached { const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+        
+        const { tokenStore, configStore } = this.rootStore;
+        const initGoal = this.getInitGoal();
+        const buySlopeDen = this.getBuySlopeDen();
+        const buySlopeNum = this.getBuySlopeNum();
+        const totalSupply = tokenStore.getTotalSupply(configStore.getTokenAddress());
+        const preMintedTokens  = this.getPreMintedTokens();
+        const burnedSupply = this.getBurnedSupply();
+        const tokensSold = totalSupply.minus(preMintedTokens).plus(burnedSupply);
+        let tokensIssued = bnum(0), pricePerToken = bnum(0);
+        if (this.getState() == 0) {
+          pricePerToken = this.getKickstarterPrice();
+          tokensIssued = totalPaid.div(pricePerToken);
+          
+          const tokensLeftInKickstarter = initGoal.minus(totalSupply.minus(preMintedTokens))
+          if (tokensIssued.gt(tokensLeftInKickstarter)) {
+            tokensIssued = tokensLeftInKickstarter;
+            const valueAfterKickstarterEnds = totalPaid
+              .minus(tokensLeftInKickstarter.times(this.getKickstarterPrice()));
+
+            const tokensAfterKickstarterEnds = valueAfterKickstarterEnds.times(2).times(buySlopeDen).div(buySlopeNum)
+              .plus(initGoal.times(initGoal))
+              .sqrt()
+              .minus(initGoal);
+              
+            tokensIssued = tokensIssued.plus(tokensAfterKickstarterEnds);
+          }
+        } else {
+          tokensIssued = totalPaid.times(2).times(buySlopeDen).div(buySlopeNum)
+            .plus(tokensSold.times(tokensSold))
+            .sqrt()
+            .minus(tokensSold);
+        }
+        pricePerToken = totalPaid.div(tokensIssued);
+        
+        // What was used to get the on chain values
+        // const tokensIssued = await this.estimateBuyValue(totalPaid);
+        // const pricePerToken = totalPaid.div(tokensIssued);
 
         return {
             value: {
@@ -377,16 +443,44 @@ export default class DatStore {
         };
     }
 
-    async fetchSellReturn(tokensSold: BigNumber): Promise<SellReturnCached> {
+    fetchSellReturn(tokensToSell: BigNumber): SellReturnCached {
+
+      const { tokenStore, configStore } = this.rootStore;
+      const totalSupply = tokenStore.getTotalSupply(configStore.getTokenAddress());
+      const preMintedTokens  = this.getPreMintedTokens();
+      const reserve  = this.getReserveBalance();
+      const burnedSupply = this.getBurnedSupply();
+      let currencyReturned = bnum(0), returnPerToken = bnum(0);
+
+      if(this.getState() == 1) {
+        const supply = totalSupply.plus(burnedSupply);
+
+        currencyReturned = tokensToSell.times(reserve).times(burnedSupply.times(burnedSupply))
+          .div(totalSupply.times(supply.times(supply)));
+      
+        currencyReturned = currencyReturned.plus(
+          tokensToSell.times(2).times(reserve).div(supply)
+        );
+
+        currencyReturned = currencyReturned.minus(
+          tokensToSell.times(tokensToSell).times(reserve)
+          .div(supply.times(supply))
+        );
+        
+      } else if(this.getState() == 2) {
+        currencyReturned = tokensToSell.times(reserve).div(totalSupply)
+      } else {
+        currencyReturned = tokensToSell.times(reserve).div(totalSupply.minus(preMintedTokens))
+      }
+      
         const blockNumber = this.rootStore.providerStore.getCurrentBlockNumber();
+        returnPerToken = currencyReturned.div(tokensToSell);
 
-        const currencyReturned = await this.estimateSellValue(tokensSold);
-
-        const returnPerToken = currencyReturned.div(tokensSold);
-
+        // Uncomment thsi to get value on chain
+        // currencyReturned = await this.estimateSellValue(tokensToSell);
         return {
             value: {
-                tokensSold,
+                tokensSold: tokensToSell,
                 currencyReturned,
                 returnPerToken,
             },
