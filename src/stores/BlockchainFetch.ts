@@ -17,10 +17,9 @@ export default class BlockchainFetchStore {
     }
 
     @action async refreshBuyFormPreview() {
-        const { datStore, configStore, tradingStore } = this.rootStore;
-        const activeDATAddress = configStore.getTokenAddress()
+        const { datStore, tradingStore } = this.rootStore;
         const minValue = normalizeBalance(
-            datStore.getMinInvestment(activeDATAddress)
+            datStore.getMinInvestment()
         );
 
         if (
@@ -30,11 +29,7 @@ export default class BlockchainFetchStore {
         ) {
             const weiValue = denormalizeBalance(tradingStore.buyAmount);
 
-            const buyReturn = await datStore.fetchBuyReturn(
-                activeDATAddress,
-                weiValue
-            );
-
+            const buyReturn = await datStore.fetchBuyReturn(weiValue);
             tradingStore.handleBuyReturn(buyReturn);
         }
     }
@@ -132,7 +127,7 @@ export default class BlockchainFetchStore {
                         }
 
                         datStore
-                            .fetchRecentTrades(activeDATAddress, 10)
+                            .fetchRecentTrades(10)
                             .then((trades) => {
                                 tradingStore.setRecentTrades(trades);
                             })
@@ -141,15 +136,9 @@ export default class BlockchainFetchStore {
                                 console.error(e);
                             });
 
-                        if (
-                            !datStore.areAllStaticParamsLoaded(
-                                activeDATAddress
-                            )
-                        ) {
+                        if ( !datStore.areAllStaticParamsLoaded() ) {
                             multicallService.addCalls(
-                                datStore.genStaticParamCalls(
-                                    activeDATAddress
-                                )
+                                datStore.genStaticParamCalls()
                             );
                         }
 
@@ -203,7 +192,7 @@ export default class BlockchainFetchStore {
                                     tradingStore.setEnableDXDState(TransactionState.APPROVED);
                                 }
 
-                                if (datStore.areAllStaticParamsLoaded(activeDATAddress)) {
+                                if (datStore.areAllStaticParamsLoaded()) {
                                     this.refreshBuyFormPreview();
                                 }
                             })

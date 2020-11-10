@@ -15,7 +15,6 @@ import { validateTokenValue, ValidationStatus } from '../../utils/validators';
 import { bnum } from '../../utils/helpers';
 import { roundUpToScale } from '../../utils/number';
 import { pointTooltips } from './pointTooltips';
-import { DatState } from '../../stores/datStore';
 
 const ChartPanelWrapper = styled.div`
     width: 610px;
@@ -85,26 +84,28 @@ interface ChartPointMap {
     [index: string]: ChartPoint;
 }
 
-interface ChartPoint {
-    x: number;
-    y: number;
-}
-
-enum PointLabels {
+enum PointType {
     ZERO,
     KICKSTARTER_START,
     KICKSTARTER_END,
-    CURRENT_SUPPLY,
+    CURRENT_BUY_PRICE,
+    CURRENT_SELL_PRICE,
     FUTURE_SUPPLY,
     CURVE_START,
-    MAX_SUPPLY_TO_SHOW,
+    MAX_BUY_SUPPLY_TO_SHOW,
+    MAX_SELL_SUPPLY_TO_SHOW
+}
+
+interface ChartPoint {
+  x: number;
+  y: number;
+  type: PointType
 }
 
 const chartGreen = '#54AE6F';
 const chartBlue = '#5b76fa';
 const chartGray = '#9FA8DA';
 const gridLineColor = '#EAECF7';
-
 
 const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const {
@@ -114,22 +115,20 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     let buySlopeNum: BigNumber,
     buySlopeDen: BigNumber,
     initGoal: BigNumber,
-    initReserve: BigNumber,
+    preMintedTokens: BigNumber,
     cOrg: COrgSim,
     currentBuyPrice: BigNumber,
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
     
     const activeDATAddress = configStore.getTokenAddress();
-    const staticParamsLoaded = datStore.areAllStaticParamsLoaded(
-        activeDATAddress
-    );
+    const staticParamsLoaded = datStore.areAllStaticParamsLoaded();
     const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
     const burnedSupply = tokenStore.getBurnedSupply(activeDATAddress);
 
-    const currrentDatState = datStore.getState(activeDATAddress);
-    const reserveBalance: BigNumber = datStore.getReserveBalance(activeDATAddress);
-    const isBuy = tradingStore.activeTab;
+    const currrentDatState = datStore.getState();
+    const reserveBalance: BigNumber = datStore.getReserveBalance();
+    const isBuy = tradingStore.activeTab === 'buy';
     
     const providerActive = providerStore.getActiveWeb3React().active;
 
@@ -140,107 +139,53 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         !!reserveBalance;
 
     if (requiredDataLoaded) {
-        buySlopeNum = datStore.getBuySlopeNum(activeDATAddress);
-        buySlopeDen = datStore.getBuySlopeDen(activeDATAddress);
-        initGoal = datStore.getInitGoal(activeDATAddress);
-        initReserve = datStore.getInitReserve(activeDATAddress);
+        buySlopeNum = datStore.getBuySlopeNum();
+        buySlopeDen = datStore.getBuySlopeDen();
+        initGoal = datStore.getInitGoal();
+        preMintedTokens = datStore.getPreMintedTokens();
         cOrg = new COrgSim({
             buySlopeNum,
             buySlopeDen,
             initGoal,
-            initReserve,
+            preMintedTokens,
+            reserveBalance,
+            burnedSupply,
             state: currrentDatState,
         });
 
         if (initGoal && initGoal.gt(0)) {
-            kickstarterPrice = cOrg.getPriceAtSupply(initGoal.div(2));
+            kickstarterPrice = cOrg.getBuyPriceAtSupply(initGoal.div(2));
         }
     
-        totalSupplyWithoutPremint = totalSupplyWithPremint.minus(initReserve).plus(burnedSupply);
-        currentSellPrice = reserveBalance.times(2).div(totalSupplyWithPremint.plus(burnedSupply));
-        currentBuyPrice = cOrg.getPriceAtSupply(totalSupplyWithoutPremint);
+        totalSupplyWithoutPremint = totalSupplyWithPremint.minus(preMintedTokens).plus(burnedSupply);
+        currentSellPrice = cOrg.getSellPriceAtSupply(totalSupplyWithoutPremint);
+        currentBuyPrice = cOrg.getBuyPriceAtSupply(totalSupplyWithoutPremint);
     }
 
-    let data, options;
+    let chartData, chartOptions;
 
-    let points: ChartPointMap = {};
-
-    const showTooltipForPoint = (pointId: PointLabels) => {
-        return (
-            pointId !== PointLabels.ZERO &&
-            pointId !== PointLabels.KICKSTARTER_START &&
-            pointId !== PointLabels.MAX_SUPPLY_TO_SHOW
-        );
-    };
-
-    const getPointIdByCoordinates = (point: ChartPoint) => {
-        if (point.x === points.zero.x && point.y === points.zero.y) {
-            return PointLabels.ZERO;
-        } else if (
-            point.x === points.maxSupplyToShow.x &&
-            point.y === points.maxSupplyToShow.y
-        ) {
-            return PointLabels.MAX_SUPPLY_TO_SHOW;
-        } else if (
-            point.x === points.kickStarterStart.x &&
-            point.y === points.kickStarterStart.y
-        ) {
-            return PointLabels.KICKSTARTER_START;
-        } else if (
-            point.x === points.kickstarterEnd.x &&
-            point.y === points.kickstarterEnd.y
-        ) {
-            return PointLabels.KICKSTARTER_END;
-        } else if (
-            point.x === points.curveStart.x &&
-            point.y === points.curveStart.y
-        ) {
-            return PointLabels.CURVE_START;
-        } else if (
-            point.x === points.currentSupply.x &&
-            point.y === points.currentSupply.y
-        ) {
-            return PointLabels.CURRENT_SUPPLY;
-        } else if (
-            point.x === points.futureSupply.x &&
-            point.y === points.futureSupply.y
-        ) {
-            return PointLabels.FUTURE_SUPPLY;
-        } else {
-          return PointLabels.ZERO;
-        }
-    };
-
-    const generateLine = (
-        chartData: ChartPoint[],
-        color: string,
-        label: string
-    ) => {
+    const generateLine = (chartData: ChartPoint[], color: string, label: string) => {
         return {
-            label,
-            fill: true,
-            data: chartData,
-            datalabels: {
-                display: false,
-            },
-            borderWidth: 2,
-            pointRadius: (context) => {
-                const point = context.dataset.data[context.dataIndex];
-                const pointId = getPointIdByCoordinates({
-                    x: point.x,
-                    y: point.y,
-                });
+          label,
+          fill: true,
+          data: chartData,
+          datalabels: {
+            display: false,
+          },
+          borderWidth: 2,
+          pointRadius: (context) => {
+            const point = context.dataset.data[context.dataIndex];
 
-                if (pointId === PointLabels.CURRENT_SUPPLY) {
-                    return 4;
-                } else {
-                    return 2;
-                }
-            },
-            borderColor: () => {
-                return color;
-            },
-            lineTension: 0,
+            if ((point.type === PointType.CURRENT_BUY_PRICE) || (point.type === PointType.CURRENT_SELL_PRICE)) {
+              return 4;
+            } else {
+              return 2;
+            }
+          },
+          borderColor: () => {
+            return color;
+          },
+          lineTension: 0,
         };
     };
 
@@ -266,292 +211,255 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     };
 
     const generateChart = () => {
-        points = {
-            zero: {
-                x: 0,
-                y: 0,
-            },
-            currentSupply: {
-                x: balanceToNumber(totalSupplyWithoutPremint),
-                y: valueToNumber(currentBuyPrice),
-            },
-        };
-
-        if (initGoal.gt(0)) {
-            points.kickStarterStart = {
-                x: 0,
-                y: valueToNumber(kickstarterPrice),
-            };
-
-            points.kickstarterEnd = {
-                x: balanceToNumber(initGoal),
-                y: valueToNumber(kickstarterPrice),
-            };
-
-            points.curveStart = {
-                x: balanceToNumber(initGoal),
-                y: valueToNumber(kickstarterPrice.times(2)),
-            };
-        }
-
-        let maxSupplyToShow = denormalizeBalance(
-            roundUpToScale(normalizeBalance(totalSupplyWithoutPremint.times(2)))
+      const datasets = [], hasInitGoal = initGoal.gt(0), hasExceededInitGoal = datStore.isRunPhase();
+      let supplyIncrease, futureSupply, futurePrice = bnum(0), hasActiveInput = false;
+      let maxBuySupplyToShow = totalSupplyWithoutPremint.times(1.5);
+      let maxSupplyToShow = denormalizeBalance(
+        roundUpToScale(normalizeBalance(maxBuySupplyToShow))
+      );
+      if (maxSupplyToShow.lt(initGoal.times(1.5))) {
+        maxBuySupplyToShow = totalSupplyWithoutPremint.plus(initGoal)
+        maxSupplyToShow = denormalizeBalance(
+          roundUpToScale( normalizeBalance( maxBuySupplyToShow ) )
         );
-        if (maxSupplyToShow.lt(initGoal.times(2))) {
-            maxSupplyToShow = denormalizeBalance(
-                roundUpToScale(
-                    normalizeBalance(
-                        totalSupplyWithoutPremint.plus(initGoal.times(2))
-                    )
-                )
-            );
-        }
-        const maxPriceToShow = cOrg.getPriceAtSupply(maxSupplyToShow);
+      }
+      const maxBuyPriceToShow = cOrg.getBuyPriceAtSupply(maxSupplyToShow);
+      const maxSellPriceToShow = cOrg.getSellPriceAt(maxBuySupplyToShow, bnum(560));
 
-        points.maxSupplyToShow = {
-            x: balanceToNumber(maxSupplyToShow),
-            y: valueToNumber(maxPriceToShow),
+      let points: ChartPointMap = {
+        zero: {
+          x: 0,
+          y: 0,
+          type: PointType.ZERO
+        },
+        currentBuyPrice: {
+          x: balanceToNumber(totalSupplyWithoutPremint),
+          y: valueToNumber(currentBuyPrice),
+          type: PointType.CURRENT_BUY_PRICE
+        },
+        currentSellPrice: {
+          x: balanceToNumber(totalSupplyWithoutPremint),
+          y: valueToNumber(currentSellPrice),
+          type: PointType.CURRENT_SELL_PRICE
+        },
+      };
+
+      if (hasInitGoal) {
+        points.kickStarterStart = {
+          x: 0,
+          y: valueToNumber(kickstarterPrice),
+          type: PointType.KICKSTARTER_START
         };
 
-        let supplyIncrease,
-            futureSupply,
-            futurePrice = bnum(0);
-        let hasActiveInput = false;
+        points.kickstarterEnd = {
+          x: balanceToNumber(initGoal),
+          y: valueToNumber(kickstarterPrice),
+          type: PointType.KICKSTARTER_END
+        };
 
-        if (
-            validateTokenValue(tradingStore.buyAmount) ===
-            ValidationStatus.VALID
-        ) {
-            supplyIncrease = tradingStore.payAmount;
-            futureSupply = totalSupplyWithoutPremint.plus(supplyIncrease);
-            futurePrice = cOrg.getPriceAtSupply(futureSupply);
-            points['futureSupply'] = {
-                x: balanceToNumber(futureSupply),
-                y: valueToNumber(futurePrice),
-            };
+        points.curveStart = {
+          x: balanceToNumber(initGoal),
+          y: valueToNumber(kickstarterPrice.times(2)),
+          type: PointType.CURVE_START
+        };
+      }
 
-            hasActiveInput = true;
+      points.maxBuySupplyToShow = {
+        x: balanceToNumber(maxSupplyToShow),
+        y: valueToNumber(maxBuyPriceToShow),
+        type: PointType.MAX_BUY_SUPPLY_TO_SHOW
+      };
+      
+      points.maxSellSupplyToShow = {
+        x: balanceToNumber(maxSupplyToShow),
+        y: valueToNumber(maxSellPriceToShow),
+        type: PointType.MAX_SELL_SUPPLY_TO_SHOW
+      };
 
-            if (futureSupply.gte(maxSupplyToShow)) {
-                const newMaxSupplyToShow = denormalizeBalance(
-                    roundUpToScale(normalizeBalance(futureSupply.times(1.5)))
-                );
-                const newMaxPriceToShow = cOrg.getPriceAtSupply(
-                    newMaxSupplyToShow
-                );
+      if (
+        validateTokenValue(tradingStore.buyAmount) ===
+        ValidationStatus.VALID
+      ) {
+        supplyIncrease = tradingStore.payAmount;
+        futureSupply = totalSupplyWithoutPremint.plus(supplyIncrease);
+        futurePrice = cOrg.getBuyPriceAtSupply(futureSupply);
+        points['futureSupply'] = {
+          x: balanceToNumber(futureSupply),
+          y: valueToNumber(futurePrice),
+          type: PointType.FUTURE_SUPPLY
+        };
 
-                points.maxSupplyToShow = {
-                    x: balanceToNumber(newMaxSupplyToShow),
-                    y: valueToNumber(newMaxPriceToShow),
-                };
-            }
+        hasActiveInput = true;
+
+        if (futureSupply.gte(maxSupplyToShow)) {
+          const newMaxSupplyToShow = denormalizeBalance(
+            roundUpToScale(normalizeBalance(futureSupply.times(1.5)))
+          );
+          const newMaxPriceToShow = cOrg.getBuyPriceAtSupply(
+            newMaxSupplyToShow
+          );
+
+          points.maxBuySupplyToShow = {
+            x: balanceToNumber(newMaxSupplyToShow),
+            y: valueToNumber(newMaxPriceToShow),
+            type: PointType.MAX_BUY_SUPPLY_TO_SHOW
+          };
         }
-        const datasets = [];
+      }
 
-        const hasInitGoal = initGoal.gt(0);
-        const hasExceededInitGoal = datStore.isRunPhase(
-            activeDATAddress
+      // console.debug('chartParams', {
+      //   datParams: datStore.datParams[],
+      //   preMintedTokens: preMintedTokens.toString(),
+      //   initGoal: initGoal.toString(),
+      //   buySlopeNum: buySlopeNum.toString(),
+      //   buySlopeDen: buySlopeDen.toString(),
+      //   currentBuyPrice: totalSupplyWithoutPremint.toString(),
+      // 
+      //   hasInitGoal,
+      //   hasExceededInitGoal,
+      //   points,
+      // });
+
+      if (hasInitGoal && !hasExceededInitGoal) {
+        datasets.push(
+          generateLine(
+            [ points.kickStarterStart, points.currentBuyPrice, points.kickstarterEnd ],
+            chartBlue,
+            'Kickstarter Price'
+          )
+        );
+      }
+
+      if (hasExceededInitGoal) {
+        datasets.push(
+          generateLine(
+            [points.zero, points.currentBuyPrice, points.maxBuySupplyToShow],
+            chartGreen,
+            'Buy Price'
+          )
+        );
+        
+        datasets.push(
+          generateLine(
+            [points.zero, points.currentSellPrice,  points.maxSellSupplyToShow],
+            chartBlue,
+            'Sell Price'
+          )
+        );
+        
+      } else {
+        datasets.push(
+          generateLine(
+            [points.kickstarterEnd, points.curveStart],
+            chartGray,
+            'Kickstarter Ends'
+          )
+        );
+        
+        datasets.push(
+          generateLine(
+            [points.curveStart, points.maxBuySupplyToShow],
+            chartGreen,
+            'Buy Price'
+          )
         );
 
-        console.debug('chartParams', {
-            datParams: datStore.datParams[activeDATAddress],
-            initReserve: initReserve.toString(),
-            initGoal: initGoal.toString(),
-            buySlopeNum: buySlopeNum.toString(),
-            buySlopeDen: buySlopeDen.toString(),
-            currentSupply: totalSupplyWithoutPremint.toString(),
-            hasInitGoal,
-            hasExceededInitGoal,
-            points,
-        });
+      }
 
-        if (hasInitGoal && !hasExceededInitGoal) {
-            datasets.push(
-                generateLine(
-                    [
-                        points.kickStarterStart,
-                        points.currentSupply,
-                        points.kickstarterEnd,
-                    ],
-                    chartGreen,
-                    'Kickstarter Funded'
-                )
+      if (hasActiveInput) {
+        datasets.push(
+          generateSupplyMarker(
+            points.futureSupply,
+            'Future Supply',
+            chartGreen
+          )
+        );
+      }
+
+      const buyData = {
+        datasets,
+        backgroundColor: '#000000',
+      };
+
+      const buyOptions = {
+        tooltips: {
+          enabled: false,
+          custom: pointTooltips,
+          filter: (tooltipItem, data) => {
+            console.log(tooltipItem, data.datasets[tooltipItem.datasetIndex])
+            return (
+              data.datasets[tooltipItem.datasetIndex].label === "Buy Price"
+              || data.datasets[tooltipItem.datasetIndex].label === "Sell Price"
+              || (data.datasets[tooltipItem.datasetIndex].label === "Kickstarter Price" && tooltipItem.index > 0)
             );
-        }
+          },
+          callbacks: {
+            // tslint:disable-next-line: no-shadowed-variable
+            label: (tooltipItem, data) => {
+              let toDisplay = data.datasets[tooltipItem.datasetIndex].label || '';
 
-        if (hasExceededInitGoal) {
-            datasets.push(
-                generateLine(
-                    [points.zero, points.currentSupply],
-                    chartBlue,
-                    'Curve chart funded'
-                )
-            );
-
-            datasets.push(
-                generateLine(
-                    [points.currentSupply, points.maxSupplyToShow],
-                    chartGray,
-                    'Curve chart unfunded'
-                )
-            );
-        } else {
-            datasets.push(
-                generateLine(
-                    [points.kickstarterEnd, points.curveStart],
-                    chartGray,
-                    'Curve chart point of change'
-                )
-            );
-
-            datasets.push(
-                generateLine(
-                    [points.curveStart, points.maxSupplyToShow],
-                    chartGray,
-                    'Curve chart funded'
-                )
-            );
-        }
-
-        if (hasActiveInput) {
-            datasets.push(
-                generateSupplyMarker(
-                    points.futureSupply,
-                    'Future Supply',
-                    chartGray
-                )
-            );
-        }
-
-        data = {
-            datasets,
-            backgroundColor: '#000000',
-        };
-
-        options = {
-            tooltips: {
-                enabled: false,
-                custom: pointTooltips,
-                filter: (tooltipItem) => {
-                    const pointId = getPointIdByCoordinates({
-                        x: tooltipItem.xLabel,
-                        y: tooltipItem.yLabel,
-                    });
-
-                    return showTooltipForPoint(pointId);
-                },
-                callbacks: {
-                    // tslint:disable-next-line: no-shadowed-variable
-                    label: (tooltipItem, data) => {
-                        const pointId = getPointIdByCoordinates({
-                            x: tooltipItem.xLabel,
-                            y: tooltipItem.yLabel,
-                        });
-
-                        if (pointId === PointLabels.FUTURE_SUPPLY) {
-                            return `DXD Issuance After Your Buy: ${tooltipItem.xLabel}`;
-                        } else if (pointId === PointLabels.CURVE_START && tooltipItem.datasetIndex === 1) {
-                            return 'After the kickstarter period, sales continue with an initial 2x increase in price';
-                        }
-
-                        if (tooltipItem.datasetIndex !== 0) {
-                            return false;
-                        }
-
-                        if (pointId === PointLabels.CURRENT_SUPPLY) {
-                            let currentSupplyText;
-                            if (currrentDatState === DatState.STATE_INIT) {
-                                currentSupplyText = requiredDataLoaded
-                                    ? `Currently ${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH invested`
-                                    : 'Currently - ETH invested';
-                            } else {
-                                currentSupplyText = requiredDataLoaded
-                                    ? `Current DXD issuance is ${formatBalance(totalSupplyWithoutPremint)}`
-                                    : 'Current DXD issuance is -';
-                            }
-                            return currentSupplyText;
-                        } else if (pointId === PointLabels.KICKSTARTER_END) {
-                            const kickstarterGoalText = requiredDataLoaded
-                                ? `${formatBalance(
-                                      initGoal.times(kickstarterPrice)
-                                  )} ETH`
-                                : '- ETH';
-                            return `Kickstarter ends when funding goal of ${kickstarterGoalText} reached`;
-                        }
-
-                        let toDisplay =
-                            data.datasets[tooltipItem.datasetIndex].label || '';
-
-                        if (toDisplay) {
-                            toDisplay += ': ';
-                        }
-                        toDisplay += tooltipItem.yLabel + ' ETH / DXD';
-                        return toDisplay;
-                    },
-                },
+              if (toDisplay) { toDisplay += ': '; }
+              toDisplay += tooltipItem.yLabel.toFixed(5) + ' ETH / DXD';
+              return toDisplay;
             },
-            maintainAspectRatio: false,
-            legend: {
-                display: false,
+          },
+        },
+        maintainAspectRatio: false,
+        legend: { display: false, },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            display: true,
+            gridLines: {
+              display: false,
             },
-            scales: {
-                xAxes: [
-                    {
-                        type: 'linear',
-                        display: true,
-                        gridLines: {
-                            display: false,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '',
-                        },
-                        ticks: {
-                            beginAtZero: true,
-                            max: points.maxSupplyToShow.x,
-                            major: {
-                                fontStyle: 'bold',
-                                fontColor: '#BDBDBD',
-                            },
-                        },
-                    },
-                ],
-                yAxes: [
-                    {
-                        display: true,
-                        gridLines: {
-                            display: true,
-                            color: gridLineColor,
-                        },
-                        position: 'right',
-                        ticks: {
-                            beginAtZero: true,
-                            suggestedMax: points.maxSupplyToShow.y,
-                            callback: (value) => {
-                                return (
-                                    formatNumberValue(bnum(value), 2) + ' ETH'
-                                );
-                            },
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '',
-                        },
-                    },
-                ],
+            scaleLabel: {
+              display: true,
+              labelString: ' DXD',
             },
-        };
+            ticks: {
+              beginAtZero: true,
+              max: points.maxBuySupplyToShow.x,
+              major: {
+                fontStyle: 'bold',
+                fontColor: '#BDBDBD',
+              }
+            },
+          }],
+          yAxes: [{
+            display: true,
+            gridLines: {
+              display: true,
+              color: gridLineColor,
+            },
+            position: 'right',
+            ticks: {
+              beginAtZero: true,
+              suggestedMax: points.maxBuySupplyToShow.y,
+              callback: (value) => {
+                return (
+                  formatNumberValue(bnum(value), 3) + ' ETH'
+                );
+              },
+            },
+            scaleLabel: {
+              display: true,
+              labelString: '',
+            },
+          }],
+        },
+      };
 
-        return {
-            data,
-            options,
-        };
+      return {
+        buy: { data: buyData, options: buyOptions },
+        sell: {  data: buyData, options: buyOptions }
+      }
     };
 
     if (requiredDataLoaded) {
         const generated = generateChart();
-        data = generated.data;
-        options = generated.options;
+        chartData = isBuy ? generated.buy.data : generated.sell.data;
+        chartOptions = isBuy ? generated.buy.options : generated.sell.options;
     }
 
     /*
@@ -562,167 +470,135 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
      */
 
     const renderChartHeader = () => {
-        if (datStore.isInitPhase(activeDATAddress)) {
-            return renderInitPhaseChartHeader();
-        } else if (datStore.isRunPhase(activeDATAddress)) {
-            return renderRunPhaseChartHeader();
-        } else {
-            return <React.Fragment />;
-        }
+      if (datStore.isInitPhase()) {
+        return renderInitPhaseChartHeader();
+      } else if (datStore.isRunPhase()) {
+        return renderRunPhaseChartHeader();
+      } else {
+        return <React.Fragment />;
+      }
     };
 
     const renderInitPhaseChartHeader = () => {
-        return (
-            <ChartHeaderWrapper>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            {requiredDataLoaded
-                                ? `${formatNumberValue(kickstarterPrice)} ETH`
-                                : '- ETH'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement className="green-text">
-                            {requiredDataLoaded
-                                ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH`
-                                : '- ETH'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Goal</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                                {requiredDataLoaded
-                                ? `${formatBalance(
-                                      initGoal.times(kickstarterPrice)
-                                  )} ETH`
-                                : '- ETH'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>
-                            Curve Issuance
-                        </ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            {requiredDataLoaded
-                                ? `${formatBalance(
-                                        totalSupplyWithoutPremint
-                                  )} DXD`
-                                : '- DXD'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-            </ChartHeaderWrapper>
-        );
+      return (
+        <ChartHeaderWrapper>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatNumberValue(kickstarterPrice)} ETH` : '- ETH'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+          </ChartBox>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
+              <ChartHeaderBottomElement className="green-text">
+                {requiredDataLoaded ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH` : '- ETH'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+          </ChartBox>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Goal</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatBalance( initGoal.times(kickstarterPrice) )} ETH` : '- ETH'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+          </ChartBox>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>
+                Curve Issuance
+              </ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatBalance( totalSupplyWithoutPremint )} DXD` : '- DXD'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+          </ChartBox>
+        </ChartHeaderWrapper>
+      );
     };
 
-    const SellBuyPriceBottomElement = () => {
-        if(isBuy){
-            return <PriceBottomElement isBuy={isBuy} >
-            {requiredDataLoaded
-                ? `${formatNumberValue(currentBuyPrice)} ETH`
-                : '- DXD/ETH'}
-                    </PriceBottomElement>
-        }
-        else{
-            return <PriceBottomElement isBuy={isBuy} >
-            {requiredDataLoaded
-                ? `${formatNumberValue(currentSellPrice)} ETH`
-                : '- DXD/ETH'}
-                    </PriceBottomElement>
-        }
-    }
-
     const renderRunPhaseChartHeader = () => {
-        return (
-            <ChartHeaderWrapper>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
-                        <SellBuyPriceBottomElement/>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            {requiredDataLoaded
-                                ? `${formatBalance(reserveBalance)} ETH`
-                                : '- ETH'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>
-                            Curve Issuance
-                        </ChartHeaderTopElement>
-                        <ChartHeaderBottomElement className="green-text">
-                            {requiredDataLoaded
-                                ? `${formatBalance(
-                                        totalSupplyWithoutPremint
-                                  )} DXD`
-                                : '- DXD'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-                <ChartBox>
-                    <ChartHeaderFullElement>
-                        <ChartHeaderTopElement>Total Supply</ChartHeaderTopElement>
-                        <ChartHeaderBottomElement>
-                            {requiredDataLoaded
-                                ? `${formatBalance(totalSupplyWithPremint)} DXD`
-                                : '- DXD'}
-                        </ChartHeaderBottomElement>
-                    </ChartHeaderFullElement>
-                </ChartBox>
-            </ChartHeaderWrapper>
-        );
+      return (
+        <ChartHeaderWrapper>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
+              {isBuy
+                ? <PriceBottomElement isBuy={isBuy} >
+                  {requiredDataLoaded ? `${formatNumberValue(currentBuyPrice)} ETH` : '- DXD/ETH' }
+                </PriceBottomElement>
+                : <PriceBottomElement isBuy={isBuy} >
+                  {requiredDataLoaded ? `${formatNumberValue(currentSellPrice)} ETH` : '- DXD/ETH' }
+                </PriceBottomElement>
+              }
+            </ChartHeaderFullElement>
+          </ChartBox>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatBalance(reserveBalance)} ETH` : '- ETH'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+          </ChartBox>
+          <ChartBox>
+              <ChartHeaderFullElement>
+                <ChartHeaderTopElement>
+                  Curve Issuance
+                </ChartHeaderTopElement>
+                <ChartHeaderBottomElement className="green-text">
+                  {requiredDataLoaded ? `${formatBalance( totalSupplyWithoutPremint )} DXD` : '- DXD'}
+                </ChartHeaderBottomElement>
+              </ChartHeaderFullElement>
+          </ChartBox>
+          <ChartBox>
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Total Supply</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatBalance(totalSupplyWithPremint)} DXD` : '- DXD'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+          </ChartBox>
+        </ChartHeaderWrapper>
+      );
     };
 
     if (requiredDataLoaded)
       return (
-          <ChartPanelWrapper>
-              {renderChartHeader()}
-              <ChartWrapper>
-                  {requiredDataLoaded ? (
-                      <Line
-                          data={data}
-                          options={options}
-                          // width={1000}
-                          // height={250}
-                      />
-                  ) : (
-                      <React.Fragment />
-                  )}
-              </ChartWrapper>
-          </ChartPanelWrapper>
+        <ChartPanelWrapper>
+          {renderChartHeader()}
+          <ChartWrapper>
+            {requiredDataLoaded ? (
+              <Line
+                data={chartData}
+                options={chartOptions}
+                // width={1000}
+                // height={250}
+              />
+            ) : (
+              <React.Fragment />
+            )}
+          </ChartWrapper>
+        </ChartPanelWrapper>
       );
     else if (!providerActive) {
-    return(
-      <ChartPanelWrapper>
+      return(
+        <ChartPanelWrapper>
           <div className="loader">
           <img alt="bolt" src={require("assets/images/bolt.svg")} />
-              <br/>
-              Connect to view Price Chart
+            <br/> Connect to view Price Chart
           </div>
-      </ChartPanelWrapper>
-    )
+        </ChartPanelWrapper>
+      )
     } else return(
       <ChartPanelWrapper>
-          <div className="loader">
-          <img alt="bolt" src={require("assets/images/bolt.svg")} />
-              <br/>
-              Loading chart..
-          </div>
+        <div className="loader">
+        <img alt="bolt" src={require("assets/images/bolt.svg")} />
+          <br/> Loading chart..
+        </div>
       </ChartPanelWrapper>
     )
 });

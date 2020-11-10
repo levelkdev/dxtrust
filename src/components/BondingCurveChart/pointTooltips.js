@@ -40,9 +40,6 @@ export var pointTooltips = function (tooltip) {
 
         var innerHtml = '<thead>';
 
-        titleLines.forEach(function (title) {
-            // innerHtml += '<tr><th>' + title + '</th></tr>';
-        });
         innerHtml += '</thead><tbody>';
 
         bodyLines.forEach(function (body, i) {
