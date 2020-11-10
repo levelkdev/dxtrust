@@ -24,6 +24,7 @@ const AlertWrapper = styled.div`
     padding: 0px 24px;
     margin-bottom: ${(props) => props.red === "true" ? "24px": "16px"};
     border-radius: 4px;
+    display: none;
 `;
 
 const AlertText = styled.div`
@@ -31,6 +32,7 @@ const AlertText = styled.div`
     font-weight: 400;
     padding: 20px 0px 20px 16px;
     letter-spacing: 0.6px;
+    display: none;
 `;
 
 const DangerIcon = styled.img`
