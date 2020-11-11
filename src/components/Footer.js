@@ -68,11 +68,11 @@ const Footer = () => {
                 <FooterItem>
                     <a
                         href={
-                          'https://github.com/levelkdev/openraise-dapp/tree/v0.2.3'
+                          'https://github.com/levelkdev/openraise-dapp/tree/v0.3.0'
                         }
                         target="#"
                     >
-                        Version 0.2.3
+                        Version 0.3.0
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
