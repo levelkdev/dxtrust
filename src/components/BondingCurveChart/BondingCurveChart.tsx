@@ -121,6 +121,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded();
     const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
     const burnedSupply = tokenStore.getBurnedSupply(activeDATAddress);
+    const investmentReserveBasisPoints = datStore.getInvestmentReserveBasisPoints()
 
     const currrentDatState = datStore.getState();
     const reserveBalance: BigNumber = datStore.getReserveBalance();
@@ -209,7 +210,13 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         );
       }
       const maxBuyPriceToShow = datStore.getBuyPriceAtSupply(maxSupplyToShow);
-      const maxSellPriceToShow = datStore.getSellPriceAtSupply(maxBuySupplyToShow);
+      const reserveBalanceAtMaxSellPriceToShow = maxBuySupplyToShow.minus(totalSupplyWithoutPremint)
+        .times(maxBuyPriceToShow)
+        .div(bnum(10000).div(investmentReserveBasisPoints))
+        .plus(reserveBalance);
+      const maxSellPriceToShow = datStore.getSellPriceAtSupplyWithReserve(
+        maxBuySupplyToShow, reserveBalanceAtMaxSellPriceToShow
+      );
 
       let points: ChartPointMap = {
         zero: {
