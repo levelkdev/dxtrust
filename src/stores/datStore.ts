@@ -434,7 +434,7 @@ export default class DatStore {
         const burnedSupply = this.getBurnedSupply();
         const tokensSold = totalSupply.minus(preMintedTokens).plus(burnedSupply);
         let tokensIssued = bnum(0), pricePerToken = bnum(0);
-        if (this.getState() == 0) {
+        if (this.getState() === 0) {
           pricePerToken = this.getKickstarterPrice();
           tokensIssued = totalPaid.div(pricePerToken);
           
@@ -482,7 +482,7 @@ export default class DatStore {
       const burnedSupply = this.getBurnedSupply();
       let currencyReturned = bnum(0), returnPerToken = bnum(0);
 
-      if(this.getState() == 1) {
+      if(this.getState() === 1) {
         const supply = totalSupply.plus(burnedSupply);
 
         currencyReturned = tokensToSell.times(reserve).times(burnedSupply.times(burnedSupply))
@@ -497,7 +497,7 @@ export default class DatStore {
           .div(supply.times(supply))
         );
         
-      } else if(this.getState() == 2) {
+      } else if(this.getState() === 2) {
         currencyReturned = tokensToSell.times(reserve).div(totalSupply)
       } else {
         currencyReturned = tokensToSell.times(reserve).div(totalSupply.minus(preMintedTokens))

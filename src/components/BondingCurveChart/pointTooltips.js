@@ -29,7 +29,6 @@ export var pointTooltips = function (tooltip) {
 
     // Set Text
     if (tooltip.body) {
-        var titleLines = tooltip.title || [];
         var bodyLines = tooltip.body.map(getBody);
 
         // If there is no content do not display

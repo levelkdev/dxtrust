@@ -39,7 +39,7 @@ const BuySellTabs = observer(() => {
 
     const activeTab = tradingStore.activeTab;
     const TabButton = ({tabType, children }) => {
-        if (activeTab == tabType) {
+        if (activeTab === tabType) {
             return (
                 <ActiveTab left={activeTab === 'sell'} >
                     {children}
