@@ -10,6 +10,7 @@ module.exports = (config, env) => {
     }
     const gitRevisionPlugin = new GitRevisionPlugin();
     const shortCommitHash = gitRevisionPlugin.commithash().substring(0, 8);
+    config.output.publicPath = "";
     config.output.filename = `static/js/[name].${shortCommitHash}.js`;
     config.output.chunkFilename = `static/js/[name].${shortCommitHash}.chunk.js`;
     config.plugins = config.plugins.filter(
