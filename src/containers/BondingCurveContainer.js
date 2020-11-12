@@ -11,7 +11,8 @@ const BondingCurveWrapper = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
+    max-width: 900px;
 `;
 
 const AlertWrapper = styled.div`

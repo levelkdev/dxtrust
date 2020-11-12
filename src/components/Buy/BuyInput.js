@@ -47,6 +47,7 @@ const FormContent = styled.div`
     margin-bottom: 32px;
     font-weight: 600;
     font-size: 15px;
+    padding: 0px 10px;
     input,
     input:focus {
         border: none;

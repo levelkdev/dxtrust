@@ -29,8 +29,8 @@ const OptionButton = styled.div`
     }
 
     ${({ theme }) => theme.mediaWidth.upToMedium`
-    font-size: 12px;
-  `};
+      font-size: 12px;
+    `};
 `;
 
 const HeaderRow = styled.div`
@@ -39,8 +39,8 @@ const HeaderRow = styled.div`
     font-weight: 500;
     color: var(--header-text);
     ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 1rem;
-  `};
+      padding: 1rem;
+    `};
 `;
 
 const UpperSection = styled.div`

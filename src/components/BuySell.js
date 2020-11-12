@@ -13,12 +13,16 @@ import { TransactionState } from 'stores/TradingForm';
 const BuySellWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 298px;
-    margin-left: 24px;
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      width: calc(66%);
+      margin: 0;
+    `};
+    width: calc(30%);
     border: 1px solid var(--medium-gray);
     border-radius: 4px;
     background-color: white;
     justify-content: space-between;
+    margin-left:10px;
 `;
 
 const ContentWrapper = styled.div`

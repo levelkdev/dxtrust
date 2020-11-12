@@ -16,13 +16,15 @@ import { roundUpToScale } from '../../utils/number';
 import { pointTooltips } from './pointTooltips';
 
 const ChartPanelWrapper = styled.div`
-    width: 610px;
+    max-width: 610px;
+    width: calc(66%);
     background-color: white;
     border: 1px solid var(--medium-gray);
     border-radius: 4px;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-right:10px;
     
     .loader {
       text-align: center;
@@ -37,24 +39,34 @@ const ChartPanelWrapper = styled.div`
         margin-bottom: 10px;
       }
     }
+    
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      width: calc(30%);
+    `};
 `;
 
 const ChartHeaderWrapper = styled.div`
     display: flex;
     padding: 15px;
     border-bottom: 1px solid var(--line-gray);
-`;
-
-const ChartBox = styled.div`
-    display: flex;
-    justify-content: center;
-    width: calc(100% / 3);
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      flex-direction: column;
+      border-bottom: none;
+    `};
 `;
 
 const ChartHeaderFullElement = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc(100% / 3);
     color: var(--dark-text-gray);
     padding: 10px 0px 10px 10px;
-    width: 100%;
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      text-align: center;
+      width: 100%;
+      padding: 10px;
+    `};
 `;
 
 const ChartHeaderTopElement = styled.div`
@@ -77,6 +89,9 @@ const PriceBottomElement = styled(ChartHeaderBottomElement)`
 const ChartWrapper = styled.div`
     height: 250px;
     padding: 20px 20px 0px 20px;
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      display: none;
+    `};
 `;
 
 interface ChartPointMap {
@@ -474,31 +489,24 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const renderInitPhaseChartHeader = () => {
       return (
         <ChartHeaderWrapper>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
               <ChartHeaderBottomElement>
                 {requiredDataLoaded ? `${formatNumberValue(kickstarterPrice)} ETH` : '- ETH'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
-          </ChartBox>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>Invested</ChartHeaderTopElement>
               <ChartHeaderBottomElement className="green-text">
                 {requiredDataLoaded ? `${formatBalance(totalSupplyWithoutPremint.times(kickstarterPrice), 18, 4, false)} ETH` : '- ETH'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
-          </ChartBox>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>Goal</ChartHeaderTopElement>
               <ChartHeaderBottomElement>
                 {requiredDataLoaded ? `${formatBalance( initGoal.times(kickstarterPrice) )} ETH` : '- ETH'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
-          </ChartBox>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>
                 Curve Issuance
@@ -507,7 +515,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 {requiredDataLoaded ? `${formatBalance( totalSupplyWithoutPremint )} DXD` : '- DXD'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
-          </ChartBox>
         </ChartHeaderWrapper>
       );
     };
@@ -515,7 +522,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const renderRunPhaseChartHeader = () => {
       return (
         <ChartHeaderWrapper>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
               {isBuy
@@ -527,16 +533,12 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                 </PriceBottomElement>
               }
             </ChartHeaderFullElement>
-          </ChartBox>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
               <ChartHeaderBottomElement>
                 {requiredDataLoaded ? `${formatBalance(reserveBalance)} ETH` : '- ETH'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
-          </ChartBox>
-          <ChartBox>
               <ChartHeaderFullElement>
                 <ChartHeaderTopElement>
                   Curve Issuance
@@ -545,15 +547,12 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
                   {requiredDataLoaded ? `${formatBalance( totalSupplyWithoutPremint )} DXD` : '- DXD'}
                 </ChartHeaderBottomElement>
               </ChartHeaderFullElement>
-          </ChartBox>
-          <ChartBox>
             <ChartHeaderFullElement>
               <ChartHeaderTopElement>Total Supply</ChartHeaderTopElement>
               <ChartHeaderBottomElement>
                 {requiredDataLoaded ? `${formatBalance(totalSupplyWithPremint)} DXD` : '- DXD'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
-          </ChartBox>
         </ChartHeaderWrapper>
       );
     };

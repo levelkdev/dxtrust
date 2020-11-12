@@ -9,12 +9,10 @@ const App = () => {
     <HashRouter>
       <Switch>
         <Route exact path="/">
-          <div className="invest-body-container">
-            <div className="app-shell">
-              <Web3ReactManager>
-                <BondingCurveContainer />
-              </Web3ReactManager>
-            </div>
+          <div className="body-container">
+            <Web3ReactManager>
+              <BondingCurveContainer />
+            </Web3ReactManager>
           </div>
         </Route>
       </Switch>
