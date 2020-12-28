@@ -7,7 +7,6 @@ export default class ConfigStore {
     multicall: string;
     activeDatAddress: string;
     network: string;
-    DAIinfo: object;
 
     constructor(rootStore) {
       this.rootStore = rootStore;
@@ -32,5 +31,10 @@ export default class ConfigStore {
     
     getDATinfo() {
       return getConfig(this.getActiveChainName()).DATinfo;
+    }
+    
+    getDATOwner() {
+      const datInfo = getConfig(this.getActiveChainName()).DATinfo;
+      return datInfo.control;
     }
 }

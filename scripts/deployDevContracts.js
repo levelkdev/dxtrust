@@ -36,6 +36,7 @@ const developmentConfig = JSON.parse(fs.readFileSync('src/config/developmentConf
 async function main() {
   const contracts = await deployDAT(web3, developmentConfig);
   developmentConfig.fromBlock = (await web3.eth.getBlock('latest')).number;
+  developmentConfig.control = (await web3.eth.getAccounts())[0];
   const contractsDeployed = {
     multicall: contracts.multicall.address,
     DAT: contracts.dat.address,

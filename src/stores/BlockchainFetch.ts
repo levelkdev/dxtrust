@@ -112,6 +112,13 @@ export default class BlockchainFetchStore {
                             });
 
                             multicallService.addCall({
+                                contractType: ContractType.Multicall,
+                                address: configStore.getMulticallAddress(),
+                                method: 'getEthBalance',
+                                params: [configStore.getDATOwner()],
+                            });
+
+                            multicallService.addCall({
                                 contractType: ContractType.ERC20,
                                 address: activeDATAddress,
                                 method: 'balanceOf',
@@ -160,6 +167,14 @@ export default class BlockchainFetchStore {
                             {
                                 ...baseDatCall,
                                 method: 'minInvestment',
+                            },
+                            {
+                                ...baseDatCall,
+                                method: 'buySlopeDen',
+                            },
+                            {
+                                ...baseDatCall,
+                                method: 'buySlopeNum',
                             },
                         ]);
 

@@ -77,11 +77,11 @@ const Footer = () => {
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanToken(chainId,"Token Contract",proxyContract, false)}
+                    {etherscanToken(chainId, "Token Contract", proxyContract, false)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanAddress(chainId,"Logic Contract",contract)}
+                    {etherscanAddress(chainId, "Logic Contract", contract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>

@@ -1,10 +1,9 @@
 import RootStore from 'stores/Root';
 import { BigNumber } from '../utils/bignumber';
 import { ContractType } from './Provider';
-import { action, observable } from 'mobx';
+import { action } from 'mobx';
 import { bnum } from '../utils/helpers';
 import PromiEvent from 'promievent';
-import { BigNumberCached } from '../services/blockchainReader';
 import { Call } from '../services/multicall/MulticallService';
 import { getEtherscanLink } from 'utils/etherscan';
 
@@ -40,26 +39,6 @@ export enum DatState {
     STATE_CANCEL,
 }
 
-interface DatStateCached {
-    value: DatState;
-    blockNumber: number;
-}
-
-interface DatInfo {
-    minInvestment?: BigNumber;
-    currentPrice?: BigNumberCached;
-    initReserve?: BigNumberCached;
-    initGoal?: BigNumberCached;
-    reserveBalance?: BigNumberCached;
-    buySlopeNum?: BigNumberCached;
-    buySlopeDen?: BigNumberCached;
-    state?: DatStateCached;
-}
-
-interface DatInfoMap {
-    [index: string]: DatInfo;
-}
-
 export interface BuyReturnCached {
     value: BuyReturn;
     blockNumber: number;
@@ -87,12 +66,10 @@ export type TradeEvent = BuyEvent | SellEvent;
 export const BLOCKS_PER_TRADES_FETCH = 100000;
 
 export default class DatStore {
-    @observable datParams: DatInfoMap;
     rootStore: RootStore;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
-        this.datParams = {} as DatInfoMap;
     }
 
     private getDatContract() {
@@ -145,6 +122,17 @@ export default class DatStore {
             contractType: ContractType.DecentralizedAutonomousTrust,
             address: configStore.getTokenAddress(),
             method: 'minInvestment',
+        });
+        return value ? bnum(value) : undefined;
+    }
+    
+    getDaoFunds() {
+        const { configStore } = this.rootStore;
+        const value = this.rootStore.blockchainStore.getCachedValue({
+            contractType: ContractType.Multicall,
+            address: configStore.getMulticallAddress(),
+            method: 'getEthBalance',
+            params: [configStore.getDATinfo().control]
         });
         return value ? bnum(value) : undefined;
     }
@@ -539,7 +527,7 @@ export default class DatStore {
         
           tradesToReturn = tradesToReturn.concat(combinedTrades);
 
-          console.debug('Getting events between blocks', fromBlock, toBlock, tradesToReturn.length);
+          // console.debug('Getting events between blocks', fromBlock, toBlock, tradesToReturn.length);
 
           if (tradesToReturn.length < numToGet && toBlock > fromBlock)
             await getEventsBetweenBlocks(

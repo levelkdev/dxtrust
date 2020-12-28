@@ -48,6 +48,9 @@ const ChartPanelWrapper = styled.div`
 const ChartHeaderWrapper = styled.div`
     display: flex;
     padding: 15px;
+    flex-grow: 4;
+    flex-wrap: wrap;
+    justify-content: space-between;
     border-bottom: 1px solid var(--line-gray);
     ${({ theme }) => theme.mediaWidth.upToMedium`
       flex-direction: column;
@@ -59,7 +62,7 @@ const ChartHeaderFullElement = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: calc(100% / 3);
+    width: calc((100% - 20) / 3);
     color: var(--dark-text-gray);
     padding: 10px 0px 10px 10px;
     ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -132,6 +135,10 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
     
+    const buySlopeNum = datStore.getBuySlopeNum();
+    const buySlopeDen = datStore.getBuySlopeDen();
+    const minInvestment = datStore.getMinInvestment();
+    const daoFunds = datStore.getDaoFunds();
     const activeDATAddress = configStore.getTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded();
     const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
@@ -142,7 +149,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const reserveBalance: BigNumber = datStore.getReserveBalance();
     const isBuy = tradingStore.activeTab === 'buy';
     
-    const providerActive = providerStore.getActiveWeb3React().active;
+    const { active: providerActive, library } = providerStore.getActiveWeb3React();
 
     const requiredDataLoaded =
         staticParamsLoaded &&
@@ -392,21 +399,15 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         tooltips: {
           enabled: false,
           custom: pointTooltips,
-          filter: (tooltipItem, data) => {
-            console.log(tooltipItem, data.datasets[tooltipItem.datasetIndex])
-            return (
-              data.datasets[tooltipItem.datasetIndex].label === "Buy Price"
-              || data.datasets[tooltipItem.datasetIndex].label === "Sell Price"
-              || (data.datasets[tooltipItem.datasetIndex].label === "Kickstarter Price" && tooltipItem.index > 0)
-            );
+          filter: (tooltipItem) => {
+            return (tooltipItem.index === 1 || tooltipItem.index === 2);
           },
           callbacks: {
             // tslint:disable-next-line: no-shadowed-variable
             label: (tooltipItem, data) => {
-              let toDisplay = data.datasets[tooltipItem.datasetIndex].label || '';
-
-              if (toDisplay) { toDisplay += ': '; }
-              toDisplay += tooltipItem.yLabel.toFixed(5) + ' ETH / DXD';
+              let toDisplay = (tooltipItem.index === 1 ) ? 'Current ' + data.datasets[tooltipItem.datasetIndex].label 
+                : 'Future ' + data.datasets[tooltipItem.datasetIndex].label;
+              toDisplay += ': '+ tooltipItem.yLabel.toFixed(3) + ' ETH / DXD';
               return toDisplay;
             },
           },
@@ -551,6 +552,34 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
               <ChartHeaderTopElement>Total Supply</ChartHeaderTopElement>
               <ChartHeaderBottomElement>
                 {requiredDataLoaded ? `${formatBalance(totalSupplyWithPremint)} DXD` : '- DXD'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+            
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Investment % Commitment</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${bnum(10000).div(investmentReserveBasisPoints).toString()} %` : '- %'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+            
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Curve Slope</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${buySlopeNum}/${library.utils.fromWei(buySlopeDen.toString())}` : '-'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+            
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>Minimum Investment</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatBalance(minInvestment)} ETH` : '- ETH'}
+              </ChartHeaderBottomElement>
+            </ChartHeaderFullElement>
+            
+            <ChartHeaderFullElement>
+              <ChartHeaderTopElement>DXdao ETH Funds</ChartHeaderTopElement>
+              <ChartHeaderBottomElement>
+                {requiredDataLoaded ? `${formatBalance(daoFunds, 18, 0)} ETH` : '- ETH'}
               </ChartHeaderBottomElement>
             </ChartHeaderFullElement>
         </ChartHeaderWrapper>

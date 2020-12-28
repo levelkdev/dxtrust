@@ -37,6 +37,7 @@ async function loadDeployment(network) {
       "name": await datContract.methods.name().call(),
       "symbol": await datContract.methods.symbol().call(),
       "currency": zeroAddress,
+      "control": await datContract.methods.control().call(),
       "initReserve": await datContract.methods.initReserve().call(),
       "initGoal": await datContract.methods.initGoal().call(),
       "buySlopeNum": await datContract.methods.buySlopeNum().call(),
