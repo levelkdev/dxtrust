@@ -8,7 +8,7 @@
     "name": "DXdao",
     "symbol": "DXD",
     "currency": "0x0000000000000000000000000000000000000000",
-    "control": "0x79f6Df44bED3f15EdED9d154712E98FEF40E1614",
+    "control": "0x69EbBF5C56d00b90F613df43E62a0e978D2F031D",
     "initReserve": "100000000000000000000000",
     "initGoal": "692820323027556500000",
     "buySlopeNum": "1",
