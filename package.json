@@ -10,7 +10,7 @@
     "test-contracts": "./scripts/test-contracts.sh"
   },
   "engines": {
-    "node": "10.16.3"
+    "node": "12.13.1"
   },
   "repository": {
     "type": "git",
