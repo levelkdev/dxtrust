@@ -1,11 +1,10 @@
-# OpenRaise
+# DXtrust
 
-The **OpenRaise Dapp** is used to raise funds for decentralized organizations.
-
+The **DXtrust** is used to raise funds for [DXdao](http://dxdao.eth.link/).
 
 ## Technical Description
 
-The OpenRaise Dapp is designed to be completely client side, which means that it runs entirely on the browser of the user and only consumes necessary information and interacts when needed with the Ethereum blockchain.
+The DXtrust Dapp is designed to be completely client side, which means that it runs entirely on the browser of the user and only consumes necessary information and interacts when needed with the Ethereum blockchain.
 The dapp is written in javascript and typescrypt, it uses ReactJS and Webapack.
 The contracts used in the dapp are the c-org contracts from fairmint. https://github.com/Fairmint/c-org.
 
@@ -16,35 +15,26 @@ Install dependencies with the following command:
 ```
 yarn
 ```
-    
-## Test
-No front-end tests at the moment. (Jest is included for testing React components), run tests with the following command:
+
+## Start dapp
+This will start the dapp on the networks you have configured in ETH_NETWORKS form the configs that were loaded previously
 ```
-yarn test
+yarn start-dapp
 ```
 
 ## Development
-
-Before doing the build make sure to have the right values in the `.env` file:
+Before doing the build make sure to have the right values in the `.env.developement` and `.end.production` form the .env examples files.
+The script will start the dapp on the networks you have configured in ETH_NETWORKS form the configs taht were loaded previously, we recommend you to use the development network as default (use it as first in the ETH_NETWORKS array), and you can use the app in loclahot:8545, take in mind that the accounts that are seeded are the ones from the mnmonic key.
 ```
-REACT_APP_KEY_MNEMONIC
-REACT_APP_KEY_INFURA_API_KEY
-REACT_APP_ETH_NETWORK
-REACT_APP_GIT_SHA
+yarn dev-dapp
 ```
-## Formatting and Linting
-- Husky will automatically format files, using prettier + tslist, before git commits.
-- Manually execute formatting on staged files with ```yarn lint-staged```
-- Formatting tools can be installed for many editors for issue highlighting and features such as format on save
-    - [Prettier](https://prettier.io/docs/en/editors.html)
-    - [Tslint / Eslint](https://eslint.org/docs/user-guide/integrations)
-
-### Local Development
-
-1.- Add a 12 phrase mnemonic phrase in the `.env` file on the `REACT_APP_KEY_MNEMONIC` variable, you can generate and see your keys and addresses [here](https://iancoleman.io/bip39/), use 12 words, select ETH and use BIP 44.
-2.- Configure your `.env` file, make sure to set the environment to develop, see the `.env.example` file.
-4.- Execute `yarn dev` , this will start the local testnet, deploy new orgs based in the configuration from `src/config/contracts.json` file. Once the deployment finish it will update the file with the testing addresses of the DAT in develop for the app, and start the react app in development network.
     
+## Test Contracts
+This script will run test over the DAT contracts that are used.
+```
+yarn test-contracts
+```
+  
 ### Kovan Developement
 
 1.- Add a 12 phrase mnemonic phrase in the `.env` file on the `REACT_APP_KEY_MNEMONIC` variable, you can generate and see your keys and addresses [here](https://iancoleman.io/bip39/), use 12 words, select ETH and use BIP 44.
@@ -102,17 +92,6 @@ Executables for ipfs-update can be downloaded from https://dist.ipfs.io/#ipfs-up
 The build can be upload to ipfs with the following command:
 ```
 ipfs add -r build
-```
-
-### Swarm
-
-Follow the installation instructions here https://swarm-guide.readthedocs.io/en/latest/node_operator.html#installation-and-updates.
-
-Executable can be downloaded from https://swarm-gateways.net/bzz:/swarm.eth/downloads/.
-
-The build can be upload to swarm with the following command:
-```
-~/swarm --bzzapi https://swarm-gateways.net/ --defaultpath PATH_TO_OPENRAISE-DAPP/build/index.html --recursive up PATH_TO_OPENRAISE-DAPP/OPENRAISE-DAPP/build
 ```
 
 ### Smart Contracts

@@ -65,17 +65,6 @@ const Footer = () => {
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
-                <FooterItem>
-                    <a
-                        href={
-                            'https://github.com/levelkdev/openraise-dapp/tree/' +
-                            process.env.REACT_APP_GIT_SHA
-                        }
-                        target="#"
-                    >
-                        Git Hash
-                    </a>
-                </FooterItem>
             </LeftFooter>
             <RighFooter>
                 <LogoWrapper>
