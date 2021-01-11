@@ -47,6 +47,7 @@ const FormContent = styled.div`
     margin-bottom: 32px;
     font-weight: 600;
     font-size: 15px;
+    padding: 0px 10px;
     input,
     input:focus {
         border: none;
@@ -88,13 +89,13 @@ const BuyInput = observer((props) => {
     const { account } = providerStore.getActiveWeb3React();
     const { infotext } = props;
     
-    const price = (buyInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatBuyPrice();
-    let disconnectedError = (tradingStore.buyAmount > 0) ? (account == null) ? true : false : false;
-    let txFailedError = (tradingStore.buyingState == 5) && (buyInputStatus == "") ? true : false;
-    const datState = datStore.getState(configStore.getDXDTokenAddress());
+    const price = (buyInputStatus === "") ? tradingStore.formatNumber(0) : tradingStore.formatBuyPrice();
+    let disconnectedError = (tradingStore.buyAmount > 0) ? (account === null) ? true : false : false;
+    let txFailedError = (tradingStore.buyingState === 5) && (buyInputStatus === "") ? true : false;
+    const datState = datStore.getState();
     const requiredDataLoaded = datState !== undefined;
-    
-    if (buyInputStatus == "" && tradingStore.payAmount != 0) {
+
+    if (buyInputStatus === "" && !tradingStore.payAmount.eq(0)) {
       tradingStore.setPayAmount(bnum(0));
     }
 
@@ -115,11 +116,11 @@ const BuyInput = observer((props) => {
     const validateNumber = async (value) => {
         const ETHBalance = (account) ? tokenStore.getEtherBalance(account) : 0;
         value = value.replace(/^0+/, '');
-        disconnectedError = (account == null) ? true : false;
+        disconnectedError = (account === null) ? true : false;
 
         const buyInputStatusFetch = validateTokenValue(value, {
           minValue: normalizeBalance(
-              datStore.getMinInvestment(configStore.getDXDTokenAddress())
+              datStore.getMinInvestment()
           ),
           maxBalance: (account) ? normalizeBalance(ETHBalance) : null,
         });
@@ -127,10 +128,7 @@ const BuyInput = observer((props) => {
 
         if (buyInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setBuyAmount(value);
-            const buyReturn = await datStore.fetchBuyReturn(
-              configStore.getDXDTokenAddress(),
-              denormalizeBalance(value)
-            );
+            const buyReturn = datStore.fetchBuyReturn(denormalizeBalance(value));
             tradingStore.handleBuyReturn(buyReturn);
         }   else {
             tradingStore.setPayAmount(bnum(0));
@@ -142,7 +140,7 @@ const BuyInput = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
@@ -164,10 +162,10 @@ const BuyInput = observer((props) => {
                   :
                     <></>
                 }
-                {(disconnectedError || (buyInputStatus != ValidationStatus.VALID)) ? (
+                {(disconnectedError || (buyInputStatus !== ValidationStatus.VALID)) ? (
                     <MessageError>
                         { 
-                          (buyInputStatus != ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
+                          (buyInputStatus !== ValidationStatus.VALID) ? <span>{buyInputStatus}</span> :
                           disconnectedError ? <p>Connect Wallet to proceed with order</p> : <></>
                         }
                     </MessageError>
@@ -181,7 +179,6 @@ const BuyInput = observer((props) => {
                     tradingStore.buyingState = TransactionState.SIGNING_TX;
                     datStore
                         .buy(
-                            configStore.getDXDTokenAddress(),
                             account,
                             denormalizeBalance(str(tradingStore.buyAmount)),
                             bnum(1)

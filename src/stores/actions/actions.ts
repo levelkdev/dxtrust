@@ -30,31 +30,11 @@ const preLog = (params: ActionRequest) => {
     });
 };
 
-const postLog = (result: ActionResponse) => {
-    console.debug(`[@action end: ${result.action}]`, {
-        contract: result.contract,
-        action: result.action,
-        sender: result.sender,
-        data: result.data,
-        result: result.txResponse,
-        error: result.error,
-    });
-};
-
 export const sendAction = (params: ActionRequest): PromiEvent<any> => {
     const { contract, action, sender, data, overrides } = params;
     preLog(params);
 
-    const actionResponse: ActionResponse = {
-        contract,
-        action,
-        sender,
-        data,
-        txResponse: undefined,
-        error: undefined,
-    };
-
-    const promiEvent = new PromiEvent<any>((resolve, reject) => {
+    const promiEvent = new PromiEvent<any>(() => {
         contract.methods[action](...data)
             .send({ from: sender, ...overrides })
             .once('transactionHash', (hash) => {
@@ -93,7 +73,7 @@ export const sendAction = (params: ActionRequest): PromiEvent<any> => {
                 console.debug(TXEvents.FINALLY, receipt);
             })
             .catch((e) => {
-                console.debug('rejected, e');
+                console.debug('rejected', e);
             });
     });
 

@@ -88,10 +88,6 @@ const TableCell = styled.div`
     font-weight: ${(props) => props.weight};
 `;
 
-const TableCellType = styled(TableCell)`
-    text-align: left;
-`;
-
 const TradingHistory = observer(() => {
     const {
         root: { tradingStore, configStore, providerStore },
@@ -108,17 +104,17 @@ const TradingHistory = observer(() => {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
-            <img src="bolt.svg" />
+            <img alt="bolt" src={require('assets/images/bolt.svg')} />
                 <br/>
                 Connect to view Trade History
             </div>
           </TradingHistoryWrapper>
       )
-    } else if (recentTrades.length == 0) {
+    } else if (recentTrades.length === 0) {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
-            <img src="bolt.svg" />
+            <img alt="bolt" src={require('assets/images/bolt.svg')} />
                 <br/>
                 Searching for last trades..
             </div>
@@ -133,11 +129,11 @@ const TradingHistory = observer(() => {
                       Type
                   </TableHeader>
                   <TableHeader width="15.5%">
-                      Price {configStore.getCollateralType()}
+                      Price {configStore.getDATinfo().collateralType}
                   </TableHeader>
                   <TableHeader>Amount DXD</TableHeader>
                   <TableHeader>
-                      Total {configStore.getCollateralType()}
+                      Total {configStore.getDATinfo().collateralType}
                   </TableHeader>
                   <TableHeader className="align-right">Time</TableHeader>
               </TableHeadersWrapper>

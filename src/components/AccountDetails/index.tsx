@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { isMobile } from 'react-device-detect';
 import Copy from './Copy';
-import Transaction from './Transaction';
 import { injected, SUPPORTED_WALLETS } from 'provider/connectors';
 //@ts-ignore
 import { ReactComponent as Close } from '../../assets/images/x.svg';
@@ -11,7 +10,6 @@ import Identicon from '../Identicon';
 import { web3Window as window } from 'provider/Web3Window';
 
 import { Link } from '../../theme';
-import { TransactionRecord } from 'stores/Transaction';
 import { useStores } from '../../contexts/storesContext';
 
 const OptionButton = styled.div`
@@ -31,8 +29,8 @@ const OptionButton = styled.div`
     }
 
     ${({ theme }) => theme.mediaWidth.upToMedium`
-    font-size: 12px;
-  `};
+      font-size: 12px;
+    `};
 `;
 
 const HeaderRow = styled.div`
@@ -41,8 +39,8 @@ const HeaderRow = styled.div`
     font-weight: 500;
     color: var(--header-text);
     ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 1rem;
-  `};
+      padding: 1rem;
+    `};
 `;
 
 const UpperSection = styled.div`
@@ -130,19 +128,6 @@ const CircleWrapper = styled.div`
     align-items: center;
 `;
 
-const LowerSection = styled.div`
-    ${({ theme }) => theme.flexColumnNoWrap}
-    padding: 2rem;
-    flex-grow: 1;
-    overflow: auto;
-    background-color: var(--panel-background);
-    h5 {
-        margin: 0;
-        font-weight: 400;
-        color: ${({ theme }) => theme.doveGray};
-    }
-`;
-
 const AccountControl = styled.div`
     ${({ theme }) => theme.flexRowNoWrap};
     align-items: center;
@@ -211,10 +196,6 @@ const IconWrapper = styled.div`
   `};
 `;
 
-const TransactionListWrapper = styled.div`
-    ${({ theme }) => theme.flexColumnNoWrap};
-`;
-
 const WalletAction = styled.div`
     color: ${({ theme }) => theme.chaliceGray};
     margin-left: 16px;
@@ -227,8 +208,6 @@ const WalletAction = styled.div`
 
 interface Props {
     toggleWalletModal: any;
-    pendingTransactions: TransactionRecord[];
-    confirmedTransactions: TransactionRecord[];
     ENSName: any;
     openOptions: any;
 }
@@ -236,8 +215,6 @@ interface Props {
 export default function AccountDetails(props: Props) {
     const {
         toggleWalletModal,
-        pendingTransactions,
-        confirmedTransactions,
         ENSName,
         openOptions,
     } = props;
@@ -245,22 +222,6 @@ export default function AccountDetails(props: Props) {
         root: { providerStore },
     } = useStores();
     const { chainId, account, connector } = providerStore.getActiveWeb3React();
-
-    function renderTransactions(transactions: TransactionRecord[], pending) {
-        return (
-            <TransactionListWrapper>
-                {transactions.map((value, i) => {
-                    return (
-                        <Transaction
-                            key={i}
-                            hash={value.hash}
-                            pending={pending}
-                        />
-                    );
-                })}
-            </TransactionListWrapper>
-        );
-    }
 
     function formatConnectorName() {
         const isMetaMask =
@@ -283,11 +244,10 @@ export default function AccountDetails(props: Props) {
                     <Identicon /> {formatConnectorName()}
                 </IconWrapper>
             );
+        } else {
+          return <div />;
         }
     }
-
-    const hasTx =
-        !!pendingTransactions.length || !!confirmedTransactions.length;
 
     return (
         <>

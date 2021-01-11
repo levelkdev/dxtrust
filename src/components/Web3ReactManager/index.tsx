@@ -1,34 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import styled from 'styled-components';
-import { injected, web3ContextNames } from 'provider/connectors';
+import { web3ContextNames } from 'provider/connectors';
 import { useEagerConnect, useInactiveListener } from 'provider/providerHooks';
 import { useStores } from 'contexts/storesContext';
 import { useInterval } from 'utils/helperHooks';
 
 const BLOKCHAIN_FETCH_INTERVAL = 3000;
 
-const MessageWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20rem;
-`;
-
-const Message = styled.h2`
-    color: ${({ theme }) => theme.bodyText};
-`;
-
 const Web3ReactManager = ({ children }) => {
     const {
-        root: { modalStore, providerStore, blockchainFetchStore },
+        root: { providerStore, blockchainFetchStore },
     } = useStores();
 
     const web3ContextInjected = useWeb3React(web3ContextNames.injected);
     const {
         active: networkActive,
-        error: networkError,
-        activate: activateNetwork,
+        error: networkError
     } = web3ContextInjected;
 
     providerStore.setWeb3Context(web3ContextNames.injected, web3ContextInjected);

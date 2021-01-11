@@ -3,12 +3,9 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import { shortenAddress } from 'utils/address';
 import WalletModal from 'components/WalletModal';
-import { Spinner } from 'theme';
-import Circle from 'assets/images/circle.svg';
 import {
     injected,
     isChainIdSupported,
-    web3ContextNames,
     walletconnect
 } from 'provider/connectors';
 import Identicon from '../Identicon';
@@ -40,10 +37,6 @@ const WrongNetworkButton = styled.button`
     :focus {
         outline: none;
     }
-`;
-
-const SpinnerWrapper = styled(Spinner)`
-    margin: 0 0.25rem 0 0.25rem;
 `;
 
 const Web3ConnectStatus = observer((props) => {
@@ -84,7 +77,6 @@ const Web3ConnectStatus = observer((props) => {
     } = useStores();
     const {
         chainId,
-        active,
         account,
         connector,
         error,
@@ -92,12 +84,10 @@ const Web3ConnectStatus = observer((props) => {
     
     let pending = undefined;
     let confirmed = undefined;
-    let hasPendingTransactions = false;
 
     if (chainId && account && isChainIdSupported(chainId)) {
         pending = transactionStore.getPendingTransactions(account);
         confirmed = transactionStore.getConfirmedTransactions(account);
-        hasPendingTransactions = !!pending.length;
     }
 
     const toggleWalletModal = () => {
@@ -109,7 +99,7 @@ const Web3ConnectStatus = observer((props) => {
         if (connector === injected) {
             return <Identicon />;
         } else if (connector === walletconnect) {
-            return <img src="walletConnectIcon.svg" />;
+            return <img alt="walletconnect" src={require("assets/images/walletConnectIcon.svg")} />;
         }
     }
 

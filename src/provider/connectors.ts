@@ -1,5 +1,3 @@
-import { NetworkConnector } from 'provider/NetworkConnector';
-import { MetamaskConnector } from './MetamaskConnector';
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
@@ -12,7 +10,7 @@ export const CHAIN_NAME_BY_ID = {
   '3': 'ropsten',
   '4': 'rinkeby',
   '42': 'kovan',
-  '66': 'develop',
+  '1337': 'development',
 };
 
 export const CHAIN_ID_BY_NAME = {
@@ -20,7 +18,7 @@ export const CHAIN_ID_BY_NAME = {
   'ropsten': 3,
   'rinkeby': 4,
   'kovan': 42,
-  'develop': 66,
+  'development': 1337,
 };
 
 export const DEFAULT_ETH_NETWORK = ETH_NETWORKS[0];

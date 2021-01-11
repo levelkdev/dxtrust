@@ -70,7 +70,7 @@ const BuyConfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {formatNumberValue(buyPrice)} {configStore.getCollateralType()}
+                    {formatNumberValue(buyPrice)} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
@@ -81,12 +81,12 @@ const BuyConfirmed = observer((props) => {
             </InfoRow>
             <InfoRow>
             <FormInfoText>Total cost</FormInfoText>
-                <div>{formatBalance(buyAmount)} {configStore.getCollateralType()}</div>
+                <div>{formatBalance(buyAmount)} {configStore.getDATinfo().collateralType}</div>
             </InfoRow>
             <Confirmed>
                 Confirmed
                 <CheckboxContainer>
-                    <img src="tick.svg"/>
+                    <img alt="bolt" src={require("assets/images/tick.svg")}/>
                 </CheckboxContainer>
             </Confirmed>
             <Button

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import { useStores } from '../contexts/storesContext';
@@ -48,7 +48,7 @@ const BalanceInfo = observer(() => {
     if (account) {
         ETHBalance = tokenStore.getEtherBalance(account);
         DXDBalance = tokenStore.getBalance(
-            configStore.getDXDTokenAddress(),
+            configStore.getTokenAddress(),
             account
         );
     }
@@ -60,14 +60,14 @@ const BalanceInfo = observer(() => {
         <CryptoInfoWrapper>
             <InfoRow>
                 <LogoAndText>
-                    <ETHLogo src="ether.svg"></ETHLogo>
+                    <ETHLogo src={require('assets/images/ether.svg')}></ETHLogo>
                     <LogoText>Ether</LogoText>
                 </LogoAndText>
                 <div>{ETHBalanceDisplay} ETH</div>
             </InfoRow>
             <InfoRow>
                 <LogoAndText>
-                    <DXDLogo src="dxdao-circle.svg"></DXDLogo>
+                    <DXDLogo src={require('assets/images/dxdao-circle.svg')}></DXDLogo>
                     <LogoText>DXdao</LogoText>
                 </LogoAndText>
                 <div>{DXDBalanceDisplay} DXD</div>

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import store from '../../stores/Root';
 import { TransactionState } from 'stores/TradingForm';
 import { observer } from 'mobx-react';
 import { useStores } from '../../contexts/storesContext';
@@ -93,7 +92,7 @@ const EnableContinue = observer(() => {
         <ContentWrapper>
             <CircleContainer>
                 <CheckboxContainer>
-                    <Checkbox src="checkbox_758AFE.svg" />
+                    <Checkbox src={require("assets/images/checkbox_758AFE.svg")} />
                 </CheckboxContainer>
             </CircleContainer>
             <Info>Enable DXD for trading</Info>

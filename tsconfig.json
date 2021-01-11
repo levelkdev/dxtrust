@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "./build/",
     "noImplicitAny": false,
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
     "jsx": "react",
@@ -11,6 +11,30 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "experimentalDecorators": true,
-    "strictNullChecks": false
-  }
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "allowUnreachableCode": false
+  },
+  "include": [
+    "src/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts"
+  ]
 }

@@ -17,10 +17,9 @@ export default class BlockchainFetchStore {
     }
 
     @action async refreshBuyFormPreview() {
-        const { datStore, configStore, tradingStore } = this.rootStore;
-        const activeDATAddress = configStore.getDXDTokenAddress()
+        const { datStore, tradingStore } = this.rootStore;
         const minValue = normalizeBalance(
-            datStore.getMinInvestment(activeDATAddress)
+            datStore.getMinInvestment()
         );
 
         if (
@@ -30,11 +29,7 @@ export default class BlockchainFetchStore {
         ) {
             const weiValue = denormalizeBalance(tradingStore.buyAmount);
 
-            const buyReturn = await datStore.fetchBuyReturn(
-                activeDATAddress,
-                weiValue
-            );
-
+            const buyReturn = await datStore.fetchBuyReturn(weiValue);
             tradingStore.handleBuyReturn(buyReturn);
         }
     }
@@ -56,7 +51,7 @@ export default class BlockchainFetchStore {
                 transactionStore
             } = this.rootStore;
 
-            const activeDATAddress = configStore.getDXDTokenAddress();
+            const activeDATAddress = configStore.getTokenAddress();
             library.eth
                 .getBlockNumber()
                 .then((blockNumber) => {
@@ -117,6 +112,13 @@ export default class BlockchainFetchStore {
                             });
 
                             multicallService.addCall({
+                                contractType: ContractType.Multicall,
+                                address: configStore.getMulticallAddress(),
+                                method: 'getEthBalance',
+                                params: [configStore.getDATOwner()],
+                            });
+
+                            multicallService.addCall({
                                 contractType: ContractType.ERC20,
                                 address: activeDATAddress,
                                 method: 'balanceOf',
@@ -132,7 +134,7 @@ export default class BlockchainFetchStore {
                         }
 
                         datStore
-                            .fetchRecentTrades(activeDATAddress, 10)
+                            .fetchRecentTrades(10)
                             .then((trades) => {
                                 tradingStore.setRecentTrades(trades);
                             })
@@ -141,15 +143,9 @@ export default class BlockchainFetchStore {
                                 console.error(e);
                             });
 
-                        if (
-                            !datStore.areAllStaticParamsLoaded(
-                                activeDATAddress
-                            )
-                        ) {
+                        if ( !datStore.areAllStaticParamsLoaded() ) {
                             multicallService.addCalls(
-                                datStore.genStaticParamCalls(
-                                    activeDATAddress
-                                )
+                                datStore.genStaticParamCalls()
                             );
                         }
 
@@ -171,6 +167,14 @@ export default class BlockchainFetchStore {
                             {
                                 ...baseDatCall,
                                 method: 'minInvestment',
+                            },
+                            {
+                                ...baseDatCall,
+                                method: 'buySlopeDen',
+                            },
+                            {
+                                ...baseDatCall,
+                                method: 'buySlopeNum',
                             },
                         ]);
 
@@ -196,14 +200,14 @@ export default class BlockchainFetchStore {
                                 );
 
                                 // Check max approval if (1. We have an account  && 2 . We have max approval) && (3. We are in the initial load 4. || We are on an account switch call)
-                                const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getDXDTokenAddress(), account, activeDATAddress);
+                                const hasMaxApproval = account && tokenStore.hasMaxApproval(configStore.getTokenAddress(), account, activeDATAddress);
                                 const setEnableDXDState = !this.initialLoadComplete || accountSwitched;
                                 
                                 if (hasMaxApproval && setEnableDXDState) {
                                     tradingStore.setEnableDXDState(TransactionState.APPROVED);
                                 }
 
-                                if (datStore.areAllStaticParamsLoaded(activeDATAddress)) {
+                                if (datStore.areAllStaticParamsLoaded()) {
                                     this.refreshBuyFormPreview();
                                 }
                             })

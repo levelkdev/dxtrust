@@ -26,13 +26,7 @@ const MenuItem = styled.div`
     cursor: pointer;
 `;
 
-const SelectedMenuItem = styled(MenuItem)`
-    color: var(--nav-text-dark);
-    line-height: 24px;
-    cursor: pointer;
-`;
-
-const NavBar = ({}) => {
+const NavBar = () => {
     const NavItem = withRouter(
         ({ option, route, history, location, children }) => {
             return (
@@ -51,7 +45,7 @@ const NavBar = ({}) => {
         <NavWrapper>
             <LeftNav>
                 <NavItem route="/">
-                    <img src="DXdao.svg"/>
+                    <img alt="dxdao" src={require("assets/images/DXdao.svg")}/>
                 </NavItem>
             </LeftNav>
             <Web3ConnectStatus text="Connect Wallet" />

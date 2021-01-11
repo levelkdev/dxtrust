@@ -65,32 +65,21 @@ const Footer = () => {
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
-                <FooterItem>
-                    <a
-                        href={
-                            'https://github.com/levelkdev/openraise-dapp/tree/' +
-                            process.env.REACT_APP_GIT_SHA
-                        }
-                        target="#"
-                    >
-                        Git Hash
-                    </a>
-                </FooterItem>
             </LeftFooter>
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <FooterLogo src="twitter_color.svg"></FooterLogo>
+                        <FooterLogo src={require("assets/images/twitter_color.svg")}></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <FooterLogo src="reddit_color.svg"></FooterLogo>
+                        <FooterLogo src={require("assets/images/reddit_color.svg")}></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <FooterLogo src="telegram_color.svg"></FooterLogo>
+                        <FooterLogo src={require("assets/images/telegram_color.svg")}></FooterLogo>
                     </a>
                 </LogoWrapper>
             </RighFooter>

@@ -1,6 +1,5 @@
 import { BigNumber } from './bignumber';
 import { bnum } from './helpers';
-import { normalizeBalance } from './token';
 
 export function formatFee(fee: BigNumber) {
     return fee.times(100).toString() + '%';

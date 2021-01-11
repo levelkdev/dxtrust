@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { contracts } from '../config/contracts';
-import { DEFAULT_ETH_NETWORK } from '../provider/connectors';
 import { etherscanAddress, etherscanToken } from 'utils/etherscan';
 import { useStores } from '../contexts/storesContext';
 
@@ -58,32 +56,32 @@ const FooterLogo = styled.img`
 
 const Footer = () => {
     const {
-        root: {providerStore},
+        root: {providerStore, configStore},
     } = useStores();
 
     let chainId = providerStore.getActiveWeb3React().chainId;
-    let proxyContract = contracts[DEFAULT_ETH_NETWORK].DAT;
-    let contract = contracts[DEFAULT_ETH_NETWORK].implementationAddress;
+    let proxyContract = configStore.getNetworkConfig().DAT;
+    let contract = configStore.getNetworkConfig().implementationAddress;
     return (
         <FooterWrapper>
             <LeftFooter>
                 <FooterItem>
                     <a
                         href={
-                          'https://github.com/levelkdev/openraise-dapp/tree/v0.2.3'
+                          'https://github.com/levelkdev/openraise-dapp/tree/v'+process.env.REACT_APP_VERSION
                         }
                         target="#"
                     >
-                        Version 0.2.3
+                        Version {process.env.REACT_APP_VERSION}
                     </a>
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanToken(chainId,"Token Contract",proxyContract, false)}
+                    {etherscanToken(chainId, "Token Contract", proxyContract, false)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanAddress(chainId,"Logic Contract",contract)}
+                    {etherscanAddress(chainId, "Logic Contract", contract)}
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
@@ -113,17 +111,17 @@ const Footer = () => {
             <RighFooter>
                 <LogoWrapper>
                     <a href="https://twitter.com/dxdao_" target="#">
-                        <FooterLogo src="twitter.svg"></FooterLogo>
+                        <FooterLogo src={require('assets/images/twitter.svg')}></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://www.reddit.com/r/dxdao/" target="#">
-                        <FooterLogo src="reddit.svg"></FooterLogo>
+                        <FooterLogo src={require('assets/images/reddit.svg')}></FooterLogo>
                     </a>
                 </LogoWrapper>
                 <LogoWrapper>
                     <a href="https://t.me/dxDAO" target="#">
-                        <FooterLogo src="telegram.svg"></FooterLogo>
+                        <FooterLogo src={require('assets/images/telegram.svg')}></FooterLogo>
                     </a>
                 </LogoWrapper>
             </RighFooter>

@@ -23,24 +23,6 @@ export interface TotalSupply {
     lastFetched: number;
 }
 
-interface TotalSupplyMap {
-    [index: string]: TotalSupply;
-}
-
-interface TokenBalanceMap {
-    [index: string]: {
-        [index: string]: TokenBalance;
-    };
-}
-
-interface UserAllowanceMap {
-    [index: string]: {
-        [index: string]: {
-            [index: string]: UserAllowance;
-        };
-    };
-}
-
 export const EtherKey = 'ether';
 
 export default class TokenStore {
@@ -121,7 +103,7 @@ export default class TokenStore {
         tokenAddress,
         spender
     ): PromiEvent<any> => {
-        const { providerStore, tradingStore } = this.rootStore;
+        const { providerStore } = this.rootStore;
         return providerStore.sendTransaction(
             web3React,
             ContractType.ERC20,

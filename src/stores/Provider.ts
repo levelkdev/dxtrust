@@ -1,10 +1,10 @@
-import { action, observable, ObservableMap } from 'mobx';
+import { action, observable } from 'mobx';
 import RootStore from 'stores/Root';
 import { ethers } from 'ethers';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import UncheckedJsonRpcSigner from 'provider/UncheckedJsonRpcSigner';
 import { sendAction } from './actions/actions';
-import { isChainIdSupported, web3ContextNames } from '../provider/connectors';
+import { web3ContextNames } from '../provider/connectors';
 import PromiEvent from 'promievent';
 import { TXEvents } from '../types';
 import moment from 'moment';
@@ -32,8 +32,6 @@ enum ERRORS {
     BlockchainActionNoChainId = 'Attempting to do blockchain transaction with no chainId',
     BlockchainActionNoResponse = 'No error or response received from blockchain action',
 }
-
-type ChainDataMap = ObservableMap<number, ChainData>;
 
 export default class ProviderStore {
     @observable provider: any;
