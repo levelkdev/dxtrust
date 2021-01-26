@@ -228,7 +228,7 @@ const WalletModal = observer(
                                     header={'Install Metamask'}
                                     subheader={null}
                                     link={'https://metamask.io/'}
-                                    icon="metamask.png"
+                                    icon={require('assets/images/metamask.png')}
                                 />
                             );
                         } else {

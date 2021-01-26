@@ -81,7 +81,7 @@ export const SUPPORTED_WALLETS = {
     METAMASK: {
         connector: injected,
         name: 'MetaMask',
-        iconName: 'metamask.png',
+        iconName: require('assets/images/metamask.png'),
         description: 'Easy-to-use browser extension.',
         href: null,
         color: '#E8831D',
@@ -89,7 +89,7 @@ export const SUPPORTED_WALLETS = {
     WALLETCONNECT: {
         connector: walletconnect,
         name: 'WalletConnect',
-        iconName: 'walletConnectIcon.svg',
+        iconName: require('assets/images/walletConnectIcon.svg'),
         description: 'Connect form mobile.',
         href: null,
         color: '#E8831D',
