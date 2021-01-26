@@ -19,8 +19,10 @@ const ChartPanelWrapper = styled.div`
     max-width: 610px;
     width: calc(66%);
     background-color: white;
-    border: 1px solid var(--medium-gray);
-    border-radius: 4px;
+    border: 1px solid #EBE9F8;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 10px rgba(14, 0, 135, 0.03), 0px 12px 32px rgba(14, 0, 135, 0.05);
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     flex-direction: column;

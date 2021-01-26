@@ -18,9 +18,11 @@ const BuySellWrapper = styled.div`
       margin: 0;
     `};
     width: calc(30%);
-    border: 1px solid var(--medium-gray);
-    border-radius: 4px;
     background-color: white;
+    border: 1px solid #EBE9F8;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 10px rgba(14, 0, 135, 0.03), 0px 12px 32px rgba(14, 0, 135, 0.05);
+    border-radius: 8px;
     justify-content: space-between;
     margin-left:10px;
 `;

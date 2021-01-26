@@ -7,12 +7,14 @@ import { formatBalance, formatNumberValue } from '../utils/token';
 
 const TradingHistoryWrapper = styled.div`
     width: 100%;
-    background: white;
+    background-color: white;
+    border: 1px solid #EBE9F8;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 10px rgba(14, 0, 135, 0.03), 0px 12px 32px rgba(14, 0, 135, 0.05);
+    border-radius: 8px;
     padding: 20px 0px;
-    border: 1px solid var(--medium-gray);
     margin-top: 24px;
     font-weight: 400;
-    border-radius: 4px;
     display: flex;
     justify-content: center;
     flex-direction: column;
