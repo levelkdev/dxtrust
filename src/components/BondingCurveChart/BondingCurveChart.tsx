@@ -24,11 +24,13 @@ const ChartPanelWrapper = styled.div`
     box-shadow: 0px 2px 10px rgba(14, 0, 135, 0.03), 0px 12px 32px rgba(14, 0, 135, 0.05);
     border-radius: 8px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     margin-right:10px;
     
     .loader {
+      height: 100%;
+      padding-top: 150px;
       text-align: center;
       font-family: Roboto;
       font-style: normal;
@@ -49,11 +51,12 @@ const ChartPanelWrapper = styled.div`
 
 const ChartHeaderWrapper = styled.div`
     display: flex;
-    padding: 15px;
-    flex-grow: 4;
+    padding: 0px 15px;
     flex-wrap: wrap;
-    justify-content: space-between;
+    height: 45px;
+    justify-content: space-around;
     border-bottom: 1px solid var(--line-gray);
+    padding: 20px 0px;
     ${({ theme }) => theme.mediaWidth.upToMedium`
       flex-direction: column;
       border-bottom: none;
@@ -66,11 +69,9 @@ const ChartHeaderFullElement = styled.div`
     justify-content: center;
     width: calc((100% - 20) / 3);
     color: var(--dark-text-gray);
-    padding: 10px 0px 10px 10px;
     ${({ theme }) => theme.mediaWidth.upToMedium`
       text-align: center;
       width: 100%;
-      padding: 10px;
     `};
 `;
 
@@ -88,7 +89,7 @@ const ChartHeaderBottomElement = styled.div`
 `;
 
 const PriceBottomElement = styled(ChartHeaderBottomElement)`
-    color: ${(props) => props.isBuy ? '1px solid var(--line-gray)' : 'var(--red-text)'};
+    color: '1px solid var(--line-gray)';
 `
 
 const ChartWrapper = styled.div`
@@ -121,8 +122,8 @@ interface ChartPoint {
   type: PointType
 }
 
-const chartGreen = '#54AE6F';
-const chartBlue = '#5b76fa';
+const chartBlue = '#304AFA';
+const chartRed = '#D8494A';
 const chartGray = '#9FA8DA';
 const gridLineColor = '#EAECF7';
 
@@ -137,10 +138,6 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     currentSellPrice: BigNumber,
     kickstarterPrice: BigNumber;
     
-    const buySlopeNum = datStore.getBuySlopeNum();
-    const buySlopeDen = datStore.getBuySlopeDen();
-    const minInvestment = datStore.getMinInvestment();
-    const daoFunds = datStore.getDaoFunds();
     const activeDATAddress = configStore.getTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded();
     const totalSupplyWithPremint = tokenStore.getTotalSupply(activeDATAddress);
@@ -151,7 +148,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const reserveBalance: BigNumber = datStore.getReserveBalance();
     const isBuy = tradingStore.activeTab === 'buy';
     
-    const { active: providerActive, library } = providerStore.getActiveWeb3React();
+    const { active: providerActive } = providerStore.getActiveWeb3React();
 
     const requiredDataLoaded =
         staticParamsLoaded &&
@@ -174,10 +171,10 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
 
     let chartData, chartOptions;
 
-    const generateLine = (chartData: ChartPoint[], color: string, label: string) => {
+    const generateLine = (chartData: ChartPoint[], color: string, label: string, dashed: boolean, bgColor?: string) => {
         return {
           label,
-          fill: true,
+          fill: !dashed,
           data: chartData,
           datalabels: {
             display: false,
@@ -195,6 +192,8 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
           borderColor: () => {
             return color;
           },
+          backgroundColor: bgColor || "transparent",
+          borderDash: dashed ? [10, 10] : [],
           lineTension: 0,
         };
     };
@@ -340,8 +339,9 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         datasets.push(
           generateLine(
             [ points.kickStarterStart, points.currentBuyPrice, points.kickstarterEnd ],
-            chartBlue,
-            'Kickstarter Price'
+            chartRed,
+            'Kickstarter Price',
+            false
           )
         );
       }
@@ -349,34 +349,59 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
       if (hasExceededInitGoal) {
         datasets.push(
           generateLine(
-            [points.zero, points.currentBuyPrice, points.maxBuySupplyToShow],
-            chartGreen,
-            'Buy Price'
+            [points.zero, points.currentBuyPrice],
+            chartBlue,
+            'Buy Price',
+            false,
+            "#F2F1FE"
           )
         );
         
         datasets.push(
           generateLine(
-            [points.zero, points.currentSellPrice,  points.maxSellSupplyToShow],
+            [points.currentBuyPrice, points.maxBuySupplyToShow],
             chartBlue,
-            'Sell Price'
+            'Future Buy Price',
+            true
           )
         );
+        
+        datasets.push(
+          generateLine(
+            [points.zero, points.currentSellPrice],
+            chartRed,
+            'Sell Price',
+            false,
+            "#F5E7E7"
+          )
+        );
+        
+        datasets.push(
+          generateLine(
+            [points.currentSellPrice,  points.maxSellSupplyToShow],
+            chartRed,
+            'Future Sell Price',
+            true
+          )
+        );
+        
         
       } else {
         datasets.push(
           generateLine(
             [points.kickstarterEnd, points.curveStart],
             chartGray,
-            'Kickstarter Ends'
+            'Kickstarter Ends',
+            false
           )
         );
         
         datasets.push(
           generateLine(
             [points.curveStart, points.maxBuySupplyToShow],
-            chartGreen,
-            'Buy Price'
+            chartBlue,
+            'Buy Price',
+            true
           )
         );
 
@@ -387,17 +412,17 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
           generateSupplyMarker(
             points.futureSupply,
             'Future Supply',
-            chartGreen
+            chartBlue
           )
         );
       }
 
-      const buyData = {
+      chartData = {
         datasets,
         backgroundColor: '#000000',
       };
 
-      const buyOptions = {
+      chartOptions = {
         tooltips: {
           enabled: false,
           custom: pointTooltips,
@@ -407,7 +432,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
           callbacks: {
             // tslint:disable-next-line: no-shadowed-variable
             label: (tooltipItem, data) => {
-              let toDisplay = (tooltipItem.index === 1 ) ? 'Current ' + data.datasets[tooltipItem.datasetIndex].label 
+              let toDisplay = (tooltipItem.index === 1 ) ? data.datasets[tooltipItem.datasetIndex].label 
                 : 'Future ' + data.datasets[tooltipItem.datasetIndex].label;
               toDisplay += ': '+ tooltipItem.yLabel.toFixed(3) + ' ETH / DXD';
               return toDisplay;
@@ -460,16 +485,10 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
         },
       };
 
-      return {
-        buy: { data: buyData, options: buyOptions },
-        sell: {  data: buyData, options: buyOptions }
-      }
     };
 
     if (requiredDataLoaded) {
-        const generated = generateChart();
-        chartData = isBuy ? generated.buy.data : generated.sell.data;
-        chartOptions = isBuy ? generated.buy.options : generated.sell.options;
+      generateChart();
     }
 
     /*
@@ -526,63 +545,16 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
       return (
         <ChartHeaderWrapper>
             <ChartHeaderFullElement>
-              <ChartHeaderTopElement>{isBuy ? 'Buy Price' : 'Sell Price'}</ChartHeaderTopElement>
-              {isBuy
-                ? <PriceBottomElement isBuy={isBuy} >
+              <ChartHeaderTopElement><span style={{color: "#304AFA"}}>|</span> Buy Price</ChartHeaderTopElement>
+                <PriceBottomElement isBuy={true} >
                   {requiredDataLoaded ? `${formatNumberValue(currentBuyPrice)} ETH` : '- DXD/ETH' }
                 </PriceBottomElement>
-                : <PriceBottomElement isBuy={isBuy} >
-                  {requiredDataLoaded ? `${formatNumberValue(currentSellPrice)} ETH` : '- DXD/ETH' }
-                </PriceBottomElement>
-              }
-            </ChartHeaderFullElement>
-            <ChartHeaderFullElement>
-              <ChartHeaderTopElement>Reserve</ChartHeaderTopElement>
-              <ChartHeaderBottomElement>
-                {requiredDataLoaded ? `${formatBalance(reserveBalance)} ETH` : '- ETH'}
-              </ChartHeaderBottomElement>
-            </ChartHeaderFullElement>
-              <ChartHeaderFullElement>
-                <ChartHeaderTopElement>
-                  Curve Issuance
-                </ChartHeaderTopElement>
-                <ChartHeaderBottomElement className="green-text">
-                  {requiredDataLoaded ? `${formatBalance( totalSupplyWithoutPremint )} DXD` : '- DXD'}
-                </ChartHeaderBottomElement>
               </ChartHeaderFullElement>
             <ChartHeaderFullElement>
-              <ChartHeaderTopElement>Total Supply</ChartHeaderTopElement>
-              <ChartHeaderBottomElement>
-                {requiredDataLoaded ? `${formatBalance(totalSupplyWithPremint)} DXD` : '- DXD'}
-              </ChartHeaderBottomElement>
-            </ChartHeaderFullElement>
-            
-            <ChartHeaderFullElement>
-              <ChartHeaderTopElement>Investment % Commitment</ChartHeaderTopElement>
-              <ChartHeaderBottomElement>
-                {requiredDataLoaded ? `${bnum(10000).div(investmentReserveBasisPoints).toString()} %` : '- %'}
-              </ChartHeaderBottomElement>
-            </ChartHeaderFullElement>
-            
-            <ChartHeaderFullElement>
-              <ChartHeaderTopElement>Curve Slope</ChartHeaderTopElement>
-              <ChartHeaderBottomElement>
-                {requiredDataLoaded ? `${buySlopeNum}/${library.utils.fromWei(buySlopeDen.toString())}` : '-'}
-              </ChartHeaderBottomElement>
-            </ChartHeaderFullElement>
-            
-            <ChartHeaderFullElement>
-              <ChartHeaderTopElement>Minimum Investment</ChartHeaderTopElement>
-              <ChartHeaderBottomElement>
-                {requiredDataLoaded ? `${formatBalance(minInvestment)} ETH` : '- ETH'}
-              </ChartHeaderBottomElement>
-            </ChartHeaderFullElement>
-            
-            <ChartHeaderFullElement>
-              <ChartHeaderTopElement>DXdao ETH Funds</ChartHeaderTopElement>
-              <ChartHeaderBottomElement>
-                {requiredDataLoaded ? `${formatBalance(daoFunds, 18, 0)} ETH` : '- ETH'}
-              </ChartHeaderBottomElement>
+              <ChartHeaderTopElement><span style={{color: "#D8494A"}}>|</span> Sell Price</ChartHeaderTopElement>
+                <PriceBottomElement isBuy={false} >
+                  {requiredDataLoaded ? `${formatNumberValue(currentSellPrice)} ETH` : '- DXD/ETH' }
+                </PriceBottomElement>
             </ChartHeaderFullElement>
         </ChartHeaderWrapper>
       );

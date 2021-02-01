@@ -24,6 +24,7 @@ const InfoRow = styled.div`
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const Confirmed = styled.div`
@@ -47,12 +48,11 @@ const CheckboxContainer = styled.div`
     width: 20px;
 `;
 
-const BuyConfirmed = observer((props) => {
+const BuyConfirmed = observer(() => {
     const {
         root: { tradingStore, configStore },
     } = useStores();
 
-    const { infotext } = props;
     const {buyAmount, buyPrice, payAmount} = tradingStore.previousBuy;
 
     const Button = ({ active, children, onClick }) => {
@@ -68,13 +68,13 @@ const BuyConfirmed = observer((props) => {
     return (
         <FormWrapper>
             <InfoRow>
-                <FormInfoText>Price</FormInfoText>
+                <FormInfoText>Current Price</FormInfoText>
                 <div>
                     {formatNumberValue(buyPrice)} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>{infotext}</FormInfoText>
+                <FormInfoText>You will recieve</FormInfoText>
                 <div>
                     {formatBalance(payAmount)} DXD
                 </div>

@@ -26,6 +26,7 @@ const InfoRow = styled.div`
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const Unconfirmed = styled.div`
@@ -64,13 +65,13 @@ const SellUnconfirmed = observer((props) => {
     return (
         <FormWrapper>
             <InfoRow>
-                <FormInfoText>Price</FormInfoText>
+                <FormInfoText>Current Price</FormInfoText>
                 <div>
                     {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive Amount</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>
                     {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType}
                 </div>

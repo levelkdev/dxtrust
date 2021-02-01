@@ -15,8 +15,6 @@ const ContentStates = {
 };
 
 const BuyForm = observer(() => {
-    const infotext = 'Buy Amount';
-
     const Content = ({ contentCount }) => {
         let contentState;
         if (contentCount === 0) {
@@ -32,15 +30,15 @@ const BuyForm = observer(() => {
         }
 
         if (contentState === ContentStates.BUY_FORM) {
-            return <BuyInput infotext={infotext} />;
+            return <BuyInput/>;
         } else if (contentState === ContentStates.SIGN_TRANSACTION) {
-            return <BuySign infotext={infotext} />;
+            return <BuySign/>;
         } else if (contentState === ContentStates.UNCONFIRMED) {
-            return <BuyUnconfirmed infotext={infotext} />;
+            return <BuyUnconfirmed/>;
         } else if (contentState === ContentStates.CONFIRMED) {
-            return <BuyConfirmed infotext={infotext} />;
+            return <BuyConfirmed/>;
         } else if (contentState === ContentStates.FAILED) {
-            return <BuyInput infotext={infotext} />;
+            return <BuyInput/>;
         }
     };
     return <Content contentCount={0} />;

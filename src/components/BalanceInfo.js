@@ -10,6 +10,10 @@ const CryptoInfoWrapper = styled.div`
     flex-direction: column;
     justify-content: space-evenly;
     border-bottom: 1px solid var(--line-gray);
+    background-color: #F1F3F5;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
 `;
 
 const InfoRow = styled.div`
@@ -20,10 +24,6 @@ const InfoRow = styled.div`
     line-height: 24px;
     color: var(--dark-text-gray);
 `;
-
-const DXDLogo = styled.img``;
-
-const ETHLogo = styled.img``;
 
 const LogoAndText = styled.div`
     display: flex;
@@ -58,16 +58,19 @@ const BalanceInfo = observer(() => {
 
 	  return(
         <CryptoInfoWrapper>
+            <span style={
+              {fontFamily: "roboto", fontSize: "11px", color: "#9AA7CA", marginBottom: "10px"}
+            }>YOUR HOLDINGS</span>
             <InfoRow>
                 <LogoAndText>
-                    <ETHLogo src={require('assets/images/ether.svg')}></ETHLogo>
+                    <img src={require('assets/images/ether.svg')}></img>
                     <LogoText>Ether</LogoText>
                 </LogoAndText>
                 <div>{ETHBalanceDisplay} ETH</div>
             </InfoRow>
             <InfoRow>
                 <LogoAndText>
-                    <DXDLogo src={require('assets/images/dxdao-circle.svg')}></DXDLogo>
+                    <img src={require('assets/images/dxdao-circle.svg')}></img>
                     <LogoText>DXdao</LogoText>
                 </LogoAndText>
                 <div>{DXDBalanceDisplay} DXD</div>
