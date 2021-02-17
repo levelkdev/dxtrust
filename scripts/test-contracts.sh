@@ -21,7 +21,7 @@ ganache_running() {
 start_ganache() {
 
   # Using 9000000 as gas limit and 10Gwei as gas price
-  npx ganache-cli --gasLimit 9000000 --gasPrice 1 -e 1000 > /dev/null &
+  npx ganache-cli --gasLimit 9000000 --gasPrice 1 -e 100000000 > /dev/null &
 
   ganache_pid=$!
 

@@ -11,7 +11,7 @@
   "buySlopeDen": "48000000000000000000000",
   "investmentReserveBasisPoints": "1000",
   "revenueCommitmentBasisPoints": "1000",
-  "minInvestment": "1000000000000000",
+  "minInvestment": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
   "feeBasisPoints": "0",
   "autoBurn": "true",
   "openUntilAtLeast": "0"

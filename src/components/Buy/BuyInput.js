@@ -96,6 +96,7 @@ const BuyInput = observer(() => {
     let txFailedError = (tradingStore.buyingState === 5) && (buyInputStatus === "") ? true : false;
     const datState = datStore.getState();
     const minimumInvestment = datStore.getMinInvestment();
+    const buyDisabled = minimumInvestment !== undefined && minimumInvestment == "115792089237316195423570985008687907853269984665640564039457584007913129639935";
     const requiredDataLoaded = datState !== undefined && minimumInvestment !== undefined;
 
     if (buyInputStatus === "" && !tradingStore.payAmount.eq(0)) {
@@ -176,11 +177,14 @@ const BuyInput = observer(() => {
                     <></>
                 )}
             </InputColumn>
-            <span style={
-              {fontFamily: "roboto", fontSize: "11px", color: "#9AA7CA", marginBottom: "10px"}
-            }>MINIMUM INVESTMENT: {minimumInvestment ? formatBalance(minimumInvestment, 18, 3) : "..."} ETH</span>
+            {(buyDisabled || !minimumInvestment) ? 
+              <div/> :
+              <span style={
+                {fontFamily: "roboto", fontSize: "11px", color: "#9AA7CA", marginBottom: "10px"}
+              }>MINIMUM INVESTMENT: {minimumInvestment ? formatBalance(minimumInvestment, 18, 3) : "..."} ETH</span>
+            }
             <Button
-                active={checkActive()}
+                active={checkActive() && !buyDisabled}
                 onClick={() => {
                     tradingStore.buyingState = TransactionState.SIGNING_TX;
                     datStore
@@ -212,7 +216,7 @@ const BuyInput = observer(() => {
                         });
                 }}
             >
-                Buy DXD
+                {(buyDisabled) ? "Buy Disabled" :"Buy DXD"}
             </Button>
         </FormWrapper>
     );

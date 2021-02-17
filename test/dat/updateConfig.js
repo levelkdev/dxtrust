@@ -38,6 +38,39 @@ contract("dat / updateConfig", (accounts) => {
       await contracts.dat.methods.openUntilAtLeast().call(),
     ).send({ from: await contracts.dat.methods.control().call() });
   });
+  
+  it("can update the minInvestment to MAX_UINT", async () => {
+    contracts = await deployDAT(web3);
+    await contracts.dat.methods.buy(accounts[4], web3.utils.toWei('10'), "1").send({
+      value: web3.utils.toWei('10'),
+      from: accounts[4],
+      gas: 9000000
+    })
+    
+    await contracts.dat.methods.updateConfig(
+      await contracts.dat.methods.whitelist().call(),
+      await contracts.dat.methods.beneficiary().call(),
+      await contracts.dat.methods.control().call(),
+      await contracts.dat.methods.feeCollector().call(),
+      await contracts.dat.methods.feeBasisPoints().call(),
+      await contracts.dat.methods.autoBurn().call(),
+      await contracts.dat.methods.revenueCommitmentBasisPoints().call(),
+      constants.MAX_UINT,
+      await contracts.dat.methods.openUntilAtLeast().call(),
+    ).send({ from: await contracts.dat.methods.control().call() });
+    
+    // reverts when trying to buy more than 10 or 10000 ETH worth of tokens
+    await reverts(contracts.dat.methods.buy(accounts[4], web3.utils.toWei('10'), "1").send({
+      value: web3.utils.toWei('10'),
+      from: accounts[4],
+      gas: 9000000
+    }));
+    await reverts(contracts.dat.methods.buy(accounts[4], web3.utils.toWei('10000'), "1").send({
+      value: web3.utils.toWei('10000'),
+      from: accounts[4],
+      gas: 9000000
+    }));
+  });
 
   it("shouldFail with INVALID_ADDRESS if control is missing", async () => {
     contracts = await deployDAT(web3);
