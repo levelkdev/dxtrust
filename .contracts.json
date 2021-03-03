@@ -1,0 +1,17 @@
+{
+  "mainnet": {
+    "DecentralizedAutonomousTrust": "0xa1d65E8fB6e87b60FECCBc582F7f97804B725521",
+    "Multicall": "0x742121cD0BB9784c1f17f25B8da1bF3445b93ED4",
+    "TokenVesting": "0xBd12eBb77eF167a5FF93b7E572b33f2526aE3fd0"
+  },
+  "kovan": {
+    "DecentralizedAutonomousTrust": "0xDd25BaE0659fC06a8d00CD06C7f5A98D71bfB715",
+    "Multicall": "0xc58930e7d81E97D3B82B324eF59e8AfF4bD723BB",
+    "TokenVesting": "0x26A20D2585fbFb8D33c766a0E19555A666D42128"
+  },
+  "rinkeby": {
+    "DecentralizedAutonomousTrust": "0xa700BdAba48A3D96219247111B0b708Dc0b51033",
+    "Multicall": "0xcCe9F2159F5bf387cc70D0cFcc05031558960674",
+    "TokenVesting": "0x0000000000000000000000000000000000000000"
+  }
+}

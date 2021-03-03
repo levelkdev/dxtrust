@@ -40,7 +40,7 @@ const momentNow = moment.utc((new Date()).toUTCString());
 // https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a/proposal/0xeb9cf2b3d76664dc1e983137f33b2400ad11966b1d79399d7ca55c25ad6283fa
 
 const pricePerETHUSD = 200;
-const initGoalUSD = 50000;
+const initGoalUSD = 200;
 const initGoalETH = initGoalUSD/pricePerETHUSD;
 const buySlopePointUSD = 300000;
 const buySlopePointDXD = 12000;
@@ -65,7 +65,7 @@ async function main() {
     symbol: 'DXD',
     currency: '0x0000000000000000000000000000000000000000', // Using ETH
     whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
-    initReserve: '100000000000000000000000', // 100.000 DXD
+    initReserve: '0',
     initGoal: web3.utils.toWei(initGoalDXD.toString()),
     buySlopeNum: '1',
     buySlopeDen: web3.utils.toWei(buySlopeDen.toString()),
@@ -90,17 +90,15 @@ async function main() {
   });
   console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
-  const OZcontracts = JSON.parse(fs.readFileSync('.openzeppelin/'+network+'.json', 'utf-8')).contracts;
+  contracts.datImplementation = await DATContract.new({ from: deployer, gas: 9000000 })
 
-  console.log(`Using DAT implementation `, OZcontracts.DecentralizedAutonomousTrust.address);
+  console.log(`Using DAT implementation `, contracts.datImplementation.address);
 
   contracts.datProxy = await AdminUpgradeabilityProxy.new(
-    OZcontracts.DecentralizedAutonomousTrust.address, // logic
+    contracts.datImplementation.address, // logic
     contracts.proxyAdmin.address, // admin
     [], // data
-    {
-      from: deployer
-    }
+    { from: deployer }
   );
   contracts.dat = await DATContract.at(contracts.datProxy.address);
   console.log(`DAT proxy deployed ${contracts.datProxy.address}`);
@@ -118,20 +116,32 @@ async function main() {
   ).send({ from: deployer });
 
   // Deploy token vesting
-  contracts.tokenVesting = await TokenVesting.new({
-    from: deployer
-  });
-  await contracts.tokenVesting.methods.initialize(
-    deployOptions.control, new moment().unix(), deployOptions.vestingCliff, 
-    deployOptions.vestingDuration, false, deployOptions.control
-  ).send({ from: deployer });
-  console.log(`Token vesting deployed ${contracts.tokenVesting.address}`);
+  if (deployOptions.initReserve > 0) {
+    contracts.tokenVesting = await TokenVesting.new({
+      from: deployer
+    });
+    await contracts.tokenVesting.methods.initialize(
+      deployOptions.control, new moment().unix(), deployOptions.vestingCliff, 
+      deployOptions.vestingDuration, false, deployOptions.control
+    ).send({ from: deployer });
+    console.log(`Token vesting deployed ${contracts.tokenVesting.address}`);
 
-  // Transfer initReserve to tokenVesting
-  await contracts.dat.methods.transfer(contracts.tokenVesting.address, deployOptions.initReserve)
-    .send({ from: deployer });
-  console.log(`Token vesting funded with initReserve ${contracts.tokenVesting.address}`);
+    // Transfer initReserve to tokenVesting
+    await contracts.dat.methods.transfer(contracts.tokenVesting.address, deployOptions.initReserve)
+      .send({ from: deployer });
+    console.log(`Token vesting funded with initReserve ${contracts.tokenVesting.address}`);
+    
+    // Show Token Vetsing values
+    console.log('Token vesting contract address:', contracts.tokenVesting.address);
+    console.log('Token vesting contract owner:', await contracts.tokenVesting.methods.owner().call());
+    console.log('Token vesting contract beneficiary:', await contracts.tokenVesting.methods.beneficiary().call());
+    console.log('Token vesting contract balance:', await contracts.dat.methods.balanceOf(contracts.tokenVesting.address).call());
+    console.log('Token vesting contract cliff:', await contracts.tokenVesting.methods.cliff().call());
+    console.log('Token vesting contract start:', await contracts.tokenVesting.methods.start().call());
+    console.log('Token vesting contract duration:', await contracts.tokenVesting.methods.duration().call());
+    console.log('Token vesting contract revocable:', await contracts.tokenVesting.methods.revocable().call(), ' \n');
 
+  }
   // Update the DAT stting the right values and beneficiary account
   await contracts.dat.methods.updateConfig(
     deployOptions.whitelist,
@@ -149,16 +159,6 @@ async function main() {
   // Transfer ownershiop of proxyAdmin to control address
   await contracts.proxyAdmin.methods.transferOwnership(deployOptions.control);  
   
-  // Show Token Vetsing values
-  console.log('Token vesting contract address:', contracts.tokenVesting.address);
-  console.log('Token vesting contract owner:', await contracts.tokenVesting.methods.owner().call());
-  console.log('Token vesting contract beneficiary:', await contracts.tokenVesting.methods.beneficiary().call());
-  console.log('Token vesting contract balance:', await contracts.dat.methods.balanceOf(contracts.tokenVesting.address).call());
-  console.log('Token vesting contract cliff:', await contracts.tokenVesting.methods.cliff().call());
-  console.log('Token vesting contract start:', await contracts.tokenVesting.methods.start().call());
-  console.log('Token vesting contract duration:', await contracts.tokenVesting.methods.duration().call());
-  console.log('Token vesting contract revocable:', await contracts.tokenVesting.methods.revocable().call(), ' \n');
-
   // Show DAT values
   console.log('DAT contract address:', contracts.dat.address);
   console.log('DAT contract controller:', await contracts.dat.methods.control().call());

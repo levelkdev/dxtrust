@@ -19,18 +19,17 @@ async function loadDeployment(network) {
   Contracts.setLocalBuildDir('contracts/build/');
   
   const DATContract = Contracts.getFromLocal('DecentralizedAutonomousTrust');
-  const proxies = JSON.parse(fs.readFileSync('.openzeppelin/'+network+'.json', 'utf-8')).proxies;
+  const contracts = JSON.parse(fs.readFileSync('.contracts.json', 'utf-8'));
   
-  const datContract = DATContract.at(proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address);
+  const datContract = DATContract.at(contracts[network].DecentralizedAutonomousTrust);
   const fromBlock = (network == 'mainnet') ? 10012634
   : (network == 'kovan') ? 18000000
-  : (network == 'rinkeby') ? 7329821
+  : (network == 'rinkeby') ? 8164325
   : 0;
   
   const contractsDeployed = {
-    multicall: proxies['openraise-dapp/Multicall'][0].address,
-    DAT: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address,
-    implementationAddress: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].implementation,
+    multicall: contracts[network].Multicall,
+    DAT: contracts[network].DecentralizedAutonomousTrust,
     DATinfo: {
       fromBlock: fromBlock,
       "collateralType": "ETH",

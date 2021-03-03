@@ -1,7 +1,6 @@
 {
   "multicall": "0xc58930e7d81E97D3B82B324eF59e8AfF4bD723BB",
   "DAT": "0xDd25BaE0659fC06a8d00CD06C7f5A98D71bfB715",
-  "implementationAddress": "0x05a28eE1EeeE05A5ab66E18c08C417860a607d81",
   "DATinfo": {
     "fromBlock": 18000000,
     "collateralType": "ETH",

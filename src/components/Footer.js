@@ -81,10 +81,6 @@ const Footer = () => {
                 </FooterItem>
                 <FooterDivider></FooterDivider>
                 <FooterItem>
-                    {etherscanAddress(chainId, "Logic Contract", contract)}
-                </FooterItem>
-                <FooterDivider></FooterDivider>
-                <FooterItem>
                     <a href="https://daotalk.org/c/daos/dx-dao" target="#">
                         Forum
                     </a>
