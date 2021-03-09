@@ -44,8 +44,6 @@ fi
 
 npx truffle version
 npx truffle compile --network development
-rm .openzeppelin/dev-*.json ||:
-npx oz push --network development
 rm src/config/contracts/development.json ||:
 node scripts/deployDevContracts.js -- --network development
 REACT_APP_ETH_NETWORKS=mainnet,rinkeby,kovan node scripts/loadDeployments.js

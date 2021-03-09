@@ -1,5 +1,6 @@
 import React from 'react';
 import BondingCurveChart from '../components/BondingCurveChart/BondingCurveChart';
+import CurveInformation from '../components/CurveInformation';
 import TradeHistory from '../components/TradeHistory';
 import BuySell from '../components/BuySell';
 import styled from 'styled-components';
@@ -54,6 +55,7 @@ const BondingCurve = () => {
         </AlertWrapper>
         <BondingCurveChart />
         <BuySell />
+        <CurveInformation />
         <TradeHistory />
         <Footer />
       </BondingCurveWrapper>

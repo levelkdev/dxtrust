@@ -45,7 +45,19 @@ const NavBar = () => {
         <NavWrapper>
             <LeftNav>
                 <NavItem route="/">
-                    <img alt="dxdao" src={require("assets/images/DXdao.svg")}/>
+                    <img alt="dxdao" src={require("assets/images/dxdao-dark.svg")}/>
+                    <span
+                      style={{margin: "0px 10px", fontSize: "25px"}}
+                    > | </span>
+                    <span
+                      style={{
+                        fontWeight: "400",
+                        fontSize: "25px",
+                        color: "black",
+                        style: "normal",
+                        letterSpacing: "1px"
+                      }}
+                    >DXTrust</span>
                 </NavItem>
             </LeftNav>
             <Web3ConnectStatus text="Connect Wallet" />

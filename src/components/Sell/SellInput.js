@@ -19,6 +19,7 @@ const FormWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    padding: 10px 10px;
 `;
 
 const InfoRow = styled.div`
@@ -28,10 +29,12 @@ const InfoRow = styled.div`
     line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
+    font-size: 15px;
 `;
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const FormContent = styled.div`
@@ -43,8 +46,8 @@ const FormContent = styled.div`
     border-radius: 4px;
     height: 34px;
     line-height: 34px;
-    margin-top: 12px;
-    margin-bottom: 32px;
+    margin-top: 0px;
+    margin-bottom: 34px;
     font-weight: 600;
     font-size: 15px;
     padding: 0px 10px;
@@ -135,13 +138,13 @@ const SellInput = observer((props) => {
     return (
         <FormWrapper>
             <InfoRow>
-                <FormInfoText>Price</FormInfoText>
+                <FormInfoText>Current Price</FormInfoText>
                 <div>
                     {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive Amount</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>
                     {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType}
                 </div>

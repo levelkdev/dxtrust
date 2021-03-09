@@ -36,7 +36,7 @@
     --rewards-text-green: #54ae6f;
     --rewards-background-green: rgba(84, 174, 111, 0.1);
 
-    --roboto: 'Roboto', sans-serif;
+    --montserrat: 'Montserrat', sans-serif;
 
     /*Landing Page Styles*/
     --background: #E4E6F0;
@@ -54,7 +54,7 @@
     flex-direction: row;
     justify-content: center;
     padding: 10px 20px;
-    font-family: var(--roboto);
+    font-family: var(--montserrat);
     background-color: var(--light-gray);    
 }
 

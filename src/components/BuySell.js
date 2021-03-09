@@ -18,9 +18,11 @@ const BuySellWrapper = styled.div`
       margin: 0;
     `};
     width: calc(30%);
-    border: 1px solid var(--medium-gray);
-    border-radius: 4px;
     background-color: white;
+    border: 1px solid #EBE9F8;
+    box-sizing: border-box;
+    box-shadow: 0px 3px 10px rgba(14, 0, 135, 0.04), 0px 14px 32px rgba(14, 0, 135, 0.04);
+    border-radius: 8px;
     justify-content: space-between;
     margin-left:10px;
 `;
@@ -28,7 +30,7 @@ const BuySellWrapper = styled.div`
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 5px;
 `;
 
 const BuySell = observer(() => {
@@ -58,15 +60,15 @@ const BuySell = observer(() => {
 
     return (
         <BuySellWrapper>
-            <BuySellTabs isBuy={isBuy} />
-            <ContentWrapper>
-                <BalanceInfo />
-                <CurrentForm
-                    isBuy={isBuy}
-                    incrementTKN={incrementTKN}
-                    incrementDXD={incrementDXD}
-                />
-            </ContentWrapper>
+          <BuySellTabs isBuy={isBuy} />
+          <ContentWrapper>
+            <CurrentForm
+              isBuy={isBuy}
+              incrementTKN={incrementTKN}
+              incrementDXD={incrementDXD}
+            />
+            <BalanceInfo />
+          </ContentWrapper>
         </BuySellWrapper>
     );
 });

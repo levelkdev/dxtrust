@@ -19,6 +19,7 @@ const FormWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    padding: 10px 10px;
 `;
 
 const InfoRow = styled.div`
@@ -28,10 +29,12 @@ const InfoRow = styled.div`
     line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
+    font-size: 15px;
 `;
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const FormContent = styled.div`
@@ -43,8 +46,8 @@ const FormContent = styled.div`
     border-radius: 4px;
     height: 34px;
     line-height: 34px;
-    margin-top: 12px;
-    margin-bottom: 32px;
+    margin-top: 0px;
+    margin-bottom: ${(props) => props.error ? "22px" : "12px"};
     font-weight: 600;
     font-size: 15px;
     padding: 0px 10px;
@@ -79,7 +82,7 @@ const MessageError = styled.div`
     white-space: nowrap;
 `;
 
-const BuyInput = observer((props) => {
+const BuyInput = observer(() => {
     const {
         root: { datStore, tradingStore, configStore, providerStore, tokenStore },
     } = useStores();
@@ -87,13 +90,14 @@ const BuyInput = observer((props) => {
     const [buyInputStatus, setBuyInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
-    const { infotext } = props;
     
     const price = (buyInputStatus === "") ? tradingStore.formatNumber(0) : tradingStore.formatBuyPrice();
     let disconnectedError = (tradingStore.buyAmount > 0) ? (account === null) ? true : false : false;
     let txFailedError = (tradingStore.buyingState === 5) && (buyInputStatus === "") ? true : false;
     const datState = datStore.getState();
-    const requiredDataLoaded = datState !== undefined;
+    const minimumInvestment = datStore.getMinInvestment();
+    const buyDisabled = minimumInvestment !== undefined && minimumInvestment == "115792089237316195423570985008687907853269984665640564039457584007913129639935";
+    const requiredDataLoaded = datState !== undefined && minimumInvestment !== undefined;
 
     if (buyInputStatus === "" && !tradingStore.payAmount.eq(0)) {
       tradingStore.setPayAmount(bnum(0));
@@ -138,17 +142,17 @@ const BuyInput = observer((props) => {
     return (
         <FormWrapper>
             <InfoRow>
-                <FormInfoText>Price</FormInfoText>
+                <FormInfoText>Current Price</FormInfoText>
                 <div>
                     {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>{infotext}</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>{formatBalance(tradingStore.payAmount)} DXD</div>
             </InfoRow>
             <InputColumn>
-                <FormContent>
+                <FormContent error={buyInputStatus !== ValidationStatus.VALID && buyInputStatus !== ""}>
                     <input
                         className="form-vivid-blue"
                         type="text"
@@ -173,8 +177,14 @@ const BuyInput = observer((props) => {
                     <></>
                 )}
             </InputColumn>
+            {(buyDisabled || !minimumInvestment) ? 
+              <div/> :
+              <span style={
+                {fontFamily: "roboto", fontSize: "11px", color: "#9AA7CA", marginBottom: "10px"}
+              }>MINIMUM INVESTMENT: {minimumInvestment ? formatBalance(minimumInvestment, 18, 3) : "..."} ETH</span>
+            }
             <Button
-                active={checkActive()}
+                active={checkActive() && !buyDisabled}
                 onClick={() => {
                     tradingStore.buyingState = TransactionState.SIGNING_TX;
                     datStore
@@ -206,7 +216,7 @@ const BuyInput = observer((props) => {
                         });
                 }}
             >
-                Buy DXD
+                {(buyDisabled) ? "Buy Disabled" :"Buy DXD"}
             </Button>
         </FormWrapper>
     );

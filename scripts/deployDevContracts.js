@@ -34,14 +34,13 @@ ZWeb3.initialize(web3.currentProvider);
 const developmentConfig = JSON.parse(fs.readFileSync('src/config/developmentConfig.json', 'utf-8'));
 
 async function main() {
-  const contracts = await deployDAT(web3, developmentConfig);
+  const contracts = await deployDAT(web3, developmentConfig, true, 'development');
   developmentConfig.fromBlock = (await web3.eth.getBlock('latest')).number;
   developmentConfig.control = (await web3.eth.getAccounts())[0];
   const contractsDeployed = {
     multicall: contracts.multicall.address,
     DAT: contracts.dat.address,
     collateral: zeroAddress,
-    implementationAddress: contracts.dat.implementation,
     DATinfo: developmentConfig,
   };
   

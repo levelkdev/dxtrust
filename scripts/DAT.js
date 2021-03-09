@@ -2,28 +2,7 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const zeroAddress = '0x0000000000000000000000000000000000000000';
 const fs = require('fs');
 
-async function getOzDevelopJSON() {
-  const ozFiles = await fs.readdirSync('.openzeppelin');
-  let ozJSON;
-  ozFiles.forEach(function (file) {
-      if (file.indexOf('dev-') >= 0)
-        ozJSON = JSON.parse(fs.readFileSync('.openzeppelin/'+file, 'utf-8'));
-  });
-  return ozJSON;
-}
-
-async function saveOzDevelopProxies(proxies) {
-  const ozFiles = await fs.readdirSync('.openzeppelin');
-  ozFiles.forEach(function (file) {
-      if (file.indexOf('dev-') >= 0){
-        const ozJSON = JSON.parse(fs.readFileSync('.openzeppelin/'+file, 'utf-8'));
-        ozJSON.proxies = proxies;
-        fs.writeFileSync('.openzeppelin/'+file, JSON.stringify(ozJSON, null, 2))
-      }
-  });
-}
-
-async function deployDAT(web3, options = {}, useProxy = true, saveOzProxies = true) {
+async function deployDAT(web3, options = {}, useProxy, network) {
   
   ZWeb3.initialize(web3.currentProvider);
   Contracts.setLocalBuildDir('contracts/build/');
@@ -97,28 +76,6 @@ async function deployDAT(web3, options = {}, useProxy = true, saveOzProxies = tr
 
   contracts.multicall = await Multicall.new({ gas: 9000000});
   
-  if (saveOzProxies) {
-    const ozDevelopJSON = await getOzDevelopJSON();
-    const proxies = { 
-      'openraise-dapp/DecentralizedAutonomousTrust': [ 
-        { 
-          address: contracts.dat.address,
-          version: ozDevelopJSON.version,
-          implementation: contracts.dat.implementation,
-          admin: contracts.proxyAdmin.address,
-          kind: 'Upgradeable'
-        }
-      ],
-      'openraise-dapp/Multicall': [
-        {
-          address: contracts.multicall.address,
-          kind: 'NonProxy',
-          bytecodeHash: ozDevelopJSON.contracts.Multicall.bytecodeHash
-        }
-      ] 
-    };
-    saveOzDevelopProxies(proxies);
-  }
   if (options.log){
     console.log('DAT control accounts:', accounts[1]);
     console.log('DAT beneficiary accounts:', accounts[5]);
