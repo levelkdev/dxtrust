@@ -127,7 +127,7 @@ const chartRed = '#D8494A';
 const chartGray = '#9FA8DA';
 const gridLineColor = '#EAECF7';
 
-const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
+const BondingCurveChart = observer(() => {
     const {
         root: { tradingStore, tokenStore, configStore, datStore, providerStore },
     } = useStores();
@@ -136,7 +136,8 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     preMintedTokens: BigNumber,
     currentBuyPrice: BigNumber,
     currentSellPrice: BigNumber,
-    kickstarterPrice: BigNumber;
+    kickstarterPrice: BigNumber,
+    totalSupplyWithoutPremint: BigNumber;
     
     const activeDATAddress = configStore.getTokenAddress();
     const staticParamsLoaded = datStore.areAllStaticParamsLoaded();
@@ -222,23 +223,21 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
     const generateChart = () => {
       const datasets = [], hasInitGoal = initGoal.gt(0), hasExceededInitGoal = datStore.isRunPhase();
       let supplyIncrease, futureSupply, futurePrice = bnum(0), hasActiveInput = false;
-      let maxBuySupplyToShow = totalSupplyWithoutPremint.times(1.5);
-      let maxSupplyToShow = denormalizeBalance(
-        roundUpToScale(normalizeBalance(maxBuySupplyToShow))
-      );
+      
+      let maxSupplyToShow = roundUpToScale(totalSupplyWithoutPremint.times(1.5));
+      
       if (maxSupplyToShow.lt(initGoal.times(1.5))) {
-        maxBuySupplyToShow = totalSupplyWithoutPremint.plus(initGoal)
-        maxSupplyToShow = denormalizeBalance(
-          roundUpToScale( normalizeBalance( maxBuySupplyToShow ) )
-        );
+        maxSupplyToShow = totalSupplyWithoutPremint.plus(initGoal)
+        maxSupplyToShow = roundUpToScale(maxSupplyToShow);
       }
+      
       const maxBuyPriceToShow = datStore.getBuyPriceAtSupply(maxSupplyToShow);
-      const reserveBalanceAtMaxSellPriceToShow = maxBuySupplyToShow.minus(totalSupplyWithoutPremint)
+      const reserveBalanceAtMaxSellPriceToShow = maxSupplyToShow.minus(totalSupplyWithoutPremint)
         .times(maxBuyPriceToShow)
         .div(bnum(10000).div(investmentReserveBasisPoints))
         .plus(reserveBalance);
       const maxSellPriceToShow = datStore.getSellPriceAtSupplyWithReserve(
-        maxBuySupplyToShow, reserveBalanceAtMaxSellPriceToShow
+        maxSupplyToShow, reserveBalanceAtMaxSellPriceToShow
       );
 
       let points: ChartPointMap = {
@@ -450,7 +449,7 @@ const BondingCurveChart = observer((totalSupplyWithoutPremint:BigNumber) => {
             },
             scaleLabel: {
               display: true,
-              labelString: ' DXD',
+              labelString: 'DXD (Without Premint)',
             },
             ticks: {
               beginAtZero: true,
