@@ -33,9 +33,9 @@ jobs:
       - name: Deploy to ipfs
         uses: anantaramdas/ipfs-pinata-deploy-action@v1.6.4
         with:
-          pin-name: 'dxvote'
+          pin-name: 'dxtrust'
           path: 'build'
-          pinata-api-key: 121008788ba8017a9a57
+          pinata-api-key: c403514533687dda8766
           pinata-secret-api-key: ${{ secrets.PINATA_KEY }}
           verbose: true
           remove-old: true
