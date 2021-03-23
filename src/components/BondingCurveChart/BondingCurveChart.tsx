@@ -251,11 +251,11 @@ const BondingCurveChart = observer(() => {
           y: valueToNumber(currentBuyPrice),
           type: PointType.CURRENT_BUY_PRICE
         },
-        currentSellPrice: {
-          x: balanceToNumber(totalSupplyWithoutPremint),
-          y: valueToNumber(currentSellPrice),
-          type: PointType.CURRENT_SELL_PRICE
-        },
+        // currentSellPrice: {
+        //   x: balanceToNumber(totalSupplyWithoutPremint),
+        //   y: valueToNumber(currentSellPrice),
+        //   type: PointType.CURRENT_SELL_PRICE
+        // },
       };
 
       if (hasInitGoal) {
@@ -365,24 +365,24 @@ const BondingCurveChart = observer(() => {
           )
         );
         
-        datasets.push(
-          generateLine(
-            [points.zero, points.currentSellPrice],
-            chartRed,
-            'Sell Price',
-            false,
-            "#F5E7E7"
-          )
-        );
+        // datasets.push(
+        //   generateLine(
+        //     [points.zero, points.currentSellPrice],
+        //     chartRed,
+        //     'Sell Price',
+        //     false,
+        //     "#F5E7E7"
+        //   )
+        // );
         
-        datasets.push(
-          generateLine(
-            [points.currentSellPrice,  points.maxSellSupplyToShow],
-            chartRed,
-            'Future Sell Price',
-            true
-          )
-        );
+        // datasets.push(
+        //   generateLine(
+        //     [points.currentSellPrice,  points.maxSellSupplyToShow],
+        //     chartRed,
+        //     'Future Sell Price',
+        //     true
+        //   )
+        // );
         
         
       } else {
@@ -449,7 +449,7 @@ const BondingCurveChart = observer(() => {
             },
             scaleLabel: {
               display: true,
-              labelString: 'DXD (Without Premint)',
+              labelString: 'DXD',
             },
             ticks: {
               beginAtZero: true,
