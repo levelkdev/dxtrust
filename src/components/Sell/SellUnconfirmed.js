@@ -26,6 +26,7 @@ const InfoRow = styled.div`
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const Unconfirmed = styled.div`
@@ -47,7 +48,7 @@ const SellUnconfirmed = observer((props) => {
     const price = tradingStore.formatSellPrice();
     const rewardForSell = tradingStore.rewardForSell;
     const sellAmount = tradingStore.formatSellAmount();
-    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    const sellText = datStore.isInitPhase(configStore.getTokenAddress()) ? "Withdraw" : "Sell";
 
     const Button = ({ active, children, onClick }) => {
         if (active === true) {
@@ -64,15 +65,15 @@ const SellUnconfirmed = observer((props) => {
     return (
         <FormWrapper>
             <InfoRow>
-                <FormInfoText>Price</FormInfoText>
+                <FormInfoText>Current Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive Amount</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {configStore.getCollateralType()}
+                    {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
@@ -83,7 +84,7 @@ const SellUnconfirmed = observer((props) => {
                 Unconfirmed...
                 <PendingCircle />
             </Unconfirmed>
-            <Button active={false}>{sellText} {sellText  == "Withdraw" ? 'ETH' : 'DXD'}</Button>
+            <Button active={false}>{sellText} {sellText  === "Withdraw" ? 'ETH' : 'DXD'}</Button>
         </FormWrapper>
     );
 });

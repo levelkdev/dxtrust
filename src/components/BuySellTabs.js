@@ -1,4 +1,4 @@
-     import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import { useStores } from '../contexts/storesContext';
@@ -36,24 +36,20 @@ const BuySellTabs = observer(() => {
     const {
         root: { configStore, datStore, tradingStore },
     } = useStores();
-    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
-    let isBuy = tradingStore.activeTab;
-    const TabButton = ({isActive, left, children }) => {
-        if (isActive) {
+
+    const activeTab = tradingStore.activeTab;
+    const TabButton = ({tabType, children }) => {
+        if (activeTab === tabType) {
             return (
-                <ActiveTab
-                    left={left}
-                >
+                <ActiveTab left={activeTab === 'sell'} >
                     {children}
                 </ActiveTab>
             );
         } else {
             return (
                 <InactiveTab
-                    onClick={() => {
-                        tradingStore.switchActiveTab();
-                    }}
-                    left={left}
+                  left={activeTab === 'buy'}
+                  onClick={() => { tradingStore.setActiveTab(tabType); }}
                 >
                     {children}
                 </InactiveTab>
@@ -63,11 +59,11 @@ const BuySellTabs = observer(() => {
 
 	return(
         <TabWrapper>
-            <TabButton isActive={isBuy}>
+            <TabButton tabType={'buy'}>
                 Buy
             </TabButton>
-            <TabButton isActive={!isBuy} left={true}>
-                {sellText}
+            <TabButton tabType={'sell'}>
+                {datStore.isInitPhase(configStore.getTokenAddress()) ? "Withdraw" : "Sell"}
             </TabButton>
         </TabWrapper>
 	);

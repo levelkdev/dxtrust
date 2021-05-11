@@ -25,6 +25,7 @@ const InfoRow = styled.div`
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const SignTransaction = styled.div`
@@ -38,12 +39,11 @@ const SignTransaction = styled.div`
     margin-bottom: 28px;
 `;
 
-const BuySign = observer((props) => {
+const BuySign = observer(() => {
     const {
         root: { tradingStore,configStore },
     } = useStores();
 
-    const { infotext } = props;
     const price = tradingStore.formatBuyPrice();
     const buyAmount = tradingStore.formatBuyAmount();
 
@@ -62,18 +62,18 @@ const BuySign = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>{infotext}</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>
                     {formatBalance(tradingStore.payAmount)} DXD
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Total cost</FormInfoText>
-                <div>{buyAmount} {configStore.getCollateralType()}</div>
+                <div>{buyAmount} {configStore.getDATinfo().collateralType}</div>
             </InfoRow>
             <SignTransaction>
                 Sign Transaction...

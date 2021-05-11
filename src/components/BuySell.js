@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import BuyForm from './Buy/BuyForm';
@@ -13,18 +13,24 @@ import { TransactionState } from 'stores/TradingForm';
 const BuySellWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 298px;
-    margin-left: 24px;
-    border: 1px solid var(--medium-gray);
-    border-radius: 4px;
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      width: calc(66%);
+      margin: 0;
+    `};
+    width: calc(30%);
     background-color: white;
+    border: 1px solid #EBE9F8;
+    box-sizing: border-box;
+    box-shadow: 0px 3px 10px rgba(14, 0, 135, 0.04), 0px 14px 32px rgba(14, 0, 135, 0.04);
+    border-radius: 8px;
     justify-content: space-between;
+    margin-left:10px;
 `;
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 5px;
 `;
 
 const BuySell = observer(() => {
@@ -35,7 +41,7 @@ const BuySell = observer(() => {
     const { account } = providerStore.getActiveWeb3React();
     const incrementTKN = tradingStore.enableTKNState;
     const incrementDXD = tradingStore.enableDXDState;
-    let isBuy = tradingStore.activeTab;
+    let isBuy = tradingStore.activeTab === 'buy';
 
     const CurrentForm = ({isBuy}) => {
         if (isBuy) {
@@ -54,15 +60,15 @@ const BuySell = observer(() => {
 
     return (
         <BuySellWrapper>
-            <BuySellTabs isBuy={isBuy} />
-            <ContentWrapper>
-                <BalanceInfo />
-                <CurrentForm
-                    isBuy={isBuy}
-                    incrementTKN={incrementTKN}
-                    incrementDXD={incrementDXD}
-                />
-            </ContentWrapper>
+          <BuySellTabs isBuy={isBuy} />
+          <ContentWrapper>
+            <CurrentForm
+              isBuy={isBuy}
+              incrementTKN={incrementTKN}
+              incrementDXD={incrementDXD}
+            />
+            <BalanceInfo />
+          </ContentWrapper>
         </BuySellWrapper>
     );
 });

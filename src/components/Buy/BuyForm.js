@@ -1,12 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import ActiveButton from '../common/ActiveButton';
-import InactiveButton from '../common/InactiveButton';
 import BuyInput from './BuyInput';
 import BuySign from '../Buy/BuySign';
 import BuyUnconfirmed from '../Buy/BuyUnconfirmed';
 import BuyConfirmed from './BuyConfirmed';
-import { useStores } from '../../contexts/storesContext';
 
 const ContentStates = {
     BUY_FORM: 'sell_form',
@@ -18,21 +15,6 @@ const ContentStates = {
 };
 
 const BuyForm = observer(() => {
-    const {
-        root: { tradingStore },
-    } = useStores();
-
-    const infotext = 'Buy Amount';
-    const count = tradingStore.buyingState;
-    
-    const Button = ({ active, children, onClick }) => {
-        if (active === true) {
-            return <ActiveButton onClick={onClick}>{children}</ActiveButton>;
-        } else {
-            return <InactiveButton>{children}</InactiveButton>;
-        }
-    };
-
     const Content = ({ contentCount }) => {
         let contentState;
         if (contentCount === 0) {
@@ -48,18 +30,18 @@ const BuyForm = observer(() => {
         }
 
         if (contentState === ContentStates.BUY_FORM) {
-            return <BuyInput infotext={infotext} />;
+            return <BuyInput/>;
         } else if (contentState === ContentStates.SIGN_TRANSACTION) {
-            return <BuySign infotext={infotext} />;
+            return <BuySign/>;
         } else if (contentState === ContentStates.UNCONFIRMED) {
-            return <BuyUnconfirmed infotext={infotext} />;
+            return <BuyUnconfirmed/>;
         } else if (contentState === ContentStates.CONFIRMED) {
-            return <BuyConfirmed infotext={infotext} />;
+            return <BuyConfirmed/>;
         } else if (contentState === ContentStates.FAILED) {
-            return <BuyInput infotext={infotext} />;
+            return <BuyInput/>;
         }
     };
-    return <Content contentCount={count} />;
+    return <Content contentCount={0} />;
 });
 
 export default BuyForm;

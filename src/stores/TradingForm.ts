@@ -34,7 +34,7 @@ interface Sell {
 }
 
 class TradingFormStore {
-    @observable activeTab = true;
+    @observable activeTab = 'buy';
     @observable previousBuy: Buy;
     @observable previousSell: Sell;
     @observable reserveBalance = '';
@@ -91,8 +91,8 @@ class TradingFormStore {
         this.sellPrice = price;
     }
 
-    @action switchActiveTab(){
-        this.activeTab = !this.activeTab;
+    @action setActiveTab(newActiveTab: string){
+        this.activeTab = newActiveTab
     }
 
     @action setPreviousBuy(buy: Buy) {
@@ -105,9 +105,9 @@ class TradingFormStore {
 
     isDataLoaded(account: string): boolean {
         const {tokenStore, configStore} = this.rootStore;
-        const allowance = tokenStore.getAllowance(configStore.getDXDTokenAddress(), account, configStore.getDXDTokenAddress());
+        const allowance = tokenStore.getAllowance(configStore.getTokenAddress(), account, configStore.getTokenAddress());
         const collateralBalance = tokenStore.getEtherBalance(account);
-        const dxdBalance = tokenStore.getBalance(configStore.getDXDTokenAddress(), account);
+        const dxdBalance = tokenStore.getBalance(configStore.getTokenAddress(), account);
 
         if (!!allowance && !!collateralBalance && !!dxdBalance) {
             return true;
@@ -206,6 +206,8 @@ class TradingFormStore {
             return (this.enableDXDState = 3);
         } else if (confirmationFlag === ConfirmationFlags.SELL_DXD) {
             return (this.sellingState = 3);
+        } else {
+          return (this.sellingState = 3);
         }
     }
 

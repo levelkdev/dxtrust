@@ -7,12 +7,14 @@ import { formatBalance, formatNumberValue } from '../utils/token';
 
 const TradingHistoryWrapper = styled.div`
     width: 100%;
-    background: white;
+    background-color: white;
+    border: 1px solid #EBE9F8;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 10px rgba(14, 0, 135, 0.03), 0px 12px 32px rgba(14, 0, 135, 0.05);
+    border-radius: 8px;
     padding: 20px 0px;
-    border: 1px solid var(--medium-gray);
     margin-top: 24px;
     font-weight: 400;
-    border-radius: 4px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -88,10 +90,6 @@ const TableCell = styled.div`
     font-weight: ${(props) => props.weight};
 `;
 
-const TableCellType = styled(TableCell)`
-    text-align: left;
-`;
-
 const TradingHistory = observer(() => {
     const {
         root: { tradingStore, configStore, providerStore },
@@ -108,17 +106,17 @@ const TradingHistory = observer(() => {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
-            <img src="bolt.svg" />
+            <img alt="bolt" src={require('assets/images/bolt.svg')} />
                 <br/>
                 Connect to view Trade History
             </div>
           </TradingHistoryWrapper>
       )
-    } else if (recentTrades.length == 0) {
+    } else if (recentTrades.length === 0) {
       return (
           <TradingHistoryWrapper>
             <div className="loader">
-            <img src="bolt.svg" />
+            <img alt="bolt" src={require('assets/images/bolt.svg')} />
                 <br/>
                 Searching for last trades..
             </div>
@@ -133,11 +131,11 @@ const TradingHistory = observer(() => {
                       Type
                   </TableHeader>
                   <TableHeader width="15.5%">
-                      Price {configStore.getCollateralType()}
+                      Price {configStore.getDATinfo().collateralType}
                   </TableHeader>
                   <TableHeader>Amount DXD</TableHeader>
                   <TableHeader>
-                      Total {configStore.getCollateralType()}
+                      Total {configStore.getDATinfo().collateralType}
                   </TableHeader>
                   <TableHeader className="align-right">Time</TableHeader>
               </TableHeadersWrapper>

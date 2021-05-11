@@ -2,16 +2,19 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const Web3 = require('web3');
 const moment = require('moment');
+const fs = require('fs');
 const args = process.argv;
 require('dotenv').config();
 
 // Get network to use from arguments
-let network = 'mainnet', mnemonic, provider, web3;
+let network = 'mainnet', mnemonic, provider,controllerAccount, web3;
 for (var i = 0; i < args.length; i++) {
   if (args[i] == '--network')
     network = args[i+1];
   if (args[i] == '--provider')
     provider = args[i+1];
+  if (args[i] == '--controller')
+    controllerAccount = args[i+1];
 }
 if (!provider) throw('Not provider selected, --provider parameter missing');
 
@@ -37,7 +40,7 @@ const momentNow = moment.utc((new Date()).toUTCString());
 // https://alchemy.daostack.io/dao/0x519b70055af55a007110b4ff99b0ea33071c720a/proposal/0xeb9cf2b3d76664dc1e983137f33b2400ad11966b1d79399d7ca55c25ad6283fa
 
 const pricePerETHUSD = 200;
-const initGoalUSD = 50000;
+const initGoalUSD = 200;
 const initGoalETH = initGoalUSD/pricePerETHUSD;
 const buySlopePointUSD = 300000;
 const buySlopePointDXD = 12000;
@@ -52,32 +55,32 @@ const buySlopeDen = parseFloat(1 / buySlope).toFixed()
 // Calculates init goal DXD from the initial goal ETH and the slope
 const initGoalDXD = Math.sqrt((2*initGoalETH)/buySlope);
 
-const deployOptions = {
-  collateralType: 'ETH',
-  name: 'DXdao',
-  symbol: 'DXD',
-  currency: '0x0000000000000000000000000000000000000000', // Using ETH
-  whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
-  initReserve: '100000000000000000000000', // 100.000 DXD
-  initGoal: web3.utils.toWei(initGoalDXD.toString()),
-  buySlopeNum: '1',
-  buySlopeDen: web3.utils.toWei(buySlopeDen.toString()),
-  investmentReserveBasisPoints: '1000', // 10 %
-  revenueCommitmentBasisPoints: '1000', // 10 %
-  minInvestment: '1000000000000000',  // 0.001 ETH
-  feeBasisPoints: '0', // No fee for operations
-  autoBurn: true, // Burn when org sell and pay
-  openUntilAtLeast: momentNow.add(5, 'years').unix(), // Open for 5 years
-  control: '0x519b70055af55a007110b4ff99b0ea33071c720a',
-  beneficiary: '0x519b70055af55a007110b4ff99b0ea33071c720a',
-  feeCollector: '0x519b70055af55a007110b4ff99b0ea33071c720a',
-  vestingCliff: '0',
-  vestingDuration: Math.trunc(moment.duration(3, 'years').as('seconds'))
-};
-
 async function main() {
   
   const deployer = (await web3.eth.getAccounts())[0];
+  
+  const deployOptions = {
+    collateralType: 'ETH',
+    name: 'DXdao',
+    symbol: 'DXD',
+    currency: '0x0000000000000000000000000000000000000000', // Using ETH
+    whitelist: '0x0000000000000000000000000000000000000000', // No Whitelist
+    initReserve: '0',
+    initGoal: web3.utils.toWei(initGoalDXD.toString()),
+    buySlopeNum: '1',
+    buySlopeDen: web3.utils.toWei(buySlopeDen.toString()),
+    investmentReserveBasisPoints: '1000', // 10 %
+    revenueCommitmentBasisPoints: '1000', // 10 %
+    minInvestment: '1000000000000000',  // 0.001 ETH
+    feeBasisPoints: '0', // No fee for operations
+    autoBurn: true, // Burn when org sell and pay
+    openUntilAtLeast: momentNow.add(5, 'years').unix(), // Open for 5 years
+    control: controllerAccount,
+    beneficiary: controllerAccount,
+    feeCollector: controllerAccount,
+    vestingCliff: '0',
+    vestingDuration: Math.trunc(moment.duration(3, 'years').as('seconds'))
+  };
 
   console.log(`Using account: ${deployer}`, ' \n');
   console.log(`Deploy DAT with config: ${JSON.stringify(deployOptions, null, 2)}`, ' \n');
@@ -87,15 +90,15 @@ async function main() {
   });
   console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
-  console.log(`Using DAT implementation 0x845856776D110a200Cf41f35C9428C938e72E604`);
+  contracts.datImplementation = await DATContract.new({ from: deployer, gas: 9000000 })
+
+  console.log(`Using DAT implementation `, contracts.datImplementation.address);
 
   contracts.datProxy = await AdminUpgradeabilityProxy.new(
-    "0x845856776D110a200Cf41f35C9428C938e72E604", // logic
+    contracts.datImplementation.address, // logic
     contracts.proxyAdmin.address, // admin
     [], // data
-    {
-      from: deployer
-    }
+    { from: deployer }
   );
   contracts.dat = await DATContract.at(contracts.datProxy.address);
   console.log(`DAT proxy deployed ${contracts.datProxy.address}`);
@@ -113,20 +116,32 @@ async function main() {
   ).send({ from: deployer });
 
   // Deploy token vesting
-  contracts.tokenVesting = await TokenVesting.new({
-    from: deployer
-  });
-  await contracts.tokenVesting.methods.initialize(
-    deployOptions.control, new moment().unix(), deployOptions.vestingCliff, 
-    deployOptions.vestingDuration, false, deployOptions.control
-  ).send({ from: deployer });
-  console.log(`Token vesting deployed ${contracts.tokenVesting.address}`);
+  if (deployOptions.initReserve > 0) {
+    contracts.tokenVesting = await TokenVesting.new({
+      from: deployer
+    });
+    await contracts.tokenVesting.methods.initialize(
+      deployOptions.control, new moment().unix(), deployOptions.vestingCliff, 
+      deployOptions.vestingDuration, false, deployOptions.control
+    ).send({ from: deployer });
+    console.log(`Token vesting deployed ${contracts.tokenVesting.address}`);
 
-  // Transfer initReserve to tokenVesting
-  await contracts.dat.methods.transfer(contracts.tokenVesting.address, deployOptions.initReserve)
-    .send({ from: deployer });
-  console.log(`Token vesting funded with initReserve ${contracts.tokenVesting.address}`);
+    // Transfer initReserve to tokenVesting
+    await contracts.dat.methods.transfer(contracts.tokenVesting.address, deployOptions.initReserve)
+      .send({ from: deployer });
+    console.log(`Token vesting funded with initReserve ${contracts.tokenVesting.address}`);
+    
+    // Show Token Vetsing values
+    console.log('Token vesting contract address:', contracts.tokenVesting.address);
+    console.log('Token vesting contract owner:', await contracts.tokenVesting.methods.owner().call());
+    console.log('Token vesting contract beneficiary:', await contracts.tokenVesting.methods.beneficiary().call());
+    console.log('Token vesting contract balance:', await contracts.dat.methods.balanceOf(contracts.tokenVesting.address).call());
+    console.log('Token vesting contract cliff:', await contracts.tokenVesting.methods.cliff().call());
+    console.log('Token vesting contract start:', await contracts.tokenVesting.methods.start().call());
+    console.log('Token vesting contract duration:', await contracts.tokenVesting.methods.duration().call());
+    console.log('Token vesting contract revocable:', await contracts.tokenVesting.methods.revocable().call(), ' \n');
 
+  }
   // Update the DAT stting the right values and beneficiary account
   await contracts.dat.methods.updateConfig(
     deployOptions.whitelist,
@@ -144,16 +159,6 @@ async function main() {
   // Transfer ownershiop of proxyAdmin to control address
   await contracts.proxyAdmin.methods.transferOwnership(deployOptions.control);  
   
-  // Show Token Vetsing values
-  console.log('Token vesting contract address:', contracts.tokenVesting.address);
-  console.log('Token vesting contract owner:', await contracts.tokenVesting.methods.owner().call());
-  console.log('Token vesting contract beneficiary:', await contracts.tokenVesting.methods.beneficiary().call());
-  console.log('Token vesting contract balance:', await contracts.dat.methods.balanceOf(contracts.tokenVesting.address).call());
-  console.log('Token vesting contract cliff:', await contracts.tokenVesting.methods.cliff().call());
-  console.log('Token vesting contract start:', await contracts.tokenVesting.methods.start().call());
-  console.log('Token vesting contract duration:', await contracts.tokenVesting.methods.duration().call());
-  console.log('Token vesting contract revocable:', await contracts.tokenVesting.methods.revocable().call(), ' \n');
-
   // Show DAT values
   console.log('DAT contract address:', contracts.dat.address);
   console.log('DAT contract controller:', await contracts.dat.methods.control().call());

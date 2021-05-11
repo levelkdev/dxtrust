@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import { shortenAddress } from 'utils/address';
+import { formatBalance } from 'utils/token';
 import WalletModal from 'components/WalletModal';
-import { Spinner } from 'theme';
-import Circle from 'assets/images/circle.svg';
 import {
     injected,
     isChainIdSupported,
-    web3ContextNames,
     walletconnect
 } from 'provider/connectors';
 import Identicon from '../Identicon';
@@ -40,10 +38,6 @@ const WrongNetworkButton = styled.button`
     :focus {
         outline: none;
     }
-`;
-
-const SpinnerWrapper = styled(Spinner)`
-    margin: 0 0.25rem 0 0.25rem;
 `;
 
 const Web3ConnectStatus = observer((props) => {
@@ -80,24 +74,21 @@ const Web3ConnectStatus = observer((props) => {
     `;
     
     const {
-        root: { modalStore, transactionStore, providerStore },
+        root: { modalStore, transactionStore, providerStore, tokenStore },
     } = useStores();
     const {
         chainId,
-        active,
         account,
         connector,
         error,
+        library
     } = providerStore.getActiveWeb3React();
-    
     let pending = undefined;
     let confirmed = undefined;
-    let hasPendingTransactions = false;
 
     if (chainId && account && isChainIdSupported(chainId)) {
         pending = transactionStore.getPendingTransactions(account);
         confirmed = transactionStore.getConfirmedTransactions(account);
-        hasPendingTransactions = !!pending.length;
     }
 
     const toggleWalletModal = () => {
@@ -109,7 +100,7 @@ const Web3ConnectStatus = observer((props) => {
         if (connector === injected) {
             return <Identicon />;
         } else if (connector === walletconnect) {
-            return <img src="walletConnectIcon.svg" />;
+            return <img alt="walletconnect" src={require("assets/images/walletConnectIcon.svg")} />;
         }
     }
 
@@ -127,12 +118,22 @@ const Web3ConnectStatus = observer((props) => {
                 </WrongNetworkButton>
             );
         } else if (account) {
-            return (
-                <Web3PillBox onClick={toggleWalletModal}>
-                    {getStatusIcon()}
-                    {shortenAddress(account)}
-                </Web3PillBox>
-            );
+          const ETHBalance = tokenStore.getEtherBalance(account);
+          return (
+            <Web3PillBox onClick={toggleWalletModal}>
+              <span style={{color: "#536DFE", lineHeight: "38px",padding: "0px 10px"}}>
+                {ETHBalance ? formatBalance(ETHBalance) : '...'} ETH
+              </span>
+              <span style={{
+                backgroundColor:"#F1F3F5",
+                color:"#616161",
+                height:"38px",
+                borderRadius:"6px",
+                padding: "0px 10px",
+                lineHeight: "38px"
+              }}>{shortenAddress(account)}</span>
+            </Web3PillBox>
+          );
         } else if (error) {
             return (
                 <WrongNetworkButton onClick={toggleWalletModal}>

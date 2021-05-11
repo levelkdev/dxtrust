@@ -1,8 +1,3 @@
 #!/usr/bin/env bash
 
-npx truffle version
-npx truffle compile && rm -rf contracts/build && mv build/contracts contracts/build/
-node scripts/copyContracts.js
-node scripts/loadDeployments.js
-sleep 1
-FORCE_COLOR=true node scripts/start.js | cat
+SKIP_PREFLIGHT_CHECK=true FORCE_COLOR=true  npx react-app-rewired start | cat

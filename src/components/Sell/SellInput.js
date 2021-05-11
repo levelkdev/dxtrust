@@ -19,6 +19,7 @@ const FormWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    padding: 10px 10px;
 `;
 
 const InfoRow = styled.div`
@@ -28,10 +29,12 @@ const InfoRow = styled.div`
     line-height: 20px;
     color: var(--dark-text-gray);
     margin-bottom: 12px;
+    font-size: 15px;
 `;
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const FormContent = styled.div`
@@ -43,10 +46,11 @@ const FormContent = styled.div`
     border-radius: 4px;
     height: 34px;
     line-height: 34px;
-    margin-top: 12px;
-    margin-bottom: 32px;
+    margin-top: 0px;
+    margin-bottom: 34px;
     font-weight: 600;
     font-size: 15px;
+    padding: 0px 10px;
     input,
     input:focus {
         border: none;
@@ -86,22 +90,22 @@ const SellInput = observer((props) => {
     const [sellInputStatus, setSellInputStatus] = useState("");
 
     const { account } = providerStore.getActiveWeb3React();
-    const price = (sellInputStatus == "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
-    const rewardForSell = (sellInputStatus == "") ? bnum(0) : tradingStore.rewardForSell;
-    let txFailedError = (tradingStore.sellingState == 5) && (sellInputStatus == "") ? true : false;
-    const sellText = datStore.isInitPhase(configStore.getDXDTokenAddress()) ? "Withdraw" : "Sell";
+    const price = (sellInputStatus === "") ? tradingStore.formatNumber(0) : tradingStore.formatSellPrice();
+    const rewardForSell = (sellInputStatus === "") ? bnum(0) : tradingStore.rewardForSell;
+    let txFailedError = (tradingStore.sellingState === 5) && (sellInputStatus === "") ? true : false;
+    const sellText = datStore.isInitPhase() ? "Withdraw" : "Sell";
 
     const checkActive = () => {
         return sellInputStatus === ValidationStatus.VALID;
     }
     
-    if (sellInputStatus == "" && tradingStore.sellAmount != 0) {
+    if (sellInputStatus === "" && tradingStore.sellAmount !== 0) {
       tradingStore.setSellAmount(bnum(0));
     }
 
     const validateNumber = async (value) => {
         value = value.replace(/^0+/, '');
-        const DXDBalance =  (account) ? tokenStore.getBalance(configStore.getDXDTokenAddress(), account) : 0;
+        const DXDBalance =  (account) ? tokenStore.getBalance(configStore.getTokenAddress(), account) : 0;
         const sellInputStatusFetch = validateTokenValue(value, {
           maxBalance: (account) ? normalizeBalance(DXDBalance) : null,
         });
@@ -109,10 +113,7 @@ const SellInput = observer((props) => {
 
         if (sellInputStatusFetch === ValidationStatus.VALID) {
             tradingStore.setSellAmount(value);
-            const sellReturn = await datStore.fetchSellReturn(
-              configStore.getDXDTokenAddress(),
-              denormalizeBalance(value)
-            );
+            const sellReturn = datStore.fetchSellReturn(denormalizeBalance(value));
             tradingStore.handleSellReturn(sellReturn);
         }   else {
             tradingStore.setSellAmount(bnum(0));
@@ -137,15 +138,15 @@ const SellInput = observer((props) => {
     return (
         <FormWrapper>
             <InfoRow>
-                <FormInfoText>Price</FormInfoText>
+                <FormInfoText>Current Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>Receive Amount</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>
-                    {formatBalance(rewardForSell)} {configStore.getCollateralType()}
+                    {formatBalance(rewardForSell)} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InputColumn>
@@ -165,7 +166,7 @@ const SellInput = observer((props) => {
                   :
                     <></>
                 }
-                {sellInputStatus != ValidationStatus.VALID ? (
+                {sellInputStatus !== ValidationStatus.VALID ? (
                     <MessageError>
                       {sellInputStatus}
                     </MessageError>
@@ -181,7 +182,6 @@ const SellInput = observer((props) => {
                     // TODO What should last argument be set to?  (the minCurrencyReturned) 
                     datStore
                         .sell(
-                            configStore.getDXDTokenAddress(),
                             account,
                             denormalizeBalance(str(tradingStore.sellAmount)),
                             bnum(1)
@@ -209,7 +209,7 @@ const SellInput = observer((props) => {
                         });
                 }}
             >
-                {sellText} {sellText  == "Withdraw" ? 'ETH' : 'DXD'}
+                {sellText} {sellText  === "Withdraw" ? 'ETH' : 'DXD'}
             </Button>
         </FormWrapper>
     );

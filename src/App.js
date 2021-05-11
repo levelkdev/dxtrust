@@ -1,5 +1,7 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import "typeface-montserrat";
+import "typeface-roboto";
 import './App.css';
 import Web3ReactManager from 'components/Web3ReactManager';
 import BondingCurveContainer from './containers/BondingCurveContainer';
@@ -9,12 +11,10 @@ const App = () => {
     <HashRouter>
       <Switch>
         <Route exact path="/">
-          <div className="invest-body-container">
-            <div className="app-shell">
-              <Web3ReactManager>
-                <BondingCurveContainer />
-              </Web3ReactManager>
-            </div>
+          <div className="body-container">
+            <Web3ReactManager>
+              <BondingCurveContainer />
+            </Web3ReactManager>
           </div>
         </Route>
       </Switch>

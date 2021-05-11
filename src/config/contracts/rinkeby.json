@@ -1,0 +1,19 @@
+{
+  "multicall": "0xcCe9F2159F5bf387cc70D0cFcc05031558960674",
+  "DAT": "0xa700BdAba48A3D96219247111B0b708Dc0b51033",
+  "DATinfo": {
+    "fromBlock": 8164325,
+    "collateralType": "ETH",
+    "name": "DXdao",
+    "symbol": "DXD",
+    "currency": "0x0000000000000000000000000000000000000000",
+    "control": "0x9E6f088d983692c7bE6625A1219eAc972672A72c",
+    "initReserve": "0",
+    "initGoal": "309838667696595800000",
+    "buySlopeNum": "1",
+    "buySlopeDen": "48000000000000000000000",
+    "investmentReserveBasisPoints": "1000",
+    "revenueCommitmentBasisPoints": "1000",
+    "minInvestment": "1000000000000000"
+  }
+}

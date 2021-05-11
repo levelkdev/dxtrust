@@ -9,7 +9,7 @@ const Pill = styled.div`
     border-radius: 6px;
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     text-align: center;
 
@@ -22,7 +22,6 @@ const Pill = styled.div`
     letter-spacing: 0.2px;
     cursor: pointer;
 
-    width: 166px;
     height: 40px;
 `;
 

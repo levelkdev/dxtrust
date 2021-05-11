@@ -12,30 +12,31 @@ let httpProviderUrl, web3;
 
 async function loadDeployment(network) {
   console.log('Loading deploy from network', network)
-  const proxies = JSON.parse(fs.readFileSync('.openzeppelin/'+network+'.json', 'utf-8')).proxies;
-
+  
   httpProviderUrl = `https://${network}.infura.io/v3/${infuraApiKey }`
   web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl))
   ZWeb3.initialize(web3.currentProvider);
   Contracts.setLocalBuildDir('contracts/build/');
+  
   const DATContract = Contracts.getFromLocal('DecentralizedAutonomousTrust');
-
-  let contractsDeployed = {'contracts': {}};
-  if (fs.existsSync('src/config/contracts.json'))
-    contractsDeployed = JSON.parse(fs.readFileSync('src/config/contracts.json', 'utf-8'));
-  const datContract = DATContract.at(proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address);
-  const fromBlock = (network == 'mainnet') ? 10012634 : (network == 'kovan') ? 18000000 : 0;
-  contractsDeployed.contracts[network] = {
-    multicall: proxies['openraise-dapp/Multicall'][0].address,
-    DAT: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].address,
-    implementationAddress: proxies['openraise-dapp/DecentralizedAutonomousTrust'][0].implementation,
-    collateral: zeroAddress,
+  const contracts = JSON.parse(fs.readFileSync('.contracts.json', 'utf-8'));
+  
+  const datContract = DATContract.at(contracts[network].DecentralizedAutonomousTrust);
+  const fromBlock = (network == 'mainnet') ? 10012634
+  : (network == 'kovan') ? 18000000
+  : (network == 'rinkeby') ? 8164325
+  : 0;
+  
+  const contractsDeployed = {
+    multicall: contracts[network].Multicall,
+    DAT: contracts[network].DecentralizedAutonomousTrust,
     DATinfo: {
       fromBlock: fromBlock,
       "collateralType": "ETH",
       "name": await datContract.methods.name().call(),
       "symbol": await datContract.methods.symbol().call(),
       "currency": zeroAddress,
+      "control": await datContract.methods.control().call(),
       "initReserve": await datContract.methods.initReserve().call(),
       "initGoal": await datContract.methods.initGoal().call(),
       "buySlopeNum": await datContract.methods.buySlopeNum().call(),
@@ -46,16 +47,14 @@ async function loadDeployment(network) {
     },
   };
 
-  await fs.writeFileSync('src/config/contracts.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
+  await fs.writeFileSync('src/config/contracts/'+network+'.json', JSON.stringify(contractsDeployed, null, 2), {encoding:'utf8',flag:'w'})
   console.log('Deployment configuration loaded for network '+network);
 } 
 
 async function main() {
   const networks = process.env.REACT_APP_ETH_NETWORKS.split(',');
-  for (var i = 0; i < networks.length; i++) {
-    if (networks[i] == 'mainnet' || networks[i] == 'ropsten' || networks[i] == 'kovan')
-      await loadDeployment(networks[i]);
-  }
+  for (var i = 0; i < networks.length; i++)
+    await loadDeployment(networks[i]);
 };
 
 main();

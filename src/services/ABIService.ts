@@ -18,10 +18,6 @@ export const schema = {
 export default class ABIService {
     abiMap: AbiMap;
 
-    constructor() {
-        //Load ABIs from JSON into
-    }
-
     getAbi(contractType: string) {
         return schema[contractType];
     }

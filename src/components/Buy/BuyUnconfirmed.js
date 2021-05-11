@@ -26,6 +26,7 @@ const InfoRow = styled.div`
 
 const FormInfoText = styled.div`
     color: var(--light-text-gray);
+    font-size: 14px;
 `;
 
 const Unconfirmed = styled.div`
@@ -39,12 +40,11 @@ const Unconfirmed = styled.div`
     margin-bottom: 28px;
 `;
 
-const BuyUnconfirmed = observer((props) => {
+const BuyUnconfirmed = observer(() => {
     const {
         root: { tradingStore, configStore },
     } = useStores();
 
-    const { infotext } = props;
     const price = tradingStore.formatBuyPrice();
     const buyAmount = tradingStore.formatBuyAmount();
 
@@ -62,18 +62,18 @@ const BuyUnconfirmed = observer((props) => {
             <InfoRow>
                 <FormInfoText>Price</FormInfoText>
                 <div>
-                    {price} {configStore.getCollateralType()}
+                    {price} {configStore.getDATinfo().collateralType}
                 </div>
             </InfoRow>
             <InfoRow>
-                <FormInfoText>{infotext}</FormInfoText>
+                <FormInfoText>You will receive</FormInfoText>
                 <div>
                     {formatBalance(tradingStore.payAmount)} DXD
                 </div>
             </InfoRow>
             <InfoRow>
                 <FormInfoText>Total cost</FormInfoText>
-                <div>{buyAmount} {configStore.getCollateralType()}</div>
+                <div>{buyAmount} {configStore.getDATinfo().collateralType}</div>
             </InfoRow>
             <Unconfirmed>
                 Unconfirmed...

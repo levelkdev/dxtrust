@@ -11,6 +11,7 @@ const Button = styled.div`
     letter-spacing: 1px;
     text-align: center;
     text-transform: uppercase;
+    cursor: pointer;
 `;
 const InactiveButton = ({ children }) => {
     return <Button>{children}</Button>;

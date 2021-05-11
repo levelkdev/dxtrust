@@ -36,7 +36,7 @@
     --rewards-text-green: #54ae6f;
     --rewards-background-green: rgba(84, 174, 111, 0.1);
 
-    --roboto: 'Roboto', sans-serif;
+    --montserrat: 'Montserrat', sans-serif;
 
     /*Landing Page Styles*/
     --background: #E4E6F0;
@@ -49,25 +49,13 @@
     /*white from above is also used in landing page*/
 }
 
-.invest-body-container {
+.body-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    font-family: var(--roboto);
+    padding: 10px 20px;
+    font-family: var(--montserrat);
     background-color: var(--light-gray);    
-}
-
-.landing-body-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-family: var(--roboto);
-    background-color: var(--white);
-}
-
-.app-shell {
-    width: 936px;
-    min-height: 100vh;
 }
 
 .green-text {
@@ -88,6 +76,7 @@
 
 .form-vivid-blue {
     color: rgba(48, 79, 254, 0.6);
+    width: 100%;
 }
 
 .align-left {
@@ -226,7 +215,7 @@ pre {
   }
   
   .Container {
-    width: 100%;
+    width: 90%;
     max-width: 1168px;
   
     margin: auto;
@@ -319,7 +308,7 @@ pre {
   
   .FAQ .Container {
     flex-direction: column;
-    width: 100%;
+    width: 90%;
     margin-bottom:64px;
   }
   
