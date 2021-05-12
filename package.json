@@ -6,7 +6,7 @@
     "start-dapp": "dotenv -e .env.production ./scripts/start.sh",
     "dev-dapp": "dotenv -e .env.development ./scripts/dev.sh",
     "build-dapp": "dotenv -e .env.production ./scripts/build.sh",
-    "deploy-contracts": "node scripts/deployContracts.js",
+    "deploy-contracts": "dotenv -e .env.development node scripts/deployContracts.js",
     "test-contracts": "./scripts/test-contracts.sh"
   },
   "engines": {

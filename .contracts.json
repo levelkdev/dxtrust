@@ -10,7 +10,7 @@
     "TokenVesting": "0x26A20D2585fbFb8D33c766a0E19555A666D42128"
   },
   "rinkeby": {
-    "DecentralizedAutonomousTrust": "0xa700BdAba48A3D96219247111B0b708Dc0b51033",
+    "DecentralizedAutonomousTrust": "0x417A288152A5a13b843135Db5Dc72Ea007a9EB8d",
     "Multicall": "0xcCe9F2159F5bf387cc70D0cFcc05031558960674",
     "TokenVesting": "0x0000000000000000000000000000000000000000"
   }
