@@ -6,22 +6,17 @@ const fs = require('fs');
 const args = process.argv;
 require('dotenv').config();
 
-// Get network to use from arguments
-let network = 'mainnet', mnemonic, provider,controllerAccount, web3;
-for (var i = 0; i < args.length; i++) {
-  if (args[i] == '--network')
-    network = args[i+1];
-  if (args[i] == '--provider')
-    provider = args[i+1];
-  if (args[i] == '--controller')
-    controllerAccount = args[i+1];
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
-if (!provider) throw('Not provider selected, --provider parameter missing');
 
-mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
+const network = process.env.NETWORK;
+const controllerAccount = process.env.DAT_CONTROLLER;
+const mnemonic = process.env.REACT_APP_KEY_MNEMONIC;
+const httpProviderUrl = `https://${network}.infura.io/v3/${process.env.REACT_APP_KEY_INFURA_API_KEY}`
 
-console.log('Running deploy on network', network, 'using http provider', provider)
-const web3Provider = new HDWalletProvider(mnemonic, new Web3.providers.HttpProvider(provider), 0, 10);
+console.log('Running deploy on network', network, 'using http provider', httpProviderUrl)
+const web3Provider = new HDWalletProvider(mnemonic, new Web3.providers.HttpProvider(httpProviderUrl), 0, 10);
 web3 = new Web3(web3Provider)
 
 ZWeb3.initialize(web3.currentProvider);
@@ -85,9 +80,7 @@ async function main() {
   console.log(`Using account: ${deployer}`, ' \n');
   console.log(`Deploy DAT with config: ${JSON.stringify(deployOptions, null, 2)}`, ' \n');
   
-  contracts.proxyAdmin = await ProxyAdmin.new({
-    from: deployer
-  });
+  contracts.proxyAdmin = await ProxyAdmin.new({ from: deployer });
   console.log(`ProxyAdmin deployed ${contracts.proxyAdmin.address}`);
 
   contracts.datImplementation = await DATContract.new({ from: deployer, gas: 9000000 })
@@ -100,6 +93,7 @@ async function main() {
     [], // data
     { from: deployer }
   );
+  await sleep(30000);
   contracts.dat = await DATContract.at(contracts.datProxy.address);
   console.log(`DAT proxy deployed ${contracts.datProxy.address}`);
 
@@ -117,9 +111,7 @@ async function main() {
 
   // Deploy token vesting
   if (deployOptions.initReserve > 0) {
-    contracts.tokenVesting = await TokenVesting.new({
-      from: deployer
-    });
+    contracts.tokenVesting = await TokenVesting.new({ from: deployer });
     await contracts.tokenVesting.methods.initialize(
       deployOptions.control, new moment().unix(), deployOptions.vestingCliff, 
       deployOptions.vestingDuration, false, deployOptions.control
