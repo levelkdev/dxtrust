@@ -2,7 +2,7 @@ const { Contracts, ZWeb3 } = require('@openzeppelin/upgrades');
 const zeroAddress = '0x0000000000000000000000000000000000000000';
 const fs = require('fs');
 
-async function deployDAT(web3, options = {}, useProxy, network) {
+async function deployDAT(web3, options = {}) {
   
   ZWeb3.initialize(web3.currentProvider);
   Contracts.setLocalBuildDir('contracts/build/');
@@ -12,6 +12,7 @@ async function deployDAT(web3, options = {}, useProxy, network) {
   const ProxyContract = Contracts.getFromLocal('AdminUpgradeabilityProxy');
   const ProxyAdminContract = Contracts.getFromLocal('ProxyAdmin');
   const Multicall = Contracts.getFromLocal('Multicall');
+  const DecentralizedAutonomousTrustOnlyERC20 = Contracts.getFromLocal('DecentralizedAutonomousTrustOnlyERC20');
 
   const contracts = {};
   const callOptions = Object.assign(
@@ -47,7 +48,7 @@ async function deployDAT(web3, options = {}, useProxy, network) {
   if (options.log)
     console.log(`DAT template deployed ${datContract.address}`);
 
-  const datProxy = await ProxyContract.new(
+  contracts.datProxy = await ProxyContract.new(
     datContract.address, // logic
     contracts.proxyAdmin.address, // admin
     [], // data
@@ -56,10 +57,14 @@ async function deployDAT(web3, options = {}, useProxy, network) {
     }
   );
   if (options.log)
-    console.log(`DAT proxy deployed ${datProxy.address}`);
+    console.log(`DAT proxy deployed ${contracts.datProxy.address}`);
 
-  contracts.dat = await DATContract.at(datProxy.address);
+  contracts.dat = await DATContract.at(contracts.datProxy.address);
   contracts.dat.implementation = datContract.address;
+  
+  contracts.datOnlyERC20 = await DecentralizedAutonomousTrustOnlyERC20.new({
+    from: callOptions.control, gas: 9000000
+  });
   
   await contracts.dat.methods.initialize(
     callOptions.initReserve,
